@@ -1,0 +1,29 @@
+
+.alert.alert-info
+  %h3.h4.mb-3 Bienvenue !
+  %p Bienvenue dans l'espace de votes de l'UNADF / FNADF
+
+  %p Vous avez reçu une invitation à créer votre espace personnel !
+
+  %p Pour commencer, merce de renseigner un mot de passe.
+
+= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f|
+  - unless resource.errors.blank?
+    .alert.alert-danger
+      %h3.h4= "#{pluralize(resource.errors.count, "erreur")}"
+      %ul.list
+        - resource.errors.full_messages.each do |msg|
+          %li= msg
+
+  = f.hidden_field :invitation_token
+
+  .form-group
+    = f.label :password
+    = f.password_field :password, class: "form-control"
+
+  .form-group
+    = f.label :password_confirmation
+    = f.password_field :password_confirmation, class: "form-control"
+
+  %button.btn.btn-primary.btn-block{type: :submit}
+    Créer mon mot de passe

@@ -1,0 +1,68 @@
+.breadcrumbs
+  .page-header
+    %h1 Mon compte
+
+
+.content.mt-3
+  .container-fluid
+
+    .row.justify-content-md-center
+      .col-md-8
+        .card
+          .card-body
+            = form_for @user, url: account_path(@user) do |f|
+              - if @user.errors.any?
+                .panel.panel-danger
+                  .panel-heading= "#{pluralize(@user.errors.count, "erreur")}"
+                  .panel-body
+                    %ul
+                      - @user.errors.full_messages.each do |msg|
+                        %li= msg
+              .row
+                .col-md-6
+                  .form-group
+                    = f.label :firstname
+                    = f.text_field :firstname, class: "form-control"
+                .col-md-6
+                  .form-group
+                    = f.label :lastname
+                    = f.text_field :lastname, class: "form-control"
+
+              .form-group
+                = f.label :email
+                = f.email_field :email, class: "form-control"
+
+              .form-group
+                = f.label :phone_1
+                = f.text_field :phone_1, class: "form-control"
+
+              .form-group
+                = f.label :phone_2
+                = f.text_field :phone_2, class: "form-control"
+              %hr.small
+              .form-group
+                = f.label :address_1
+                = f.text_field :address_1, class: "form-control"
+              .form-group
+                = f.label :address_2
+                = f.text_field :address_2, class: "form-control"
+
+              .row
+                .col-md-6
+                  .form-group
+                    = f.label :zipcode
+                    = f.text_field :zipcode, class: "form-control"
+                .col-md-6
+                  .form-group
+                    = f.label :town
+                    = f.text_field :town, class: "form-control"
+
+              %hr
+              .form-group
+                = f.label :avatar
+                = f.file_field :avatar
+
+
+              .float-right
+                %button.btn.btn-primary{type: :submit}
+                  Enregistrer

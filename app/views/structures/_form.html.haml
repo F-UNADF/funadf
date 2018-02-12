@@ -1,0 +1,48 @@
+= form_for structure do |f|
+  - if structure.errors.any?
+    .alert.alert-danger
+      %h3.h4 Merci de corriger les erreurs ci-dessous
+      %ul.list
+        - structure.errors.full_messages.each do |msg|
+          %li= msg
+
+  .row
+    .col-md-6
+      .form-group
+        = f.label :name
+        = f.text_field :name, class: 'form-control'
+
+      .form-group
+        = f.label :email
+        = f.email_field :email, class: "form-control"
+
+      .form-group
+        = f.label :phone_1
+        = f.text_field :phone_1, class: "form-control"
+
+      .form-group
+        = f.label :phone_2
+        = f.text_field :phone_2, class: "form-control"
+      %hr.small
+      .form-group
+        = f.label :address_1
+        = f.text_field :address_1, class: "form-control"
+      .form-group
+        = f.label :address_2
+        = f.text_field :address_2, class: "form-control"
+
+      .row
+        .col-md-6
+          .form-group
+            = f.label :zipcode
+            = f.text_field :zipcode, class: "form-control"
+        .col-md-6
+          .form-group
+            = f.label :town
+            = f.text_field :town, class: "form-control"
+
+
+
+  .float-right
+    %button.btn.btn-primary{type: :submit}
+      Enregistrer

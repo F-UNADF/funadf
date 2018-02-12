@@ -1,0 +1,30 @@
+%ul.nav.navbar-nav
+
+  %h3.menu-title Menu Principal
+  %li{class: "#{(params[:controller] == 'pages') ? 'active' : ''}"}
+    = link_to root_url do
+      = icon "home", class: "menu-icon"
+      Accueil
+  / /.menu-title
+
+  %h3.menu-title Mon compte
+  / /.menu-title
+
+  %li{class: "#{(params[:controller] == 'accounts') ? 'active' : ''}"}
+    = link_to me_path do
+      = icon "user", class: "menu-icon"
+      Consulter mon profil
+
+
+  %h3.menu-title Administration
+  - if can? :view, :users
+    %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
+      = link_to admin_users_path do
+        = icon "users", class: "menu-icon"
+        Gestion des utilisateurs
+
+  - if can? :view, :structures
+    %li{class: "#{(params[:controller] == 'admin/structures') ? 'active' : ''}"}
+      = link_to admin_structures_path do
+        = icon "building", class: "menu-icon"
+        Gestion des structures

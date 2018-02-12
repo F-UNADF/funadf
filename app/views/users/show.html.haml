@@ -1,0 +1,68 @@
+.breadcrumbs
+  .page-header
+    %h1
+      Gestion des utilisateurs
+      %small - consulter un utilisateur
+
+
+.content.mt-3
+  .container-fluid
+    .row
+      .col-md-4
+        .client.card
+          .card-body
+            .mx-auto.d-block
+              .text-center
+                .client-avatar
+                  = image_tag @user.avatar.url(:medium), class: 'img-fluid rounded-circle mx-auto d-block', alt: 'Default Avatar', width: 200
+                .client-title.mt-2.mb-1
+                  %h3= @user.fullname
+                  %p
+                    = icon 'id-card'
+                    = @user.friendly_id
+              .client-info
+                %address
+                  - unless @user.full_address.blank?
+                    = @user.full_address
+                    %hr
+
+                  %ul.fa-ul
+                    %li
+                      = icon 'envelope', class: "fa-li"
+                      = link_to "mailto:#{@user.email}" do
+                        = @user.email
+
+                    - unless @user.phone_1.blank?
+                      %li
+                        = icon 'phone', class: "fa-li"
+                        = @user.phone_1
+                    - unless @user.phone_2.blank?
+                      %li
+                        = icon 'phone', class: "fa-li"
+                        = @user.phone_2
+          .card-footer
+            = link_to edit_me_path, class: 'btn btn-outline-dark btn-icon' do
+              = icon "edit"
+              Modifier mon profil
+
+
+      .col-md-8
+        .card
+          .card-header
+            %ul.nav.nav-pills
+              %li.nav-item
+                = link_to '#churches', id: 'churches-tab', class: 'nav-link active',  data: {toggle: "tab"}, aria: {controls: "churches", selected: "true"} do
+                  Mes églises
+              %li.nav-item
+                = link_to '#associations', id: 'associations-tab', class: 'nav-link',  data: {toggle: "tab"}, aria: {controls: "associations", selected: "false"} do
+                  Mes associations
+
+          .card-body
+            .tab-content
+              .tab-pane.fade.show.active#churches{'aria-labelledby' => "home-tab"}
+                %h5.card-title Mes églises
+
+              .tab-pane.fade#associations{'aria-labelledby' => "home-tab"}
+                %h5.card-title Mes associations
+
+

@@ -1,0 +1,53 @@
+.breadcrumbs
+  .page-header
+    %h1
+      Gestion de la structure
+      %b= @structure.name
+
+
+.content.mt-3
+  .container-fluid
+    .row
+      .col-3
+        .card
+          .card-header
+            La structure
+          .card-body
+            %strong= @structure.name
+            %br
+            = @structure.full_address
+            %hr
+            %ul.fa-ul
+              %li
+                = icon 'envelope', class: "fa-li"
+                = link_to "mailto:#{@structure.email}" do
+                  = @structure.email
+
+              - unless @structure.phone_1.blank?
+                %li
+                  = icon 'phone', class: "fa-li"
+                  = @structure.phone_1
+              - unless @structure.phone_2.blank?
+                %li
+                  = icon 'phone', class: "fa-li"
+                  = @structure.phone_2
+
+          .card-footer
+            = link_to [:edit, @structure], class: 'btn btn-sm btn-outline-dark btn-icon' do
+              = icon "edit"
+              Modifier ces infos
+
+      .card-body
+
+    .card
+      .card-header
+        %ul.nav.nav-pills
+          %li.nav-item
+            = link_to @structure, class: "nav-link #{'active' if params[:controller] == 'structures'}" do
+              Ma structure
+          %li.nav-item
+            = link_to '#associations', id: 'associations-tab', class: 'nav-link',  data: {toggle: "tab"}, aria: {controls: "associations", selected: "false"} do
+              Mes associations
+
+
+      .card-body

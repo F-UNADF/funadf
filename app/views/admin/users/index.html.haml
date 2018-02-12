@@ -1,0 +1,49 @@
+.breadcrumbs
+  .page-header
+    %h1 Gestion des utilisateurs
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Liste des utilisateurs
+        .card-actions
+          = link_to new_user_invitation_path, class: "btn-setting" do
+            = icon 'plus'
+            Ajouter
+
+      .card-body
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th Identifiant
+                %th Nom
+                %th Email
+                %th Téléphone
+                %th Invitation acceptée
+                %th Rôles
+                %th
+
+            - @users.each do |user|
+              %tr
+                %td= user.friendly_id
+                %td= user.fullname
+                %td= user.email
+                %td= user.phone_1
+                %td= icon "#{(user.invitation_accepted_at.blank?) ? 'times' : 'check'}"
+                %td= user.roles.pluck(:name).join(', ')
+                %td
+                  - if user.id == current_user.id
+                    %em C'est vous !
+                  - else
+                    %ul.list-inline.mb-0
+                      %li.list-inline-item
+                        = link_to user, class: "btn btn-sm btn-info" do
+                          = icon "eye"
+                          Consulter l'utilisateur
+                      %li.list-inline-item
+                        = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-sm btn-danger" do
+                          = icon "times"
+                          Supprimer

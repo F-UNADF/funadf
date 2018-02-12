@@ -1,56 +1,33 @@
 Rails.application.routes.draw do
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  devise_for :users, controllers: { invitations: 'users/invitations' }
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
+  authenticated :user do
+    namespace :admin do
+      resources :users do
+        get '/admins/new', to: "admins#new", as: :new_admin
+        post '/admins/delete', to: "admins#destroy", as: :admin
+      end
+      resources :structures, only: [:new, :index, :destroy]
+    end
 
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+    resources :structures, except: [:new, :index, :destroy] do
+      resources :has_memberships, controller: 'structures/has_memberships', except: :create
+      get '/structures/:structure_id/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships
+      resources :is_memberships, controller: 'structures/is_memberships'
+    end
 
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
+    resources :users, only: :show
 
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
+    get '/mon-compte', to: "accounts#show", as: :me
+    get '/mon-compte/modifier', to: 'accounts#edit', as: :edit_me
 
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
+    get '/search', to: "search#index", as: :search
 
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
+    resources :accounts, only: :update
+    root 'pages#home', as: :authenticated_root
 
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
+  end
+  root to: redirect('/users/sign_in')
 
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

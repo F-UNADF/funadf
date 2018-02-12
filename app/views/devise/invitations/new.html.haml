@@ -1,0 +1,40 @@
+.breadcrumbs
+  .page-header
+    %h1 Gestion des utilisateurs
+
+
+.content.mt-3
+  .container-fluid
+    .row.justify-content-md-center
+      .col-md-8
+        .card
+          .card-header
+            %strong Ajouter un utilisateur
+
+          .card-body
+            = form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f|
+              - unless resource.errors.blank?
+                .alert.alert-danger
+                  %h3.h4= "#{pluralize(resource.errors.count, "erreur")}"
+                  %ul.list
+                    - resource.errors.full_messages.each do |msg|
+                      %li= msg
+
+              .row
+                .col-md-6
+                  .form-group
+                    = f.label :firstname
+                    = f.text_field :firstname, class: "form-control"
+                .col-md-6
+                  .form-group
+                    = f.label :lastname
+                    = f.text_field :lastname, class: "form-control"
+
+              .form-group
+                = f.label :email
+                = f.email_field :email, class: "form-control"
+
+
+              .float-right
+                %button.btn.btn-primary{type: :submit}
+                  Enregistrer
