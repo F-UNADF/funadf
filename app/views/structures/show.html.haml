@@ -33,21 +33,21 @@
                   = @structure.phone_2
 
           .card-footer
-            = link_to [:edit, @structure], class: 'btn btn-sm btn-outline-dark btn-icon' do
+            = link_to edit_structure_path(@structure), class: 'btn btn-sm btn-outline-dark btn-icon' do
               = icon "edit"
               Modifier ces infos
 
-      .card-body
+      .col-md-9
 
-    .card
-      .card-header
-        %ul.nav.nav-pills
-          %li.nav-item
-            = link_to @structure, class: "nav-link #{'active' if params[:controller] == 'structures'}" do
-              Ma structure
-          %li.nav-item
-            = link_to '#associations', id: 'associations-tab', class: 'nav-link',  data: {toggle: "tab"}, aria: {controls: "associations", selected: "false"} do
-              Mes associations
+        .card
+          .card-header
+            %ul.nav.nav-pills
+              %li.nav-item
+                = link_to structure_path(@structure), class: "nav-link #{'active' if params[:controller] == 'structures'}" do
+                  Ma structure
+              %li.nav-item
+                = link_to '#associations', id: 'associations-tab', class: 'nav-link',  data: {toggle: "tab"}, aria: {controls: "associations", selected: "false"} do
+                  Mes associations
 
 
-      .card-body
+          .card-body

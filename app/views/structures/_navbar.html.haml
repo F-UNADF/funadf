@@ -1,8 +1,8 @@
 
 %ul.nav.nav-pills
   %li.nav-item
-    = link_to [@structure, :has_memberships], class: "nav-link #{'active' if params[:controller] == 'structures/has_memberships'}" do
+    = link_to structure_has_memberships_path(@structure), class: "nav-link #{'active' if params[:controller] == 'structures/has_memberships'}" do
       Ses membres
   %li.nav-item
-    = link_to [@structure, :is_memberships], class: "nav-link #{'active' if params[:controller] == 'structures/is_memberships'}" do
+    = link_to structure_is_memberships_path(@structure), class: "nav-link #{'active' if params[:controller] == 'structures/is_memberships'}" do
       Ses adhésions

@@ -30,14 +30,14 @@
                     %th Rôle
                     %th
 
-                - @has_members.each do |membership|
+                - @members.each do |member|
                   %tr
-                    %td= membership.member_friendly_id
-                    %td= t "activerecord.models."+membership.is_memberable_type.downcase+".one"
-                    %td= membership.member_name
-                    %td= membership.member_email
-                    %td= membership.member_phone_1
-                    %td= t "activerecord.attributes.membership.roles."+membership.kind
+                    %td= member.friendly_id
+                    %td= t "activerecord.models."+member.class.name.downcase+".one"
+                    %td= member.name
+                    %td= member.email
+                    %td= member.phone_1
+                    %td= @structure.get_user_role(member.id)
 
             %hr
             %h3.h5 Ajouter un membre

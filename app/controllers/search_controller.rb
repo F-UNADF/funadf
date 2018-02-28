@@ -18,6 +18,10 @@ class SearchController < ApplicationController
         end
       end
     end
+
+    puts "$"*5
+    puts r.inspect
+
     @results = r.uniq.sort_by { |r| r[:id] }
 
     respond_to do |format|

@@ -1,20 +1,8 @@
 class Structure < ActiveRecord::Base
-
-  has_many :is_memberships, :as => :is_memberable, :class_name => 'Membership'
-  has_many :has_memberships, :as => :has_memberable, :class_name => 'Membership'
-
   validates :name, presence: true
-
-  validate :has_president?
 
   def friendly_id
     sprintf '%05d', id
-  end
-
-  def has_president?
-    if has_memberships.where(is_memberable_type: 'User', kind: :president).blank?
-      errors.add(:is_memberships, :should_have_a_president)
-    end
   end
 
   def full_address
@@ -36,6 +24,31 @@ class Structure < ActiveRecord::Base
 
   def self.global_search q
     where(['(name LIKE ? OR email LIKE ? OR id LIKE ?)', "#{q}%", "#{q}%", "#{q}%"])
+  end
+
+  def self.types
+    {'Eglise' => 'Church', 'Association' => 'Association'}
+  end
+
+  def get_icon
+    case type
+    when "Church"
+      'fire'
+    when "Association"
+      'building'
+    end
+  end
+
+  def presidents
+    User.with_role(:president, self).map {|user| user.fullname }.join(', ')
+  end
+
+  def members
+    users + structures
+  end
+
+  def get_user_role(user_id)
+
   end
 
 

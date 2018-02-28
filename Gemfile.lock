@@ -248,6 +248,8 @@ GEM
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    select2-rails (4.0.3)
+      thor (~> 0.14)
     selenium-webdriver (3.8.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
@@ -321,6 +323,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails
   sdoc (~> 0.4.0)
+  select2-rails
   selenium-webdriver
   spring
   spring-commands-rspec

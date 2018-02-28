@@ -17,7 +17,8 @@ Rails.application.routes.draw do
       resources :is_memberships, controller: 'structures/is_memberships'
     end
 
-    resources :users, only: :show
+    resources :users, only: [:show, :index]
+    resources :structures
 
     get '/mon-compte', to: "accounts#show", as: :me
     get '/mon-compte/modifier', to: 'accounts#edit', as: :edit_me

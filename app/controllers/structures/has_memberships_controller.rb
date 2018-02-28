@@ -2,7 +2,7 @@ class Structures::HasMembershipsController < ApplicationController
   before_filter :set_structure
 
   def index
-    @has_members = @structure.has_memberships
+    @members = @structure.members
   end
 
   def create

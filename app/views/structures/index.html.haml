@@ -1,0 +1,50 @@
+.breadcrumbs
+  .page-header
+    %h1 Gérer mes structures
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Liste des structures
+
+      .card-body
+        %ul.list-inline
+          %li.list-inline-item
+            = icon 'fire'
+            Eglise
+          %li.list-inline-item
+            = icon 'building'
+            Association
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th
+                %th Identifiant
+                %th Nom
+                %th Email
+                %th Téléphone
+                %th Rôle
+                %th
+
+            - @structures.each do |structure|
+              - if can? :view, structure
+                %tr
+                  %td= icon "#{structure.get_icon}"
+                  %td= structure.id
+                  %td= structure.name
+                  %td= structure.email
+                  %td= structure.phone_1
+                  %td= structure.get_user_role(current_user)
+                  %td
+                    %ul.list-inline.mb-0
+                      - if can? :manage, structure
+                        %li.list-inline-item
+                          = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
+                            = icon "eye"
+                            Gérer la structure
+
+
+

@@ -14,10 +14,18 @@
             Ajouter
 
       .card-body
+        %ul.list-inline
+          %li.list-inline-item
+            = icon 'fire'
+            Eglise
+          %li.list-inline-item
+            = icon 'building'
+            Association
         .table-responsive
           %table.table.table-striped.table-sm
             %thead
               %tr
+                %th
                 %th Identifiant
                 %th Nom
                 %th Email
@@ -27,17 +35,18 @@
 
             - @structures.each do |structure|
               %tr
+                %td= icon "#{structure.get_icon}"
                 %td= structure.id
                 %td= structure.name
                 %td= structure.email
                 %td= structure.phone_1
-                %td TODO
+                %td= structure.presidents
                 %td
                   %ul.list-inline.mb-0
                     %li.list-inline-item
-                      = link_to [structure, :has_memberships], class: "btn btn-sm btn-info" do
+                      = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
                         = icon "eye"
-                        Gérer le structure
+                        Gérer la structure
                     %li.list-inline-item
                       = link_to admin_structure_path(structure), method: :delete, data: { confirm: 'Êtes vous sûr ?' }, class: "btn btn-sm btn-danger" do
                         = icon "times"

@@ -15,6 +15,11 @@
       = icon "user", class: "menu-icon"
       Consulter mon profil
 
+  %li{class: "#{(params[:controller] == 'structures') ? 'active' : ''}"}
+    = link_to structures_path do
+      = icon "building", class: "menu-icon"
+      Consulter mes structures
+
 
   %h3.menu-title Administration
   - if can? :view, :users

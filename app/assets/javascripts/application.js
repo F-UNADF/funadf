@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require popper
 //= require bootstrap
+//= require select2
 //= require_tree .
 
 $.noConflict();
@@ -38,6 +39,40 @@ jQuery(document).ready(function($) {
     event.stopPropagation();
     $('.search-trigger').parent('.header-left').removeClass('open');
   });
+
+  $('.users-select2').select2({
+      theme: "bootstrap",
+      minimumInputLength: 2,
+      language: {
+        inputTooShort: function () {
+          return "Merci d'entrer au moins 2 lettres...";
+        }
+      },
+      ajax: {
+        url: '/users.json',
+        dataType: 'json',
+        data: function (params) {
+          var query = {
+            search: params.term
+          }
+          return query;
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function(item) {
+              return {
+                text: item.firstname + " " + item.lastname,
+                id: item.id
+              }
+            })
+          };
+        }
+      },
+      templateResult: function(object) {
+        $("#structure_has_memberships_is_memberable_id").val(object.id);
+        return object.text;
+      }
+    });
 
 
 });

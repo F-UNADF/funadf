@@ -24,6 +24,7 @@ gem "paperclip"
 gem 'popper_js', '~> 1.12.9'
 gem "rolify"
 gem "cancan"
+gem "select2-rails"
 
 group :development do
   gem 'better_errors'

@@ -11,6 +11,7 @@ class Admin::StructuresController < ApplicationController
   # GET /admin/structures/new
   def new
     @structure = Structure.new
+    @structure.has_memberships.build
   end
 
   # DELETE /admin/structures/1
@@ -31,6 +32,6 @@ class Admin::StructuresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def structure_params
-      params[:structure].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email)
+      params[:structure].permit(:type, :name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email)
     end
 end

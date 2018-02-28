@@ -1,7 +1,20 @@
 class StructuresController < ApplicationController
-  before_filter :set_structure
+  before_filter :set_structure, except: [:index, :new, :create]
+
+  def index
+    @structures = Structure.order(:name)
+  end
 
   def show
+  end
+
+  def create
+    @structure = Structure.new structure_params
+    if @structure.save
+      redirect_to structure_path(@structure), notice: "Structure créée"
+    else
+      render :new
+    end
   end
 
   def edit
@@ -22,6 +35,6 @@ class StructuresController < ApplicationController
     end
 
     def structure_params
-      params[:structure].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email)
+      params[:structure].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :type)
     end
 end

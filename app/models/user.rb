@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  rolify
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
@@ -9,12 +8,7 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
 
-  has_many :is_memberships, :as => :is_memberable, :class_name => 'Membership'
-
-  has_many :is_members_structures, through: :is_memberships, source: :is_memberable, source_type: 'Structure'
-
   validates :firstname, :lastname, presence: true
-
 
   def fullname
     firstname + " " + lastname
@@ -45,5 +39,6 @@ class User < ActiveRecord::Base
   def self.global_search q
     where(['(firstname LIKE ? OR lastname LIKE ? OR email LIKE ? OR id LIKE ?)', "#{q}%", "#{q}%", "#{q}%", "#{q}%"])
   end
+
 
  end
