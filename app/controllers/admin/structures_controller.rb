@@ -11,7 +11,6 @@ class Admin::StructuresController < ApplicationController
   # GET /admin/structures/new
   def new
     @structure = Structure.new
-    @structure.has_memberships.build
   end
 
   # DELETE /admin/structures/1

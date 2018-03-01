@@ -28,11 +28,11 @@
                     %th Téléphone
                     %th Rôle
 
-                - @is_members.each do |membership|
+                - @is_members.each do |member|
                   %tr
-                    %td= membership.member_friendly_id
-                    %td= membership.member_name
-                    %td= membership.member_email
-                    %td= membership.member_phone_1
-                    %td= t "activerecord.attributes.membership.roles."+membership.kind
+                    %td= member.friendly_id
+                    %td= member.name
+                    %td= member.email
+                    %td= member.phone_1
+
 

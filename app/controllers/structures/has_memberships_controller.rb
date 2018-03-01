@@ -6,13 +6,16 @@ class Structures::HasMembershipsController < ApplicationController
   end
 
   def create
-    @membership = @structure.has_memberships.build(is_memberable_id: params[:member_id], is_memberable_type: params[:member_type], kind: :member)
-    puts "@"*10
-    if @membership.save
-      redirect_to [@structure, :has_memberships], alert: 'Structure ajoutée'
-    else
-      redirect_to [@structure, :has_memberships], alert: 'Structure non ajoutée'
-    end
+
+    klass = Object.const_get params[:member_type]
+    @member = klass.find params[:member_id]
+
+    puts "$"*50
+    puts @member.inspect
+
+    @member.add_role :member, @structure
+
+    redirect_to :back, alert: 'Membre ajouté'
   end
 
   private

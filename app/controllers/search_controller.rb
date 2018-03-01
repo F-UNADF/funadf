@@ -12,15 +12,14 @@ class SearchController < ApplicationController
       q.each do |query|
         c.global_search(query).each do |e|
           # EXCLUDE OF RESULT IF ALREADY MEMBER OR ITESELF
-          unless @structure.has_memberships.pluck(:id).include?(e.id) || e.id == @structure.id
+          puts e.inspect
+
+          unless @structure.members.map{|m| [m.class.to_s, m.id]}.include?([e.class.to_s, e.id]) || e.id == @structure.id
             r.push(e)
           end
         end
       end
     end
-
-    puts "$"*5
-    puts r.inspect
 
     @results = r.uniq.sort_by { |r| r[:id] }
 

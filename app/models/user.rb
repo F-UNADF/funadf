@@ -8,6 +8,11 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
 
+  has_many :rolizations, as: :resource
+  has_many :roles, through: :rolizations
+  has_many :associations, through: :roles, source: :resource, source_type: 'Association'
+  has_many :churches, through: :roles, source: :resource, source_type: 'Church'
+
   validates :firstname, :lastname, presence: true
 
   def fullname
@@ -40,5 +45,40 @@ class User < ActiveRecord::Base
     where(['(firstname LIKE ? OR lastname LIKE ? OR email LIKE ? OR id LIKE ?)', "#{q}%", "#{q}%", "#{q}%", "#{q}%"])
   end
 
+
+  def has_role?(role_name, resource = nil)
+    return has_strict_role?(role_name, resource) if self.class.strict_rolify and resource and resource != :any
+
+    unless new_record?
+      role_array = roles.where(name: role_name, resource: resource)
+    end
+
+    return false if role_array.nil?
+    role_array != []
+  end
+
+  def has_strict_role?(role_name, resource)
+    roles.where_strict(name: role_name, resource: resource).any?
+  end
+
+  def add_role role_name, resource = nil
+    # Crée un rôle seul (Valable sur l'ensemble de l'APP)
+    # OU Avec une Class (Valable uniquement sur cette Class)
+    # OU Avec une resource (Valable que pour cette resource)
+
+    role = Role.find_or_create_by(name: role_name.to_s,
+      resource_type: (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource),
+      resource_id: (resource.id if resource && !resource.is_a?(Class)))
+
+    if !roles.include?(role)
+      self.roles << role
+      self.save
+    end
+    role
+  end
+
+  def structures
+    (associations + churches).sort_by{|s| s.name}
+  end
 
  end

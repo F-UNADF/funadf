@@ -5,7 +5,7 @@
 .content.mt-3
   .container-fluid
     .row
-      .col-md-4
+      .col-md-3
         .client.card
           .card-body
             .mx-auto.d-block
@@ -43,7 +43,7 @@
               Modifier mon profil
 
 
-      .col-md-8
+      .col-md-9
         .card
           .card-header
             %ul.nav.nav-pills
@@ -59,7 +59,58 @@
               .tab-pane.fade.show.active#churches{'aria-labelledby' => "home-tab"}
                 %h5.card-title Mes églises
 
+                .table-responsive
+                  %table.table.table-striped.table-sm
+                    %thead
+                      %tr
+                        %th Identifiant
+                        %th Nom
+                        %th Email
+                        %th Téléphone
+                        %th Rôle
+                        %th
+
+                    - @churches.each do |structure|
+                      %tr
+                        %td= structure.id
+                        %td= structure.name
+                        %td= structure.email
+                        %td= structure.phone_1
+                        %td= structure.get_user_role(current_user)
+                        %td
+                          %ul.list-inline.mb-0
+                            - if can? :manage, structure
+                              %li.list-inline-item
+                                = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
+                                  = icon "eye"
+                                  Gérer la structure
+
+
               .tab-pane.fade#associations{'aria-labelledby' => "home-tab"}
                 %h5.card-title Mes associations
+                .table-responsive
+                  %table.table.table-striped.table-sm
+                    %thead
+                      %tr
+                        %th Identifiant
+                        %th Nom
+                        %th Email
+                        %th Téléphone
+                        %th Rôle
+                        %th
 
+                    - @associations.each do |structure|
+                      %tr
+                        %td= structure.id
+                        %td= structure.name
+                        %td= structure.email
+                        %td= structure.phone_1
+                        %td= structure.get_user_role(current_user)
+                        %td
+                          %ul.list-inline.mb-0
+                            - if can? :manage, structure
+                              %li.list-inline-item
+                                = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
+                                  = icon "eye"
+                                  Gérer la structure
 

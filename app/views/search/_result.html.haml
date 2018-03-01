@@ -11,7 +11,7 @@
       - results.each do |result|
         %tr
           %td= result.friendly_id
-          %td= result.class
+          %td= t "activerecord.models."+result.class.to_s.downcase+".one"
           %td= result.name
           %td= result.email
           %td

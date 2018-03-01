@@ -3,6 +3,8 @@ class AccountsController < ApplicationController
   before_filter :set_user
 
   def show
+    @churches = current_user.churches
+    @associations = current_user.associations
   end
 
   def edit

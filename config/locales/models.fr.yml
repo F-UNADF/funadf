@@ -21,15 +21,19 @@ fr:
         zipcode: Code Postal
         town: Ville
         is_memberships: Membres
-      membership:
-        roles:
+      roles:
+        name: Nom
+        names:
           president: Président
           member: Membre
     models:
       user:
         one: Utilisateur
         other: Utilisateurs
-      structure:
+      church:
+        one: Eglise
+        other: Eglises
+      association:
         one: Association
         other: Associations
     errors:
