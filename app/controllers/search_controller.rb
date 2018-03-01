@@ -12,9 +12,9 @@ class SearchController < ApplicationController
       q.each do |query|
         c.global_search(query).each do |e|
           # EXCLUDE OF RESULT IF ALREADY MEMBER OR ITESELF
-          puts e.inspect
+          puts @structure.members.map{|m| [m.class.to_s, m.id]}.inspect
 
-          unless @structure.members.map{|m| [m.class.to_s, m.id]}.include?([e.class.to_s, e.id]) || e.id == @structure.id
+          unless @structure.members.map{|m| [m.class.to_s, m.id]}.include?([e.class.to_s, e.id]) || [e.class.to_s, e.id] == [@structure.class.to_s, @structure.id]
             r.push(e)
           end
         end

@@ -21,15 +21,10 @@
       Consulter mes structures
 
 
-  %h3.menu-title Administration
-  - if can? :view, :users
-    %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
-      = link_to admin_users_path do
-        = icon "users", class: "menu-icon"
-        Gestion des utilisateurs
-
-  - if can? :view, :structures
-    %li{class: "#{(params[:controller] == 'admin/structures') ? 'active' : ''}"}
-      = link_to admin_structures_path do
-        = icon "building", class: "menu-icon"
-        Gestion des structures
+  - if can? :manage, :all
+    %h3.menu-title Administration
+    - if can? :view, :users
+      %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
+        = link_to admin_users_path do
+          = icon "users", class: "menu-icon"
+          Gestion des utilisateurs

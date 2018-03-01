@@ -49,20 +49,26 @@
       .col-md-8
         .card
           .card-header
-            %ul.nav.nav-pills
-              %li.nav-item
-                = link_to '#churches', id: 'churches-tab', class: 'nav-link active',  data: {toggle: "tab"}, aria: {controls: "churches", selected: "true"} do
-                  Mes églises
-              %li.nav-item
-                = link_to '#associations', id: 'associations-tab', class: 'nav-link',  data: {toggle: "tab"}, aria: {controls: "associations", selected: "false"} do
-                  Mes associations
+            %h2.h4 Ses adhésions
 
           .card-body
-            .tab-content
-              .tab-pane.fade.show.active#churches{'aria-labelledby' => "home-tab"}
-                %h5.card-title Mes églises
+            %table.table.table-striped.table-sm
+              %thead
+                %tr
+                  %th
+                  %th Identifiant
+                  %th Nom
+                  %th Email
+                  %th Téléphone
+                  %th Rôle
 
-              .tab-pane.fade#associations{'aria-labelledby' => "home-tab"}
-                %h5.card-title Mes associations
+              - @structures.each do |structure|
+                %tr
+                  %td= icon "#{structure.get_icon}"
+                  %td= structure.id
+                  %td= structure.name
+                  %td= structure.email
+                  %td= structure.phone_1
+                  %td= structure.get_user_role(current_user)
 
 

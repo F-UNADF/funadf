@@ -76,6 +76,9 @@ class User < ActiveRecord::Base
     end
     role
   end
+  def has_any_role? structure
+    structures.include?(structure)
+  end
 
   def structures
     (associations + churches).sort_by{|s| s.name}
