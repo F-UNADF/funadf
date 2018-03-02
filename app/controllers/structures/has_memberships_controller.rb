@@ -10,8 +10,6 @@ class Structures::HasMembershipsController < ApplicationController
     klass = Object.const_get params[:member_type]
     @member = klass.find params[:member_id]
 
-    puts "$"*50
-    puts @member.inspect
 
     @member.add_role :member, @structure
 

@@ -25,6 +25,8 @@ fr:
         name: Nom
         names:
           president: Président
+          secretary: Secrétaire
+          treasurer: Trésorier
           member: Membre
     models:
       user:

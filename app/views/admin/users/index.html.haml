@@ -22,7 +22,6 @@
                 %th Nom
                 %th Email
                 %th Téléphone
-                %th Invitation acceptée
                 %th Rôles
                 %th
 
@@ -32,18 +31,27 @@
                 %td= user.fullname
                 %td= user.email
                 %td= user.phone_1
-                %td= icon "#{(user.invitation_accepted_at.blank?) ? 'times' : 'check'}"
-                %td= user.roles.pluck(:name).join(', ')
+                %td= user.applicatin_roles.pluck(:name).join(', ')
                 %td
                   - if user.id == current_user.id
                     %em C'est vous !
                   - else
                     %ul.list-inline.mb-0
                       %li.list-inline-item
-                        = link_to user, class: "btn btn-sm btn-info" do
+                        = link_to user, class: "text-info" do
                           = icon "eye"
                           Consulter l'utilisateur
                       %li.list-inline-item
-                        = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-sm btn-danger" do
+                        = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
                           = icon "times"
                           Supprimer
+                      - if current_user.has_role? :admin
+                        - if user.has_role? :admin
+                          = link_to admin_user_admin_path(user), method: :destroy, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
+                            = icon "arrow-down"
+                            Destituer administrateur
+                        - else
+                          = link_to admin_user_new_admin_path(user), class: "text-primary" do
+                            = icon "arrow-up"
+                            Promouvoir administrateur
+

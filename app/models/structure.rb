@@ -70,8 +70,12 @@ class Structure < ActiveRecord::Base
     end
   end
 
-  def get_user_role(user_id)
-    roles = Role.where('id IN (?)', rolizations.where(resource_id: user_id).pluck(:role_id))
+  def get_role(resource)
+    roles = Role.where('id IN (?)', rolizations.where(resource_id: resource.id, resource_type: resource.get_class).pluck(:role_id))
+    roles.pluck(:name).first
+  end
+  def get_resource_role(resource)
+    roles = Role.where('id IN (?)', rolizations.where(resource_id: resource.id, resource_type: resource.get_class).pluck(:role_id))
     roles.pluck(:name).map{ |r| I18n.t 'activerecord.attributes.roles.names.'+r}.join(', ')
   end
 
@@ -86,6 +90,26 @@ class Structure < ActiveRecord::Base
     Rolization.find_or_create_by(role: role, resource: self)
 
     role
+  end
+  def remove_role role_name, resource = nil
+    cond = { :name => role_name }
+    cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
+    cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
+
+    role = Role.find_by(name: role_name.to_s,
+      resource_type: (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource),
+      resource_id: (resource.id if resource && !resource.is_a?(Class)))
+
+    rolization = role.rolizations.where(resource: self).first
+    rolization.destroy if rolization
+
+    if role.rolizations.blank?
+      role.destroy
+    end
+  end
+
+  def get_class
+    Structure.to_s
   end
 
 end

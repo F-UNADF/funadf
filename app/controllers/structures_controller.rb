@@ -11,7 +11,7 @@ class StructuresController < ApplicationController
   def create
     @structure = Structure.new structure_params
     if @structure.save
-      redirect_to structure_path(@structure), notice: "Structure créée"
+      redirect_to [@structure.becomes(Structure), :has_memberships], notice: "Structure créée"
     else
       render :new
     end
@@ -22,7 +22,7 @@ class StructuresController < ApplicationController
 
   def update
     if @structure.update(structure_params)
-      redirect_to @structure, flash:{success: 'Votre structure a été mise à jour.'}
+      redirect_to [@structure.becomes(Structure), :has_memberships], flash:{success: 'Votre structure a été mise à jour.'}
      else
       render :edit
     end

@@ -15,6 +15,10 @@ class User < ActiveRecord::Base
 
   validates :firstname, :lastname, presence: true
 
+  def applicatin_roles
+    roles.where(resource_id: nil, resource_type: nil)
+  end
+
   def fullname
     firstname + " " + lastname
   end
@@ -76,6 +80,19 @@ class User < ActiveRecord::Base
     end
     role
   end
+  def remove_role role_name, resource = nil
+    cond = { :name => role_name }
+    cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
+    cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
+    roles = self.roles.where(cond)
+    if roles
+      self.roles.delete(roles)
+      roles.each do |role|
+        role.destroy if role.rolizations.blank?
+      end
+    end
+    roles
+  end
   def has_any_role? structure
     structures.include?(structure)
   end
@@ -84,4 +101,7 @@ class User < ActiveRecord::Base
     (associations + churches).sort_by{|s| s.name}
   end
 
+  def get_class
+    User.to_s
+  end
  end

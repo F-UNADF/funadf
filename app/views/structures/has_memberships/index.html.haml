@@ -8,10 +8,10 @@
 .content.mt-3
   .container-fluid
     .row
-      .col-md-3
+      .col-md-12
         = render 'structures/infos', structure: @structure
 
-      .col-md-9
+      .col-md-12
         .card
           .card-header
             = render 'structures/navbar'
@@ -28,7 +28,6 @@
                     %th Email
                     %th Téléphone
                     %th Rôle
-                    %th
 
                 - @members.each do |member|
                   %tr
@@ -37,7 +36,12 @@
                     %td= member.name
                     %td= member.email
                     %td= member.phone_1
-                    %td= @structure.get_user_role(member.id)
+                    %td
+                      = @structure.get_resource_role(member)
+                      - if can? :manage, @structure
+                        = link_to structure_edit_structure_resource_roles_path(@structure, member.id, member.class.to_s), class: "btn btn-info btn-sm float-right change_role" do
+                          = icon "edit"
+                          Modifier le rôle
 
             %hr
             %h3.h5 Ajouter un membre
@@ -57,3 +61,14 @@
               .alert.alert-info
                 %p.mb-0.text-info
                   Vous pouvez chercher un membre ou une association par nom, email ou identifiant
+
+
+.modal#roles_form{:role => "dialog", :tabindex => "-1"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5.modal-title Modifier le rôle
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        %p Modal body text goes here.

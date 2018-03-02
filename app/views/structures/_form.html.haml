@@ -1,4 +1,4 @@
-= form_for structure, as: :structure do |f|
+= form_for structure.becomes(Structure), as: :structure do |f|
   - if structure.errors.any?
     .alert.alert-danger
       %h3.h4 Merci de corriger les erreurs ci-dessous
@@ -8,9 +8,10 @@
 
   .row
     .col-md-6
-      .form-group
-        = f.label :type
-        = f.select :type, Structure.types, {include_blank: 'Type de structure'}, class: 'form-control'
+      - if structure.new_record?
+        .form-group
+          = f.label :type
+          = f.select :type, Structure.types, {include_blank: 'Type de structure'}, class: 'form-control'
       .form-group
         = f.label :name
         = f.text_field :name, class: 'form-control'

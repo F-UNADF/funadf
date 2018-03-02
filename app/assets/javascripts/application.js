@@ -72,7 +72,20 @@ jQuery(document).ready(function($) {
         $("#structure_has_memberships_is_memberable_id").val(object.id);
         return object.text;
       }
-    });
+  });
 
+  $('.change_role').on('click', function(e){
+    e.preventDefault();
+
+    var url = $(this).attr('href');
+    $.ajax({
+      url: url,
+      success: function(result){
+        console.log(result);
+        $('#roles_form .modal-body').html(result);
+        $('#roles_form').modal('show');
+      }
+    });
+  })
 
 });
