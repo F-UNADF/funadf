@@ -28,6 +28,18 @@ fr:
           secretary: Secrétaire
           treasurer: Trésorier
           member: Membre
+      campaign:
+        name: Nom
+        description: Description
+        start_at: Débute le
+        end_at: Términe le
+      motion:
+        kind: Type
+        name: Nom
+        kinds:
+          binary: "Oui / Non"
+          neutral: "Oui / Non / Neutre"
+          free: "Texte libre"
     models:
       user:
         one: Utilisateur

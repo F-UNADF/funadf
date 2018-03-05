@@ -1,0 +1,31 @@
+.breadcrumbs
+  .page-header
+    %h1
+      Gestion de la structure
+      %b= @structure.name
+
+.content.mt-3
+  .container-fluid
+    .row
+      .col-md-12
+        = render 'structures/infos', structure: @structure
+
+      .col-md-12
+        .card
+          .card-header
+            .float-left= render 'structures/navbar'
+            .card-actions.float-right
+              %ul.list-inline
+                %li.list-inline-item
+                  = link_to structure_campaign_path(@structure, @campaign), class: 'btn btn-sm btn-default' do
+                    = icon 'angle-left'
+                    Consulter la campagne
+                %li.list-inline-item
+                  = link_to structure_campaigns_path(@structure), class: 'btn btn-sm btn-default' do
+                    = icon 'angle-left'
+                    Revenir aux campagnes
+
+          .card-body
+            %h2.h3= "Campagne : #{@campaign.name}"
+            %p.text-muted= @campaign.description
+            = render 'form', campaign: @campaign

@@ -1,0 +1,54 @@
+.breadcrumbs
+  .page-header
+    %h1
+      Gestion de la structure
+      %b= @structure.name
+
+
+.content.mt-3
+  .container-fluid
+    .row
+      .col-md-12
+        = render 'structures/infos', structure: @structure
+
+      .col-md-12
+        .card
+          .card-header
+            .float-left= render 'structures/navbar'
+            .card-actions.float-right
+              = link_to structure_campaigns_path(@structure), class: 'btn btn-sm btn-default' do
+                = icon 'angle-left'
+                Revenir aux campagnes
+
+          .card-body
+            %h2.h3
+              = "Campagne : #{@campaign.name}"
+              .float-right
+                = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-success btn-sm" do
+                  = icon "edit"
+                  Modifier la campagne
+            %p.float-left.text-muted= @campaign.description
+
+            .clearfix
+            .row
+              .col-md-6
+                %table.table
+                  %thead
+                    %tr
+                      %th{colspan: 2} Paramètres de la campagne
+                  %tr
+                    %td Date de début
+                    %td= ldate @campaign.start_at
+                  %tr
+                    %td Date de fin
+                    %td= ldate @campaign.end_at
+
+              .col-md-6
+                %table.table
+                  %thead
+                    %tr
+                      %th{colspan: 2} Motions
+                  - @campaign.motions.each do |motion|
+                    %tr
+                      %td= motion.name
+                      %td= t 'activerecord.attributes.motion.kinds.'+motion.kind

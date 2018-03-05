@@ -1,0 +1,49 @@
+.breadcrumbs
+  .page-header
+    %h1
+      Gestion de la structure
+      %b= @structure.name
+
+.content.mt-3
+  .container-fluid
+    .row
+      .col-md-12
+        = render 'structures/infos', structure: @structure
+
+      .col-md-12
+        .card
+          .card-header
+            .float-left= render 'structures/navbar'
+
+            .card-actions.float-right
+              = link_to new_structure_campaign_path(@structure), class: 'btn btn-sm btn-default' do
+                = icon 'plus'
+                Créer une campagne
+
+          .card-body
+            .table-responsive
+              %table.table.table-striped.table-sm
+                %thead
+                  %tr
+                    %th Identifiant
+                    %th Nom
+                    %th Débute le
+                    %th
+
+                - @campaigns.each do |campaign|
+                  %tr
+                    %td= campaign.id
+                    %td
+                      = link_to [@structure.becomes(Structure), campaign], class: 'text-info' do
+                        = campaign.name
+                    %td= l campaign.start_at
+                    %td
+                      %ul.list-inline
+                        %li.list-inline-item
+                          = link_to [:edit, @structure.becomes(Structure), campaign], class: "text-primary" do
+                            = icon "edit"
+                            Modifier
+                        %li.list-inline-item
+                          = link_to [@structure.becomes(Structure), campaign], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
+                            = icon "times"
+                            Supprimer

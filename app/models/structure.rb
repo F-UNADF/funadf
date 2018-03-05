@@ -1,5 +1,7 @@
 class Structure < ActiveRecord::Base
 
+  has_many :campaigns
+
   validates :name, presence: true
 
   def roles

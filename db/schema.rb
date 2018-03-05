@@ -11,7 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180228163041) do
+ActiveRecord::Schema.define(version: 20180305122853) do
+
+  create_table "campaigns", force: true do |t|
+    t.integer  "structure_id"
+    t.string   "name"
+    t.text     "description"
+    t.string   "code"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.boolean  "opened"
+    t.string   "state"
+    t.boolean  "public"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "motions", force: true do |t|
+    t.integer  "campaign_id"
+    t.integer  "order"
+    t.string   "name"
+    t.string   "kind"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "motions", ["campaign_id"], name: "index_motions_on_campaign_id", using: :btree
 
   create_table "roles", force: true do |t|
     t.string   "name"

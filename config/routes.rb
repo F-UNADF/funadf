@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
     resources :structures, except: [:new, :index, :destroy] do
       resources :has_memberships, controller: 'structures/has_memberships', except: :create
+      resources :campaigns, controller: 'structures/campaigns'
       get '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships
       resources :is_memberships, controller: 'structures/is_memberships'
       get '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#edit', as: :edit_structure_resource_roles

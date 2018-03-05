@@ -25,6 +25,9 @@ gem 'popper_js', '~> 1.12.9'
 gem "rolify"
 gem "cancan"
 gem "select2-rails"
+gem 'momentjs-rails'
+gem 'bootstrap4-datetime-picker-rails'
+gem "cocoon"
 
 group :development do
   gem 'better_errors'
