@@ -28,6 +28,7 @@ gem "select2-rails"
 gem 'momentjs-rails'
 gem 'bootstrap4-datetime-picker-rails'
 gem "cocoon"
+gem 'bootstrap-toggle-rails'
 
 group :development do
   gem 'better_errors'

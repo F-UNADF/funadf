@@ -5,6 +5,7 @@
     %title Gestion des Votes FNADF/UNADF
     %meta{:name => "description", :content => "#{content_for?(:description) ? yield(:description) : 'En quelques sortes, nous sommes la nouvelle génération des vendeurs de voyage de groupes B2B, les groupistes 2.0 !'}"}
     = stylesheet_link_tag 'application', media: 'all'
+    = javascript_include_tag 'application'
     = favicon_link_tag "/favicon.ico"
     = csrf_meta_tags
 
@@ -48,5 +49,3 @@
                   Déconexion
 
       = yield
-
-    = javascript_include_tag 'application'

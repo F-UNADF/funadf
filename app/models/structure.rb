@@ -1,6 +1,7 @@
 class Structure < ActiveRecord::Base
 
   has_many :campaigns
+  has_many :electors
 
   validates :name, presence: true
 
@@ -117,6 +118,13 @@ class Structure < ActiveRecord::Base
 
   def get_class
     Structure.to_s
+  end
+
+  def member_can_vote?(resource)
+    electors.find_by(resource: resource).can_vote
+  end
+  def member_cant_vote_note(resource)
+    electors.find_by(resource: resource).note
   end
 
 end

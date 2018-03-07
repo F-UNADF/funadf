@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305122853) do
+ActiveRecord::Schema.define(version: 20180306092043) do
 
   create_table "campaigns", force: true do |t|
     t.integer  "structure_id"
@@ -26,6 +26,18 @@ ActiveRecord::Schema.define(version: 20180305122853) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "electors", force: true do |t|
+    t.integer  "resource_id"
+    t.string   "resource_type"
+    t.integer  "structure_id"
+    t.boolean  "can_vote",      default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "note"
+  end
+
+  add_index "electors", ["structure_id"], name: "index_electors_on_structure_id", using: :btree
 
   create_table "motions", force: true do |t|
     t.integer  "campaign_id"

@@ -43,6 +43,7 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    bootstrap-toggle-rails (2.2.1.0)
     bootstrap4-datetime-picker-rails (0.1.4)
       momentjs-rails (~> 2.10, >= 2.10.5)
     bourbon (5.0.0)
@@ -293,6 +294,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap (~> 4.0.0.alpha6)
+  bootstrap-toggle-rails
   bootstrap4-datetime-picker-rails
   bourbon
   cancan

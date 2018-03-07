@@ -18,6 +18,7 @@
 //= require select2
 //= require tempusdominus-bootstrap-4.js
 //= require cocoon
+//= require bootstrap-toggle
 //= require_tree .
 
 $.noConflict();
@@ -25,6 +26,24 @@ $.noConflict();
 jQuery(document).ready(function($) {
 
   "use strict";
+  $("[rel='tooltip']").tooltip();
+
+  $('input.switch').bootstrapToggle({
+    on: 'Oui',
+    off: 'Non',
+    size: 'small',
+    onstyle: 'success',
+    offstyle: 'danger'
+  }).change(function() {
+    var url = '/structures/' + $(this).data('structure') + '/elector/' + $(this).data('elector-id') + '/' + $(this).data('elector-type');
+
+    $.ajax({
+      url: url,
+      method: "post",
+      data: {elector: {can_vote: $(this).prop('checked')}}
+    });
+
+  });
 
   moment.locale('fr', {
     months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
