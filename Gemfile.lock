@@ -307,8 +307,8 @@ DEPENDENCIES
   cocoon
   coffee-rails (~> 4.0.0)
   database_cleaner
-  devise
-  devise_invitable
+  devise (~> 4.2)
+  devise_invitable (~> 1.7.0)
   factory_bot_rails
   faker
   font-awesome-sass (~> 4.7.0)

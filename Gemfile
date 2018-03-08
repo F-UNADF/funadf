@@ -13,12 +13,12 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'bourbon'
-gem 'devise_invitable'
+gem 'devise',           '~> 4.2'
+gem 'devise_invitable', '~> 1.7.0'
 gem 'haml-rails'
 gem 'high_voltage'
 gem 'mysql2', '~> 0.3.18'
 gem 'font-awesome-sass', '~> 4.7.0'
-gem 'devise'
 gem "paperclip"
 gem 'popper_js', '~> 1.12.9'
 gem "rolify"
