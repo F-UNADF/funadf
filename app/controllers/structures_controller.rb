@@ -8,6 +8,10 @@ class StructuresController < ApplicationController
   def show
   end
 
+  def new
+    @structure = Structure.new
+  end
+
   def create
     @structure = Structure.new structure_params
     if @structure.save

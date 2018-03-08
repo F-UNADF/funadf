@@ -9,10 +9,9 @@ Rails.application.routes.draw do
         get '/admins/new', to: "admins#new", as: :new_admin
         post '/admins/delete', to: "admins#destroy", as: :admin
       end
-      resources :structures, only: [:new, :index, :destroy]
     end
 
-    resources :structures, except: [:new, :index, :destroy] do
+    resources :structures do
       resources :has_memberships, controller: 'structures/has_memberships', except: :create
       resources :campaigns, controller: 'structures/campaigns'
       get '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships

@@ -7,7 +7,15 @@
   .container-fluid
     .card
       .card-header
-        %strong Liste des structures
+        %strong.float-left Liste des structures
+
+        .cars-actions.float-right
+          %ul.list-inline
+            - if can? :add, Structure
+              %li.list-inline-item
+                = link_to new_structure_path, class: 'btn btn-default' do
+                  = icon 'plus'
+                  Ajouter
 
       .card-body
         %ul.list-inline
