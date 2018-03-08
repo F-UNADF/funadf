@@ -29,6 +29,7 @@ gem 'bootstrap4-datetime-picker-rails'
 gem "cocoon"
 gem 'bootstrap-toggle-rails'
 gem 'therubyracer', :platform=>:ruby
+gem 'rails_email_preview'
 
 group :development do
   gem 'better_errors'

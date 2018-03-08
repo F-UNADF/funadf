@@ -1,0 +1,28 @@
+%p{style:"color:#D65745; margin:none;"}
+  Bonjour
+  %strong= @resource.name
+
+%p
+  Vous venez d'être invité à participer
+  %strong aux votes electroniques de la FNADF.
+
+%p
+  Par cette interface, vous serez en mesure de
+  %strong voter électroniquement
+  pour les prochains congrés.
+
+%p
+  %span{:style => "display:block;padding:10px 15px;background:#dedede;"}
+    = link_to accept_invitation_url(@resource, :invitation_token => @token), style:"text-decoration:none;color:#000" do
+      %strong Accepter l'invitation
+
+%p
+  Ou en copiant le lien ci-dessous :
+
+%p
+  %span{:style => "display:block;padding:10px 15px;background:#dedede;"}
+    = link_to accept_invitation_url(@resource, :invitation_token => @token), style:"text-decoration:none;color:#000" do
+      = accept_invitation_url(@resource, :invitation_token => @token)
+
+%p{style: "font-style:italic;font-size:14px;line-height:18px;"}
+  FNADF
