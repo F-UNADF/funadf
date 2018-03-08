@@ -68,13 +68,13 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
+    address: "smtp-relay.sendinblue.com",
     port: 587,
-    domain: Rails.application.secrets.domain_name,
+    domain: 'add-fnadf.fr',
     authentication: "plain",
     enable_starttls_auto: true,
-    user_name: Rails.application.secrets.email_provider_username,
-    password: Rails.application.secrets.email_provider_password
+    user_name: "p.gruson+mi@gmail.com",
+    password: "mdxspbLz1cCNMKVI"
   }
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => Rails.application.secrets.domain_name }

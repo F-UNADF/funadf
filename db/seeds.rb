@@ -7,5 +7,5 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-admin_user = User.create(firstname: "Paul", lastname: "Gruson", email: "p.gruson@gmail.com", password: "p@ssw0rd", password_confirmation: "p@ssw0rd")
-role = Role.create(name: "Admin", resource: "User")
+admin_user = User.invite!(firstname: "Paul", lastname: "Gruson", email: "p.gruson@gmail.com")
+admin_user.add_role :admin
