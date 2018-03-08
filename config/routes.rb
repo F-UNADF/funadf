@@ -23,6 +23,9 @@ Rails.application.routes.draw do
 
     resources :users, only: [:show, :index]
     resources :structures
+    resources :campaigns
+
+    post '/voting', to: 'votings#create', as: :voting
 
     get '/mon-compte', to: "accounts#show", as: :me
     get '/mon-compte/modifier', to: 'accounts#edit', as: :edit_me

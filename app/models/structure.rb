@@ -21,6 +21,10 @@ class Structure < ActiveRecord::Base
     (users + structures)
   end
 
+  def self_electors
+    Elector.where(resource_id: self.id, resource_type: self.get_class)
+  end
+
   def my_rolisations
     Rolization.where('resource_id = ? AND resource_type = ?', self.id, "Structure")
   end
@@ -97,6 +101,8 @@ class Structure < ActiveRecord::Base
 
     Rolization.find_or_create_by(role: role, resource: self)
 
+    Elector.find_or_create_by(resource: self, structure: resource) if resource && !resource.is_a?(Class)
+
     role
   end
   def remove_role role_name, resource = nil
@@ -114,6 +120,8 @@ class Structure < ActiveRecord::Base
     if role.rolizations.blank?
       role.destroy
     end
+
+    Elector.find_by(resource: self, structure_id: resource.id).destroy if resource && !resource.is_a?(Class)
   end
 
   def get_class
@@ -125,6 +133,11 @@ class Structure < ActiveRecord::Base
   end
   def member_cant_vote_note(resource)
     electors.find_by(resource: resource).note
+  end
+
+  def self.get_structure_with_president user
+    role_presidents = Role.joins(:rolizations).where(roles:{name: :president}, rolizations:{resource_id: user.id, resource_type: user.get_class})
+    self.where(id: role_presidents.pluck(:resource_id))
   end
 
 end

@@ -9,4 +9,8 @@ class Elector < ActiveRecord::Base
     resource.get_class
   end
 
+  def campaigns
+    self.structure.campaigns
+  end
+
 end

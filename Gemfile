@@ -1,8 +1,7 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-ruby '2.1.1'
+ruby '2.4.3'
 gem 'rails', '4.1.6'
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'

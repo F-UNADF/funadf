@@ -5,6 +5,13 @@
     = link_to root_url do
       = icon "home", class: "menu-icon"
       Accueil
+
+  %li{class: "#{(params[:controller] == 'campaigns') ? 'active' : ''}"}
+    = link_to campaigns_url do
+      = icon "comment", class: "menu-icon"
+      Mes votes
+
+
   / /.menu-title
 
   %h3.menu-title Mon compte

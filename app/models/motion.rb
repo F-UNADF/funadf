@@ -2,6 +2,14 @@ class Motion < ActiveRecord::Base
 
   belongs_to :campaign
 
+  has_many :voters
+  has_many :votes
+
+  def has_voted? elector
+    voters.pluck(:elector_id).include? elector.id
+  end
+
+
 
   def self.kinds
     {

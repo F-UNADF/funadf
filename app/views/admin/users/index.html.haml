@@ -41,10 +41,11 @@
                         = link_to user, class: "text-info" do
                           = icon "eye"
                           Consulter l'utilisateur
-                      %li.list-inline-item
-                        = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
-                          = icon "times"
-                          Supprimer
+                      - if can? :delete, user
+                        %li.list-inline-item
+                          = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
+                            = icon "times"
+                            Supprimer
                       - if current_user.has_role? :admin
                         - if user.has_role? :admin
                           = link_to admin_user_admin_path(user), method: :destroy, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do

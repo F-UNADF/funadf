@@ -16,8 +16,8 @@ class Structures::RolesController < ApplicationController
     new_role = params[:role][:role]
     old_role = @structure.get_role(@resource)
 
-    @resource.add_role new_role, @structure
     @resource.remove_role old_role, @structure
+    @resource.add_role new_role, @structure
 
     redirect_to [@structure.becomes(Structure), :has_memberships], alert: "Role mis à jours"
   end

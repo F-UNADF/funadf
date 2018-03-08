@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180306092043) do
+ActiveRecord::Schema.define(version: 20180307110642) do
 
   create_table "campaigns", force: true do |t|
     t.integer  "structure_id"
@@ -120,5 +120,22 @@ ActiveRecord::Schema.define(version: 20180306092043) do
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "voters", id: false, force: true do |t|
+    t.integer  "motion_id"
+    t.integer  "elector_id"
+    t.datetime "voted_at"
+    t.string   "ip"
+  end
+
+  add_index "voters", ["elector_id"], name: "index_voters_on_elector_id", using: :btree
+  add_index "voters", ["motion_id"], name: "index_voters_on_motion_id", using: :btree
+
+  create_table "votes", id: false, force: true do |t|
+    t.integer "motion_id"
+    t.string  "result"
+  end
+
+  add_index "votes", ["motion_id"], name: "index_votes_on_motion_id", using: :btree
 
 end
