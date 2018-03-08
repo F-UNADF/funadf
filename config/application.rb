@@ -20,5 +20,6 @@ module Funadf
 
     config.quiet_assets = true
 
+    config.assets.enabled = false
   end
 end
