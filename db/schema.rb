@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180307110642) do
+ActiveRecord::Schema.define(version: 20180308155013) do
 
   create_table "campaigns", force: true do |t|
     t.integer  "structure_id"
@@ -78,6 +78,13 @@ ActiveRecord::Schema.define(version: 20180307110642) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email"
+  end
+
+  create_table "uploads", force: true do |t|
+    t.string   "file"
+    t.boolean  "has_heading"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|

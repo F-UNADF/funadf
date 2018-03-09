@@ -9,9 +9,14 @@
       .card-header
         %strong Liste des utilisateurs
         .card-actions
+
           = link_to new_user_invitation_path, class: "btn-setting" do
             = icon 'plus'
             Ajouter
+
+          = link_to admin_import_path(:get_file), class: "btn-setting" do
+            = icon "upload"
+            Importer depuis un fichier
 
       .card-body
         .table-responsive

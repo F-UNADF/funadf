@@ -113,4 +113,31 @@ class User < ActiveRecord::Base
   def get_class
     User.to_s
   end
+
+  def self.prepare_import(upload)
+    keys = []
+
+    CSV.foreach(File.open(upload.file.current_path), headers: false) do |row|
+      if upload.has_heading
+        row.each do |k|
+          keys<<k
+        end
+      else
+        row.each_with_index do |k, index|
+          keys<<"col-#{index}"
+        end
+      end
+      break
+    end
+    keys
+  end
+
+  def self.get_import_fields
+    [
+      ['ID', :id],
+      ['NOM', :firstname],
+      ['PRENOM', :lastname],
+      ['EMAIL', :email]
+    ]
+  end
  end

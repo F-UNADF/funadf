@@ -28,20 +28,12 @@ Rails.application.configure do
   config.assets.debug = true
 
   config.action_mailer.smtp_settings = {
-    address: "smtp-relay.sendinblue.com",
-    port: 587,
-    domain: "lvh.me:3000",
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: "p.gruson+mi@gmail.com",
-    password: "mdxspbLz1cCNMKVI"
   }
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => 'lvh.me:3000' }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.raise_delivery_errors = true
-  # Send email in development mode?
-  config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :test
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.perform_deliveries = false
 
 
   # Adds additional error checking when serving assets at runtime.

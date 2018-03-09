@@ -40,6 +40,9 @@ fr:
           binary: "Oui / Non"
           neutral: "Oui / Non / Neutre"
           free: "Texte libre"
+      upload:
+        file: "Votre fichier"
+        has_heading: "Mon fichier comporte une entête ?"
     models:
       user:
         one: Utilisateur

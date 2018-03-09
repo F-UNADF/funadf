@@ -9,6 +9,7 @@ Rails.application.routes.draw do
         get '/admins/new', to: "admins#new", as: :new_admin
         post '/admins/delete', to: "admins#destroy", as: :admin
       end
+      resources :imports
     end
 
     resources :structures do
