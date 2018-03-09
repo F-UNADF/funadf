@@ -23,32 +23,82 @@
           .card-body
             %h2.h3
               = "Campagne : #{@campaign.name}"
-              .float-right
-                = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-success btn-sm" do
-                  = icon "edit"
-                  Modifier la campagne
-            %p.float-left.text-muted= @campaign.description
+              - if Time.now < @campaign.start_at
+                .float-right
+                  = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-success btn-sm" do
+                    = icon "edit"
+                    Modifier la campagne
+              - elsif Time.now > @campaign.end_at
+                .float-right
+                  %span.alert.alert-info Votes cloturés
+              - else
+                .float-right
+                  %span.alert.alert-danger Période de vote
 
-            .clearfix
-            .row
-              .col-md-6
-                %table.table
-                  %thead
-                    %tr
-                      %th{colspan: 2} Paramètres de la campagne
-                  %tr
-                    %td Date de début
-                    %td= ldate @campaign.start_at
-                  %tr
-                    %td Date de fin
-                    %td= ldate @campaign.end_at
+            %p.text-muted= @campaign.description
 
-              .col-md-6
-                %table.table
-                  %thead
+            .bg-light.p-3.mb-3
+              %h4.h5.mb-3 Paramétrage
+              .row
+                .col-md-6
+                  %table.table
+                    %thead
+                      %tr
+                        %th{colspan: 2} Paramètres de la campagne
                     %tr
-                      %th{colspan: 2} Motions
-                  - @campaign.motions.each do |motion|
+                      %td Date de début
+                      %td= ldate @campaign.start_at
+                    %tr
+                      %td Date de fin
+                      %td= ldate @campaign.end_at
+
+                .col-md-6
+                  %table.table
+                    %thead
+                      %tr
+                        %th{colspan: 2} Motions
+                    - @campaign.motions.each do |motion|
+                      %tr
+                        %td= motion.name
+                        %td= t 'activerecord.attributes.motion.kinds.'+motion.kind
+
+            .bg-light.p-3
+              %h4.h5.m-3 Résultats
+
+              - if Time.now > @campaign.end_at
+                %table.table.table-bordered
+                  %tr
+                    %th
+                    %th Oui
+                    %th{colspan: 2} Non
+                  - @campaign.motions.where(kind: :binary).each do |motion|
                     %tr
                       %td= motion.name
-                      %td= t 'activerecord.attributes.motion.kinds.'+motion.kind
+                      %td= motion.votes.where(result: "oui").count
+                      %td{colspan: 2}= motion.votes.where(result: "non").count
+                  %tr
+                    %th
+                    %th Oui
+                    %th Non
+                    %th Neutre
+                  - @campaign.motions.where(kind: :neutral).each do |motion|
+                    %tr
+                      %td= motion.name
+                      %td= motion.votes.where(result: "oui").count
+                      %td= motion.votes.where(result: "non").count
+                      %td= motion.votes.where(result: "neutre").count
+
+                  %tr
+                    %th
+                    %th{colspan: 3} Répartition des propositions
+                  - @campaign.motions.where(kind: :free).each do |motion|
+                    %tr
+                      %td= motion.name
+                      %td{colspan: 3}
+                        %ul.list-unstyled
+                          - motion.votes.select(:result, 'COUNT(*) as count').group(:result).each do |r|
+                            %li.list-unstyled-item= "#{r.result} (#{r.count})"
+
+              - else
+                .alert.alert-danger
+                  La période de vote n'est pas fini. Les résultats seront disponibles une fois les votes clos.
