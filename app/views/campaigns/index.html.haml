@@ -39,6 +39,9 @@
                   = link_to campaign_path(campaign.id, resource_id: current_user.id, resource_type: current_user.get_class), class: 'btn btn-sm btn-primary' do
                     Commencer le vote
                     = icon 'arrow-right'
+        = will_paginate @member_campaigns, params: :member_page
+
+
         %hr
 
         %h2.h3 Mes campagnes en tant que président de structure
@@ -65,3 +68,5 @@
                     = link_to campaign_path(campaign.id, resource_id: pc.first.id, resource_type: pc.first.get_class), class: 'btn btn-sm btn-primary' do
                       Commencer le vote
                       = icon 'arrow-right'
+
+        = will_paginate @member_campaigns, params: :president_page

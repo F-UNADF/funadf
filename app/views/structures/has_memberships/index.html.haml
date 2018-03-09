@@ -49,9 +49,11 @@
                           = icon "edit"
                           Modifier le rôle
 
+            .float-right
+              = will_paginate @members
+
             %hr
             %h3.h5 Ajouter un membre
-
 
             = form_for :search, url: search_path, method: :get, remote: :true do |f|
               = f.hidden_field :structure_id, value: @structure.id

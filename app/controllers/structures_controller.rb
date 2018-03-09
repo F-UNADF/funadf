@@ -2,7 +2,7 @@ class StructuresController < ApplicationController
   before_filter :set_structure, except: [:index, :new, :create]
 
   def index
-    @structures = Structure.order(:name)
+    @structures = Structure.order(:name).paginate(:page => params[:page])
   end
 
   def show

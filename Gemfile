@@ -32,6 +32,7 @@ gem 'therubyracer', :platform=>:ruby
 gem 'rails_email_preview'
 gem 'wicked'
 gem 'carrierwave', '~> 1.0'
+gem 'will_paginate', '~> 3.1.0'
 
 group :development do
   gem 'better_errors'

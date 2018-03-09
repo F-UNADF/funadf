@@ -1,7 +1,7 @@
 class Admin::UsersController < AdminController
 
   def index
-    @users = User.order(:id)
+    @users = User.order(:id).paginate(:page => params[:page])
   end
 
   def edit

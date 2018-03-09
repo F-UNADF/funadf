@@ -2,7 +2,7 @@ class Structures::HasMembershipsController < ApplicationController
   before_filter :set_structure
 
   def index
-    @members = @structure.members
+    @members = @structure.members.paginate(:page => params[:page])
   end
 
   def create

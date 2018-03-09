@@ -38,7 +38,7 @@
                         = campaign.name
                     %td= l campaign.start_at
                     %td
-                      %ul.list-inline
+                      %ul.list-inline.mb-0
                         %li.list-inline-item
                           = link_to [:edit, @structure.becomes(Structure), campaign], class: "text-primary" do
                             = icon "edit"
@@ -47,3 +47,5 @@
                           = link_to [@structure.becomes(Structure), campaign], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
                             = icon "times"
                             Supprimer
+
+            = will_paginate @campaigns

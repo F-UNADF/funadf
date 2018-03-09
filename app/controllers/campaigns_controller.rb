@@ -1,9 +1,9 @@
 class CampaignsController < ApplicationController
 
   def index
-    @member_campaigns = Campaign.get_campaigns_for_member current_user
+    @member_campaigns = Campaign.get_campaigns_for_member(current_user).paginate(:page => params[:member_page], :per_page => 10)
 
-    @president_structure = Structure.get_structure_with_president(current_user)
+    @president_structure = Structure.get_structure_with_president(current_user).paginate(:page => params[:president_page], :per_page => 10)
 
     @president_campaigns = []
 

@@ -10,6 +10,19 @@
 @import "switches";
 @import "animate";
 
+.page-item.active .page-link {
+  background-color: #282C33;
+  border-color: #282C33;
+}
+.page-link {
+  color: #D65745;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+.page-link:hover {
+  color: #D65745;
+}
+
 .bg-flat-color-1 {
   background: #20a8d8
 }
