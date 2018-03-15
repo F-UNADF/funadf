@@ -140,4 +140,8 @@ class User < ActiveRecord::Base
       ['EMAIL', :email]
     ]
   end
+
+  def self.get_levels
+    %w(Probatoire Stagiaire AEM APE Ancien Agréé Partenaire Autre)
+  end
  end

@@ -37,6 +37,12 @@
                       %li
                         = icon 'phone', class: "fa-li"
                         = @user.phone_2
+
+                    - unless @user.birthdate.blank?
+                      %li
+                        = icon 'birthday-cake', class: "fa-li"
+                        = l @user.birthdate
+
           .card-footer
             = link_to edit_me_path, class: 'btn btn-outline-dark btn-icon' do
               = icon "edit"

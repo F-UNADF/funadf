@@ -27,39 +27,34 @@
                 %th Nom
                 %th Email
                 %th Téléphone
-                %th Rôles
+                %th Niveau
                 %th
 
             - @users.each do |user|
               %tr
                 %td= user.friendly_id
-                %td= user.fullname
+                %td
+                  = link_to user, class: "text-info" do
+                    = user.fullname
+                    = icon "eye"
                 %td= user.email
                 %td= user.phone_1
-                %td= user.applicatin_roles.pluck(:name).join(', ')
+                %td= user.level
                 %td
                   - if user.id == current_user.id
                     %em C'est vous !
                   - else
                     %ul.list-inline.mb-0
-                      %li.list-inline-item
-                        = link_to user, class: "text-info" do
-                          = icon "eye"
-                          Consulter l'utilisateur
+                      - if can? :edit, user
+                        %li.list-inline-item
+                          = link_to [:edit, :admin, user], class: "text-success" do
+                            = icon "edit"
+                            Modifier
                       - if can? :delete, user
                         %li.list-inline-item
                           = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
                             = icon "times"
                             Supprimer
-                      - if current_user.has_role? :admin
-                        - if user.has_role? :admin
-                          = link_to admin_user_admin_path(user), method: :destroy, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
-                            = icon "arrow-down"
-                            Destituer administrateur
-                        - else
-                          = link_to admin_user_new_admin_path(user), class: "text-primary" do
-                            = icon "arrow-up"
-                            Promouvoir administrateur
 
         .float-right
           = will_paginate @users

@@ -5,7 +5,7 @@
 
 .content.mt-3
   .container-fluid
-    = form_for @user, url: account_path(@user) do |f|
+    = form_for [:admin, @user] do |f|
       .card
         .card-header
           %strong Modifier un utilisateur
@@ -13,10 +13,9 @@
           - if @user.errors.any?
             .alert.alert-danger
               %h3.h4= "#{pluralize(@user.errors.count, "erreur")}"
-              .panel-body
-                %ul
-                  - @user.errors.full_messages.each do |msg|
-                    %li= msg
+              %ul
+                - @user.errors.full_messages.each do |msg|
+                  %li= msg
           .row
             .col-md-8
               .row
@@ -57,6 +56,14 @@
                   .form-group
                     = f.label :town
                     = f.text_field :town, class: "form-control"
+
+              .form-group
+                = f.label :level
+                = f.select :level, options_for_select(User.get_levels), {include_blank: "Non communiqué"}, class: "form-control"
+
+              .form-group
+                = f.label :birthdate
+                = f.date_field :birthdate, class: "form-control datepicker"
 
               %hr
               .form-group

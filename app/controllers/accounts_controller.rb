@@ -26,7 +26,7 @@ class AccountsController < ApplicationController
         params[:user].delete(:password)
         params[:user].delete(:password_confirmation)
       end
-      params[:user].permit(:firstname, :lastname, :avatar, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :password, :password_confirmation)
+      params[:user].permit(:firstname, :lastname, :avatar, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :password, :password_confirmation, :birthdate)
     end
 
 end

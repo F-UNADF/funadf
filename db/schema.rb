@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180308155013) do
+ActiveRecord::Schema.define(version: 20180315120214) do
 
   create_table "campaigns", force: true do |t|
     t.integer  "structure_id"
@@ -120,6 +120,8 @@ ActiveRecord::Schema.define(version: 20180308155013) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.integer  "invitations_count",      default: 0
+    t.string   "level"
+    t.date     "birthdate"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
