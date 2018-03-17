@@ -22,7 +22,6 @@
             %br
             %strong.text-danger= @campaign.get_elector_note(@elector)
 
-        %p
         .row
           .col-md-6
             = form_for :votings, url: voting_path do |f|
@@ -34,7 +33,11 @@
                       = motion.name
 
                       = hidden_field_tag "voter[#{motion.id}][motion_id]", motion.id
-                      = hidden_field_tag "voter[#{motion.id}][elector_id]", @elector.id
+                      - if @campaign.is_public
+                        = hidden_field_tag "voter[#{motion.id}][user_id]", @elector.id
+                      - else
+                        = hidden_field_tag "voter[#{motion.id}][elector_id]", @elector.id
+
                       = hidden_field_tag "voter[#{motion.id}][voted_at]", DateTime.now()
                       = hidden_field_tag "voter[#{motion.id}][ip]", request.remote_ip
 
@@ -42,10 +45,11 @@
                       = hidden_field_tag "vote[#{motion.id}][motion_id]", motion.id
                       = get_field "vote[#{motion.id}][result]", motion.kind, (@campaign.elector_can_vote?(@elector))? nil : true
 
-                %tr
-                  %td{colspan: 2}
-                    %button.btn.btn-success{type: :submit, data:{confirm: 'Attention, une fois le vote effectué, il est impossible de revenir en arrière ! Merci de bien vérifier votre vote avant de valider !'}}
-                      = icon 'warning'
-                      Voter
+                - if @campaign.elector_can_vote?(@elector)
+                  %tr
+                    %td{colspan: 2}
+                      %button.btn.btn-success{type: :submit, data:{confirm: 'Attention, une fois le vote effectué, il est impossible de revenir en arrière ! Merci de bien vérifier votre vote avant de valider !'}}
+                        = icon 'warning'
+                        Voter
 
 

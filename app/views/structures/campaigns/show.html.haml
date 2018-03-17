@@ -21,19 +21,26 @@
                 Revenir aux campagnes
 
           .card-body
+            - if @campaign.is_public
+              .alert.alert-success.mb-3 Campagne publique
             %h2.h3
               = "Campagne : #{@campaign.name}"
+
               - if Time.now < @campaign.start_at
                 .float-right
-                  = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-success btn-sm" do
+                  = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-success btn-sm m-3" do
                     = icon "edit"
                     Modifier la campagne
+
+
               - elsif Time.now > @campaign.end_at
-                .float-right
+                .float-right.m-3
                   %span.alert.alert-info Votes cloturés
               - else
-                .float-right
+                .float-right.m-3
                   %span.alert.alert-danger Période de vote
+
+            .clearfix
 
             %p.text-muted= @campaign.description
 

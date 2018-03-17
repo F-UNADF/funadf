@@ -10,15 +10,18 @@ class CampaignsController < ApplicationController
     @president_structure.each do |structure|
       @president_campaigns << [structure, Campaign.get_campaigns_for_structure(structure)]
     end
+
+    @public_campaigns = Campaign.get_public_campaigns(current_user).paginate(:page => params[:public_campaigns], :per_page => 10)
   end
 
   def show
     @campaign = Campaign.find params[:id]
 
-    @elector = Elector.find_by(resource_id: params[:resource_id], resource_type: params[:resource_type], structure_id: @campaign.structure_id)
-
-    puts "%%"*30
-    puts @elector.inspect
+    if @campaign.is_public
+      @elector = User.find(params[:resource_id])
+    else
+      @elector = Elector.find_by(resource_id: params[:resource_id], resource_type: params[:resource_type], structure_id: @campaign.structure_id)
+    end
   end
 
 end

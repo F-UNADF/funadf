@@ -6,10 +6,8 @@ class Motion < ActiveRecord::Base
   has_many :votes
 
   def has_voted? elector
-    voters.pluck(:elector_id).include? elector.id
+    voters.pluck(:elector_id).include?(elector.id) || voters.pluck(:user_id).include?(elector.id)
   end
-
-
 
   def self.kinds
     {

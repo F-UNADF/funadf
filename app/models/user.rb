@@ -144,4 +144,7 @@ class User < ActiveRecord::Base
   def self.get_levels
     %w(Probatoire Stagiaire AEM APE Ancien Agréé Partenaire Autre)
   end
+  def can_vote
+    true
+  end
  end

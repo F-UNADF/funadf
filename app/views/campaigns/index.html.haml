@@ -70,3 +70,31 @@
                       = icon 'arrow-right'
 
         = will_paginate @member_campaigns, params: :president_page
+
+
+        %hr
+
+        %h2.h3 Les consultations publiques
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th Structure concernée
+                %th Nom de la campagne
+                %th Plage horaire
+                %th Nombre de motions
+                %th
+
+            - @public_campaigns.each do |campaign|
+              %tr
+                %td= campaign.structure_name
+                %td= campaign.name
+                %td= campaign.period
+                %td= campaign.motions_count
+                %td
+                  = link_to campaign_path(campaign.id, resource_id: current_user.id, resource_type: current_user.get_class), class: 'btn btn-sm btn-primary' do
+                    Commencer le vote
+                    = icon 'arrow-right'
+
+
+        = will_paginate @public_campaigns, params: :public_campaigns

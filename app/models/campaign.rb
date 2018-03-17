@@ -26,7 +26,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def elector_can_vote? elector
-    elector.can_vote && Time.now.between?(start_at, end_at) && !has_already_vote?(elector)
+    (elector && self.is_public && Time.now.between?(start_at, end_at) && !has_already_vote?(elector)) || (elector && elector.can_vote && Time.now.between?(start_at, end_at) && !has_already_vote?(elector))
   end
 
   def get_elector_note elector
@@ -56,12 +56,14 @@ class Campaign < ActiveRecord::Base
     campaigns = []
     president_roles.each do |role|
       structure = role.resource
-
       campaigns = campaigns+structure.campaigns
     end
 
     campaigns
   end
 
+  def self.get_public_campaigns user
+    Campaign.where(is_public: true).where('ID NOT IN (?)', self.get_campaigns_for_member(user).pluck(:id))
+  end
 
 end
