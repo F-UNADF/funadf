@@ -18,4 +18,6 @@
   .form-group
     = f.submit "Se connecter", class: "btn btn-primary"
 
-
+  - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+    = link_to new_password_path(resource_name), class: "btn btn-success" do
+      J'ai oublié mon mot de passe

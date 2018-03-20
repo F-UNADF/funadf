@@ -8,4 +8,9 @@ class DeviseMailer < Devise::Mailer
     super
   end
 
+  def reset_password_instructions(record, token, opts={})
+    opts[:subject] = "[FNADF] Réinitialiser mon mot de passe"
+    super
+  end
+
 end

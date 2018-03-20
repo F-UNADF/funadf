@@ -34,7 +34,8 @@ Rails.application.routes.draw do
     get '/search', to: "search#index", as: :search
 
     resources :accounts, only: :update
-    root 'pages#home', as: :authenticated_root
+
+    root :to => redirect('/mon-compte'), as: :authenticated_user
 
   end
   root to: redirect('/users/sign_in')

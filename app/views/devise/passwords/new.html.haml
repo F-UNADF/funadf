@@ -1,0 +1,14 @@
+%h2.h3.mb-3 J'ai oublié mon mot de passe
+%hr
+= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+
+  .form-group
+    = f.label :email
+    = f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control"
+
+  .form-group
+    = f.submit "Récupérer mon mot de passe", class: "btn btn-primary"
+
+  - if controller_name != 'sessions'
+    = link_to new_session_path(resource_name), class: 'btn btn-success' do
+      Je connais mon mot de passe
