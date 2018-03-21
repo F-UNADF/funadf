@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   validates :firstname, :lastname, presence: true
 
-  def applicatin_roles
+  def application_roles
     roles.where(resource_id: nil, resource_type: nil)
   end
 
@@ -52,12 +52,11 @@ class User < ActiveRecord::Base
     where(['(firstname LIKE ? OR lastname LIKE ? OR email LIKE ? OR id LIKE ?)', "#{q}%", "#{q}%", "#{q}%", "#{q}%"])
   end
 
-
   def has_role?(role_name, resource = nil)
-    return has_strict_role?(role_name, resource) if self.class.strict_rolify and resource and resource != :any
-
+    resource_id = resource.id if resource
+    resource_type = resource.class if resource
     unless new_record?
-      role_array = roles.where(name: role_name, resource: resource)
+      role_array = roles.where(name: role_name, resource_id: resource_id, resource_type: resource_type)
     end
 
     return false if role_array.nil?
@@ -110,8 +109,31 @@ class User < ActiveRecord::Base
     (associations + churches).sort_by{|s| s.name}
   end
 
+  def get_presidences
+    presidences = []
+    structures.each do |s|
+      presidences << s if self.has_role? :president, s
+    end
+    presidences
+  end
+
   def get_class
     User.to_s
+  end
+
+  def is_elector?(structure)
+    elector = electors.find_by(structure: structure)
+    elector && elector.can_vote
+  end
+
+  def has_voted?(campaign)
+    structure = Structure.find(campaign.structure_id)
+    elector = electors.find_by(structure: structure)
+    if elector
+      campaign.has_already_vote?(elector)
+    else
+      campaign.has_already_vote?(user)
+    end
   end
 
   def self.prepare_import(upload)

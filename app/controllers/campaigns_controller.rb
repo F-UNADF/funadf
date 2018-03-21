@@ -1,27 +1,23 @@
 class CampaignsController < ApplicationController
 
   def index
-    @member_campaigns = Campaign.get_campaigns_for_member(current_user).paginate(:page => params[:member_page], :per_page => 10)
-
-    @president_structure = Structure.get_structure_with_president(current_user).paginate(:page => params[:president_page], :per_page => 10)
-
-    @president_campaigns = []
-
-    @president_structure.each do |structure|
-      @president_campaigns << [structure, Campaign.get_campaigns_for_structure(structure)]
-    end
-
-    @public_campaigns = Campaign.get_public_campaigns(current_user).paginate(:page => params[:public_campaigns], :per_page => 10)
+    @campaigns = Campaign.currents.paginate(:page => params[:page])
   end
 
   def show
     @campaign = Campaign.find params[:id]
+    @structure = Structure.find(@campaign.structure_id)
 
-    if @campaign.is_public
-      @elector = User.find(params[:resource_id])
-    else
-      @elector = Elector.find_by(resource_id: params[:resource_id], resource_type: params[:resource_type], structure_id: @campaign.structure_id)
+    @user = current_user
+    # GET ALL PRESIDENCES
+    pres = @user.get_presidences
+    @presidences = []
+    pres.each do |s|
+      unless s == @structure || @campaign.has_already_vote?( (s.is_elector?(@structure)) ? s.get_elector(@structure) : s )
+        @presidences << s
+      end
     end
+
   end
 
 end

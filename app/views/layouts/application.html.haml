@@ -38,10 +38,10 @@
               %a.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
                 = image_tag current_user.avatar.url(:thumb), class: "user-avatar rounded-circle"
               .user-menu.dropdown-menu
-                %a.nav-link{:href => "#"}
+                = link_to me_path, class: 'nav-link' do
                   %i.fa.fa-.user>
                   Mon profil
-                %a.nav-link{:href => "#"}
+                = link_to edit_me_path, class: 'nav-link' do
                   %i.fa.fa.-cog>
                   Modifier mon profil
                 = link_to destroy_user_session_path, method: :delete, class: "nav-link" do

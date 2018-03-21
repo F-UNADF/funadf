@@ -75,8 +75,14 @@
               - if Time.now > @campaign.end_at
                 %table.table.table-bordered
                   %tr
+                    %td
+                    %th{colspan: 6} Resultats retenus
+                    %th{colspan: 6} Resultats consultatifs
+
+                  %tr
                     %th Electorats
-                    %td{colspan: 6}= @structure.electors.count
+                    %td{colspan: 6}= @campaign.get_voters(only_electors: true)
+                    %td{colspan: 6}= @campaign.get_voters(only_electors: false)
 
                   %tr
                     %th
@@ -85,14 +91,29 @@
                     %th Votants
                     %th Exprimés
                     %th Blancs
+
+                    %th Oui
+                    %th{colspan: 2} Non
+                    %th Votants
+                    %th Exprimés
+                    %th Blancs
+
                   - @campaign.motions.where(kind: :binary).each do |motion|
                     %tr
                       %td= motion.name
-                      %td= motion.votes.where(result: "oui").count
-                      %td{colspan: 2}= motion.votes.where(result: "non").count
-                      %td= motion.votes.count
-                      %td= motion.votes.where("result IS NOT NULL").count
-                      %td= motion.votes.where(result: nil).count
+                      %td= motion.votes.officials.where(result: "oui").count
+                      %td{colspan: 2}= motion.votes.officials.where(result: "non").count
+                      %td= motion.votes.officials.count
+                      %td= motion.votes.officials.where("result IS NOT NULL").count
+                      %td= motion.votes.officials.where(result: nil).count
+
+                      %td= motion.votes.consultatives.where(result: "oui").count
+                      %td{colspan: 2}= motion.votes.consultatives.where(result: "non").count
+                      %td= motion.votes.consultatives.count
+                      %td= motion.votes.consultatives.where("result IS NOT NULL").count
+                      %td= motion.votes.consultatives.where(result: nil).count
+
+
                   %tr
                     %th
                     %th Oui
@@ -104,29 +125,45 @@
                   - @campaign.motions.where(kind: :neutral).each do |motion|
                     %tr
                       %td= motion.name
-                      %td= motion.votes.where(result: "oui").count
-                      %td= motion.votes.where(result: "non").count
-                      %td= motion.votes.where(result: "neutre").count
-                      %td= motion.votes.count
-                      %td= motion.votes.where("result IS NOT NULL").count
-                      %td= motion.votes.where(result: nil).count
+                      %td= motion.votes.officials.where(result: "oui").count
+                      %td= motion.votes.officials.where(result: "non").count
+                      %td= motion.votes.officials.where(result: "neutre").count
+                      %td= motion.votes.officials.count
+                      %td= motion.votes.officials.where("result IS NOT NULL").count
+                      %td= motion.votes.officials.where(result: nil).count
 
-                  %tr
-                    %th
-                    %th{colspan: 3} Répartition des propositions
-                    %th Votants
-                    %th Exprimés
-                    %th Blancs
-                  - @campaign.motions.where(kind: :free).each do |motion|
+                      %td= motion.votes.consultatives.where(result: "oui").count
+                      %td= motion.votes.consultatives.where(result: "non").count
+                      %td= motion.votes.consultatives.where(result: "neutre").count
+                      %td= motion.votes.consultatives.count
+                      %td= motion.votes.consultatives.where("result IS NOT NULL").count
+                      %td= motion.votes.consultatives.where(result: nil).count
+
+                  - unless @campaign.motions.where(kind: :free).blank?
                     %tr
-                      %td= motion.name
-                      %td{colspan: 3}
-                        %ul.list-unstyled
-                          - motion.votes.select(:result, 'COUNT(*) as count').group(:result).each do |r|
-                            %li.list-unstyled-item= "#{r.result} (#{r.count})"
-                      %td= motion.votes.count
-                      %td= motion.votes.where("result IS NOT NULL").count
-                      %td= motion.votes.where(result: nil).count
+                      %th
+                      %th{colspan: 3} Répartition des propositions
+                      %th Votants
+                      %th Exprimés
+                      %th Blancs
+                    - @campaign.motions.where(kind: :free).each do |motion|
+                      %tr
+                        %td= motion.name
+                        %td{colspan: 3}
+                          %ul.list-unstyled
+                            - motion.votes.officials.select(:result, 'COUNT(*) as count').group(:result).each do |r|
+                              %li.list-unstyled-item= "#{r.result} (#{r.count})"
+                        %td= motion.votes.officials.count
+                        %td= motion.votes.officials.where("result IS NOT NULL").count
+                        %td= motion.votes.officials.where(result: nil).count
+
+                        %td{colspan: 3}
+                          %ul.list-unstyled
+                            - motion.votes.consultatives.select(:result, 'COUNT(*) as count').group(:result).each do |r|
+                              %li.list-unstyled-item= "#{r.result} (#{r.count})"
+                        %td= motion.votes.consultatives.count
+                        %td= motion.votes.consultatives.where("result IS NOT NULL").count
+                        %td= motion.votes.consultatives.where(result: nil).count
               - else
                 .alert.alert-danger
                   La période de vote n'est pas fini. Les résultats seront disponibles une fois les votes clos.

@@ -96,12 +96,12 @@ class Structure < ActiveRecord::Base
     # OU Avec une Class (Valable uniquement sur cette Class)
     # OU Avec une resource (Valable que pour cette resource)
     role = Role.find_or_create_by(name: role_name.to_s,
-      resource_type: (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource),
+      resource_type: (resource.is_a?(Class) ? resource.to_s : resource.class if resource),
       resource_id: (resource.id if resource && !resource.is_a?(Class)))
 
     Rolization.find_or_create_by(role: role, resource: self)
 
-    Elector.find_or_create_by(resource: self, structure: resource) if resource && !resource.is_a?(Class)
+    Elector.find_or_create_by(resource_id: self.id, resource_type: self.class, structure_id: resource) if resource && !resource.is_a?(Class)
 
     role
   end
@@ -126,6 +126,16 @@ class Structure < ActiveRecord::Base
 
   def get_class
     Structure.to_s
+  end
+
+  def is_elector?(resource)
+    elector = self_electors.find_by(structure: resource)
+    elector && elector.can_vote
+  end
+
+  def get_elector(resource)
+    elector = self_electors.find_by(structure: resource)
+    elector
   end
 
   def member_can_vote?(resource)

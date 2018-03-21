@@ -52,13 +52,11 @@ class Campaign < ActiveRecord::Base
 
   def self.get_campaigns_for_president user
     president_roles = Role.where(name: :president, rolizations:{resource_id: user.id, resource_type: user.get_class}).joins(:rolizations)
-
     campaigns = []
     president_roles.each do |role|
       structure = role.resource
       campaigns = campaigns+structure.campaigns
     end
-
     campaigns
   end
 
@@ -66,4 +64,16 @@ class Campaign < ActiveRecord::Base
     Campaign.where(is_public: true).where('ID NOT IN (?)', self.get_campaigns_for_member(user).pluck(:id))
   end
 
+  def self.currents
+    Campaign.where('end_at >= ?', Time.now).order('name')
+  end
+
+  def get_voters opts=nil
+    motion_ids = Motion.where(campaign_id: self.id).pluck(:id)
+    if opts[:only_electors] && opts[:only_electors] == true
+      Voter.where('motion_id IN (?) AND elector_id IS NOT NULL', motion_ids).group(:elector_id).count.count
+    else
+      Voter.where('motion_id IN (?) AND elector_id IS NULL', motion_ids).group([:resource_id, :resource_type]).count.count
+    end
+  end
 end

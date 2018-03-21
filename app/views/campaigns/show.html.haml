@@ -8,48 +8,68 @@
       .card-header
         .float-left
           = @campaign.structure_name
-          \-
-          %strong= @campaign.name
         .card-actions.float-right
           = link_to :campaigns, class: 'btn btn-default' do
             = icon "angle-left"
             Revenir aux campagnes
 
       .card-body
-        - if !@campaign.elector_can_vote?(@elector)
-          %p.alert.alert-info
-            Vous n'êtes pas autorisé à voter pour la raison suivante :
-            %br
-            %strong.text-danger= @campaign.get_elector_note(@elector)
+        = form_for :votings, url: voting_path do |f|
+          = f.hidden_field :campaign_id, value: @campaign.id
+          .row
+            .col-md-6
+              %h2.h5.mb-3
+                Je vote en qualité de
+                %strong
+                  = @user.name
+                  %small
+                    = "(#{(@user.is_elector?(@structure)) ? 'Vote contabilisé' : 'Vote consultatif'})"
+              - if @user.has_voted?(@campaign) && @presidences.blank?
+                %p.text-danger Vous avez déjà rempli tous vos bulletins
+              - else
+                - if @user.has_voted?(@campaign)
+                  .alert.alert-info
+                    %p Votre vote a déjà été pris en compte.
+                    %p Vous pouvez encore remplir un bulletin selon vos responsabilités.
+                - else
+                  = hidden_field_tag "votings[voter][][resource_id]", @user.id
+                  = hidden_field_tag "votings[voter][][resource_class]", @user.get_class
 
-        .row
-          .col-md-6
-            = form_for :votings, url: voting_path do |f|
-              = f.hidden_field :campaign_id, value: @campaign.id
-              %table.table
-                - @campaign.motions.each do |motion|
-                  %tr{class: "#{(@campaign.elector_can_vote?(@elector) ? 'table-default' : 'table-secondary text-muted')}"}
-                    %th
-                      = motion.name
+                .well.bg-light.p-3
+                  %h3.h5.text-center.mb-3= @campaign.name
+                  %table.table
+                    - @campaign.motions.each do |motion|
+                      %tr
+                        %th
+                          = motion.name
+                        %td
+                          = hidden_field_tag "vote[#{motion.id}][motion_id]", motion.id
+                          = get_field "vote[#{motion.id}][result]", motion.kind
 
-                      = hidden_field_tag "voter[#{motion.id}][motion_id]", motion.id
-                      - if @campaign.is_public
-                        = hidden_field_tag "voter[#{motion.id}][user_id]", @elector.id
-                      - else
-                        = hidden_field_tag "voter[#{motion.id}][elector_id]", @elector.id
+            .col-md-6
+              %h2.h5.mb-3 Mon vote est identique pour les responsabilités suivantes
+              - if @presidences.blank?
+                %p.text-danger Vous n'avez plus de bulletin disponible
+              - else
+                - @presidences.each_with_index do |s, index|
+                  - unless s == @structure || @campaign.has_already_vote?( (s.is_elector?(@structure)) ? s.get_elector(@structure) : s )
+                    .form-check
+                      = hidden_field_tag "votings[voter][][resource_class]", s.get_class
+                      = check_box_tag "votings[voter][][resource_id]", s.id, false, class: 'form-check-input'
+                      = label_tag "voter[voter][][resource_class]", class: 'form-check-label' do
+                        = "Présidence de <b>#{s.name}</b>".html_safe
+                        %small= "(#{(s.is_elector?(@structure)) ? 'Vote contabilisé' : 'Vote consultatif'})"
 
-                      = hidden_field_tag "voter[#{motion.id}][voted_at]", DateTime.now()
-                      = hidden_field_tag "voter[#{motion.id}][ip]", request.remote_ip
-
-                    %td
-                      = hidden_field_tag "vote[#{motion.id}][motion_id]", motion.id
-                      = get_field "vote[#{motion.id}][result]", motion.kind, (@campaign.elector_can_vote?(@elector))? nil : true
-
-                - if @campaign.elector_can_vote?(@elector)
-                  %tr
-                    %td{colspan: 2}
-                      %button.btn.btn-success{type: :submit, data:{confirm: 'Attention, une fois le vote effectué, il est impossible de revenir en arrière ! Merci de bien vérifier votre vote avant de valider !'}}
-                        = icon 'warning'
-                        Voter
+          - if !@user.has_voted?(@campaign) || !@presidences.blank?
+            .row
+              .col-md-12
+                .text-center.mt-3
+                  %button.btn.btn-success{type: :submit, data:{confirm: 'Attention, une fois le vote effectué, il est impossible de revenir en arrière ! Merci de bien vérifier votre vote avant de valider !'}}
+                    = icon 'warning'
+                    JE VALIDE MON VOTE
+                    = icon 'warning'
 
 
+          - if @campaign.elector_can_vote?(@elector)
+            %tr
+              %td{colspan: 2}

@@ -6,95 +6,35 @@
   .container-fluid
     .card
       .card-header
-        %strong Liste des campagnes de votes
+        %strong Liste des bulletins de votes
 
       .card-body
         .alert.alert-info
-          Il est normal que vous ayez
-          %b des campagnes en doublon.
-          Vous pouvez être membre à
-          %b titre individuel
-          et
-          %b président d'une oeuvre
-          membre à titre d'oeuvre
+          %p Vous allez voir l'ensemble des bulletins de vote disponibles.
 
-        %h2.h3 Mes campagnes en tant que membre
+          %p Pour chacun d'eux, il vous sera possible de voter même si vous n'êtes pas membre de l'association.
+
+          %p Ainsi deux résultats seront disponibles. Le résultat des membres et le résultat à titre consultatif (les membres + les nons membres)
+
+
         .table-responsive
           %table.table.table-striped.table-sm
             %thead
               %tr
                 %th Structure concernée
-                %th Nom de la campagne
-                %th Plage horaire
-                %th Nombre de motions
+                %th Bulletin
+                %th Bulletins restant *
                 %th
 
-            - @member_campaigns.each do |campaign|
+            - @campaigns.each do |campaign|
               %tr
                 %td= campaign.structure_name
                 %td= campaign.name
-                %td= campaign.period
-                %td= campaign.motions_count
+                %td TODO
                 %td
-                  = link_to campaign_path(campaign.id, resource_id: current_user.id, resource_type: current_user.get_class), class: 'btn btn-sm btn-primary' do
+                  = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
                     Commencer le vote
                     = icon 'arrow-right'
         = will_paginate @member_campaigns, params: :member_page
 
-
-        %hr
-
-        %h2.h3 Mes campagnes en tant que président de structure
-        .table-responsive
-          %table.table.table-striped.table-sm
-            %thead
-              %tr
-                %th Structure concernée
-                %th Structure membre
-                %th Nom de la campagne
-                %th Plage horaire
-                %th Nombre de motions
-                %th
-
-            - @president_campaigns.each do |pc|
-              - pc.last.each do |campaign|
-                %tr
-                  %td= campaign.structure.name
-                  %td= pc.first.name
-                  %td= campaign.name
-                  %td= campaign.period
-                  %td= campaign.motions_count
-                  %td
-                    = link_to campaign_path(campaign.id, resource_id: pc.first.id, resource_type: pc.first.get_class), class: 'btn btn-sm btn-primary' do
-                      Commencer le vote
-                      = icon 'arrow-right'
-
-        = will_paginate @member_campaigns, params: :president_page
-
-
-        %hr
-
-        %h2.h3 Les consultations publiques
-        .table-responsive
-          %table.table.table-striped.table-sm
-            %thead
-              %tr
-                %th Structure concernée
-                %th Nom de la campagne
-                %th Plage horaire
-                %th Nombre de motions
-                %th
-
-            - @public_campaigns.each do |campaign|
-              %tr
-                %td= campaign.structure_name
-                %td= campaign.name
-                %td= campaign.period
-                %td= campaign.motions_count
-                %td
-                  = link_to campaign_path(campaign.id, resource_id: current_user.id, resource_type: current_user.get_class), class: 'btn btn-sm btn-primary' do
-                    Commencer le vote
-                    = icon 'arrow-right'
-
-
-        = will_paginate @public_campaigns, params: :public_campaigns
+        %p.text-info (*) Le nombre de bulletins disponibles est fonction de vos responsabilités (Présidence d'églises, présidence d'associations...)

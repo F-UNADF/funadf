@@ -1,14 +1,14 @@
 class Voter < ActiveRecord::Base
   belongs_to :motion
   belongs_to :elector
-  belongs_to :user
+  belongs_to :resource, polymorphic: true
 
   validates :motion, :voted_at, :ip, presence: true
 
-  validate :user_xor_elector
+  validate :resource_xor_elector
 
-  def user_xor_elector
-    if user.blank? && elector.blank?
+  def resource_xor_elector
+    if resource.blank? && elector.blank?
       errors.add(:voter, "Vote invalide")
     end
   end
