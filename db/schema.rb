@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180321083812) do
+ActiveRecord::Schema.define(version: 20180321100918) do
 
   create_table "campaigns", force: true do |t|
     t.integer  "structure_id"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 20180321083812) do
     t.boolean  "is_public"
   end
 
+  add_index "campaigns", ["structure_id"], name: "index_campaigns_on_structure_id", using: :btree
+
   create_table "electors", force: true do |t|
     t.integer  "resource_id"
     t.string   "resource_type"
@@ -37,6 +39,7 @@ ActiveRecord::Schema.define(version: 20180321083812) do
     t.text     "note"
   end
 
+  add_index "electors", ["resource_id", "resource_type"], name: "index_electors_on_resource_id_and_resource_type", using: :btree
   add_index "electors", ["structure_id"], name: "index_electors_on_structure_id", using: :btree
 
   create_table "motions", force: true do |t|
@@ -58,6 +61,8 @@ ActiveRecord::Schema.define(version: 20180321083812) do
     t.datetime "updated_at"
   end
 
+  add_index "roles", ["resource_id", "resource_type"], name: "index_roles_on_resource_id_and_resource_type", using: :btree
+
   create_table "rolizations", force: true do |t|
     t.integer  "role_id"
     t.integer  "resource_id"
@@ -65,6 +70,9 @@ ActiveRecord::Schema.define(version: 20180321083812) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "rolizations", ["resource_id", "resource_type"], name: "index_rolizations_on_resource_id_and_resource_type", using: :btree
+  add_index "rolizations", ["role_id"], name: "index_rolizations_on_role_id", using: :btree
 
   create_table "structures", force: true do |t|
     t.string   "name"
@@ -127,6 +135,7 @@ ActiveRecord::Schema.define(version: 20180321083812) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
+  add_index "users", ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type", using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
@@ -141,6 +150,7 @@ ActiveRecord::Schema.define(version: 20180321083812) do
 
   add_index "voters", ["elector_id"], name: "index_voters_on_elector_id", using: :btree
   add_index "voters", ["motion_id"], name: "index_voters_on_motion_id", using: :btree
+  add_index "voters", ["resource_id", "resource_type"], name: "index_voters_on_resource_id_and_resource_type", using: :btree
 
   create_table "votes", id: false, force: true do |t|
     t.integer "motion_id"
