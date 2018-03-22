@@ -1,7 +1,7 @@
 class Structure < ActiveRecord::Base
 
-  has_many :campaigns
-  has_many :electors
+  has_many :campaigns, dependent: :destroy
+  has_many :electors, dependent: :destroy
 
   validates :name, :type, presence: true
 

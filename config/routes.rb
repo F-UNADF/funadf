@@ -21,6 +21,8 @@ Rails.application.routes.draw do
       post '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#update', as: :structure_resource_roles
       post '/elector/:resource_id/:resource_type', to: 'structures/electors#update', as: :elector
     end
+    resources :imports, to: 'structures/imports', as: :structure_import
+
 
     resources :users, only: [:show, :index]
     resources :structures

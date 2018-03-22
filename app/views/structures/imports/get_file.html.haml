@@ -1,0 +1,44 @@
+.breadcrumbs
+  .page-header
+    %h1 Importer des utilisateurs
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Ajouter des structures via un fichier
+
+      .card-body
+        .row
+          .col-md-6
+            %h3.h4.mb-3 Mon fichier est prêt à être importé
+
+            = form_for @upload, url: wizard_path, method: :put do |f|
+              .form-group
+                %label Sélectionnez un fichier contenant vos contacts à importer :
+                %br
+                = f.file_field :file
+
+              .form-group
+                .form-check
+                  = f.check_box :has_heading, class: 'form-check-input'
+                  = f.label :has_heading
+
+              .alert.alert-info
+                Fichier de type : *.csv ou *.txt
+
+              .form-group
+                %button.btn.btn-success{type: :submit}
+                  = icon "upload"
+                  Envoyer mon fichier
+
+          .col-md-6{style: "border-left:1px solid #e2e2e2; padding-bottom:25px;"}
+            %h3.h4.mb-3 Je dois créer un fichier
+
+            %p
+              = link_to '/files/fichier_exemple-import-structure.csv', class: 'text-info' do
+                Cliquez ici pour télécharger un fichier d'exemple en CSV.
+
+            %p.text-dark
+              Votre fichier doit être un fichier TXT ou CSV. Vous n'avez qu'à copier/coller vos contacts dans le fichier CSV d'exemple. Si vous avez le moindre problème, n'hésitez pas à nous contacter.

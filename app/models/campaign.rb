@@ -1,7 +1,7 @@
 class Campaign < ActiveRecord::Base
 
   belongs_to :structure
-  has_many :motions
+  has_many :motions, dependent: :destroy
   accepts_nested_attributes_for :motions, reject_if: :all_blank, allow_destroy: true
 
   delegate :name, to: :structure, prefix: true

@@ -8,13 +8,13 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
 
-  has_many :rolizations, as: :resource
+  has_many :rolizations, as: :resource, dependent: :destroy
   has_many :roles, through: :rolizations
   has_many :associations, through: :roles, source: :resource, source_type: 'Association'
   has_many :churches, through: :roles, source: :resource, source_type: 'Church'
 
   # ELECTEURS DIRECT
-  has_many :electors, as: :resource
+  has_many :electors, as: :resource, dependent: :destroy
 
   validates :firstname, :lastname, presence: true
 

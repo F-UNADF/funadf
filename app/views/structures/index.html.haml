@@ -16,6 +16,10 @@
                 = link_to new_structure_path, class: 'btn btn-default' do
                   = icon 'plus'
                   Ajouter
+              %li.list-inline-item
+                = link_to structure_import_path(:get_file), class: 'btn btn-default' do
+                  = icon 'upload'
+                  Import via fichier
 
       .card-body
         %ul.list-inline
@@ -32,6 +36,7 @@
                 %th
                 %th Identifiant
                 %th Nom
+                %th Ville
                 %th Email
                 %th Téléphone
                 %th Rôle
@@ -43,6 +48,7 @@
                   %td= icon "#{structure.get_icon}"
                   %td= structure.id
                   %td= structure.name
+                  %td= structure.town
                   %td= structure.email
                   %td= structure.phone_1
                   %td= structure.get_resource_role(current_user)
