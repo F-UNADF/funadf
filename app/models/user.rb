@@ -176,4 +176,13 @@ class User < ActiveRecord::Base
   def can_vote
     true
   end
+
+  def self.accept_invitation!(attributes={})
+    invitable = find_by(invitation_token: attributes[:invitation_token])
+    if invitable.errors.empty?
+      invitable.assign_attributes(attributes)
+      invitable.accept_invitation!
+    end
+    invitable
+  end
  end

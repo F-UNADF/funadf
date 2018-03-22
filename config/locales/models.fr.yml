@@ -11,6 +11,8 @@ fr:
         address_2: Complément d'adresse
         zipcode: Code Postal
         town: Ville
+        password: Mot de passe
+        password_confirmation: Confirmez le mot de passe
       structure:
         name: Nom
         email: Email
