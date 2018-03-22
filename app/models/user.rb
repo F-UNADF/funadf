@@ -159,7 +159,14 @@ class User < ActiveRecord::Base
       ['ID', :id],
       ['NOM', :firstname],
       ['PRENOM', :lastname],
-      ['EMAIL', :email]
+      ['EMAIL', :email],
+      ['PORTABLE', :phone_1],
+      ['FIXE', :phone_2],
+      ['ADRESSE', :address_1],
+      ['CODE POSTAL', :zipcode],
+      ['VILLE', :town],
+      ['DATE DE NAISSANCE', :birthday],
+      ['RECONNAISSANCE', :level]
     ]
   end
 
