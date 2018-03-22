@@ -54,7 +54,10 @@ class Admin::ImportsController < ApplicationController
             datas[k.to_sym] = datas.delete(keys[k.to_sym])
           end
           datas.delete(:id)
-          if user = User.invite!(datas)
+          user = User.invite!(datas) do |u|
+            u.skip_invitation = true
+          end
+          if user
             new_users << user
           else
             problem_users << user

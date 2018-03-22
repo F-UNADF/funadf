@@ -3,7 +3,7 @@ class Structure < ActiveRecord::Base
   has_many :campaigns
   has_many :electors
 
-  validates :name, presence: true
+  validates :name, :type, presence: true
 
   def roles
     Role.where(resource_id: self.id, resource_type: self.type)
