@@ -36,10 +36,6 @@ class Admin::ImportsController < ApplicationController
         @upload = Upload.find params[:upload][:upload_id]
 
         old_keys = User.prepare_import(@upload)
-        keys = {}
-        old_keys.each do |k|
-          keys[k.to_sym] = params["col-name-#{k}"]
-        end
 
         i = 0
         new_users = []
@@ -50,10 +46,8 @@ class Admin::ImportsController < ApplicationController
 
           datas = row.to_h(old_keys)
 
-          old_keys.each do |k|
-            datas[k.to_sym] = datas.delete(keys[k.to_sym])
-          end
-          datas.delete(:id)
+          datas["id"] = 1000 + datas["id"].to_i unless datas["id"].blank?
+
           user = User.invite!(datas) do |u|
             u.skip_invitation = true
           end
