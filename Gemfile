@@ -33,7 +33,7 @@ gem 'rails_email_preview'
 gem 'wicked'
 gem 'carrierwave', '~> 1.0'
 gem 'will_paginate', '~> 3.1.0'
-gem 'ransack', github: 'activerecord-hackery/ransack'
+gem 'ransack'
 
 group :development do
   gem 'better_errors'
