@@ -13,11 +13,11 @@
       .col-md-12
         .card
           .card-header
-            .float-left= render 'structures/navbar'
+            .float-left= render 'structures/navbar', structure: @structure
             .card-actions.float-right
               = link_to structure_campaigns_path(@structure), class: 'btn btn-sm btn-default' do
                 = icon 'angle-left'
                 Revenir aux campagnes
 
           .card-body
-            = render 'form', campaign: @campaign
+            = render 'form', campaign: @campaign, structure: @structure

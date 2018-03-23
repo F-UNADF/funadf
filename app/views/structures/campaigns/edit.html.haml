@@ -13,7 +13,7 @@
       .col-md-12
         .card
           .card-header
-            .float-left= render 'structures/navbar'
+            .float-left= render 'structures/navbar', structure: @structure
             .card-actions.float-right
               %ul.list-inline
                 %li.list-inline-item
@@ -28,4 +28,4 @@
           .card-body
             %h2.h3= "Campagne : #{@campaign.name}"
             %p.text-muted= @campaign.description
-            = render 'form', campaign: @campaign
+            = render 'form', campaign: @campaign, structure: @structure

@@ -13,7 +13,7 @@
       .col-md-12
         .card
           .card-header
-            .float-left= render 'structures/navbar'
+            .float-left= render 'structures/navbar', structure: @structure
 
             .card-actions.float-right
               = link_to new_structure_campaign_path(@structure), class: 'btn btn-sm btn-default' do
