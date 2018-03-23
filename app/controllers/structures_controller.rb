@@ -2,7 +2,8 @@ class StructuresController < ApplicationController
   before_filter :set_structure, except: [:index, :new, :create]
 
   def index
-    @structures = Structure.order(:name).paginate(:page => params[:page])
+    @q = Structure.ransack(params[:q])
+    @structures = @q.result(distinct: true).paginate(:page => params[:page])
   end
 
   def show

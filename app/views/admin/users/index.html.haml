@@ -19,15 +19,32 @@
             Importer depuis un fichier
 
       .card-body
+        = search_form_for [:admin, @q] do |f|
+          .row
+            .col-md-4
+              .form-group
+                = f.label :firstname_or_lastname_cont
+                = f.text_field :firstname_or_lastname_cont, class: "form-control"
+            .col-md-4
+              .form-group
+                = f.label :level_eq
+                = f.select :level_eq, options_for_select(User.get_levels, @q.level_eq), {include_blank: " Tous "}, class: "form-control"
+            .col-md-4
+              %button.btn.btn-success.mt-4{type: :submit}
+                = icon "search"
+                Rechercher
+
+
+
         .table-responsive
           %table.table.table-striped.table-sm
             %thead
               %tr
-                %th Identifiant
-                %th Nom
+                %th= sort_link(@q, :id, 'Identifiant', default_order: :asc)
+                %th= sort_link(@q, :firstname, 'Nom')
                 %th Email
                 %th Téléphone
-                %th Niveau
+                %th= sort_link(@q, :level, 'Reconnaissance')
                 %th
 
             - @users.each do |user|

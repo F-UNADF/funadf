@@ -29,6 +29,26 @@
           %li.list-inline-item
             = icon 'building'
             Association
+
+        = search_form_for @q do |f|
+          .row.mb-3
+            .col-md-3
+              .form-group
+                = f.label :name_cont
+                = f.text_field :name_cont, class: "form-control"
+            .col-md-3
+              .form-group
+                = f.label :town_cont
+                = f.text_field :town_cont, class: "form-control"
+            .col-md-3
+              .form-group
+                = f.label :type_eq
+                = f.select :type_eq, options_for_select(Structure.types, @q.type_eq), {include_blank: " Toutes "}, class: "form-control"
+            .col-md-3
+              %button.btn.btn-success.mt-4{type: :submit}
+                = icon "search"
+                Rechercher
+
         .table-responsive
           %table.table.table-striped.table-sm
             %thead

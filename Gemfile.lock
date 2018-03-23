@@ -1,3 +1,14 @@
+GIT
+  remote: git://github.com/activerecord-hackery/ransack.git
+  revision: 4128660fd26797874511a8b0f54de8ffacfc826d
+  specs:
+    ransack (1.8.8)
+      actionpack (>= 3.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      i18n
+      polyamorous (~> 1.3.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -183,6 +194,8 @@ GEM
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (= 0.3.0)
+    polyamorous (1.3.3)
+      activerecord (>= 3.0)
     popper_js (1.12.9)
     pry (0.11.3)
       coderay (~> 1.1.0)
@@ -347,6 +360,7 @@ DEPENDENCIES
   rails_apps_testing
   rails_email_preview
   rails_layout
+  ransack!
   rb-fchange
   rb-fsevent
   rb-inotify
