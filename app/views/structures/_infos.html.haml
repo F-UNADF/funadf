@@ -12,11 +12,11 @@
         = link_to "mailto:#{structure.email}" do
           = structure.email
 
-      - unless structure.phone_1?
+      - if structure.phone_1?
         %li
           = icon 'phone', class: "fa-li"
           = structure.phone_1
-      - unless structure.phone_2?
+      - if structure.phone_2?
         %li
           = icon 'phone', class: "fa-li"
           = structure.phone_2

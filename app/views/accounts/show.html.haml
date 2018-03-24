@@ -29,16 +29,16 @@
                       = link_to "mailto:#{@user.email}" do
                         = @user.email
 
-                    - unless @user.phone_1?
+                    - if @user.phone_1?
                       %li
                         = icon 'phone', class: "fa-li"
                         = @user.phone_1
-                    - unless @user.phone_2?
+                    - if @user.phone_2?
                       %li
                         = icon 'phone', class: "fa-li"
                         = @user.phone_2
 
-                    - unless @user.birthdate?
+                    - if @user.birthdate?
                       %li
                         = icon 'birthday-cake', class: "fa-li"
                         = l @user.birthdate
