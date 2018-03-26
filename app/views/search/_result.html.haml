@@ -12,7 +12,7 @@
         %tr
           %td= result.friendly_id
           %td= t "activerecord.models."+result.class.to_s.downcase+".one"
-          %td= result.name
+          %td= "#{result.name} (#{result.town})"
           %td= result.email
           %td
             = link_to structure_add_memberships_path(structure, result.id, result.class), class: "btn btn-sm btn-primary" do

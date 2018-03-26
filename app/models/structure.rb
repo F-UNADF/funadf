@@ -61,7 +61,7 @@ class Structure < ActiveRecord::Base
   end
 
   def self.global_search q
-    where(['(name LIKE ? OR email LIKE ? OR id LIKE ?)', "#{q}%", "#{q}%", "#{q}%"])
+    where(['(name LIKE ? OR email LIKE ? OR id LIKE ? OR town LIKE ?)', "#{q}%", "#{q}%", "#{q}%", "#{q}%"])
   end
 
   def self.types
