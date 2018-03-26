@@ -132,7 +132,7 @@ class User < ActiveRecord::Base
     if elector
       campaign.has_already_vote?(elector)
     else
-      campaign.has_already_vote?(user)
+      campaign.has_already_vote?(self)
     end
   end
 
