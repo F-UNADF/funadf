@@ -60,16 +60,15 @@
                         = "Présidence de <b>#{s.name}</b>".html_safe
                         %small= "(#{(s.is_elector?(@structure)) ? 'Vote contabilisé' : 'Vote consultatif'})"
 
-          - if !@user.has_voted?(@campaign) || !@presidences.blank?
-            .row
-              .col-md-12
-                .text-center.mt-3
-                  %button.btn.btn-success{type: :submit, data:{confirm: 'Attention, une fois le vote effectué, il est impossible de revenir en arrière ! Merci de bien vérifier votre vote avant de valider !'}}
-                    = icon 'warning'
-                    JE VALIDE MON VOTE
-                    = icon 'warning'
+          - if Time.now < @campaign.start_at
+            .alert.alert-danger Les votes n'ont pas encore commencés
+          - else
+            - if !@user.has_voted?(@campaign) || !@presidences.blank?
+              .row
+                .col-md-12
+                  .text-center.mt-3
+                    %button.btn.btn-success{type: :submit, data:{confirm: 'Attention, une fois le vote effectué, il est impossible de revenir en arrière ! Merci de bien vérifier votre vote avant de valider !'}}
+                      = icon 'warning'
+                      JE VALIDE MON VOTE
+                      = icon 'warning'
 
-
-          - if @campaign.elector_can_vote?(@elector)
-            %tr
-              %td{colspan: 2}
