@@ -139,7 +139,8 @@ class Structure < ActiveRecord::Base
   end
 
   def member_can_vote?(resource)
-    electors.find_by(resource: resource).can_vote unless electors.find_by(resource: resource).blank?
+    elector = electors.find_by(resource: resource)
+    elector && elector.can_vote unless electors.find_by(resource: resource).blank?
   end
   def member_cant_vote_note(resource)
     electors.find_by(resource: resource).note
