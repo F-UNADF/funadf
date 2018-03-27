@@ -38,7 +38,7 @@
                     %td= member.phone_1
                     %td
                       = check_box_tag :can_vote, :can_vote, @structure.member_can_vote?(member), class: 'switch', data:{elector_id: member.id, elector_type: member.get_class.downcase, structure: @structure.id}
-                      - if !@structure.member_can_vote?(member)
+                      - if !@structure.can_vote?(member)
                         %a{'rel' => "tooltip", 'href' => "#", 'data-toggle' => "tooltip", 'title' => @structure.member_cant_vote_note(member)}
                           = icon "info"
                     %td
