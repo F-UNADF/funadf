@@ -134,12 +134,12 @@ class Structure < ActiveRecord::Base
   end
 
   def get_elector(resource)
-    elector = self_electors.find_by(structure: resource)
+    elector = electors.find_by(resource_id: resource.id, resource_type: resource.get_class)
     elector
   end
 
   def member_can_vote?(resource)
-    elector = self_electors.find_by(resource: resource)
+    elector = electors.find_by(resource: resource)
     elector && elector.can_vote
   end
   def member_cant_vote_note(resource)
