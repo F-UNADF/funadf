@@ -20,12 +20,3 @@
               Ajouter en tant que membre
 - else
   %p Aucun résultat pour cette recherche. Vérifiez que l'utilisateur ou l'association existent !
-  %ul.list-inline
-    %li.item-list-inline
-      = link_to new_user_invitation_path, class: "btn btn-sm btn-success" do
-        = icon "plus"
-        Ajouter un utilisateur
-    %li.item-list-inline
-      = link_to new_admin_structure_path, class: "btn btn-sm btn-primary" do
-        = icon "plus"
-        Ajouter une association
