@@ -134,7 +134,7 @@ class Structure < ActiveRecord::Base
   end
 
   def get_elector(resource)
-    elector = electors.find_by(resource_id: resource.id, resource_type: resource.get_class)
+    elector = electors.find_by(resource_id: resource.id, resource_type: resource.class)
     elector
   end
 

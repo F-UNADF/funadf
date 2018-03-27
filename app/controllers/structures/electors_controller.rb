@@ -8,11 +8,10 @@ class Structures::ElectorsController < ApplicationController
     @elector.can_vote = params[:can_vote]
 
     @elector.save
-
   end
 
   def update
-    @elector = @structure.electors.find_by(resource_id: params[:resource_id], resource_type: params[:resource_type])
+    @elector = Elector.find_or_create_by(structure: @structure, resource_id: params[:resource_id], resource_type: params[:resource_type])
 
     if @elector.update(elector_params)
       respond_to do |format|
