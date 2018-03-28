@@ -16,7 +16,7 @@
 //= require moment
 //= require bootstrap
 //= require select2
-//= require tempusdominus-bootstrap-4.js
+//= require tempusdominus-bootstrap-4
 //= require cocoon
 //= require bootstrap-toggle
 //= require_tree .
@@ -42,8 +42,8 @@ jQuery(document).ready(function($) {
       method: "post",
       data: {elector: {can_vote: $(this).prop('checked')}}
     });
-
   });
+
 
   moment.locale('fr', {
     months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
