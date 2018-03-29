@@ -81,8 +81,8 @@
 
                   %tr
                     %th Electorats
-                    %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.officials.count }.sum
-                    %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.consultatives.count }.sum
+                    %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.officials.count }.first
+                    %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.consultatives.count }.first
 
                   %tr
                     %th
