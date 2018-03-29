@@ -81,8 +81,8 @@
 
                   %tr
                     %th Electorats
-                    %td{colspan: 6}= @campaign.get_voters(only_electors: true)
-                    %td{colspan: 6}= @campaign.get_voters(only_electors: false)
+                    %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.officials.count }.sum
+                    %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.consultatives.count }.sum
 
                   %tr
                     %th
@@ -116,6 +116,12 @@
 
                   %tr
                     %th
+                    %th Oui
+                    %th Non
+                    %th Neutre
+                    %th Votants
+                    %th Exprimés
+                    %th Blancs
                     %th Oui
                     %th Non
                     %th Neutre
