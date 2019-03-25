@@ -27,13 +27,19 @@ Rails.application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  config.action_mailer.smtp_settings = {
-  }
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  :user_name => '6cdcb3bf51772f',
+  :password => 'af2664b6e1e2fe',
+  :address => 'smtp.mailtrap.io',
+  :domain => 'smtp.mailtrap.io',
+  :port => '2525',
+  :authentication => :cram_md5
+}
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => 'lvh.me:3000' }
-  config.action_mailer.delivery_method = :test
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.perform_deliveries = false
+  config.action_mailer.perform_deliveries = true
 
 
   # Adds additional error checking when serving assets at runtime.

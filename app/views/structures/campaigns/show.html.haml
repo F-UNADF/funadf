@@ -84,66 +84,69 @@
                     %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.officials.count }.first
                     %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.consultatives.count }.first
 
-                  %tr
-                    %th
-                    %th Oui
-                    %th{colspan: 2} Non
-                    %th Votants
-                    %th Exprimés
-                    %th Blancs
 
-                    %th Oui
-                    %th{colspan: 2} Non
-                    %th Votants
-                    %th Exprimés
-                    %th Blancs
-
-                  - @campaign.motions.where(kind: :binary).each do |motion|
+                  - unless @campaign.motions.where(kind: :binary).blank?
                     %tr
-                      %td= motion.name
-                      %td= motion.votes.officials.where(result: "oui").count
-                      %td{colspan: 2}= motion.votes.officials.where(result: "non").count
-                      %td= motion.votes.officials.count
-                      %td= motion.votes.officials.where("result IS NOT NULL").count
-                      %td= motion.votes.officials.where(result: nil).count
+                      %th
+                      %th Oui
+                      %th{colspan: 2} Non
+                      %th Votants
+                      %th Exprimés
+                      %th Blancs
 
-                      %td= motion.votes.consultatives.where(result: "oui").count
-                      %td{colspan: 2}= motion.votes.consultatives.where(result: "non").count
-                      %td= motion.votes.consultatives.count
-                      %td= motion.votes.consultatives.where("result IS NOT NULL").count
-                      %td= motion.votes.consultatives.where(result: nil).count
+                      %th Oui
+                      %th{colspan: 2} Non
+                      %th Votants
+                      %th Exprimés
+                      %th Blancs
+
+                    - @campaign.motions.where(kind: :binary).each do |motion|
+                      %tr
+                        %td= motion.name
+                        %td= motion.votes.officials.where(result: "oui").count
+                        %td{colspan: 2}= motion.votes.officials.where(result: "non").count
+                        %td= motion.votes.officials.count
+                        %td= motion.votes.officials.where("result IS NOT NULL").count
+                        %td= motion.votes.officials.where(result: nil).count
+
+                        %td= motion.votes.consultatives.where(result: "oui").count
+                        %td{colspan: 2}= motion.votes.consultatives.where(result: "non").count
+                        %td= motion.votes.consultatives.count
+                        %td= motion.votes.consultatives.where("result IS NOT NULL").count
+                        %td= motion.votes.consultatives.where(result: nil).count
 
 
-                  %tr
-                    %th
-                    %th Oui
-                    %th Non
-                    %th Neutre
-                    %th Votants
-                    %th Exprimés
-                    %th Blancs
-                    %th Oui
-                    %th Non
-                    %th Neutre
-                    %th Votants
-                    %th Exprimés
-                    %th Blancs
-                  - @campaign.motions.where(kind: :neutral).each do |motion|
+                  - unless @campaign.motions.where(kind: :neutral).blank?
                     %tr
-                      %td= motion.name
-                      %td= motion.votes.officials.where(result: "oui").count
-                      %td= motion.votes.officials.where(result: "non").count
-                      %td= motion.votes.officials.where(result: "neutre").count
-                      %td= motion.votes.officials.count
-                      %td= motion.votes.officials.where("result IS NOT NULL").count
-                      %td= motion.votes.officials.where(result: nil).count
+                      %th
+                      %th Oui
+                      %th Non
+                      %th Neutre
+                      %th Votants
+                      %th Exprimés
+                      %th Blancs
+                      %th Oui
+                      %th Non
+                      %th Neutre
+                      %th Votants
+                      %th Exprimés
+                      %th Blancs
+                    - @campaign.motions.where(kind: :neutral).each do |motion|
+                      %tr
+                        %td= motion.name
+                        %td= motion.votes.officials.where(result: "oui").count
+                        %td= motion.votes.officials.where(result: "non").count
+                        %td= motion.votes.officials.where(result: "neutre").count
+                        %td= motion.votes.officials.count
+                        %td= motion.votes.officials.where("result IS NOT NULL").count
+                        %td= motion.votes.officials.where(result: nil).count
 
-                      %td= motion.votes.consultatives.where(result: "oui").count
-                      %td= motion.votes.consultatives.where(result: "non").count
-                      %td= motion.votes.consultatives.where(result: "neutre").count
-                      %td= motion.votes.consultatives.count
-                      %td= motion.votes.consultatives.where("result IS NOT NULL").count
-                      %td= motion.votes.consultatives.where(result: nil).count
+                        %td= motion.votes.consultatives.where(result: "oui").count
+                        %td= motion.votes.consultatives.where(result: "non").count
+                        %td= motion.votes.consultatives.where(result: "neutre").count
+                        %td= motion.votes.consultatives.count
+                        %td= motion.votes.consultatives.where("result IS NOT NULL").count
+                        %td= motion.votes.consultatives.where(result: nil).count
 
                   - unless @campaign.motions.where(kind: :free).blank?
                     %tr

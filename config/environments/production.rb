@@ -70,11 +70,11 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: "smtp-relay.sendinblue.com",
     port: 587,
-    domain: 'add-fnadf.fr',
+    domain: Rails.application.secrets.domain_name,
     authentication: "plain",
     enable_starttls_auto: true,
-    user_name: "p.gruson+mi@gmail.com",
-    password: "mdxspbLz1cCNMKVI"
+    user_name: Rails.application.secrets.email_provider_username,
+    password: Rails.application.secrets.email_provider_password
   }
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => 'https://add-fnadf.fr' }
