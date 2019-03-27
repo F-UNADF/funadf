@@ -23,7 +23,7 @@ class VotingsController < ApplicationController
                         elector_id: @elector.id)
             vote[:is_consultative] = false
           end
-          Vote.create(motion_id: vote[:motion_id], result: vote[:result])
+          Vote.create(motion_id: vote[:motion_id], result: vote[:result], is_consultative: vote[:is_consultative])
         end
       end
     end

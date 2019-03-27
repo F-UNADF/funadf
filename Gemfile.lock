@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/rails/rails.git
+  remote: https://github.com/rails/rails.git
   revision: d4370d76c5cb5453629d64055fc61e99f8e6f919
   branch: 4-2-stable
   specs:

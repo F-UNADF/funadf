@@ -26,9 +26,15 @@ class Admin::UsersController < AdminController
 
   private
     def user_params
-      params[:user].permit(:firstname, :lastname, :avatar, :address_1,
+      if params[:user][:password].blank?
+        params[:user].permit(:firstname, :lastname, :avatar, :address_1,
                           :address_2, :zipcode, :town, :phone_1, :phone_2,
                           :email, :level, :birthdate)
+      else
+        params[:user].permit(:firstname, :lastname, :avatar, :address_1,
+                          :address_2, :zipcode, :town, :phone_1, :phone_2,
+                          :email, :level, :birthdate, :password, :password_confirmation)
+      end
     end
 
 

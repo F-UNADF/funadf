@@ -70,6 +70,14 @@
                 = f.label :avatar
                 = f.file_field :avatar
 
+              %hr
+              .form-group
+                = f.label :password
+                = f.password_field :password, class: "form-control"
+              .form-group
+                = f.label :password_confirmation
+                = f.password_field :password_confirmation, class: "form-control"
+
             .col-md-4
               %h3.h5.mb-3 Rôle espace admin
 
