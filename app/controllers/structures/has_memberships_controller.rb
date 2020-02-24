@@ -16,6 +16,22 @@ class Structures::HasMembershipsController < ApplicationController
     redirect_to :back, alert: 'Membre ajouté'
   end
 
+  def destroy
+
+    @structure = Structure.find params[:structure_id]
+
+    klass = Object.const_get params[:member_type]
+
+    @member = klass.find params[:member_id]
+
+    #current_role
+    current_role = @member.my_roles.where(resource_id: params[:structure_id]).first.name
+
+    @member.remove_role current_role.to_sym, @structure
+
+    redirect_to :back, alert: 'Membre supprimé'
+  end
+
   private
     def set_structure
       @structure = Structure.find params[:structure_id]

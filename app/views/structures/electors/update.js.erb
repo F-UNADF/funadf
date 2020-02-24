@@ -2,5 +2,5 @@
   jQuery('#roles_form .modal-body').html('<%= j render "structures/electors/form", structure: @structure, elector: @elector %>');
   jQuery('#roles_form').modal('toggle');
 <%- else %>
-  alert('Electeur mis à jours');
+  toastr.success('Electeur mis à jours');
 <%- end %>

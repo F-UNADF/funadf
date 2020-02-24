@@ -79,6 +79,10 @@
                           = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
                             = icon "eye"
                             Gérer la structure
+                      - if can? :manage, structure
+                        %li.list-inline-item
+                          = link_to structure_path(structure), method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
+                            = icon "times"
 
         .float-right
           = will_paginate @structures

@@ -185,4 +185,8 @@ class User < ActiveRecord::Base
     end
     invitable
   end
+
+  def my_roles
+    roles
+  end
  end

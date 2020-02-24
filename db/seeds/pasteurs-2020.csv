@@ -1,0 +1,744 @@
+ID,lastname,firstname,email,phone,town,zipcode,birthdate,spouse,region,level,situation
+1042,LE GALL,Timothée,legall.timothee25@gmail.com,06 47 69 67 56,TRÉDUDER,22310,1997,23,,Bretagne,Probatoire,Actif,
+1041,SAOUL,Emmanuel,saoulmanu@hotmail.fr,06 65 44 07 65,BREST,29200,1995,25,Rébecca,Bretagne,Probatoire,Actif,
+1043,JULLIAN,Bastien,bastien.jullian@outlook.fr,06 28 23 10 61,SAINT SEBASTIEN SUR LOIRE,44230,1994,26,Laurie,Bretagne,Probatoire,Actif,
+1003,CAZAL,Dimitri,dimitricazal@hotmail.com,07 67 51 56 17,,,1993,27,,Bretagne,Probatoire,Actif,
+976,RAKOTOZAFY,Yannick,ysrakoto@gmail.com,06 11 53 82 17,,,1989,31,Stessy,Bretagne,Probatoire,Actif,
+1040,TRICOIRE,Yann,yann.tricoire@outlook.fr,06 49 62 34 21,MONTAIGU,85600,1989,31,Alexandra,Bretagne,Probatoire,Actif,
+869,NAOUSSI DJUMA,Wilson,naoussiwilson@yahoo.fr,06 20 87 63 39,NANTES,44100,1987,33,,Bretagne,Stagiaire,Actif,
+785,GALCHIER,Philippe,p.galchier@live.fr,06 26 63 82 22,BREST,29200,1985,35,Stéphanie,Bretagne,Pasteur APE,Actif,
+975,CAMARA,Laury,laurycamara@outlook.fr,06 17 03 23 08,,,1985,35,Jennifer,Bretagne,Probatoire,Actif,
+970,METTE,Matthias,matthias642@msn.com,767478468,SAINT GEREON,44150,1985,35,Naomie,Bretagne,Stagiaire,Actif,
+812,MORIN,Fabio,morin_fabio@yahoo.fr,06 98 99 19 52,DAOULAS,29460,1984,36,,Bretagne,Pasteur AEM,Actif,
+906,CHOTTIN,Jérôme,j.chottin@gmail.com,06 38 64 26 01,LANESTER,56600,1984,36,Gaëlle,Bretagne,Stagiaire,Actif,
+847,ROUFFET,Jean-Baptiste,jbl.rouffet@laposte.net,06 46 39 89 37,SECLIN,59113,1983,37,Ludivine,Bretagne,Probatoire,Actif,
+909,DEHAYS,Maxime,maxcanucks@hotmail.fr,06 70 22 11 58,,,1983,37,,Bretagne,Stagiaire,Actif,
+813,KIKUNI,Wasso,m.mme.kikuni@live.fr,06 46 05 64 42,REZÉ,44400,1981,39,Lise,Bretagne,Pasteur AEM,Actif,
+628,BESNARD,Benjamin,benjamin.besnard@yahoo.fr,06 98 46 89 99,QUIMPER,29000,1981,39,Gaëlle,Bretagne,Pasteur APE,Actif,
+930,MORICE,Cédric,cedric.morice@hotmail.com,06 66 04 36 07,SAINT AUBIN DES CHÂTEAUX,44110,1981,39,Cindy,Bretagne,Stagiaire,Actif,
+596,DELABALLE,Hervé,herve.delaballe@gmail.com,06 95 07 33 77,PLOUFRAGAN,22440,1974,46,Magalie,Bretagne,Pasteur APE,Actif,
+821,HOAREAU,Janick,celine.hoareau@neuf.fr,07 50 36 90 99,LOPERHET,29470,1971,49,Céline,Bretagne,Pasteur AEM,Actif,
+955,BAILLY,Pierre,beaetpier@gmail.com,06 83 87 58 17,FOUGÈRES,35300,1971,49,Béatrice,Bretagne,Stagiaire,Actif,
+880,ACHOU,Jacques-Ollivier,joaperou@yahoo.com,06 01 06 05 70,ORVAULT,44700,1966,54,Sylvie,Bretagne,Stagiaire,Actif,
+189,COLINET,Loïc,loic.colinet@free.fr,,EVRAN,22630,1965,55,,Bretagne,Pasteur APE,Actif,
+135,BIAVA,Denis,denisbiava@gmail.com,06 13 41 82 52,BRELIDY,22140,1964,56,Nathalie,Bretagne,Pasteur APE,Actif,
+259,FREUDE,Bernhard,bfreude@sfr.fr,06 50 07 73 95,THEIX,56450,1964,56,Cathy,Bretagne,Pasteur APE,Actif,
+931,POADI,Nabine,nabine.poadi@orange.fr,06 27 46 22 30,,,1962,58,Sylvie,Bretagne,Probatoire,Actif,
+142,BLIN-NOUVEAU,Pascal,pascalbn53@gmail.com,06 08 00 28 90,LOUVERNE,53950,1961,59,Caroline,Bretagne,Pasteur APE,Actif,
+615,CHANTREL,Denis,denischantrel@orange.fr,,GUENROUET,44530,1959,61,Aline,Bretagne,Pasteur APE,Actif,
+371,MUSONI,Gérard,gerard.musoni@orange.fr,06 45 40 76 19,NANTES,44300,1959,61,Gloriose,Bretagne,Pasteur APE,Actif,
+285,GUYOT,Jean-Patrick,jean.guyot2@gmail.com,,LANESTER,56600,1956,64,,Bretagne,Pasteur APE,Actif,
+118,BAK,Philippe,philippe.bak@addfrance.com,06 87 38 53 93,LANESTER,56600,1954,66,Maryse,Bretagne,Pasteur APE,Retraité,
+381,OUVRARD,Alain,aouvrard.add@orange.fr,,TRIGNAC,44570,1951,69,Myriam,Bretagne,Pasteur APE,Actif,
+79,ANTOINE,Dominique,dominique.antoine@addfrance.com,06 46 65 48 68,SAINT JEAN TROLIMON,29120,1951,69,Jocelyne,Bretagne,Pasteur APE,Retraité,
+334,LEPRAT,Jacky,leprat@wanadoo.fr,06 08 62 14 37,RENNES,35000,1949,71,Myriam,Bretagne,Pasteur APE,Actif,
+247,FLORIN,Jean-Claude,jean-claude.florin1@orange.fr,06 80 23 41 69,GUILVINEC,29730,1949,71,Viviane,Bretagne,Pasteur APE,Retraité,
+413,QUEINNEC,Daniel,daniel.queinnec@gmail.com,07 72 14 58 73,DIRINON,29460,1949,71,Denise,Bretagne,Pasteur APE,Retraité,
+349,MARECHAL,Michel,marechalmichel44@gmail.com,06 15 91 52 50,NANTES,44100,1944,76,Elisabeth,Bretagne,Pasteur APE,Actif,
+400,PICHET,Marcel,marcel.pichet@gmail.com,06 16 46 27 00,SAINT SULIAC,35430,1944,76,,Bretagne,Pasteur APE,Retraité,
+284,GUYOT,Jean,,,LORIENT,56100,1934,86,,Bretagne,Pasteur APE,Retraité,
+275,GOFFIN,Marcel,marcelgoffin@orange.fr,06 09 61 73 01,DIRINON,29460,1930,90,Eliane,Bretagne,Pasteur APE,Retraité,
+379,OLIVIER,Claude,olivierclaude2049@neuf.fr,,SAINT NAZAIRE,44600,1928,92,,Bretagne,Pasteur APE,Retraité,
+907,TRAMOY,Pierre,pierretramoy@yahoo.fr,,,,1990,30,,Est,Probatoire,Actif,
+727,GAMBEE,Basile,gambeebasile@hotmail.fr,06 12 89 64 22,SAINTE MARIE AUX MINES,68160,1987,33,Soizic,Est,Pasteur AEM,Actif,
+1009,SAGGESE,David,,,,,1987,33,,Est,Probatoire,Actif,
+908,PARENT,Emmanuel,parent.emmanuel@outlook.fr,06 71 14 79 65,VERDUN,55100,1987,33,,Est,Stagiaire,Actif,
+800,FANIART,Raymond-Pierre,raymondpierre.faniart@gmail.com,06 31 50 37 82,NIEDERHERGHEIM,68127,1986,34,Anne laure,Est,Pasteur AEM,Actif,
+801,ROUFFET,Pierre-Samuel,rouffetps@hotmail.com,06 25 76 48 35,GEISPOLSHEIM,67118,1984,36,Lise,Est,Pasteur AEM,Actif,
+668,HUOT,Pierre,huotpierre@gmail.com,06 78 95 36 74,ESCLAVOLLES LUREY,51260,1984,36,Roxane,Est,Pasteur APE,Actif,
+775,THOMANN,Matthieu,matthieu.thomann@gmail.com,06 26 33 51 42,,,1984,36,Magali,Est,Pasteur APE,Actif,
+667,HOARAU,Nicolas,luzani.hoarau@gmail.com,06 21 43 03 57,THIERVILLE SUR MEUSE,55840,1983,37,Elsa,Est,Pasteur APE,Actif,
+798,BOL,Jonathan,Jonathanbol67260@gmail.com,06 88 27 45 82,SARRE UNION,67260,1982,38,Inkyeong,Est,Pasteur AEM,Actif,
+673,YANGABANGALO,Koyagasoloma tarambese,tarammce@hotmail.com,06 87 33 81 60,CHOIGNES,52000,1981,39,Sarah,Est,Pasteur AEM,Actif,
+829,MICHEL,Thomas,m-t@orange.fr,07 81 87 89 45,,,1981,39,Véronique,Est,Stagiaire,Actif,
+561,BERGAMINI,Philippe,philippe.bergamini@gmail.com,06 92 10 04 06,SAINT BENOÎT,97470,1980,40,Murielle,Est,Pasteur APE,Actif,
+799,BOURGEOIS,Charles,brothercharls@yahoo.fr,06 22 09 72 53,DOMBASLE SUR MEURTHE,54110,1980,40,,Est,Probatoire,Actif,
+818,AH-YANE,Olivier,ahyaneolivier@gmail.com,06 28 23 65 98,ROPPE,90380,1979,41,Manuella,Est,Pasteur AEM,Actif,
+774,LAILLIER,Michaël,michael.laillier@orange.fr,06 30 59 24 33,SÉLESTAT,67600,1978,42,Noemie,Est,Pasteur AEM,Actif,
+461,GUERREY,Pascal,pasaur@orange.fr,06 45 75 02 68,SCHWEIGHOUSE SUR MODER,67590,1975,45,Aurélie,Est,Pasteur APE,Actif,
+1006,FOBAH,Yvan,,,,,1975,45,,Est,Probatoire,Actif,
+360,MERCIER,Cédric,cedricmercier90@gmail.com,06 58 10 55 03,BELFORT,90000,1974,46,Ursula,Est,Pasteur APE,Actif,
+843,AKEWA ANGUILLET,Davy-Steeve,davy-steeve@dayleen.net,06 67 41 47 15,WOIPPY,57140,1974,46,Roselyne,Est,Stagiaire,Actif,
+844,KLARIC,David,,07 83 42 98 40,REIMS,51100,1973,47,Esther,Est,Pasteur AEM,Actif,
+564,FOURRET,Guillaume,gfourret@gmail.com,06 01 37 30 78,,,1973,47,Véronique,Est,Pasteur APE,Actif,
+877,ARD,Sylvain,sy.ys@hotmail.fr,06 11 11 32 65,CHAMPDRAY,88640,1973,47,Ysaline,Est,Stagiaire,Actif,
+532,LA MONICA,Arnaud,arnaudlamonica@gmail.com,06 98 43 77 78,SAINT DIE,88100,1972,48,Manuella,Est,Pasteur APE,Actif,
+652,MVILAKANI POTA,Yves,potayves@yahoo.fr,06 62 54 27 84,COURCELLES CHAUSSY,57530,1969,51,Juliette,Est,Pasteur APE,Actif,
+226,DUVIEUSART,Emmanuel,e.duvieusart@free.fr,06 71 02 29 65,MULHOUSE,68200,1968,52,Muriel,Est,Pasteur APE,Actif,
+108,ALEXANDRE,Franck,faprive@orange.fr,,SAINT GERMAIN,10120,1967,53,Liliana,Est,Pasteur APE,Actif,
+1005,SAMPERA,Jean sébastien,js.sampera@yahoo.fr,06 63 02 65 74,STRASBOURG,67200,1962,58,Marthe,Est,Pasteur agréé,Actif,
+429,RIVOT,Didier,d.rivot.c@free.fr,06 19 74 32 16,DIDENHEIM,68350,1962,58,Corinne,Est,Pasteur APE,Actif,
+274,GODEL,Jean-Marc,jmigodel@gmail.com,06 81 38 57 97,ETIVAL CLAIREFONTAINE,88480,1961,59,Isabelle,Est,Pasteur APE,Actif,
+867,WADOU,Paul,paul.wadou@sfr.fr,06 24 74 32 17,ÉPINAL,88000,1960,60,Françoise,Est,Pasteur agréé,Actif,
+356,MAUFFREY,Michel,mmauffrey@outlook.fr,06 79 88 81 11,WINTZENHEIM,68920,1960,60,Patricia,Est,Pasteur APE,Actif,
+385,PARENT,Alain,parent.alain2@wanadoo.fr,,BUCEY EN OTHE,10190,1959,61,Frédérique,Est,Pasteur APE,Actif,
+729,PIROT,Dominique,dominique.pirot08@orange.fr,,ILLZACH,68110,1957,63,Françoise,Est,Pasteur AEM,Actif,
+480,VETS,Alain,josalain758189@orange.fr,,RETHEL,8300,1955,65,Josiane,Est,Pasteur APE,Retraité,
+299,HUOT,Claude,clhuot.aep@free.fr,06 45 34 16 93,NANCY,54000,1954,66,Francine,Est,Pasteur APE,Actif,
+450,SCHNEIDER,Michel,michel.schneider@epis-strasbourg.eu,06 67 91 40 16,STILL,67190,1954,66,Evelyne,Est,Pasteur APE,Actif,
+549,SATORI,Daniel,daniel.satori@orange.fr,06 15 21 29 62,RUELISHEIM,68270,1953,67,Nadine,Est,Pasteur AEM,Actif,
+282,GUITARD,René,rene.guitard@gmail.com,07 83 10 50 50,MULHOUSE,68200,1951,69,Elisabeth,Est,Pasteur APE,Retraité,
+90,LAMBERT,Moïse,moise.lambert@addfrance.com,06 68 31 44 42,ROUVRAY,89230,1950,70,Brigitte,Est,Pasteur APE,Retraité,
+479,VERGNOL,Gérard,gerardvergnol@gmail.com,,SARRE UNION,67260,1950,70,Danielle,Est,Pasteur APE,Retraité,
+133,BESNIER,Jacky,jacky.besnier@laposte.net,,GOERSDORF,67360,1950,70,,Est,,Retraité,
+180,CHALONS,Bernard,bernard.chalons@orange.fr,06 08 70 54 02,MANDEURE,25350,1949,71,,Est,Pasteur AEM,Actif,
+238,FELTYNIAK,Patrick,pfeltyniak@estvideo.fr,,BALDERSHEIM,68390,1949,71,Josiane,Est,Pasteur APE,Actif,
+95,ATTA N'TIAMOA,Joseph,josatta@gmail.com,06 52 79 01 31,METZ,57000,1948,72,Christiane,Est,Pasteur APE,Actif,
+344,LUTZ,Hubert,huberlutz@estvideo.fr,06 08 21 80 59,ILLZACH,68110,1939,81,Sylvia,Est,Pasteur APE,Retraité,
+160,BRION,Daniel,danielbrion@sfr.fr,06 62 64 09 69,LINGOLSHEIM,67380,1937,83,Jeannine,Est,Pasteur APE,Retraité,
+427,RINGENBACH,Gilbert,gilbert.denise.ringenbach@wanadoo.fr,,HERICOURT,70400,1935,85,,Est,Pasteur APE,Retraité,
+350,MARGRETH,Jean-Marie,jmmarg@orange.fr,06 72 67 27 07,SÉLESTAT,67600,1932,88,Françoise,Est,Pasteur APE,Retraité,
+1045,BECQUART,Caleb,caleb.becquart.96@gmail.com,06 96 43 68 30,LILLE,59000,1996,24,Valérie,Nord Pas de Calais Picardie,Probatoire,Actif,
+910,MARQUES,Mathias,marques.mathias@gmail.com,06 15 57 31 61,ANICHE,59580,1987,33,Marie,Nord Pas de Calais Picardie,Probatoire,Actif,
+840,MÉLÉ,Timothée,timothee.mele@gmail.com,06 23 03 10 28,BRUAY SUR L'ESCAUT,59860,1986,34,Phoebe,Nord Pas de Calais Picardie,Pasteur AEM,Actif,
+737,BOUYOU-BIBOKA,David,dbouyou80@gmail.com,06 69 58 64 68,AMIENS,80090,1985,35,Enora,Nord Pas de Calais Picardie,Pasteur AEM,Actif,
+240,BOLOMIK,Emmanuel (manou),manoubolomik@gmail.com,07 86 28 04 77,CALAIS,62100,1981,39,Lauryne,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+861,HWIALKOSKI,Richard,richardhwialkoski@hotmail.com,06 03 39 05 10,FLERS SUR NOYE,80160,1980,40,Amandine,Nord Pas de Calais Picardie,Stagiaire,Actif,
+756,BALVERDE,Samuel,sam.balverde@gmail.com,06 24 48 01 04,WASQUEHAL,59290,1979,41,Summer,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+848,DANDRIEU,Olivier,dandrieu.o@hotmail.fr,06 27 42 93 30,CHERY LÈS POUILLY,2000,1975,45,Sylvie,Nord Pas de Calais Picardie,Stagiaire,Actif,
+787,COULIBALY,Oumar moïse,oumar21coulibaly@gmail.com,06 60 95 13 32,LE PORTEL,62480,1974,46,Léa,Nord Pas de Calais Picardie,Pasteur AEM,Actif,
+599,DELBERGHE,Christian,delberghe.christian0489@orange.fr,06 26 32 47 58,LIEVIN,62800,1974,46,Héléna,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+571,JALLIFFIER-TALMAT,Philippe,philippe.jalliffier@addfrance.com,06 52 67 31 38,ARRAS,59155,1971,49,Christelle,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+467,TORNATORE,Tony,tonytornatore@gmail.com,06 07 98 23 23,AMIENS,80290,1971,49,Florence,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+1001,MEDDAS,Philippe,philippe.meddas@sfr.fr,06 49 84 89 63,ECLAIBES,59330,1971,49,Orlane,Nord Pas de Calais Picardie,Stagiaire,Actif,
+854,VANHELST,Philippe,philvanhelst@aol.com,06 68 74 35 98,,,1970,50,Kyria,Nord Pas de Calais Picardie,Probatoire,Actif,
+398,PEZDEVSEK,Frédéric,frederic.pezdevsek@dbmail.com,,DOUAI,59370,1968,52,Christine,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+678,LECOQ,Jean-Yves,jean-yveslecoq@sfr.fr,06 50 67 91 97,MALO LES BAINS,59240,1966,54,Rachel,Nord Pas de Calais Picardie,Pasteur AEM,Actif,
+566,CALABRIA,Philippe,phcalabria@gmail.com,06 82 82 23 28,WASQUEHAL,59290,1965,55,Esther,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+404,POTTIER,Daniel,danpottier@sfr.fr,06 25 27 11 30,WASQUEHAL,59290,1963,57,Patricia,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+701,DESPRÉ,Robert,rdesp@orange.fr,06 87 69 86 15,SAINT MARTIN AU LAERT,62500,1960,60,Christine,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+219,DUGARD,Philippe,dugard.philippe@gmail.com,06 36 48 78 80,ST POL SUR MER,59143,1960,60,Sylvie,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+328,LEBOUC,Philippe,philiam@live.fr,06 09 72 28 30,VERQUIN,62131,1960,60,Myriam,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+703,DOS REIS,Pascal,pascal.dos_reis@libertysurf.fr,06 79 09 66 22,MAUBEUGE,59600,1957,63,Annette,Nord Pas de Calais Picardie,Pasteur APE,Actif,
+1044,NOCHELSKI,David,david.nochelski@neuf.fr,06 16 01 66 41,CAMBRAI,59400,1957,63,Florence,Nord Pas de Calais Picardie,Pasteur Partenaire,Actif,
+172,SCHULZE,Daniel,d.schulze@free.fr,06 83 67 02 08,BERTEAUCOURT LES THENNES,80110,1954,66,Catherine,Nord Pas de Calais Picardie,Pasteur AEM,Retraité,
+454,SIMON,Michel,vercoutermichel2750@orange.fr,06 52 37 00 30,DOURGES,62119,1954,66,Christine,Nord Pas de Calais Picardie,Pasteur APE,Retraité,
+85,COLLET,Daniel,dan.collet@laposte.net,06 83 16 81 85,GONDECOURT,59147,1952,68,Christine,Nord Pas de Calais Picardie,Pasteur APE,Retraité,
+732,SAVIO,Charles,charlessavio@hotmail.fr,06 62 96 69 88,MONTIGNY EN GOHELLE,62640,1948,72,Joséphine,Nord Pas de Calais Picardie,Pasteur agréé,Retraité,
+225,DUVAL,Jean-Noël,jeannoel.duval@sfr.fr,06 66 31 37 04,BARLY,62810,1947,73,Mireille,Nord Pas de Calais Picardie,Pasteur AEM,Retraité,
+137,BIVILLE,Claude,claude.biville013@orange.fr,06 10 13 55 11,CRIEL SUR MER,76910,1945,75,Suzette,Nord Pas de Calais Picardie,Pasteur APE,Retraité,
+298,HIETTE,Robert,hiette.robert@club-internet.fr,,MEURCHIN,62410,1945,75,Joëlle,Nord Pas de Calais Picardie,Pasteur APE,Retraité,
+203,DEMEESTERE,Daniel,daniel.demeestere@wanadoo.fr,06 20 35 09 12,TETEGHEM,59229,1942,78,Janine,Nord Pas de Calais Picardie,Pasteur APE,Retraité,
+78,ANTOINE,Marc,antoinemrc@gmail.com,06 98 17 51 13,PONT DE L'ARCHE,27340,1952,68,Christine,Normandie,Pasteur APE,Retraité,
+796,BERNARD,André,andrebernard2005@gmail.com,06 63 13 66 25,LE HAVRE,76600,1985,35,Stefana,Normandie,Stagiaire,Actif,
+132,BESNARD,Jonathan,besnard.jonathan@free.fr,06 16 07 72 32,LANTHEUIL,14480,1979,41,Viviane,Normandie,Pasteur APE,Actif,
+677,BEZZAR,Ocacha (ludovic),ludovic.bezzar@gmail.com,06 33 23 62 29,SAINT MARTIN DE MAILLOC,14100,1971,49,Isabelle,Normandie,Pasteur APE,Actif,
+143,BODOLEC,Daniel,bodolec.daniel@gmail.com,07 70 43 64 43,ROUEN,76100,1963,57,Patricia,Normandie,Pasteur APE,Actif,
+1018,BOINET,Josué,josue.boinet@gmail.com,06 62 82 20 84,GRAND COURONNE,76530,1970,50,Elodie,Normandie,Probatoire,Actif,
+144,BOINET,Joël,joel.boinet@orange.fr,06 49 24 36 28,BOURG ACHARD,27310,1943,77,Colette,Normandie,Pasteur APE,Retraité,
+154,BOULENGER,David,magdalena.boulenger@sfr.fr,07 76 69 31 98,LE GRAND QUEVILLY,76120,1953,67,Danièle,Normandie,Pasteur APE,Retraité,
+163,BUREY,René,rene.burey@sfr.fr,,GRANVILLE,50400,1938,82,,Normandie,Pasteur APE,Retraité,
+176,CASSAR,Yvan,yvancassar@sfr.fr,06 29 19 32 60,GRAND COURONNE,76530,1976,44,,Normandie,Pasteur APE,Actif,
+179,CERISIER,Daniel,cerisier.da@orange.fr,06 07 36 52 79,SAINT CONTEST,14280,1948,72,Ewa-Maria,Normandie,Pasteur AEM,Actif,
+184,CHEDRU,Joël,j.chedru@wanadoo.fr,,LE HAVRE,76620,1939,81,Denise,Normandie,Pasteur APE,Retraité,
+586,DEBROAS,Serge,serge.debroas@sfr.fr,06 11 32 63 97,L'AIGLE,61300,1958,62,Annie,Normandie,Pasteur APE,Actif,
+595,DENIAUX,David,david.deniaux@yahoo.fr,06 61 53 41 61,LANDIGOU,61100,1968,52,Christelle,Normandie,Pasteur APE,Actif,
+207,DENIAUX,Pierre,pierre.deniaux@gmail.com,06 77 99 09 66,SAINT JULIEN LE FAUCON,14140,1939,81,Louisette,Normandie,Pasteur APE,Retraité,
+211,DIEU,Joël,joeldieu27@gmail.com,06 85 46 70 84,ANGERVILLE LA CAMPAGNE,27930,1951,69,Annick,Normandie,Pasteur APE,Actif,
+224,DURAND,Victor,victordurand@hotmail.fr,,PETIT COURONNE,76650,1948,72,,Normandie,Pasteur APE,Retraité,
+952,GRANCHON-RIOLZIR,Pascal,pascalgranchon-riolzir@live.fr,06 52 35 79 32,CAEN,14000,1990,30,Elodie,Normandie,Stagiaire,Actif,
+288,HAROU,Moïse,mharou@free.fr,,CLAVILLE,27180,1940,80,,Normandie,Pasteur APE,Retraité,
+294,HECQUET,Daniel,,,VERNOUILLET,28500,1936,84,,Normandie,,Retraité,
+295,HERICHON,Daniel,daniel.herichon@orange.fr,06 03 82 12 45,LA LONDE,76500,1935,85,,Normandie,Pasteur APE,Retraité,
+297,HEUZE,Gilles,gilles.heuze@addfrance.com,06 81 72 93 24,CAMPIGNY,27500,1965,55,Isabelle,Normandie,Pasteur APE,Actif,
+607,KASONGA,Dieudonné,dkasonga@yahoo.fr,06 98 40 05 92,,,1963,57,Felistas,Normandie,Pasteur APE,Actif,
+315,LALOYER,André,andre.laloyer@sfr.fr,06 99 61 75 44,CHARTRES,28000,1935,85,,Normandie,Pasteur APE,Retraité,
+318,LANCEL,Alain,,,FLOCQUES,76260,1945,75,,Normandie,Pasteur APE,Retraité,
+612,LECHALUPE,Franck,francklechalupe@hotmail.com,06 26 09 71 14,FECAMP,76400,1978,42,Sarah,Normandie,Pasteur APE,Actif,
+746,LEPRINCE,Jean-Jacques,jj.leprince@gmail.com,06 60 81 93 96,LE THUIT ANGER,27370,1956,64,Arlette,Normandie,Pasteur APE,Actif,
+335,LESPINAS,Marc,marclespinas@gmail.com,06 84 23 07 41,ROUEN,76100,1941,79,Liliane,Normandie,Pasteur APE,Retraité,
+340,LOCHON,Jacques,j.vlochon@hotmail.com,06 09 74 49 41,CAGNY,14630,1943,77,Viviane,Normandie,Pasteur APE,Retraité,
+735,LORIERO,David,david.loriero@gmail.com,06 63 98 12 47,LE TRÉPORT,76470,1980,40,Dalel,Normandie,Pasteur APE,Actif,
+1017,MOHAND LHADJ,Yahia,yahiamohandlhadj@yahoo.fr,06 05 99 30 45,,,1978,42,,Normandie,Probatoire,Actif,
+365,MONTAIGNE,Félix,felix_montaigne@yahoo.fr,,SAINT ANDRÉ SUR ORNE,14320,1947,73,,Normandie,Pasteur APE,Retraité,
+696,OUEDRAOGO,Gilbert,gilb_ouedraogo@yahoo.fr,06 77 23 50 81,LE HAVRE,76620,1974,46,Fabienne,Normandie,Pasteur APE,Actif,
+384,PAPAIS,Ulysse,ulysse.papais@bbox.fr,,MAROMME,76150,1944,76,Sylvia,Normandie,Pasteur APE,Retraité,
+763,PEGAND,Philippe,philippe.pegand@orange.fr,06 66 17 30 29,MEZIDON CANON,14270,1971,49,Nadia,Normandie,Pasteur APE,Actif,
+392,PERLINSKI,Daniel,perlinski.d@gmail.com,06 81 72 50 88,SAINT LAURENT DE BREVEDENT,76700,1957,63,Sylvette,Normandie,Pasteur APE,Actif,
+395,PERRIN,Jean-Pierre,jppe27@gmail.com,,EVREUX,27000,1963,57,,Normandie,Pasteur APE,Actif,
+600,PETAT,Jean-Samuel,jspetat@yahoo.fr,06 98 72 20 66,MINIAC MORVAN,35540,1970,50,Céline,Normandie,Pasteur APE,Actif,
+396,PETAT,Michel,petat.michel@orange.fr,06 16 04 27 12,VERSON,14790,1932,88,nicolle,Normandie,Ancien reconnu,Retraité,
+531,PIERRE,Didier,didpierre@gmail.com,06 59 45 67 57,CHAUDON,28210,1951,69,Evelyne,Normandie,Ancien reconnu,Retraité,
+872,POTTIER,David,david.pottier0516@orange.fr,06 87 11 53 59,LANDELLES,28190,1973,47,,Normandie,Stagiaire,Actif,
+572,QUEDREUX,Sébastien,sebmalika@gmail.com,06 60 62 56 80,SAINT AUBIN LÈS ELBEUF,76410,1973,47,Malika,Normandie,Pasteur APE,Actif,
+80,RESSE,Philippe,resse.philippe@gmail.com,00 32 4 76 33 78 71,BRUXELLES,1190,1960,60,Anne-Marie,Normandie,Pasteur APE,Actif,
+1055,RICHARD,Mikaël,mikaelrichard76@gmail.com,06 89 73 50 39,DEVILLE LÈS ROUEN,76250,1985,35,,Normandie,Probatoire,Actif,
+425,RICHARD,Guy,,,NOGENT LE ROTROU,28400,1947,73,,Normandie,,Retraité,
+750,RICHERD,Jean-Luc,jlricherd@cegetel.net,06 04 50 83 84,DREUX,28100,1966,54,Françoise,Normandie,Pasteur AEM,Actif,
+734,RIVALLIN,Didier,didier.rivallin@orange.fr,06 20 08 34 21,OUVILLE L'ABBAYE,76760,1965,55,Sonia,Normandie,Pasteur APE,Actif,
+434,ROSAY,Dominique,dominicrosay@orange.fr,,INTRAVILLE,76630,1957,63,Patricia,Normandie,Pasteur APE,Actif,
+629,SERET,Guillaume,guillaumeseret@free.fr,06 11 74 75 51,LE GRAND QUEVILLY,76120,1977,43,Mylène,Normandie,Pasteur APE,Actif,
+782,SIPA,Gilbert,gilsip@hotmail.com,06 34 23 41 03,CAUDEBEC EN CAUX,76490,1987,33,Déborah,Normandie,Pasteur APE,Actif,
+329,STANICKI,Jean-Pierre,jp.stanicki@wanadoo.fr,06 88 30 22 39,MÉZIÈRES EN VEXIN,27510,1954,66,Régine,Normandie,Pasteur APE,Actif,
+874,TESSIER,Nicolas,naniko.tessier@yahoo.fr,06 42 42 41 38,LA GLACERIE,50470,1985,35,Mélanie,Normandie,Stagiaire,Actif,
+695,THIOLLENT,Thomas,t-ma-t@live.fr,06 07 66 77 23,DRUCOURT,27230,1985,35,Marie-Aude,Normandie,Pasteur APE,Actif,
+905,THOMAS,Daniel,daniel.thomas422@orange.fr,06 70 58 77 89,RONCHEROLLES SUR LE VIVIER,76160,1969,51,Ludivine,Normandie,Stagiaire,Actif,
+995,TRULES,Jean-Patrice,patricetrules@orange.fr,07 85 63 73 88,EVREUX,27000,1980,40,Coralie,Normandie,Stagiaire,Actif,
+473,VANPHIEN,Jean-Christophe,jeanchristophe.vanphien@sfr.fr,06 50 06 75 86,SAINT SENIER SOUS AVRANCHES,50300,1973,47,Laurence,Normandie,Pasteur APE,Actif,
+1030,ABOUGHE,Patrick,paboughe@gmail.com,06 65 25 97 55,CHELLES,77500,1971,49,Sandrine,Paris IDF,Probatoire,Actif,
+987,ADJOVI,Rogatien,elzinsroga@yahoo.fr,06 85 69 16 14,VILLENEUVE LA GARENNE,92390,1976,44,Florence,Paris IDF,Probatoire,Actif,
+911,AFFO,Jean aguielou,affoague@hotmail.com,06 72 07 17 54,,,,,,Paris IDF,Probatoire,Actif,
+912,AGBEMEBIA,Jean-Bosco kodjo,agbejb38@gmail.com,06 14 78 11 67,VIRY CHATILLON,91170,1988,32,Pryscilla,Paris IDF,Probatoire,Actif,
+102,AGHEDU,Alain,alain.aghedu@gmail.com,06 07 90 98 97,LOCONVILLE,60240,1960,60,Isabelle,Paris IDF,Pasteur APE,Actif,
+941,AGOSSA,Eric,ericagossa@yahoo.fr,06 61 41 77 62,GOUSSAINVILLE,95190,1971,49,Amélie,Paris IDF,Probatoire,Actif,
+545,AH-HOT,Thierry,thierryahhot@gmail.com,06 11 59 63 74,OSNY,95520,1970,50,Cécile,Paris IDF,Pasteur APE,Actif,
+894,AKIEWA EMPI,Papytcho,akiewapapytcho@gmail.com,06 52 00 95 24,MELUN,77000,1975,45,Laureen,Paris IDF,Probatoire,Actif,
+835,ALASOO,Andy,andy.alasoo@addsaintgermain.fr,07 66 15 77 26,CARRIÈRES SOUS POISSY,78955,1983,37,Fanja,Paris IDF,Pasteur AEM,Actif,
+893,ALCINDOR,Frédéric,ernesto972m@hotmail.com,06 60 55 14 62,VIGNEUX SUR SEINE,91270,1973,47,Corinne,Paris IDF,Probatoire,Actif,
+814,AMOUGOU,Jean-Blaise,amougoub@hotmail.com,07 81 24 86 28,DRANCY,93700,1969,51,Yvette,Paris IDF,Pasteur AEM,Actif,
+1032,ANDELE,Joseph,andelsby@yahoo.fr,06 82 34 25 45,ATHIS MONS,91200,1966,54,Emma,Paris IDF,Probatoire,Actif,
+583,ANTOINE,Yann,yann.antoine@addfrance.com,07 83 90 49 48,SAINT GERMAIN EN LAYE,78100,1981,39,Sonia,Paris IDF,Pasteur APE,Actif,
+633,ANTOINE,Alexandre,alexandre.antoine@addfrance.com,07 62 58 19 50,MAULE,78580,1981,39,Juliette,Paris IDF,Pasteur APE,Actif,
+741,ASSIZO,Akou abel,abelassizo@yahoo.fr,06 50 23 80 89,CLICHY,92110,1953,67,Hélène,Paris IDF,Pasteur AEM,Actif,
+942,AUMARD,Mourad,aumarmourad@gmail.com,06 61 87 41 47,OSNY,95520,1984,36,,Paris IDF,Probatoire,Actif,
+611,AVIS,Jean-Jacques,jjavis@wanadoo.fr,06 67 61 62 07,SENS,89100,1954,66,Françoise,Paris IDF,Pasteur APE,Actif,
+622,BARBU,Jean-Luc,jl.barbu@gmail.com,06 28 32 00 50,SARCELLES,95200,1953,67,,Paris IDF,Ancien reconnu,Actif,
+1036,BASILE,Lionel,,,,,1979,41,,Paris IDF,Probatoire,Actif,
+881,BATISTA,Kevin,batista.kevin@yahoo.fr,06 95 09 06 13,ROSNY SUR SEINE,78710,1992,28,Roberta florina,Paris IDF,Probatoire,Actif,
+884,BENOUALA,Johan,johanbenouala@gmail.com,06 58 09 45 21,JOUY LE MOUTIER,95280,1983,37,Melissa,Paris IDF,Stagiaire,Actif,
+136,BIAVA,Didier,didierbiava@gmail.com,06 31 01 40 01,EMERAINVILLE,77184,1973,47,Isabelle,Paris IDF,Pasteur APE,Actif,
+1037,BILLONG,Marcel,,,,,,,,Paris IDF,Probatoire,Actif,
+859,BLANC,Clément,clementbassland@gmail.com,06 77 99 64 29,VOISINS LE BRETONNEUX,78960,1989,31,Barbara,Paris IDF,Stagiaire,Actif,
+1047,BLEISE TUNGO,Da silva,bleise19@hotmail.com,06 29 34 68 83,,,1970,50,Julia,Paris IDF,Probatoire,Actif,
+719,BOINET,Fabien,fab.boinet@gmail.com,06 51 54 88 89,VELIZY VILLACOUBLAY,78140,1982,38,Sara,Paris IDF,Pasteur APE,Actif,
+742,BONNEVEAU,Gilles,eco@cerpno.com,663620457,SAINT OUEN,93400,1962,58,Hermine,Paris IDF,Probatoire,Actif,
+591,BOTEA,Daniel,botea.daniel@wanadoo.fr,,SAINT GERMAIN EN LAYE,78100,1963,57,,Paris IDF,Pasteur APE,Actif,
+153,BOULAGNON,André,,,EAUBONNE,95600,1934,86,Esther,Paris IDF,Pasteur APE,Retraité,
+836,BOULEVART,Christophe,christophe.boulevart@free.fr,06 84 63 64 26,VIGNEUX SUR SEINE,91270,1978,42,Rébecca,Paris IDF,Pasteur AEM,Actif,
+985,BOUTINON,Patrick,patrick.boutinon@gmail.com,06 38 03 18 25,CONFLANS SAINTE HONORINE,78700,1975,45,Claire,Paris IDF,Probatoire,Actif,
+83,BOUTINON,Jean-Claude,jeanclaude.boutinon@free.fr,06 64 29 40 68,SARCELLES,95200,1945,75,Marie-José,Paris IDF,Pasteur APE,Actif,
+895,BOWENGE MBEKO MAENZA,Francis,fbombema@gmail.com,06 29 27 19 61,DRAVEIL,91210,1972,48,Bijoux,Paris IDF,Probatoire,Actif,
+610,BRETECHER,Marc,m.bretecher@orange.fr,06 67 10 61 91,LONGPONT SUR ORGE,91310,1968,52,Isabelle,Paris IDF,Pasteur APE,Actif,
+162,BUOT,Samuel,samuelbuot@orange.fr,06 78 89 69 78,ESBLY,77450,1955,65,Christine,Paris IDF,Pasteur APE,Actif,
+168,CALZADA,Paul,paul.calzada@addfrance.com,06 09 13 22 13,LEZIGNAN CORBIÈRES,11200,1943,77,Michéle,Paris IDF,Pasteur APE,Retraité,
+170,CAPRON,Christian,christiancapron@wanadoo.fr,06 11 39 65 57,BOUFFEMONT,95570,1946,74,,Paris IDF,Pasteur APE,Retraité,
+174,CARLUER,Ivan,ivan.carluer@eglisemlk.fr,06 67 60 96 55,CRETEIL,94000,1980,40,Nathalie,Paris IDF,Pasteur APE,Actif,
+613,CATHERINE,Michel,michelm.catherine@hotmail.fr,06 27 17 70 84,BAILLEUL LE SOC,60190,1952,68,Jeannine,Paris IDF,Pasteur APE,Actif,
+178,CELERIER,Eric,eric.celerier@addfrance.com,06 64 68 22 23,OZOIR LA FERRIÈRE,77330,1964,56,Muriel,Paris IDF,Pasteur APE,Actif,
+1035,CHARLESIA,Cédric,,,,,,,,Paris IDF,Probatoire,Actif,
+1031,CHELAMIE,Philippe,filipchel@gmail.com,07 67 33 63 65,PARIS,75011,1986,34,Judith,Paris IDF,Probatoire,Actif,
+943,CHIRLIAS,Eddy,echirlias@gmail.com,06 51 33 61 35,MARLY LA VILLE,95670,1973,47,Kety,Paris IDF,Stagiaire,Actif,
+896,CHRISTOME,Michel,michel.christome@lasourcedevie.net,06 31 42 03 36,MONTMAGNY,95360,1983,37,Lucie,Paris IDF,Stagiaire,Actif,
+1053,CISHIMBI,Chris-Melvin,chrismelvin777@hotmail.com,06 03 74 12 42,,,1997,23,,Paris IDF,Probatoire,Actif,
+191,COLLET,Pascal,collet.family@wanadoo.fr,,MELUN,77000,1961,59,,Paris IDF,Pasteur APE,Actif,
+192,COLPIER,Bertrand,pasteur.colpier@free.fr,06 13 91 79 63,NEUILLY SUR MARNE,93330,1965,55,Martine,Paris IDF,Pasteur APE,Actif,
+594,COMTESSE,Olivier,oliviercomtesse@gmail.com,06 64 30 18 56,NANTES,44300,1977,43,Myriam,Paris IDF,Pasteur APE,Actif,
+837,COSSA,Charles,charles.cossa@lasourcedevie.net,06 63 44 54 09,NOGENT SUR OISE,60180,1961,59,Bernadette,Paris IDF,Stagiaire,Actif,
+1049,DANGLADES,Samuel,Dangladesamuel@hotmail.fr,07 70 27 15 52,,,1998,22,,Paris IDF,Probatoire,Actif,
+743,DAVAUX,David,davidavaux@yahoo.fr,07 82 48 92 13,PARIS,75014,1973,47,Béatrice,Paris IDF,Pasteur APE,Actif,
+977,DAVI,Luigi,luigidavi@hotmail.com,07 68 01 44 98,SAINT GERMAIN EN LAYE,78100,1965,55,Jolanta,Paris IDF,Pasteur Partenaire,Actif,
+956,DELLORS,Edmond,dellorsedmond@yahoo.fr,06 69 71 51 87,EAUBONNE,95600,1978,42,Goman valentine,Paris IDF,Probatoire,Actif,
+206,DENIAUX,Jean,,,SIVRY COURTRY,77115,1935,85,,Paris IDF,,Retraité,
+209,DERAND,Jacky,jacky.derand@addfrance.com,06 22 67 67 55,TAVERNY,95150,1956,64,Claudie,Paris IDF,Pasteur APE,Actif,
+214,DOUMBIA,Boubacar,boubdoumbia@gmail.com,06 39 09 26 46,MAMOUDZOU,97600,1954,66,Vannath,Paris IDF,Pasteur APE,Actif,
+515,DUFOUR,Eric,evd66@me.com,,CRETEIL,94000,1966,54,Rachel,Paris IDF,Pasteur APE,Actif,
+1010,DUMENIL,Alexandre,dumenil.alexandre@gmail.com,06 26 74 85 82,MONTIGNY LE BRETONNEUX,78180,1989,31,,Paris IDF,Probatoire,Actif,
+1058,DUVAL,Jérémie,cametjem.duval@gmail.com,06 67 93 49 41,,,1986,34,Camille,Paris IDF,Probatoire,Actif,
+1050,EBELEBE,Mayinguidi steve,,,,,1983,37,Fannie,Paris IDF,Probatoire,Actif,
+838,ECRABET,Fabrice,fabrice.ecrabet@gmail.com,06 51 15 45 08,ANTONY,92160,1979,41,Victoria,Paris IDF,Stagiaire,Actif,
+945,ELDIN,Renoir,renoir.eldin@eglisehorizon.fr,06 13 41 30 42,,,1984,36,,Paris IDF,Probatoire,Actif,
+744,ENAME NKWANE,Christophe,christopheename@yahoo.fr,06 22 71 30 94,ANTONY,92160,1962,58,Christiane,Paris IDF,Pasteur APE,Actif,
+794,ESSONE N'TOUTOUMOU,Innocent,inno_en@yahoo.com,06 10 30 69 75,VERSAILLES,78000,1966,54,Eurielle,Paris IDF,Pasteur APE,Actif,
+231,ETTORI,Paul,paul.ettori@gmail.com,,PARIS,75011,1948,72,Claudine,Paris IDF,Pasteur APE,Actif,
+745,FALAIZE,David,david.falaize@gmail.com,06 61 88 29 26,CRETEIL,94000,1984,36,Amandine,Paris IDF,Stagiaire,Actif,
+234,FALAIZE,Emmanuel,emmanuel.falaize@gmail.com,06 84 05 30 18,MELUN,77000,1960,60,Fabienne,Paris IDF,Pasteur AEM,Actif,
+578,FAUCHY,Pierre,pierre.fauchy@gmail.com,06 30 63 38 73,YERRES,91330,1978,42,Mélodie,Paris IDF,Pasteur APE,Actif,
+246,FILLON,Edouard,edouard.fillon@lasourcedevie.net,06 60 69 09 66,LES CLAYES SOUS BOIS,78340,1966,54,,Paris IDF,Pasteur APE,Actif,
+789,FLORELLA,Thierry,hybiscus2@wanadoo.fr,06 07 91 87 53,FOSSES,95470,1969,51,Gabrielle,Paris IDF,Probatoire,Actif,
+255,FORSCHLE,François,evidence@club-internet.fr,,MONTROUGE,92120,1945,75,Véronika,Paris IDF,Pasteur APE,Actif,
+958,GAIBLET,David,david.gaiblet@laposte.net,06 06 48 52 07,VAUX SUR SEINE,78740,1990,30,,Paris IDF,Probatoire,Actif,
+658,GALLICE,Claude,claude.gallice@free.fr,06 60 82 34 50,GUYANCOURT,78280,1959,61,Marie-Laurence,Paris IDF,Pasteur APE,Actif,
+788,GAUTIER,Yannis franck,gautier.yannis@gmail.com,06 51 22 99 60,MAUREPAS,78310,1971,49,Françoise,Paris IDF,Pasteur AEM,Actif,
+946,GAY,David,davidnoeline.g@gmail.com,06 68 35 09 18,CLAMART,92140,1989,31,Noëline,Paris IDF,Probatoire,Actif,
+631,GEFFROY,Sébastien,sebgeff@gmail.com,06 20 02 11 48,PISSY POVILLE,76360,1981,39,Mélina,Paris IDF,Pasteur APE,Actif,
+856,GIORDANO,Jérémy,jeremy.giordano@eglisehorizon.fr,06 45 11 67 69,COMBS LA VILLE,77380,1990,30,,Paris IDF,Probatoire,Actif,
+1059,GIRARD,Emmanuel,girardemmanuel@gmail.com,06 38 57 15 27,LA VILLENEUVE EN CHEVRIE,78270,1994,26,,Paris IDF,Probatoire,Actif,
+860,GONZALEZ ASTETE,Leandro aaron,leandro-aaron@hotmail.com,06 01 79 26 93,CLAMART,92140,1985,35,Nataly,Paris IDF,Pasteur AEM,Actif,
+1038,GRANGENOIS,Jean-François,jeff.grangenois@eglisemlk.fr,06 23 12 72 38,LIMOGES FOURCHES,77550,1975,45,Dina,Paris IDF,Probatoire,Actif,
+871,GRUSON,Paul,p.gruson@gmail.com,06 08 71 53 36,DEUIL LA BARRE,95170,1990,30,Emeline,Paris IDF,Stagiaire,Actif,
+287,HALEPIAN,Jean,jeanhal@orange.fr,06 63 71 60 24,ONCY SUR ECOLE,91490,1938,82,Josette,Paris IDF,,Retraité,
+1000,ILLMANN,Raphaël,raphillmann@hotmail.com,06 85 08 48 60,MONTREUIL,93100,1989,31,,Paris IDF,Probatoire,Actif,
+1048,ILUNGA KADIMA,Christian,xcmchristian@gmail.com,,,,1991,29,,Paris IDF,Probatoire,Actif,
+755,JACQUES ZUPPIGER,Bernard,bernardjaz@gmail.com,06 03 13 55 87,SAINT MAURICE,94410,1961,59,Marie-France,Paris IDF,Ancien reconnu,Actif,
+757,JEAN-SIMON,Guiteau,jeansimon.cg@free.fr,06 60 80 04 46,CERGY,95800,1977,43,Clara,Paris IDF,Pasteur AEM,Actif,
+852,KABLI,Karim,karim.dijon@hotmail.fr,06 99 45 79 65,BOBIGNY,93000,1985,35,,Paris IDF,Stagiaire,Actif,
+1052,KALONJI,Mayoux,kalonjijosue@hotmail.fr,07 60 39 70 31,VERSAILLES,78000,1987,33,Mathilde,Paris IDF,Probatoire,Actif,
+989,KAYA,Jean-Aimé,jakay@hotmail.fr,07 89 95 35 35,CHÂTENAY MALABRY,92290,1977,43,Clarisse,Paris IDF,Probatoire,Actif,
+624,KAZI,Jean-Jacques,jean-jacques.kazi@outlook.fr,06 13 56 34 00,MONTMORENCY,95160,1954,66,Clémence,Paris IDF,Pasteur AEM,Actif,
+850,KENNY,Hespoir,hespoirkenny@gmail.com,06 03 55 62 78,GISORS,27140,1981,39,,Paris IDF,Stagiaire,Actif,
+1057,KETE,Luwawa alain,ketealain@yahoo.fr,06 28 56 72 00,,,1977,43,Sophie,Paris IDF,Probatoire,Actif,
+882,KIDAMU LUSANDU,Willem,wikidam@gmail.com,06 79 10 07 39,QUINCY SOUS SENART,91480,1962,58,Pauline,Paris IDF,Probatoire,Actif,
+1056,KONIAKINE,Christian,christian.koniakine@yahoo.fr,07 67 17 41 99,RUEIL MALMAISON,92500,1974,46,Alice,Paris IDF,Probatoire,Actif,
+815,KOUACOU,Narcisse,narcisse.kouacou@gmail.com,06 52 20 41 72,SAINT MICHEL SUR ORGE,91240,1977,43,Sabine,Paris IDF,Probatoire,Actif,
+649,KUYENGA,Arthur,pastorark@yahoo.fr,06 52 74 90 69,PARIS,75006,1969,51,Tavaresse,Paris IDF,Pasteur APE,Actif,
+314,LAINEL,Thierry,st.lainel@orange.fr,06 14 73 26 59,SAINT DENIS,93200,1961,59,Sylvaine,Paris IDF,Pasteur APE,Actif,
+777,LAMOTTE-AUGRIS,Benjamin,benj.lamotte@gmail.com,06 22 29 69 09,ANTONY,92160,1990,30,Colombe,Paris IDF,Pasteur AEM,Actif,
+317,LAMTOUKOU,Daniel,m.lamtoukou@kyria.fr,06 58 67 31 32,GOUVIEUX,60270,1959,61,Nadia,Paris IDF,Pasteur APE,Actif,
+957,LE DILY,Éric,addVersailles@dilynet.com,06 32 01 44 80,VERSAILLES,78000,1972,48,Sandrine,Paris IDF,Probatoire,Actif,
+654,LE PENNEC,Jean,lepennec.jean@gmail.com,07 78 95 36 47,CRETEIL,94000,1985,35,Delphine,Paris IDF,Pasteur APE,Actif,
+828,LE PENNEC,Vincent,lepennecvincent@outlook.com,07 81 99 12 55,LOOZE,89300,1958,62,Annick,Paris IDF,Pasteur APE,Actif,
+326,LE PERRU,Philippe,philippe.leperru@gmail.com,07 55 08 01 65,NEAUPHLE LE CHÂTEAU,78640,1951,69,Esterina,Paris IDF,Pasteur APE,Retraité,
+1054,LEBLANC,Judes junior,leblancjudes@yahoo.fr,07 81 96 39 74,,,1983,37,Nancy,Paris IDF,,Actif,
+331,LEFEBVRE,Jean-Marie,jean-marie.lefebvre@addfrance.com,06 26 01 18 81,LA CHAUSSÉE D'IVRY,28260,1957,63,Michelle,Paris IDF,Pasteur APE,Actif,
+679,LEVIEILS,Xavier,xavier.levieils@free.fr,06 06 54 03 97,LE TERTRE SAINT DENIS,78980,1970,50,Sandrine,Paris IDF,Pasteur AEM,Actif,
+747,LIKIBI,Andoche,andoche.likibi@gmail.com,06 15 92 02 03,JOUY LE MOUTIER,95280,1974,46,Ketly likibi,Paris IDF,Pasteur APE,Actif,
+608,LIM,John,johnlimkc@gmail.com,06 25 46 42 58,IVRY SUR SEINE,94200,1971,49,Rebecca,Paris IDF,Pasteur agréé,Actif,
+339,LINDERMAN,Henry,henry.linderman@agmd.org,,BUC,78530,1946,74,Karen,Paris IDF,Pasteur agréé,Actif,
+897,LITOPE,Christian,christian.litope@lasourcedevie.net,06 69 29 97 18,VILLENEUVE LA GARENNE,92390,1974,46,Jeanne,Paris IDF,Stagiaire,Actif,
+660,LOURS,Rémi,lours.remi@gmail.com,07 86 85 80 33,VILLERS SAINT SEPULCRE,60134,1979,41,Myriam,Paris IDF,Pasteur APE,Actif,
+889,LUMANDE,Noela,noelalumande@icloud.com,06 14 58 94 68,SAVIGNY LE TEMPLE,77176,1969,51,Mamina,Paris IDF,Pasteur agréé,Actif,
+914,LUPAKA,Alain,alupaka@gmail.com,06 51 13 44 13,CHAUMONTEL,95270,1978,42,Jeanic,Paris IDF,Stagiaire,Actif,
+898,LUZOLO,Kubiéna nabié,luzolo.kubiena@lasourcedevie.net,07 68 88 34 65,GARGES LÈS GONESSE,95140,1971,49,Teck,Paris IDF,Stagiaire,Actif,
+740,MAKASI NSAKU,Jean,jeanmakasi@yahoo.fr,06 09 16 14 97,ACHERES,78260,1957,63,Appoline,Paris IDF,Pasteur AEM,Actif,
+542,MAKITA,Sosthène vianney,sosthene.mboumakita@lasourcedevie.net,06 88 16 25 85,GOUSSAINVILLE,95190,1973,47,Samuelle,Paris IDF,Pasteur APE,Actif,
+1034,MANSOURI,Akim,akimsacha@hotmail.fr,06 05 78 63 49,BAGNEUX,92220,,,Fanny,Paris IDF,Probatoire,Actif,
+733,MARTINS,Samuel,addparis.org@gmail.com,06 28 26 38 10,SAINT OUEN,93400,1977,43,Silvia,Paris IDF,Pasteur agréé,Actif,
+351,MASTRIFORTI,David,mastrifortid@gmail.com,06 35 38 87 58,ROSNY SOUS BOIS,93110,1965,55,Nathalie,Paris IDF,Pasteur APE,Actif,
+562,MENDY,Lis (Wilfrid),lis_mendy@hotmail.fr,06 03 54 64 37,GISORS,27140,1970,50,Emmanuelle,Paris IDF,Pasteur APE,Actif,
+938,MERKANTIA,Dylan,dylanmerkantia@gmail.com,06 13 04 81 58,MARINES,95640,1994,26,,Paris IDF,Probatoire,Actif,
+748,MERKANTIA,Eric,merkantia@orange.fr,07 77 00 50 55,MARINES,95640,1962,58,Isabelle,Paris IDF,Pasteur APE,Actif,
+986,MITRAIL,Nicolas,nicolas.mitrail@hotmail.fr,07 82 86 64 62,PARIS,75014,1991,29,Tricy,Paris IDF,Probatoire,Actif,
+858,MONGENOTY,Médéric,mongenoty_mederic@yahoo.fr,06 64 37 27 01,AULNAY SOUS BOIS,93600,1987,33,,Paris IDF,Probatoire,Actif,
+863,MONTUORI,Marc,marc.montuori@gmail.com,06 58 98 23 49,MANTES LA JOLIE,78200,1988,32,Laurance,Paris IDF,Probatoire,Actif,
+846,NAZAIRE,Abednego,nazaire.ak@gmail.com,06 26 39 85 02,BONDY,93140,1980,40,Ginette,Paris IDF,Stagiaire,Actif,
+959,NCHUINDJANG,John,john.nc@outlook.com,06 65 50 22 26,PARIS,75015,1988,32,,Paris IDF,Probatoire,Actif,
+915,NGABA,Lucien,allumen@hotmail.fr,06 14 01 05 43,STAINS,93240,1965,55,,Paris IDF,Stagiaire,Actif,
+841,NGOM,Jean-Émile,Jeng774@gmail.com,06 50 33 98 80,LAGNY SUR MARNE,77400,1957,63,Eliane,Paris IDF,Pasteur AEM,Actif,
+374,NICOLLE,Jean-Michel,nicollejeanmichel-addfrance@yahoo.fr,,PARIS,75002,1941,79,,Paris IDF,Pasteur APE,Actif,
+988,NKONGOLO NSENDA,Jean-Claude,jeanclaude.nkongolo@yahoo.fr,07 70 19 65 52,FONTENAY LE FLEURY,78330,1963,57,,Paris IDF,Probatoire,Actif,
+1046,NLANDU MBONGO,Lama,lamambongo2000@yahoo.fr,06 52 28 80 79,THORIGNY SUR MARNE,77400,1976,44,Fanny,Paris IDF,Probatoire,Actif,
+558,NOEL,Thierry,noel.thierry@gmail.com,06 13 56 64 32,EMERAINVILLE,77184,1957,63,Marie-Joe,Paris IDF,Pasteur APE,Actif,
+916,NTAMACK,Jean-Michel,famille.ntamack@yahoo.fr,06 51 11 71 64,ETAMPES,91150,1967,53,Agathe,Paris IDF,Stagiaire,Actif,
+851,NYOMBO,Henry,henry.nyombo@lasourcedevie.net,06 99 45 79 65,GOUSSAINVILLE,95190,1963,57,Mamie,Paris IDF,Probatoire,Actif,
+651,OLEKO OSANGO,Gabriel,gabriel.oleko@gmail.com,06 99 23 95 39,SAINT MAUR DES FOSSES,94100,1974,46,Sylvie,Paris IDF,Pasteur APE,Actif,
+888,OMENYA,Bony,boniomenya@yahoo.fr,06 27 99 06 90,MEROBERT,91780,1966,54,Georgina,Paris IDF,Pasteur agréé,Actif,
+749,OMPENDA,Nonge,ompenda@yahoo.fr,06 49 53 43 56,MENUCOURT,95180,1975,45,Eugénie,Paris IDF,Pasteur AEM,Actif,
+990,OUANDJI BONDJA,René,rene@ouandji.com,06 63 86 71 26,LES CLAYES SOUS BOIS,78340,1975,45,Nadine,Paris IDF,Probatoire,Actif,
+849,OUJIBOU,Saïd,saidf2@wanadoo.fr,06 61 55 31 33,EVRY,91000,1968,52,Fatima,Paris IDF,Pasteur AEM,Actif,
+382,OZIER LAFONTAINE,Jean-François,jfo.lafontaine@orange.fr,06 74 45 26 20,CLICHY,92110,1965,55,Franciane,Paris IDF,Pasteur APE,Actif,
+173,PANZA,Nicolas,nicolas.panza@gmail.com,07 82 89 97 62,,,1977,43,Béatrice,Paris IDF,Pasteur AEM,Actif,
+937,PECASTAING,Mathias,mathias.pecastaing@eglisehorizon.fr,06 73 24 01 40,,,1992,28,,Paris IDF,Probatoire,Actif,
+581,PECASTAING,Franck,pecastaing.franck@gmail.com,06 86 71 00 35,COMBS LA VILLE,77380,1964,56,Carole,Paris IDF,Pasteur APE,Actif,
+397,PETIT,Billy,addchanteloup@aol.com,06 63 23 47 60,SOISY SOUS MONTMORENCY,95230,1969,51,Stéphanie,Paris IDF,Pasteur APE,Actif,
+803,PITIDDU,Guillaume,guillaume.pitiddu@yahoo.fr,06 72 99 04 28,NOISY LE GRAND,93160,1985,35,Marie-Noëlle,Paris IDF,Pasteur AEM,Actif,
+1033,POOTAREN,Shakti,,,,,,,,Paris IDF,Probatoire,Actif,
+618,QUIFOUMA,Léandre,leandre.quifouma@gmail.com,06 89 37 34 66,LES ULIS,91940,1962,58,Gerty,Paris IDF,Pasteur APE,Actif,
+762,RECEVEUR,Olivier,olivier.receveur@yahoo.fr,06 84 69 24 81,VILLE D'AVRAY,92410,1965,55,Aline,Paris IDF,Pasteur APE,Actif,
+428,RIOUALEC,Bruno,bruno.rioualec@gmail.com,06 60 42 89 92,BOUFFEMONT,95570,1966,54,Esther,Paris IDF,Pasteur APE,Actif,
+430,RIZZOLIO,Marc,rizzoliomarc@wanadoo.fr,06 95 03 94 41,MAUREPAS,78310,1960,60,Françoise,Paris IDF,Pasteur APE,Actif,
+805,ROBICHAUD,Christian,robichaud.christian@gmail.com,#ERROR!,SAINT MARCEL,27950,1973,47,Justine,Paris IDF,Pasteur APE,Actif,
+431,ROGEZ,Olivier,olivier.rogez@laposte.net,06 72 72 66 16,SOISY SOUS MONTMORENCY,95230,1952,68,Jacqueline,Paris IDF,Pasteur APE,Actif,
+751,ROUQUIN,Olivier,olivier.rouquin@gmail.com,06 21 70 71 00,BAGNOLET,93170,1980,40,,Paris IDF,Pasteur AEM,Actif,
+438,ROYNEL,François,froynel@orange.fr,06 75 86 35 47,LIVRY GARGAN,93190,1955,65,Martine,Paris IDF,Pasteur APE,Actif,
+702,RUPPY,Laurent,laurent.ruppy@gmail.com,614920866,BOUGIVAL,78380,1985,35,,Paris IDF,Pasteur APE,Actif,
+899,RUPPY,Jean,ruppyjean@gmail.com,,,,1954,66,,Paris IDF,Ancien reconnu,Actif,
+901,SAINT-ELLIER,Bastien,saint-ellier_bastien@live.fr,07 82 25 06 25,BURES SUR YVETTE,91440,1990,30,Johanna,Paris IDF,Stagiaire,Actif,
+625,SALAFRANQUE,Nicolas,nicolas.salafranque@gmail.com,06 20 42 04 33,CHEVRY COSSIGNY,77173,1980,40,Audrey,Paris IDF,Pasteur APE,Actif,
+917,SALAÜN,Loic,loic.salaun.78@gmail.com,06 79 10 61 04,ROCQUENCOURT,78150,1988,32,Aurélie,Paris IDF,Probatoire,Actif,
+900,SALMERON,Samuel,sam.salmeron@gmail.com,06 87 47 81 70,TORCY,77200,1986,34,Isabelle,Paris IDF,Probatoire,Actif,
+883,SANCTUSSY,Freddy,fredsanct@hotmail.fr,06 89 97 10 64,PLAISIR,78370,1980,40,Dina,Paris IDF,Stagiaire,Actif,
+752,SILUTONI,Jerry,jerry.silutoni@yahoo.fr,07 89 59 54 38,CHAMBLY,60230,1957,63,Jeannine,Paris IDF,Pasteur AEM,Actif,
+902,SIMEON,Charlemond,charlemond.simeon@lasourcedevie.net,06 28 32 00 51,COLOMBES,92700,1979,41,,Paris IDF,Stagiaire,Actif,
+918,SOFACK LEKANE,Cyrille,meryn.sofack@gmail.com,06 67 63 20 27,THIAIS,94320,1986,34,Melodie,Paris IDF,Probatoire,Actif,
+589,SOHAHI,Martial,martial_so@hotmail.fr,06 25 95 10 23,BENNECOURT,78270,1970,50,Iulia rodica,Paris IDF,Pasteur APE,Actif,
+903,SOKU LIKEMBA,Guylain,guylainsoku@yahoo.fr,06 52 06 33 17,COURCOURONNES,91080,1980,40,Sandrine,Paris IDF,Probatoire,Actif,
+753,SPIESS,Roudy,spiess.r@orange.fr,06 08 74 23 81,L'ISLE ADAM,95290,1940,80,Gisèle,Paris IDF,Ancien reconnu,Actif,
+944,SUKAMI,Pedro,pedrosukami@gmail.com,06 32 50 93 91,CHARS,95750,1980,40,Elodie,Paris IDF,Stagiaire,Actif,
+650,SUREST,Dominique,domsurest77@gmail.com,06 32 34 69 26,ETAMPES,91150,1959,61,Térésa,Paris IDF,Pasteur APE,Actif,
+460,TAILLIFET,Dominique,dominique.taillifet@gmail.com,06 65 32 06 86,CHANTELOUP LES VIGNES,78570,1949,71,Suzanne,Paris IDF,Pasteur APE,Actif,
+676,TIPAKA,Jean-François,jf.tipaka@addfrance.com,06 28 28 76 75,VILLENNES SUR SEINE,78670,1965,55,Isabelle,Paris IDF,Pasteur AEM,Actif,
+919,TRON,Benjamin,benj.tron@gmail.com,06 01 22 54 48,MASSY,91300,1988,32,Cécile,Paris IDF,Probatoire,Actif,
+559,VAUBIEN,Louis-Daniel (dany),dany.vaubien@gmail.com,06 03 47 87 52,VILLENOY,77124,1962,58,Eliane,Paris IDF,Pasteur APE,Actif,
+886,VAUTIER,Sylvain,sylvain.vautier@gmail.com,06 21 65 05 68,PONTCARRE,77135,1983,37,Marion,Paris IDF,Stagiaire,Actif,
+626,VIDAL,Joël,joel.vidal@lasourcedevie.net,06 10 61 21 31,LOUVRES,95380,1980,40,Grace,Paris IDF,Pasteur APE,Actif,
+485,VINCKEVLEUGEL,Bernard,bernard.vinckevleugel@gmail.com,07 68 68 99 22,LE VAL SAINT GERMAIN,91530,1950,70,Annie,Paris IDF,Pasteur APE,Retraité,
+786,VIRABYAN,Emmanuel,evirabyan7@gmail.com,06 26 24 40 51,CLAMART,92140,1984,36,Ani,Paris IDF,Pasteur AEM,Actif,
+705,WAGHON,Laurent,laurent.waghon@gmail.com,06 71 87 13 13,VERNON,27200,1969,51,Damaris,Paris IDF,Pasteur APE,Actif,
+627,YAO,Patrice,patrice.yao@lasourcedevie.net,06 64 50 58 91,VILLEMOMBLE,93250,1960,60,Elisabeth,Paris IDF,Pasteur APE,Actif,
+1011,ZEPHINIE,Jonathan,jonathanzephinie@gmail.com,06 58 29 89 82,CRETEIL,94000,1983,37,Nadia,Paris IDF,Probatoire,Actif,
+1008,DE MEYER,Jimmy,demeyer.jimmy@gmail.com,,,,1996,24,,Val de Loire,Probatoire,Actif,
+783,SCHULZ,Etienne,,06 48 09 75 49,GUERET,23000,1991,29,,Val de Loire,Probatoire,Actif,
+950,ZOLA,Merveil,merveil45@hotmail.fr,,,,1991,29,,Val de Loire,Probatoire,Actif,
+892,CHAUVIN,Guillaume,guillaume-chauvin@neuf.fr,,ANGERS,49000,1991,29,,Val de Loire,Stagiaire,Actif,
+868,TRICOIRE,Samuel,stricoire@icloud.com,06 46 49 12 12,AMBOISE,37400,1990,30,Priscille,Val de Loire,Stagiaire,Actif,
+807,BEYELER,Samuel,beyeler.sml@gmail.com,06 89 27 76 62,CORMERAY,41120,1988,32,Anne-Lise,Val de Loire,Pasteur AEM,Actif,
+857,BODOLEC,Grégory,greg.bodolec@gmail.com,06 75 67 71 24,VERNON,27200,1986,34,Siham,Val de Loire,Pasteur AEM,Actif,
+954,SEKAR,Vijay,sekar.vijay@outlook.com,,,,1986,34,,Val de Loire,Probatoire,Actif,
+1015,NETH,Anthony,jeveuxlabible@gmail.com,06 17 21 69 05,,,1985,35,Delphine,Val de Loire,Probatoire,Actif,
+951,SCHULZ,Timothé,timothe.schulz25@gmail.com,,,,1985,35,,Val de Loire,Probatoire,Actif,
+947,SIMONIN,Hans,hansimonin@hotmail.fr,,,,1983,37,,Val de Loire,Probatoire,Actif,
+875,BASSABI,Tchedre bahik,tchedre.bassabi@gmail.com,06 17 10 20 68,LE POINCONNET,36330,1982,38,,Val de Loire,Probatoire,Actif,
+934,LUC,Vincent,vinceluc.777@gmail.com,06 58 05 76 95,CHARENTILLY,37390,1980,40,Estelle,Val de Loire,Pasteur AEM,Actif,
+949,DUPASQUIER,Aymerick,dupasquier.aymerick@laposte.net,,,,1980,40,,Val de Loire,Probatoire,Actif,
+876,DEGBE,Serge,sergedegbe@yahoo.fr,06 87 94 81 60,JOUÉ LÈS TOURS,37300,1977,43,,Val de Loire,Stagiaire,Actif,
+891,MAVOUNGOU BIGOUAGOU,Ulrick,mavoungouulrick@yahoo.fr,06 63 03 16 23,ANGERS,49100,1976,44,,Val de Loire,Pasteur AEM,Actif,
+634,HOURRIER,David,david.hourrier@wanadoo.fr,06 82 29 96 74,SAINTE FOY,85150,1975,45,Deborah,Val de Loire,Pasteur APE,Actif,
+948,DE VITO,Luca,lucadevito71@gmail.com,06 76 13 34 22,,,1971,49,Julie,Val de Loire,Stagiaire,Actif,
+563,BOUDEHENT,Patrick,pboudehent@gmail.com,06 30 08 63 33,BLOIS,41000,1970,50,Nathalie,Val de Loire,Pasteur APE,Actif,
+362,MILIA,Michel,milia.famille@gmail.com,06 68 91 65 81,LE POINCONNET,36330,1968,52,Leony,Val de Loire,Pasteur APE,Actif,
+437,KEMBO,George,gkembo@hotmail.fr,06 64 76 30 37,ALENÇON,61000,1967,53,Paulina,Val de Loire,Pasteur APE,Actif,
+535,DECLAUDURE,Marc,marc.declaudure@sfr.fr,06 32 80 70 44,LE VIEIL BAUGE,49150,1964,56,Victoria,Val de Loire,Pasteur APE,Actif,
+134,BEYELER,Gerhart,gerhart.beyeler8447@gmail.com,06 65 04 21 49,ALLONNES,72700,1963,57,Corinne,Val de Loire,Pasteur APE,Actif,
+609,BERTRAND,Régis,r.bertrand@outlook.fr,,MORTAGNE SUR SEVRE,85290,1960,60,Claudie,Val de Loire,Pasteur AEM,Actif,
+904,PRABHUDAS,Manuel,manuel.prabhudas@yahoo.com,06 31 51 89 64,TOURS,37000,1960,60,Tina,Val de Loire,Pasteur agréé,Actif,
+232,FABRE,André,add.orleans1@orange.fr,06 37 58 39 44,SANDILLON,45640,1958,62,Rosa,Val de Loire,Pasteur APE,Actif,
+368,MOREAU,Frédéric,addmoreau@yahoo.fr,06 16 14 14 44,JOUÉ LÈS TOURS,37300,1957,63,Martine,Val de Loire,Pasteur APE,Actif,
+445,SANCHEZ,René,rene.sanchez.add@gmail.com,06 72 01 47 72,PARIGNE L'EVEQUE,72250,1955,65,,Val de Loire,Pasteur APE,Actif,
+337,L'HERROUX,Daniel,dj.lherroux@me.com,06 20 04 47 20,SEICHES SUR LE LOIR,49140,1954,66,Dina,Val de Loire,Pasteur APE,Actif,
+423,REYNAUD,Gérald,gerald.reynaud86@gmail.com,06 83 27 20 89,POITIERS,86000,1952,68,Hélène,Val de Loire,Pasteur APE,Actif,
+387,PARROT,William,williamparrot@yahoo.fr,06 14 61 34 06,PANNES,45700,1949,71,Liliane,Val de Loire,Pasteur APE,Actif,
+399,PHILIPPE,Marc,marc.philippe45@gmail.com,06 20 36 21 68,OLIVET,45160,1948,72,Marie-Claude,Val de Loire,Pasteur APE,Actif,
+738,CHOISEAU,Michel,lise.choiseau@orange.fr,06 11 80 12 75,PIERREFITTE ES BOIS,45360,1945,75,Lise,Val de Loire,Pasteur APE,Actif,
+389,PELLETIER,Michel,michel-pelletier3@wanadoo.fr,06 11 28 08 69,TORCE EN VALLÉE,72110,1938,82,Christiane,Val de Loire,Pasteur APE,Retraité,
+567,JOAQUIM,Antonio,antonio.joaquim@club-internet.fr,06 72 01 11 44,ETAMPES,91150,1936,84,Belmira,Val de Loire,Pasteur APE,Retraité,
+149,BOTELLA,Lucien,botellalucien6@gmail.com,06 24 58 67 52,TIERCE,49125,1935,85,Claude,Val de Loire,Pasteur APE,Retraité,
+213,DOS REIS,Augustin,augustin.dosreis@orange.fr,,BRETTE LES PINS,72250,1930,90,Henriette,Val de Loire,Pasteur APE,Retraité,
+1007,COURJOL,Valéry,,,,,,,,Val de Loire,Probatoire,Actif,
+993,AKA,Joël,ak4joel@gmail.com,06 20 08 87 17,09 80 72 57 26,VILLENAVE D'ORNON,33140,1985,35,Lydie,Aquitaine,Stagiaire,Actif
+112,ARNAUD,Didier,didier.arnaud@addfrance.com,06 85 20 10 67,09 52 34 89 26,BON ENCONTRE,47240,1958,62,Nadine,Aquitaine,Pasteur APE,Actif
+546,AVRIL,Emmanuel,emmanuelavril@orange.fr,07 82 63 21 17,05 57 81 61 00,BORDEAUX,33200,1974,46,Ariane,Aquitaine,Pasteur APE,Actif
+117,BACHKE,Gérard,g.bachke@free.fr,,05 56 75 83 08,VILLENAVE D'ORNON,33140,1949,71,Brigitte,Aquitaine,Pasteur APE,Actif
+124,BASSIDJE,Edmond,edo.bassidje@addfrance.com,06 59 19 89 80,05 58 74 51 03,HINX,40180,1958,62,Laurence,Aquitaine,Pasteur APE,Actif
+126,BAYLE,Guy,bayleg@orange.fr,06 11 15 25 96,,SAINT CYPRIEN,24220,1952,68,Danie,Aquitaine,Pasteur APE,Retraité
+131,BERTHALON,Patrick,patrickberthalon@gmail.com,06 51 94 75 50,05 57 81 61 00,MERIGNAC,33700,1956,64,Patricia,Aquitaine,Pasteur APE,Actif
+1012,BESNARD,Jérémy,jeremybesnard29@gmail.com,06 61 40 91 32,,BRUGES,33520,1993,27,,Aquitaine,Probatoire,Actif
+1061,BLAIRY,Matthieu,mblairy@eglisemomentum.com,06 25 47 76 58,,GAURIAGUET,33240,1976,44,Nicole,Aquitaine,Pasteur Partenaire,Actif
+940,BLANCOU,Nicolas,blancou.n@gmail.com,07 60 59 86 33,,SARLAT LA CANEDA,24200,1989,31,Anouk,Aquitaine,Stagiaire,Actif
+159,BRIAND,Robert,briandrl@sfr.fr,,05 45 91 56 48,FLEAC,16730,1932,88,Léonne,Aquitaine,Pasteur APE,Retraité
+1065,BRIGAUD,Nicolas,nicolascd85@hotmail.fr,06 22 10 24 63,,NIORT,79000,1985,35,Maryne,Aquitaine,Probatoire,Actif
+161,BROUSSE,Claude,claudebrousse@wanadoo.fr,06 14 78 93 26,05 56 83 73 43,LA TESTE,33260,1941,79,Monique,Aquitaine,Pasteur APE,Retraité
+1029,CHANGEUR,Loup,loup.changeur@gmail.com,06 25 65 41 35,,CENON,33150,1992,28,Joyce,Aquitaine,Stagiaire,Actif
+194,CONTRASTIN,Serge,,06 76 42 60 23,,LAGOR,64150,1947,73,Claudine,Aquitaine,Pasteur APE,Retraité
+1060,CORBAT,Romain,r.corbat92@gmail.com,06 18 29 47 46,,GAMARDE LES BAINS,40380,1992,28,Sara,Aquitaine,Probatoire,Actif
+565,DEMOL,Laurent,laurent.demol@laposte.net,06 60 76 67 94,,ARTHEZ DE BEARN,64370,1973,47,Stéphanie,Aquitaine,Pasteur APE,Actif
+86,DOUX,Georges,georgesdoux@addfrance.com,06 17 74 78 20,05 46 39 24 45,MEDIS,17600,1955,65,Corinne,Aquitaine,Pasteur APE,Actif
+87,DREVON,Pierre,pierredrevon67@gmail.com,06 98 77 59 95,,COUZEIX,87270,1967,53,Cécile,Aquitaine,Pasteur APE,Actif
+218,DUBAS,Laurent,laujacdub@gmail.com,06 52 18 28 33,,MONT DE MARSAN,40000,1971,49,Marie-Laure,Aquitaine,Pasteur APE,Actif
+221,DUMAINE,Raynolds,raynolds.dumaine@gmail.com,07 66 87 34 87,,MARCILLAC SAINT QUENTIN,24200,1947,73,Esmay,Aquitaine,Pasteur APE,Actif
+88,DUPONT,Jean-Pierre,jnpierre.dupont@gmail.com,07 68 22 38 23,,MERIGNAC,33700,1955,65,Martine,Aquitaine,Pasteur APE,Retraité
+928,DURAND,Jérémie,Durandjeremie@live.fr,07 66 51 97 41,,LES SALLES DU GARDON,30110,1992,28,Johanna,Aquitaine,Pasteur AEM,Actif
+241,FERNANDEZ,Christian,fernandezchristian1692@orange.fr,06 49 39 35 27,05 46 84 42 85,VERGEROUX,17300,1953,67,Ann,Aquitaine,Pasteur APE,Retraité
+529,GARZIZ,Ichem,garziz.ichem@orange.fr,06 38 46 33 28,05 53 72 10 80,LA SAUVETAT SUR LEDE,47150,1977,43,Elisabeth,Aquitaine,Pasteur APE,Actif
+517,GAUTIER,Bruno,bruno.gautier16@gmail.com,06 08 68 13 62,05 55 70 32 11,RILHAC RANCON,87570,1963,57,Marie,Aquitaine,Pasteur APE,Actif
+999,GIRAULT,Benjamin,bgirault@eglisemomentum.com,06 59 93 54 46,,CADAUJAC,33140,,2020,Pauline,Aquitaine,Stagiaire,Actif
+780,GUILLERMIN,Cédric,soryced@gmail.com,06 17 47 09 67,05 46 69 55 64,LA JARRIE,17220,1979,41,Soraya,Aquitaine,Pasteur APE,Actif
+76,GUILLET,Laurent,laurentguillet@gmail.com,06 09 69 85 46,,EYSINES,33320,1962,58,Mireille,Aquitaine,Pasteur APE,Actif
+279,GUILLET,Daniel,dnlguillet@aol.com,06 09 04 75 93,09 73 19 21 63,LES PEINTURES,33230,1946,74,Sylvette,Aquitaine,Pasteur APE,Retraité
+305,JULIEN,Maurice,julienmaurice@neuf.fr,06 82 26 32 31,,BIARRITZ,64200,1962,58,Ginette,Aquitaine,Pasteur APE,Actif
+1063,KASSA,Léonce-Audrey,audreymirnak@gmail.com,07 82 68 85 32,,VILLENAVE D'ORNON,33140,1984,36,Mirna,Aquitaine,Probatoire,Actif
+820,LARTIN,Jean,lartin.jean@orange.fr,06 02 62 06 34,09 62 51 76 67,,,1978,42,Nathalie,Aquitaine,Pasteur AEM,Actif
+759,LUITEN,Dan,dluiten@eglisemomentum.com,07 86 52 25 51,,SAINT ANDRÉ DE CUBZAC,33240,1981,39,Alice,Aquitaine,Stagiaire,Actif
+522,MARTORANO,Patrice,pmartorano@eglisemomentum.com,06 21 29 26 32,05 57 42 81 84,SAINT ANDRÉ DE CUBZAC,33240,1971,49,Roselyne,Aquitaine,Pasteur APE,Actif
+358,MAURICE-WHITE,Michel,mauricewhite@orange.fr,06 81 45 81 51,05 53 64 62 08,MARCELLUS,47200,1944,76,Sofia,Aquitaine,Pasteur APE,Retraité
+361,MIALL,Joseph désiré,joseph.miall@laposte.net,06 08 30 29 47,05 45 37 60 47,ANGOULEME,16000,1967,53,Valérie,Aquitaine,Pasteur APE,Actif
+731,MILLET,David,millet.david7@hotmail.fr,06 71 85 94 82,,NIORT,79000,1973,47,Karine,Aquitaine,Pasteur APE,Actif
+1013,MOURIER,Jean-Marie,jeanmariemourier@gmail.com,06 24 55 11 54,,,,1991,29,,Aquitaine,Probatoire,Actif
+809,MOURIER,Benjamin,pasteurben.add@gmail.com,06 32 09 76 55,,BOULAZAC,24750,1987,33,Delphine,Aquitaine,Pasteur AEM,Actif
+933,NATELHOFF,Nicolas,nnatelhoff@laposte.net,06 84 44 14 14,,VILLENEUVE SUR LOT,47300,1983,37,Esther,Aquitaine,Stagiaire,Actif
+377,N'SIALA,Patrick,patrick.nsiala@gmail.com,07 63 16 18 03,09 86 21 83 70,BURIE,17770,1969,51,Françoise,Aquitaine,Pasteur APE,Actif
+998,PASCAL,Floris,florispascal@hotmail.com,06 47 07 20 90,,NARCASTET,64510,1987,33,,Aquitaine,Stagiaire,Actif
+992,PELLETIER,Erwan,erwantp29@gmail.com,06 37 57 06 32,,ANGOULEME,16000,1992,28,Rebecca,Aquitaine,Stagiaire,Actif
+391,PERION,Daniel,periondaniel@aol.com,06 51 35 03 37,05 53 70 65 99,CASTILLONNES,47330,1943,77,,Aquitaine,Pasteur APE,Retraité
+808,PERRAUD,Matthieu,mperraud@eglisemomentum.com,06 18 88 54 57,,AMBARES ET LAGRAVE,33440,1982,38,Laëtitia,Aquitaine,Stagiaire,Actif
+580,PHILIPPE,Aymeric,philippe.aymeric77@gmail.com,07 80 04 97 07,09 54 10 52 16,HASPARREN,64240,1974,46,Christelle,Aquitaine,Pasteur APE,Actif
+598,POULET,Jérémie,jpoulet@eglisemomentum.com,06 45 45 69 97,,SAINT ANDRÉ DE CUBZAC,33240,1979,41,Sandie,Aquitaine,Pasteur APE,Actif
+407,PRADAL,Jean-Luc,jeanlucpradal@orange.fr,06 31 79 49 00,05 56 66 11 83,GUJAN MESTRAS,33470,1947,73,Nicole,Aquitaine,Pasteur APE,Retraité
+408,PRENEL,Georges,georges.prenel@sfr.fr,06 69 56 68 83,05 53 58 24 02,PRIGONRIEUX,24130,1936,84,Simone,Aquitaine,Pasteur APE,Retraité
+509,RIGARD,Gérard,rigardger@gmail.com,(00.221)77.636.27.43,05 57 99 00 40,EYSINES,33320,1964,56,Alexandra,Aquitaine,Pasteur APE,Actif
+647,ROIG,Philippe,rolas13127@gmail.com,06 23 29 58 42,,,,1975,45,Angélique,Aquitaine,Pasteur APE,Actif
+433,ROLLAND,Lionel,lionel.rolland@addfrance.com,06 08 72 07 79,05 56 87 15 27,LEOGNAN,33850,1960,60,Isabelle,Aquitaine,Pasteur APE,Actif
+432,ROLLERI,Jean-Paul,r.jp@wanadoo.fr,06 24 99 79 76,05 53 94 38 29,MARMANDE,47200,1975,45,Anne-France,Aquitaine,Pasteur APE,Actif
+449,SANTANDER,Serge,serge.santander@gmail.com,06 79 50 92 64,05 59 84 39 99,LONS,64140,1953,67,Marie-Paule,Aquitaine,Pasteur APE,Actif
+451,SCHULZ,Michel,schulz.m@wanadoo.fr,06 83 10 62 83,05 55 81 86 01,GUERET,23000,1958,62,Marie-Héléne,Aquitaine,Pasteur APE,Actif
+1064,SENETAIRE,Pierre,pierre.senetaire@gmail.com,06 52 40 33 56,,VIRSAC,33240,1978,42,Aude,Aquitaine,Probatoire,Actif
+1062,THOMAS,Christophe,camarochris81@gmail.com,06 22 51 01 40,,SAINT LOUBES,33450,1981,39,Barbara,Aquitaine,Probatoire,Actif
+64,VINCENT,Jean-Paul,jpaul.vincent@eglisedubassin.fr,06 10 39 50 17,,LA TESTE,33260,1966,54,Christine,Aquitaine,Pasteur APE,Actif
+511,VORS,Yves,ylvors@yahoo.com,06 50 76 24 97,,STRUETH,68580,1956,64,Laurie,Aquitaine,Pasteur APE,Actif
+792,WARTELLE,Grégoire,gregoire.wartelle@gmail.com,06 67 70 93 88,,SAINT DENIS,93200,1987,33,Ketsia,Aquitaine,Probatoire,Actif
+994,YNAM,Jérémie,jeremie.ynam@gmail.com,06 03 57 75 53,,MALEMORT SUR CORREZE,19360,1987,33,Evodie,Aquitaine,Probatoire,Actif
+491,YNAM,Robert,robert.ynam@addfrance.com,06 72 28 78 83,05 55 87 07 07,BRIVE LA GAILLARDE,19100,1960,60,Maguy,Aquitaine,Pasteur APE,Actif
+492,ZANELLATO,Michel,michel.zanellato@gmail.com,06 78 23 61 97,05 56 23 54 49,AMBARES ET LAGRAVE,33440,1942,78,Françoise,Aquitaine,Pasteur APE,Retraité
+1019,ALLORENT,Mickaël,m.allorent@hotmail.fr,,,,,,,,Centre,probatoire,Actif
+962,BURLES,Matthieu,m3burles@gmail.com,06 22 32 30 01,,BOURGES,18000,1981,39,Marlène,Centre,stagiaire,Actif
+584,CADET,Jean-Michel,jean-michel-cadet@wanadoo.fr,07 51 14 74 84,09 51 69 48 51,LA CHAPELLE SAINT URSIN,18570,1958,62,Marianne,Centre,Pasteur APE,Actif
+1020,CADET,Nicolas,css-nicolas@laposte.net,,,,,,,,Centre,probatoire,Actif
+175,CARTER,Micaël,,06 75 84 98 18,09 80 54 82 67,THIERS,63300,1977,43,Anne-Emmanuelle,Centre,Pasteur APE,Actif
+177,CAYOL,Christian,christiancayol@netcourrier.com,06 20 44 83 26,04 43 03 25 22,GANNAT,3800,1952,68,Marylise,Centre,Pasteur APE,Actif
+833,DIDIER,Nathanaël,nathanael.did@gmail.com,07 55 62 36 32,,AURILLAC,15000,1987,33,Myriam,Centre,Stagiaire,Actif
+228,ENTWISTLE,Alan,,06 65 35 11 32,,JOZERAND,63460,1943,77,,Centre,Pasteur APE,Retraité
+229,ESCOLIER,Laurent,laurent.escolier@aliceadsl.fr,06 31 90 88 69,09 84 00 85 71,NEVERS,58000,1972,48,Cécilia,Centre,Pasteur APE,Actif
+233,FABRE,Jean-Paul,jean-paul.fabre@addfrance.com,06 81 24 34 04,,MONTLUÇON,3100,1955,65,Monique,Centre,Pasteur APE,Retraité
+322,FUSEAU,Aurélien,aurelien.fuseau@orange.fr,06 45 15 15 45,04 73 38 50 12,RIOM,63200,1981,39,Catherine,Centre,Pasteur APE,Actif
+271,GIRAUDEL,Patrick,giraudel.patrick@gmail.com,06 95 27 74 46,,AMBARES ET LAGRAVE,33440,1950,70,Marie-Agnès,Centre,Pasteur APE,Actif
+773,GUIGAIN,Benoit,benoit.guigain@wanadoo.fr,06 84 57 63 17,,ISSOIRE,63500,1977,43,Cerena,Centre,Pasteur APE,Actif
+963,HENRY,Alexis,alexgrpq@gmail.com,06 47 58 40 53,,LUNEL,34400,1992,28,,Centre,Stagiaire,Actif
+417,RAUDSZUS,Henry,raudszus.henry@bbox.fr,06 87 43 38 82,09 87 17 68 29,THIERS,63300,1953,67,Marlyse,Centre,Pasteur APE,Actif
+523,SACLIER,Franck,franck.saclier@addfrance.com,07 82 81 44 48,04 70 30 44 58,VICHY,3200,1975,45,Esther,Centre,Pasteur APE,Actif
+927,SOULIÉ,Cédric,souliecedric@gmail.com,06 06 40 04 60,,,,1976,44,Myriam,Centre,stagiaire,Actif
+463,TASSONE,Mirko,mirko.tassone@orange.fr,06 23 10 70 55,04 73 53 99 21,THIERS,63300,1974,46,Marianne,Centre,Pasteur APE,Actif
+620,VIRAPIN,Jean-Alain,jeanalain.virapin@neuf.fr,06 86 25 09 38,,MONTLUÇON,3100,1972,48,Mélanie,Centre,Pasteur AEM,Actif
+728,YEPONDE,Sandro,ysanyv@gmail.com,06 48 00 25 45,,EVREUX,27000,1981,39,,Centre,Pasteur AEM,Actif
+494,ZUEL,Jean-Noël,jean-noel.zuel@addfrance.com,06 09 59 41 32,04 73 60 30 00,COURNON D'AUVERGNE,63800,1962,58,Sylvie,Centre,Pasteur APE,Actif
+93,SANTANA,Didier,didier.santana@addfrance.com,06 37 89 38 09,04 68 61 07 56,PERPIGNAN,66000,1965,55,Laurence,Languedoc-Roussillon,Pasteur APE,Actif
+96,DELATTRE,René,pdt.unadf@addfrance.fr,06 19 61 33 50,04 68 27 53 87,SALLES D'AUDE,11110,1956,64,Catherine,Languedoc-Roussillon,Pasteur APE,Actif
+103,AGUILA,François,francois-aguila@wanadoo.fr,,04 66 75 21 48,NÎMES,30000,1933,87,Huguette,Languedoc-Roussillon,Pasteur APE,Retraité
+105,ALBANESE,Luc,luc.albanese@addfrance.com,06 82 62 56 79,04 68 10 89 96,VILLEMOUSTAUSSOU,11620,1957,63,Lucie,Languedoc-Roussillon,Pasteur APE,retraité
+114,ASTIER,Bruno,bruno.astier@addfrance.com,06 62 95 76 19,06 62 95 76 19,CANDILLARGUES,34130,1973,47,Caroline,Languedoc-Roussillon,Pasteur APE,Actif
+130,BERTHON,Claude,claudeberthon84@gmail.com,06 45 44 43 31,04 13 66 14 36,AVIGNON,84000,1935,85,Michèle,Languedoc-Roussillon,Pasteur APE,Retraité
+235,FALSON,Franck,falsonfranck@hotmail.fr,06 83 54 31 29,04 67 51 34 84,MEZE,34140,1970,50,Alexandra,Languedoc-Roussillon,Pasteur APE,Actif
+239,FENERON,Pierre,pierre.feneron@club-internet.fr,06 14 73 45 71,09 54 62 86 01,PUICHERIC,11700,1963,57,Caroline,Languedoc-Roussillon,Pasteur APE,Actif
+248,FO,Gérard,gerard.fo@addfrance.com,07 72 164 777,04 68 21 48 02,POLLESTRES,66450,1943,77,Raymonde,Languedoc-Roussillon,Pasteur APE,Retraité
+249,FONTAINE,Georges,fontainegeorges79@gmail.com,07 82 30 14 17,04 66 48 03 09,MARVEJOLS,48100,1958,62,Véronique,Languedoc-Roussillon,Pasteur APE,Actif
+256,FORT,Jean-Luc,j.luc.fort48@gmail.com,06 77 09 27 74,677092774,LE VIGAN,30120,1967,53,Elisabeth,Languedoc-Roussillon,Pasteur APE,Actif
+261,GALIBERT,Paul,josiepaul.gali@gmail.com,06 03 49 55 17,04 67 00 04 24,SAUVIAN,34410,1938,82,,Languedoc-Roussillon,Pasteur APE,Retraité
+263,GALLICE,Joël,joel.gallice@addfrance.com,07 61 90 41 78,04 90 89 86 33,AVIGNON,84000,1960,60,Fabienne,Languedoc-Roussillon,Pasteur APE,Actif
+269,GIORDANO,Henri,henrigiordano25@gmail.com,,04 66 54 03 94,SAINT JEAN DU GARD,30270,1925,95,,Languedoc-Roussillon,Pasteur APE,Retraité
+277,GONTARD,Jean-Claude,gontard.jc@gmail.com,06 33 12 82 53,04 67 00 12 17,AGDE,34300,1940,80,Suzanne,Languedoc-Roussillon,Pasteur APE,Retraité
+290,HASCOET,Max,,06 83 90 88 45,04 90 78 18 67,CAVAILLON,84300,1941,79,,Languedoc-Roussillon,Pasteur APE,Retraité
+304,JORY,Ascencio,ascenciojory.2409@gmail.com,06 14 48 68 99,04 30 16 23 84,LEZIGNAN CORBIÈRES,11200,1959,61,Maria,Languedoc-Roussillon,Pasteur APE,Retraité
+332,LEGRAND,Charles,charles-legrand@Bbox.fr,06 62 97 13 86,04 67 16 77 05,CASTELNAU LE LEZ,34170,1937,83,Arlette,Languedoc-Roussillon,Pasteur APE,Retraité
+336,LEVY,Christian,clev30120@gmail.com,06 30 41 96 31,04 99 53 88 59,MARS,30120,1950,70,Martine,Languedoc-Roussillon,Pasteur APE,Retraité
+342,LOZANO,Jean-Michel,lozano.jeanmichel@orange.fr,06 28 60 39 29,04 90 02 31 56,LE THOR,84250,1959,61,Nadia,Languedoc-Roussillon,Pasteur APE,Actif
+346,MANSANET,Gérard,g.mansanet@wanadoo.fr,06 87 33 70 75,04 66 52 11 36,ALÈS,30100,1949,71,Annie,Languedoc-Roussillon,Pasteur APE,Retraité
+353,MATHIAS,Serge,serge.mathias@free.fr,07 77 03 69 99,09 52 19 97 52,BERNIS,30620,1959,61,Monique,Languedoc-Roussillon,Pasteur APE,Actif
+354,MATTINA,Jérémy,mattina.j_m@hotmail.fr,06 11 50 41 29,04 34 22 89 51,PALAVAS LES FLOTS,34250,1978,42,Marilyn,Languedoc-Roussillon,Pasteur AEM,Actif
+355,MATTINA,François,fmattina@gmail.com,06 17 09 03 10,04 67 72 03 03,MONTPELLIER,34000,1955,65,Evangéline,Languedoc-Roussillon,Pasteur APE,Actif
+357,MAURIN,Jean-Marc,jean.marc.maurin11@gmail.com,06 71 77 27 70,,SAINT JEAN DU GARD,30270,1959,61,Annette,Languedoc-Roussillon,Pasteur APE,Retraité
+363,MONNIN,Jean-Luc,jean-luc.monnin@addfrance.com,06 50 00 05 48,04 90 30 46 57,BOLLENE,84500,1959,61,Sylviane,Languedoc-Roussillon,Pasteur APE,Actif
+403,PORCHEL,Alain,alain.porchel@wanadoo.fr,,06 20 04 61 03,LUNEL CEDEX,34401,1940,80,,Languedoc-Roussillon,Pasteur APE,Retraité
+415,RAFINESQUE,Yves,yves.rafinesque@wanadoo.fr,06 75 34 01 39,04 66 85 19 39,SAINT JEAN DU GARD,30270,1930,90,Josephine,Languedoc-Roussillon,Pasteur APE,Retraité
+416,RAMOS,Tony,antoine.ramos@addfrance.com,06 20 67 69 86,09 84 37 20 69,CAZILHAC,34190,1942,78,Mady,Languedoc-Roussillon,Pasteur APE,Retraité
+422,REY,Alain,reyalain@neuf.fr,07 60 59 4021,04 50 57 61 69,ANNECY,74000,1953,67,Hélène,Languedoc-Roussillon,Pasteur APE,Retraité
+448,SANTANA,Jo,aep.josantana@gmail.com,06 71 08 08 00,04 68 42 83 68,NARBONNE,11100,1944,76,Odile,Languedoc-Roussillon,Pasteur APE,Retraité
+452,SEGURA,Pierre,pierre.segura@addfrance.com,06 60 87 25 04,04 67 39 78 47,VIAS,34450,1945,75,Paulette,Languedoc-Roussillon,Pasteur APE,Retraité
+459,SUJOL,Thierry,thierry.sujol@sfr.fr,06 62 64 49 30,04 67 87 07 02,CASTELNAU LE LEZ,34170,1948,72,Anne-Marie,Languedoc-Roussillon,Pasteur APE,Retraité
+464,TCHERKECHIAN,Jean-Marc,jm.tcherk@gmail.com,06 03 89 97 35,04 66 37 29 13,MARGUERITTES,30320,1955,65,,Languedoc-Roussillon,Pasteur APE,Actif
+466,TOBAL,Frédéric,fred.tobal@cegetel.net,06 59 08 00 36,04 66 43 12 60,ALÈS,30100,1964,56,Isabelle,Languedoc-Roussillon,Pasteur APE,Actif
+474,VAN DE PUTTE,Laurent,laurent.vandeputte@free.fr,,04 68 70 02 93,VIGNEVIEILLE,11330,1930,90,,Languedoc-Roussillon,Pasteur APE,Retraité
+487,VIVIER,Guy,guyginet@hotmail.fr,,04 67 31 06 72,BÉZIERS,34500,1946,74,Ginette,Languedoc-Roussillon,Pasteur APE,Retraité
+528,GABBRIELLI,Emmanuel,e.gabbrielli.38@gmail.com,06 95 39 79 89,,MONTPELLIER,34080,1972,48,Anne,Languedoc-Roussillon,Pasteur APE,Actif
+541,LACAZE-LABARRERE,Gabriel,naga7@free.fr,06 22 48 96 42,,SERVIAN,34290,1976,44,Nathalie,Languedoc-Roussillon,Pasteur APE,Actif
+543,SACLIER,Sébastien,sebastien.saclier@gmail.com,06 87 40 00 02,,PEZENAS,34120,1972,48,Sandrine,Languedoc-Roussillon,Pasteur APE,Actif
+638,ROMAN,Gilmer,,06 43 17 58 62,04 34 52 95 66,OSSEJA,66340,1958,62,Emmanuelle,Languedoc-Roussillon,Pasteur Partenaire,Actif
+700,BERDEILH,Régis,regis11300@outlook.com,,04 68 31 58 91,LIMOUX,11300,1944,76,,Languedoc-Roussillon,Pasteur APE,Actif
+709,CHAROUSSET,Hioa,honu.charousset@gmail.com,06 20 37 91 16,09 53 30 06 24,PRADES,66500,1982,38,Audrey,Languedoc-Roussillon,Pasteur APE,Actif
+720,BERTRAND,Thomas,bertrand.th@hotmail.fr,06 66 84 88 87,,ORANGE,84100,1980,40,Sandra,Languedoc-Roussillon,Pasteur APE,Actif
+770,SAEZ,Samuel,samuelsaez234@gmail.com,06 64 47 48 96,,BEAUNE,21200,1983,37,Sylvie,Languedoc-Roussillon,Pasteur APE,Actif
+806,NAVARLAS,Alex,navarlasalex@gmail.com,06 29 05 75 04,04 86 04 11 77,CARPENTRAS,84200,1968,52,Henriette,Languedoc-Roussillon,Pasteur AEM,Actif
+826,CAREME,Thierry,thierrycareme@gmail.com,06 95 68 08 47,04 68 77 07 22,CARCASSONNE,11000,1974,46,Céline,Languedoc-Roussillon,Pasteur APE,Actif
+862,RICHARDSON,Albert,richardsontahiti@yahoo.com,06 78 71 32 61,,NÎMES,30000,1954,66,Martine,Languedoc-Roussillon,Pasteur APE,Retraité
+922,MANCINI,William,johanna.mancini@laposte.net,,,BESSAN,34550,1983,37,,Languedoc-Roussillon,stagiaire,Actif
+923,SORRENTI,Nathanaël,nathodie@live.fr,06 84 06 17 03,,NÎMES,30900,1987,33,Élodie,Languedoc-Roussillon,stagiaire,Actif
+964,PICARD,Jonathan,jonpicard0974@gmail.com,06 99 28 00 68,,CAUMONT SUR DURANCE,84510,1991,29,,Languedoc-Roussillon,probatoire,Actif
+1021,NICOLAS,Anthony,newantony7@gmail.com,,,,,1991,29,,Languedoc-Roussillon,probatoire,Actif
+104,AKARASIS,Kelly,lesakar@orange.fr,06 95 13 46 39,05 62 45 97 65,TARBES,65000,1963,57,Mireille,Midi-Pyrénées,Pasteur APE,Actif
+116,AUDOUI,Christian,christian.audoui@wanadoo.fr,06 45 07 03 39,05 63 59 85 05,CASTRES,81100,1958,62,Roselyne,Midi-Pyrénées,Pasteur APE,Actif
+140,BLANC,Christian,cg.blanc@orange.fr,06 61 76 57 15,05 61 02 92 84,FOIX,9000,1952,68,Graziella,Midi-Pyrénées,Pasteur APE,Actif
+831,BOHUI,Emmanuel,emmanueletmarika@gmail.com,06 66 02 97 65,,RODEZ,12000,1986,34,Marika,Midi-Pyrénées,Pasteur AEM,Actif
+148,BORDENEUVE,Denis,bordeneuvedenis@yahoo.fr,06 69 91 03 82,05 62 06 74 83,MONFORT,32120,1950,70,,Midi-Pyrénées,Pasteur APE,Retraité
+150,BOTTERON,Jean-Marc,jm.botteron@live.fr,06 06 47 19 60,05 61 76 10 67,TOULOUSE,31100,1969,51,Laurence,Midi-Pyrénées,Pasteur APE,Actif
+1016,BOURGEOIS,Olivier,bourgeoisolivier@hotmail.fr,06 79 33 11 84,,TOULOUSE,31500,1980,40,Franceska,Midi-Pyrénées,Stagiaire,Actif
+157,BRANGER,Daniel,d.g.branger65@gmail.com,06 45 65 17 29,05 62 91 96 22,BAGNERES DE BIGORRE,65200,1951,69,Colette,Midi-Pyrénées,Pasteur APE,Retraité
+171,CARAYOL,Frédéric,carayol.frederic@live.com,06 11 66 68 71,,CUNAC,81990,1964,56,Claudine,Midi-Pyrénées,Pasteur APE,Actif
+537,CAVAILLE,Jérôme,jeromecavaille@hotmail.fr,07 60 07 19 73,09 53 62 86 71,CASTRES,81100,1973,47,Dalila,Midi-Pyrénées,Pasteur APE,Actif
+182,CHARRONDIERE,Gérald,g.charrondiere@free.fr,06 11 58 90 23,,LEOJAC,82230,1953,67,Evelyne,Midi-Pyrénées,Pasteur APE,Retraité
+766,D'AGOSTINO,Jonathan,j.dagostino@yahoo.fr,06 16 34 74 60,09 83 68 44 80,VALENCE SUR BAISE,32310,1981,39,Andrée,Midi-Pyrénées,Pasteur AEM,Actif
+252,DEVILLIERS,Arnaud,arnaud.delphine.dev@gmail.com,06 41 51 49 08,04 71 46 01 54,ARPAJON SUR CERE,15130,1982,38,Delphine,Midi-Pyrénées,Pasteur AEM,Actif
+237,FAUSSIE,Claude,claude.faussie@orange.fr,06 33 86 58 23,05 63 02 74 17,LEOJAC,82230,1935,85,,Midi-Pyrénées,Pasteur APE,Retraité
+920,FEUILLERAT,Bruno,bfvillenave@wanadoo.fr,06 59 14 37 13,,POINTIS INARD,31800,1960,60,Irène,Midi-Pyrénées,Pasteur AEM,Actif
+811,FONTAINE,Mickaël,fontaine.mickael@free.fr,06 78 64 73 41,09 51 43 54 03,CASTELSARRASIN,82100,1981,39,Laure,Midi-Pyrénées,Pasteur APE,Actif
+94,FOREY,Michel,foreymichel@gmail.com,06 12 88 63 77,05 65 80 43 49,PEYRUSSE LE ROC,12220,1947,73,Geneviève,Midi-Pyrénées,Pasteur AEM,Retraité
+655,GADROY,Jérémie,jgadroy@gmail.com,06 98 24 34 69,,SAUVETERRE DE COMMINGES,31510,1984,36,Stéphanie,Midi-Pyrénées,Pasteur APE,Actif
+262,GALLIFOT,Guy,gallifotcg@hotmail.fr,06 10 75 08 54,05 63 20 21 53,MONTAUBAN,82000,1943,77,,Midi-Pyrénées,Pasteur APE,Actif
+272,GISQUET,Bernard,bernard.gisquet@wanadoo.fr,06 09 75 54 25,,AGEN,47510,1953,67,Laure,Midi-Pyrénées,Pasteur APE,Retraité
+568,GOILLOT,Luc,goillot.luc@neuf.fr,06 28 21 29 86,05 61 78 11 01,COLOMIERS,31770,1961,59,Valérie,Midi-Pyrénées,Pasteur APE,Actif
+283,GUIZARD,Christophe,christophe.guizard@orange.fr,06 63 93 22 80,,PAMIERS,9100,1965,55,Marlène,Midi-Pyrénées,Pasteur APE,Actif
+983,GUYOT,Jonathan,guyot.jonathan@gmail.com,06 10 40 14 00,,LESCURE D'ALBIGEOIS,81380,1980,40,Nolwenn,Midi-Pyrénées,Stagiaire,Actif
+303,JOO,Daniel,danieljoo6@yahoo.fr,06 95 77 37 04,09 50 33 75 35,TOULOUSE,31200,1968,52,,Midi-Pyrénées,Pasteur APE,Actif
+310,KOWALCZYK,Bernard,kowabern@gmail.com,,05 62 45 35 53,BERNAC DEBAT,65360,1944,76,Elisabeth,Midi-Pyrénées,Pasteur APE,Retraité
+321,LARROQUE,Alain,larroque.alain@free.fr,06 80 68 26 22,05 34 01 73 55,VERNIOLLE,9340,1952,68,Marie paule,Midi-Pyrénées,Pasteur AEM,Actif
+521,LENOIR,Laurent,lapa.mera@wanadoo.fr,06 20 18 60 75,,GRAULHET,81300,1964,56,Pascale,Midi-Pyrénées,Pasteur APE,Actif
+345,MAFFRE,Franck,franck.maffre@wanadoo.fr,,05 63 37 26 03,LACAZE,81330,1941,79,Jacqueline,Midi-Pyrénées,Pasteur APE,Retraité
+929,NANA-GASSA-GONGA,Julien-Lorris,julien.lorris.nanagassagonga@gmail.com,06 32 12 82 77,,TOULOUSE,31000,1987,33,Myriam,Midi-Pyrénées,Stagiaire,Actif
+373,NICOLAS,Frédéric,fred.nicolas34@gmail.com,06 51 71 81 54,,CAHORS,46000,1962,58,Noëlle,Midi-Pyrénées,Pasteur APE,Actif
+380,OLLE,Jean,jean.olle@addfrance.com,,05 61 07 55 78,TOULOUSE CEDEX 1,31035,1928,92,,Midi-Pyrénées,Pasteur APE,Retraité
+412,PUJOLAS,Jean-François,pujolas.jeff@wanadoo.fr,06 09 92 47 00,05 62 65 74 96,BARRAN,32350,1953,67,Jacqueline,Midi-Pyrénées,Pasteur APE,Retraité
+539,QUERE,Philippe,filippe.quere@gmail.com,06 25 42 58 61,,MONTAUBAN,82000,1967,53,Marie-Christine,Midi-Pyrénées,Pasteur APE,Actif
+772,RAMPAUD,David,davidrampaud@gmail.com,07 82 66 90 15,,LAUNAGUET,31140,1985,35,Célia,Midi-Pyrénées,Pasteur AEM,Actif
+435,ROUSSEL,Claude,claude.roussel49@orange.fr,06 32 07 03 64,05 63 53 47 84,CRESPINET,81350,1946,74,Monique,Midi-Pyrénées,Pasteur APE,Retraité
+646,SEIMANDI,Jacques,jacmade@gmail.com,06 12 53 06 92,431 234 166,BEAUVAIS SUR TESCOU,81630,1970,50,Madeline,Midi-Pyrénées,Pasteur AEM,Actif
+458,SPORTIELLO,Marc,marcsp31@free.fr,06 61 55 95 11,05 62 18 31 68,LANTA,31570,1950,70,Hélene,Midi-Pyrénées,Pasteur APE,Actif
+1022,TARDIVON,Matthieu,mtardivon@hotmail.fr,,,,,1978,42,,Midi-Pyrénées,probatoire,Actif
+984,TEILLOL,Laurent,laurent.teillol@gmail.com,07 71 37 67 90,,LANDORTHE,31800,1975,45,Corinne,Midi-Pyrénées,Stagiaire,Actif
+92,VALENTE,Jean,talven47@gmail.com,06 70 44 67 24,05 61 95 55 05,LANDORTHE,31800,1946,74,Isabelle,Midi-Pyrénées,Pasteur APE,Retraité
+573,ALBADALEJO,Patrick,patrick.albadalejo@gmail.com,06 37 29 54 71,09 89 11 51 38,SAINT MAXIMIN LA SAINTE BAUME,83470,1973,47,Rebecca,PacaCorse,Pasteur APE,Actif
+921,ALBANESE,Maxime,albanese.maxime@gmail.com,07 67 11 44 46,,CROTS,5200,1988,32,Lydia,PacaCorse,Stagiaire,Actif
+106,ALBERT,Roger,roger.albert0655@orange.fr,06 28 27 18 41,,JUAN LES PINS,6160,1935,85,Annie,PacaCorse,Pasteur APE,Retraité
+109,ALTMANN,Laurent,laurent.altmann@wanadoo.fr,06 14 25 04 02,04 93 67 30 75,JUAN LES PINS,6160,1965,55,,PacaCorse,Pasteur APE,Actif
+739,AMBROGIO,Marc,ambrogio.marc@free.fr,06 51 21 57 77,,FREJUS,83600,1979,41,Ambre,PacaCorse,Pasteur APE,Actif
+939,ANNONAY,Willy,willanno@hotmail.fr,06 52 16 75 13,,MARSEILLE,13013,2019,1,,PacaCorse,Pasteur AEM,Actif
+121,BARBUIS,Philippe,barbuis.philippe@gmail.com,06 74 91 04 74,04 94 44 67 60,SAINT RAPHAEL,83700,1956,64,Corinne,PacaCorse,Pasteur APE,Actif
+122,BASILE,Albert,albert.basile@orange.fr,06 76 71 88 75,04 42 70 68 80,AUBAGNE,13400,1962,58,Régine,PacaCorse,Pasteur APE,Actif
+123,BASIN,Jacques,jbasin5@gmail.com,06 81 76 77 18,,BOUC BEL AIR,13320,1931,89,,PacaCorse,Pasteur APE,Retraité
+1023,BERNARD-MAUGIRON,Henri,maugiroe@gmail.com,,,,,1972,48,,PacaCorse,Probatoire,Actif
+129,BERTHOLON,Bernard,bbertholon@sfr.fr,06 21 07 59 91,,,,1936,84,Natalie,PacaCorse,Pasteur APE,Retraité
+82,BOSHI,Laurent,laurent.boshi@gmail.com,07 82 59 31 69,,MARIGNANE,13700,1965,55,Sandra,PacaCorse,Pasteur APE,Actif
+152,BOUCHAMI,Rachid,rachid.bouchami@addfrance.com,06 61 14 83 09,04 94 59 83 09,SAINT MAXIMIN LA SAINTE BAUME,83470,1936,84,,PacaCorse,Pasteur APE,Retraité
+158,BRES,Jean-Luc,bresjl@free.fr,06 23 32 95 45,09 54 91 16 68,LA SEYNE SUR MER,83500,1971,49,Anne- audrey,PacaCorse,Pasteur APE,Actif
+662,BRION,Stéphane,stephbrion14@gmail.com,06 50 03 58 84,,VILLENEUVE,4180,1973,47,Anne,PacaCorse,Pasteur AEM,Actif
+965,CARBONNEL,Nathan,carbonnel.nathan@outlook.com,,,,,1996,24,,PacaCorse,Probatoire,Actif
+187,CLARK,Barry,clarkbarry40@aol.com,06 06 41 58 98,04 92 34 98 02,DIGNE LES BAINS,4000,1942,78,Dina,PacaCorse,Pasteur APE,Retraité
+604,CORTES,Laurent,,,04 93 55 77 67,NICE,6000,1959,61,Rosalie,PacaCorse,Pasteur AEM,Actif
+555,COSTA,Jean-Luc,costa37@orange.fr,06 85 61 92 41,04 94 45 64 63,ROQUEBRUNE SUR ARGENS,83520,1968,52,Nadine,PacaCorse,Stagiaire,Actif
+198,DALMASSO,Jean-Pierre,,06 09 35 51 75,04 93 51 19 59,NICE,6100,1935,85,Nicole,PacaCorse,Pasteur APE,Retraité
+518,DEL ZOTTO,Johann,johann.delzotto@gmail.com,06 66 74 48 70,,TOULON,83200,1978,42,vanessa,PacaCorse,Pasteur APE,Actif
+77,DENIZOU,Alain,alain.denizou@gmail.com,06 18 90 66 91,,VOLX,4130,1944,76,Nicole,PacaCorse,Pasteur APE,Actif
+966,DIETRICH,Kevin,etsdietrich@gmail.com,,,,,1992,28,,PacaCorse,Probatoire,Actif
+979,DOMON,Jérôme,domon.jerome@orange.fr,06 13 22 58 98,,,,1975,45,,PacaCorse,Pasteur AEM,Actif
+212,DONATI,Henri,henri.donati@gmail.com,06 95 14 48 69,,MARSEILLE,13013,1963,57,Valérie,PacaCorse,Pasteur APE,Actif
+514,ELBAZ,Jacques,ruben00@netvision.net.il,,05 57 99 00 40,EYSINES,33320,1964,56,Marie loïd,PacaCorse,Pasteur APE,Actif
+227,ENSMINGER,Christophe,ens.chris@yahoo.fr,"3,36E+10","3,40E+10",MARSEILLE,13012,1961,59,Catherine,PacaCorse,Pasteur APE,Actif
+588,FABREGUES,Christophe,fabregueschristophe@gmail.com,06 29 46 13 33,,TOULON,83200,1973,47,Carla,PacaCorse,Pasteur APE,Actif
+967,FAUCHET,David,david.fauchet@free.fr,06 09 18 72 49,,,,1985,35,Lucie,PacaCorse,Stagiaire,Actif
+89,FAUCHY,Alain,fauchie.alain@club-internet.fr,06 62 55 42 04,04 92 28 03 68,MOUANS SARTOUX,6370,1947,73,Hélène,PacaCorse,Pasteur APE,Retraité
+533,FERNANDEZ,Thierry,fernandezth@gmail.com,06 16 71 49 50,04 91 12 40 88,MARSEILLE,13013,1976,44,Christine,PacaCorse,Pasteur APE,Actif
+1024,FLORENT,Sébastien,seb.florent@gmail.com,,,,,1981,39,,PacaCorse,Probatoire,Actif
+251,FONTANA,Marcel,mj.fontana@free.fr,06 28 32 86 34,09 52 05 40 55,MARSEILLE,13011,1937,83,Jeannette,PacaCorse,Pasteur APE,Retraité
+926,FRANSOIS,Mathieu,mathieufransois@gmail.com,06 46 71 21 69,,CARQUEIRANNE,83320,1975,45,Myriam,PacaCorse,Stagiaire,Actif
+260,GADROY,Gérard,gerard.gadroy@gmail.com,06 89 39 22 17,04 94 99 69 85,DRAGUIGNAN,83300,1962,58,Frederique,PacaCorse,Pasteur APE,Actif
+664,GAND,Matthieu,gand.matthieu@gmail.com,06 25 40 70 34,,LE THOR,84250,1986,34,Rebecca,Languedoc-Roussillon,Pasteur APE,Actif
+265,GARCIA,Alain,alaingpasteur@gmail.com,06 10 04 26 00,,FURIANI,20600,1965,55,Denise,PacaCorse,Pasteur APE,Actif
+266,GASTINEAU,Sylvain,sylvain.gastineau@free.fr,06 67 42 78 46,04 92 24 95 26,VILLAR SAINT PANCRACE,5100,1967,53,Nathalie,PacaCorse,Pasteur APE,Actif
+270,GIORDANO,Jacques,jacques.giordano@free.fr,06 98 72 21 27,09 53 05 10 25,MARSEILLE,13014,1964,56,Danielle,PacaCorse,Pasteur APE,Actif
+968,GONTIER,Jonathan,john.gontier14@gmail.com,,,,,1996,24,,PacaCorse,Probatoire,Actif
+969,GUARINO,Emmanuele,emmanuele89@hotmail.com,,,,,1989,31,,PacaCorse,Stagiaire,Actif
+601,HANSS,Romuald,romuald.hanss@addfrance.com,00 221 77 150 00 90,,SALY PORTUDAL,,1974,46,Miriam,PacaCorse,Pasteur APE,Actif
+462,INSINGA,Emmanuel,emmanuel.insinga@gmail.com,06 19 64 73 73,04 66 37 38 90,ARLES,13200,1971,49,Elisabeth,PacaCorse,Pasteur APE,Actif
+301,JAUME,Jean-Luc,jean-luc.jaume@addfrance.com,06 23 02 00 97,04 83 14 55 13,CANNES,6400,1965,55,Joëlle,PacaCorse,Pasteur APE,Actif
+302,JOGAND,Bernard,bernard.jogand@laposte.net,06 60 20 65 07,,,,1955,65,Patricia,PacaCorse,Pasteur APE,Retraité
+577,JULLIAN,Jean-Marie,jullianjms@free.fr,06 33 65 88 99,09 53 74 43 67,MARIGNANE,13700,1943,77,Suzanne,PacaCorse,Pasteur APE,Retraité
+932,KABORE,Frédéric,fred.kabore@gmail.com,06 27 88 07 26,,GAP,5000,1977,43,Elisabeth,PacaCorse,Pasteur AEM,Actif
+590,KADI,Stéphane,stephane.kadi@gmail.com,06 09 04 39 48,,ETAGNAC,16150,1986,34,Galina,PacaCorse,Pasteur AEM,Actif
+307,KADI,Christian,christiankadi@gmail.com,06 60 42 35 20,04 93 26 44 73,NICE,6300,1949,71,Viviane,PacaCorse,Pasteur APE,Actif
+311,KOWALSKI,Edouard,edouard.kowalski@wanadoo.fr,,04 94 62 35 46,TOULON,83200,1934,86,,PacaCorse,Pasteur APE,Retraité
+639,LAJOUX,Pascal,lajoux.pascal@wanadoo.fr,06 85 53 90 29,04 42 79 34 12,VITROLLES,13127,1965,55,Florence,PacaCorse,Pasteur APE,Actif
+323,LAVAL,Serge,serge.laval@addfrance.com,07 68 03 79 10,09 52 23 94 25,MARSEILLE,13002,1959,61,Michèle,PacaCorse,Pasteur APE,Actif
+525,LAVIE,Xavier,xavier.lavie@addfrance.com,06 15 07 68 91,04 42 83 04 43,LA CIOTAT,13600,1967,53,Sophie,PacaCorse,Pasteur APE,Actif
+527,LAVIGNE,Thibaud,lavigne.thibaud@club-internet.fr,06 20 44 43 57,04 97 21 07 94,JUAN LES PINS,6160,1975,45,Audrey,PacaCorse,Pasteur APE,Actif
+324,LE DROGOFF,Daniel,ledrogoffdaniel@gmail.com,06 40 65 67 60,,PEYROLLES EN PROVENCE,13860,1964,56,Corinne,PacaCorse,Pasteur APE,Actif
+576,LEGBRE,Guigui,sglegbre@yahoo.fr,06 49 81 92 68,09 51 77 97 73,NICE,6100,1964,56,,PacaCorse,Pasteur APE,Actif
+723,LEJEUNE,Laurent,lejeune.lo@hotmail.fr,06 63 60 34 82,,,,1980,40,Françoise,PacaCorse,Probatoire,Actif
+333,LENORMAND,Frédéric,fred.len13@gmail.com,06 03 46 66 78,09 54 42 47 03,NICE,6100,1967,53,Agnès,PacaCorse,Pasteur APE,Actif
+343,LUST,Claude,claude.lust@orange.fr,,04 93 85 07 40,NICE,6000,1937,83,Madelaine,PacaCorse,Pasteur APE,Retraité
+544,MADOZ,Alain,alain.madoz@addfrance.com,06 52 85 40 50,09 83 74 56 62,MARSEILLE,13010,1965,55,Joëlle,PacaCorse,Pasteur APE,Actif
+347,MARCHIONI,Marcel,marcel.marchioni@free.fr,06 21 53 06 84,04 93 44 60 30,NICE CEDEX 02,6103,1936,84,Michèle,PacaCorse,Pasteur APE,Retraité
+648,MENGI,Makiese,makmengi@hotmail.com,06 62 29 33 62,04 93 70 77 60,GRASSE,6130,1980,40,Kelly,PacaCorse,Pasteur APE,Actif
+364,MONTBULEAU,Daniel,daniel.montbuleau@addfrance.com,06 51 44 06 66,04 42 20 47 98,SIMIANE COLLONGUE,13109,1942,78,,PacaCorse,Pasteur APE,Retraité
+367,MOREAU,André,andre.moreau@aol.fr,06 10 12 28 06,04 13 63 13 72,MARSEILLE,13010,1948,72,Evelyne,PacaCorse,Pasteur APE,Retraité
+769,MUSTACCHI,Alain,amustacchi@gmail.com,06 58 34 69 75,,ANTIBES,6600,1981,39,Maïda,PacaCorse,Pasteur AEM,Actif
+603,MUZART,Ivan,ivan@eglisenicemetropole.com,06 17 44 19 94,04 92 04 66 98,SAINT LAURENT DU VAR,6700,1971,49,Solange,PacaCorse,Pasteur APE,Actif
+372,MUZART,Samy,,,04 93 35 95 29,NICE,6100,1936,84,Alexandra,PacaCorse,Pasteur APE,Retraité
+575,MYNGHEER,Stéphane,myngheersalr@hotmail.fr,07 69 24 36 86,09 80 90 53 70,MARTIGUES,13500,1969,51,Anne,PacaCorse,Pasteur APE,Actif
+394,PERRIER,Jean-Paul,jeanpaulperrier53@gmail.com,06 10 59 98 60,09 54 26 63 83,TOULON,83000,1953,67,Elsie,PacaCorse,Pasteur APE,Actif
+1025,PONZA,Stéphane,stephane.ponza@gmail.com,,,,,1974,46,,PacaCorse,Probatoire,Actif
+855,POTTIEZ,Denis,denysspot@hotmail.fr,06 74 03 03 62,,BRIGNOLES,83170,1986,34,Armelle,PacaCorse,Probatoire,Actif
+405,POUGET,Cyrille,pouget.cr@gmail.com,06 18 26 98 02,,LA SEYNE SUR MER,83500,1971,49,Rosetta,PacaCorse,Pasteur APE,Actif
+406,POUILLE,Alain,alain.pouille@free.fr,06 70 82 04 82,04 93 58 32 31,VENCE,6140,1944,76,,PacaCorse,Pasteur APE,Retraité
+538,PRADAL,Nicolas,nicolas.pradal@gmail.com,06 07 01 23 32,,SALON DE PROVENCE,13300,1975,45,Estelle,PacaCorse,Pasteur APE,Actif
+690,PRUDENT,Joël,joel.prudent14@gmail.com,06 59 14 98 31,04 42 55 22 85,ISTRES,13800,1971,49,Ravaka,PacaCorse,Pasteur APE,Actif
+411,PUIROUX,Christian,christian.puiroux@addfrance.com,06 23 19 04 58,04 94 47 88 77,MONTFERRAT,83131,1961,59,Annabelle,PacaCorse,Pasteur APE,Actif
+424,RICCONE,Pierre,riccone.pierre@hotmail.fr,06 11 58 44 30,04 89 14 98 65,VILLENEUVE LOUBET,6270,1944,76,Geneviève,PacaCorse,Pasteur APE,Retraité
+439,RUSSO,Charles,c.russo2b@gmail.com,06 25 25 19 78,04 20 04 28 97,SOLARO,20240,1956,64,Jacqueline,PacaCorse,Pasteur APE,Actif
+440,SAEZ,Marc,marcsaez2a@gmail.com,06 38 31 07 50,,LA SEYNE SUR MER,83500,1955,65,Marivonne,PacaCorse,Pasteur APE,Actif
+804,SAEZ,Yoan,yoansaez@me.com,06 49 88 35 36,,FLASSANS SUR ISSOLE,83340,1981,39,Jessie,PacaCorse,Pasteur APE,Actif
+441,SALAFRANQUE,Patrick,salafran@club-internet.fr,06 10 49 30 89,04 93 33 00 85,ANTIBES,6600,1954,66,Marie-Laure,PacaCorse,Pasteur APE,Actif
+981,SATTA,Gianni,gianni.satta@hotmail.fr,06 19 48 78 99,,BRIGNOLES,83170,1973,47,Angélique,PacaCorse,Stagiaire,Actif
+453,SERE,Jean,jean.sere@addfrance.com,06 59 59 88 11,04 94 38 38 71,HYERES,83400,1944,76,Marie-José,PacaCorse,Pasteur APE,Retraité
+822,SIERRA,Christophe,christophe.sierra@hotmail.fr,06 18 49 18 80,09 52 13 84 23,DIGNE LES BAINS,4000,1975,45,Adeline,PacaCorse,Pasteur APE,Actif
+457,SMAGLIANTE,Mario,smagliante.mario@bbox.fr,06 68 54 39 77,09 53 65 52 12,MARSEILLE,13009,1966,54,Aurélie,PacaCorse,Pasteur APE,Actif
+524,TOUAHMIA,Noredine,ngtouahmia@yahoo.fr,06 14 26 05 63,,CAGNES SUR MER,6800,1974,46,Graziella,PacaCorse,Pasteur APE,Actif
+469,TRAPANI,Vincent,vtrapani@wanadoo.fr,06 89 99 90 34,04 94 72 58 62,VINS SUR CARAMY,83170,1963,57,Valérie,PacaCorse,Pasteur APE,Actif
+470,TRICHARD,Alain,alain.trichard@addfrance.com,,04 42 52 98 90,AIX EN PROVENCE,13090,1955,65,,PacaCorse,Pasteur APE,Actif
+471,TYCHYJ,Jean,jtychyj@orange.fr,06 76 39 36 25,04 92 77 39 80,MANOSQUE,4100,1934,86,,PacaCorse,Pasteur APE,Retraité
+1028,UDOL,Jérémie,udjedje@yahoo.fr,,,,,1987,33,,PacaCorse,Probatoire,Actif
+478,VERDIER,Jean,jeanverdier13@gmail.com,06 62 60 61 87,09 81 18 88 64,MARSEILLE,13015,1954,66,Annie-Claude,PacaCorse,Pasteur APE,Retraité
+510,VICEDO,Robert,robert.vicedo@laposte.net,06 67 28 06 97,04 42 01 30 42,AUBAGNE,13400,1941,79,Liane,PacaCorse,Pasteur APE,Retraité
+482,VILLA,Bernard,bvilla_fr@yahoo.fr,06 70 70 40 65,,SALIN DE GIRAUD,13129,1956,64,Marie-Paule,PacaCorse,Pasteur APE,Retraité
+483,VILLA,Jean-Claude,jc.villa@laposte.net,06 15 22 27 63,,MARSEILLE,13016,1950,70,Mari-Sol,PacaCorse,Pasteur APE,Retraité
+488,VIVIER,Lucien,,,04 91 48 36 57,MARSEILLE,13005,1920,100,,PacaCorse,Pasteur APE,Retraité
+489,WAUTHIER,Stéphane,wauthier.stephane@gmail.com,06 01 82 59 49,04 92 54 57 94,GAP,5000,1965,55,Valérie,PacaCorse,Pasteur APE,Actif
+493,ZOLESIO,Jean-Luc,jean.luc.zolesio@gmail.com,06 66 46 51 22,,CABRIES,13480,1951,69,Regine,PacaCorse,Pasteur APE,Actif
+484,ALLEBEE,Francis,francisallebee@gmail.com,07 83 88 79 60,,PRIVAS,7000,1971,49,Céline,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+689,ATINSOUNON,Clément,ca.atinsounon@gmail.com,06 52 28 41 33,09 53 54 14 47,CHAPONOST,69630,1973,47,Véronique,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+974,BESSON,Davy,davy-besson@hotmail.fr,,,,,1994,26,,Rhône-Alpes Bourgogne,Probatoire,Actif
+138,BLACHON,Joël,joel.blachon@gmail.com,,09 80 48 34 31,ANNECY,74000,1967,53,Alexandra,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+147,BONA,Michel,bonamic@club-internet.fr,06 15 19 44 41,04 69 34 14 68,RIORGES,42153,1959,61,Christine,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+151,BOTTERON,Michel,michel.botteron@laposte.net,,04 50 75 50 92,NEUVECELLE,74500,1931,89,Suzanne,Rhône-Alpes Bourgogne,,Retraité
+960,BREDAR,Guillaume,guillaume.bredar@gmail.com,06 77 09 89 95,04 75 84 70 56,VALENCE,26000,1989,31,Pauline,Rhône-Alpes Bourgogne,Stagiaire,Actif
+165,CABOT,Philippe,philippe.cabot@addfrance.com,06 20 58 22 96,,EYBENS,38320,1961,59,Hélène,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+84,CHAMBEYRON,Thierry,chambeyron70@gmail.com,06 81 582 591,,DECINES CHARPIEU,69150,1970,50,Véronique,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+183,CHASTAGNER,Christian,cc.chastagner@free.fr,,09 51 82 49 62,ROUEN,76100,1956,64,Catherine,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+971,CHIN,Lionel,lionel.chin74@hotmail.com,,,,,1989,31,,Rhône-Alpes Bourgogne,Probatoire,Actif
+552,CHINER,Pierre,pierre.chiner@gmail.com,06 26 16 01 18,04 72 74 18 37,LYON,69005,1983,37,Violaine,Rhône-Alpes Bourgogne,Pasteur AEM,Actif
+185,CHINER,Michel,michel.chiner@gmail.com,,09 54 84 33 48,LYON,69007,1954,66,Christiane,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+186,CHIOCCHI,Bruno,bruno.chiocchi@aliceadsl.fr,06 77 16 04 01,09 54 18 67 61,LA BIOLLE,73410,1958,62,Marie-Christine,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+982,DARDE,Lukendy,lukendy.darde@gmail.com,06 78 62 06 04,,,,1978,42,,Rhône-Alpes Bourgogne,Stagiaire,Actif
+810,DAVIEAUD,Rémi,r.davieaud@gmail.com,06 73 90 38 22,,BONSON,42160,1984,36,Klervia,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+691,DAVY,Christophe,cd.apaloosa@yahoo.fr,06 84 45 91 22,04 37 28 01 32,LYON,69007,1985,35,,Rhône-Alpes Bourgogne,Stagiaire,Actif
+635,DE LANGE,Samuel,samuel.delange@yahoo.fr,06 85 30 30 79,03 85 37 43 95,,,1972,48,esther,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+1027,DEGOT,Christophe,christophe.degot@gmail.com,,,,,1972,48,,Rhône-Alpes Bourgogne,Probatoire,Actif
+205,DENIS,Jean-Pierre,jeanpierre.denis@club-internet.fr,06 21 55 35 57,04 75 98 20 64,MIRABEL,7170,1950,70,Elyane,Rhône-Alpes Bourgogne,,Retraité
+642,DOUX,Jean-Noël,jeannoel.doux@gmail.com,06 23 39 62 12,,ECHIROLLES,38130,1981,39,Rachel,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+253,FONTANA,Philippe,fontanaphilippe71@gmail.com,06 28 08 32 13,03 85 43 08 14,CHALON SUR SAÔNE,71100,1962,58,Nathalie,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+264,GAMBEE,Jean-François,jfgambee@hotmail.fr,06 29 65 97 38,04 57 34 30 02,LA BIOLLE,73410,1958,62,Maryse,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+699,GNASSOUNOU,Mawulolo,mawulolog@orange.fr,06 64 22 14 53,09 73 56 14 85,GLEIZE,69400,1970,50,Marguerite,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+961,GNONHANLOU,Kévin,gkevin2004@gmail.com,,,FRANCHEVILLE,69340,,,,Rhône-Alpes Bourgogne,Stagiaire,Actif
+645,GONZALEZ,Pascal,pascalgonzalez91@sfr.fr,06 86 51 75 72,04 82 36 45 52,ROMANS SUR ISÈRE,26100,1970,50,Catherine,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+1002,HAAKANA,Mikko,mhaakana@hotmail.com,06 47 64 76 39,,,,1968,52,Marie laure,Rhône-Alpes Bourgogne,Stagiaire,Actif
+286,HALEPIAN,Jacques,halepianjacques@gmail.com,,04 75 90 47 81,SAINT GERVAIS SUR ROUBION,26160,1940,80,,Rhône-Alpes Bourgogne,Pasteur APE,Retraité
+289,HASCOET,Bernard,behascoet@gmail.com,06 28 02 34 22,04 76 49 96 85,GRENOBLE,38000,1943,77,Gabrielle,Rhône-Alpes Bourgogne,Pasteur APE,Retraité
+291,HASCOET,René,pasteurhascoet@hotmail.fr,07 52 67 05 64,04 56 10 34 30,ALBERTVILLE,73200,1946,74,,Rhône-Alpes Bourgogne,,Retraité
+717,HASCOËT,Philippe,phil.scot@bbox.fr,06 13 71 74 32,04 76 33 88 25,ECHIROLLES,38130,1968,52,Florence,Rhône-Alpes Bourgogne,Stagiaire,Actif
+924,HERVE,Johnny,Johnnyherve@gmail.com,07 83 83 12 04,,DIJON,21000,1989,31,Laëtitia,Rhône-Alpes Bourgogne,Probatoire,Actif
+512,HURTREL,Moïse,hurtrel.moise@gmail.com,06 81 89 78 72,04 76 21 16 75,GRENOBLE,38000,1944,76,Danie,Rhône-Alpes Bourgogne,Pasteur AEM,Retraité
+548,IMOBERSTEG,Théophile,tr_imobersteg@yahoo.fr,07 60 05 87 01,09 50 16 65 25,ANNEMASSE,74100,1982,38,Rebecca,Rhône-Alpes Bourgogne,Pasteur AEM,Actif
+553,IMOBERSTEG,Jacques,jacques@add-geneve.com,0041 76 3763981,0041 22 7763981,CELIGNY,,1955,65,Christine,Rhône-Alpes Bourgogne,Pasteur agréé,Actif
+972,IMOBERSTEG,Thomas,thomas.imobersteg@gmail.com,,,,,1986,34,,Rhône-Alpes Bourgogne,Probatoire,Actif
+300,IONESCU,Ionel,,,04 75 58 04 20,SAINT MAURICE EN CHALENCON,7190,1935,85,,Rhône-Alpes Bourgogne,,Retraité
+308,KANYANDEKWE,Jean-Bosco,jeanbosco.kanyandekwe@sfr.fr,06 23 94 02 01,,GRENOBLE,38000,1954,66,Marie-France,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+250,LAMOTTE,Jean-Marc,jmlamotte@yahoo.com,06 66 09 89 62,,FIRMINY,42700,1958,62,Alice,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+497,LEFILLATRE,Franck,francklefillatre@aol.com,,,PAU,64000,1970,50,Ester,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+767,LEROI,Étienne,etienno06@aol.com,06 13 99 27 14,09 54 28 88 08,CLUSES,74300,1981,39,Emmanuelle,Rhône-Alpes Bourgogne,Pasteur AEM,Actif
+935,LUC,Jérémie,jeremieluc84@gmail.com,06 68 77 87 51,,Lons le Saunier,,1984,36,Nelly,Rhône-Alpes Bourgogne,Stagiaire,Actif
+768,MADEIRA,Samuel,madeira.sam@gmail.com,06 82 81 97 59,,CHANCIA,1590,1982,38,Sophie,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+661,MAFFRE,David,ebj.davidmaffre@gmail.com,06 35 52 25 09,,BOURGOIN JALLIEU,38300,1977,43,Anne,Rhône-Alpes Bourgogne,Pasteur AEM,Actif
+973,MAITRE,Jérôme,jerome.maitre@hotmail.com,,,,,1988,32,,Rhône-Alpes Bourgogne,Probatoire,Actif
+715,MARTORANO,Mercioni,mercioni@gmail.com,06 11 31 84 49,,RIVE DE GIER,42800,1978,42,Carine,Rhône-Alpes Bourgogne,Stagiaire,Actif
+716,MASCELLINO,Marco,mascellino.marco@gmail.com,06 08 33 80 39,09 54 78 53 80,,,1967,53,Myriam,Rhône-Alpes Bourgogne,Stagiaire,Actif
+698,MAURIN,Jean-Emmanuel,jeanemmanuel.maurin@gmail.com,07 81 27 79 25,,MERCURY,73200,1986,34,Céline,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+359,MAWET,Joseph,joseph.mawet@free.fr,,04 79 68 79 85,CORBEL,73160,1946,74,Patricia,Rhône-Alpes Bourgogne,Pasteur APE,Retraité
+825,MIFOUNDOU,Dyno,Lobelth@hotmail.fr,06 27 44 10 57,,SAINT MAURICE L'EXIL,38550,1977,43,Myriam floralinda dinatale,Rhône-Alpes Bourgogne,Pasteur agréé,Actif
+370,MOUROT,Dominique,mourotdom@gmail.com,06 82 59 77 70,04 75 44 71 95,VALENCE,26000,1954,66,Noémie,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+534,NACCARATO,Mario,eepad@orange.fr,07 89 48 73 58,04 75 51 00 37,MONTELIMAR,26200,1969,51,Esther,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+592,NGANGA,Romaric,romaric.nganga@addfrance.com,,,,,1979,41,,Rhône-Alpes Bourgogne,Pasteur AEM,Actif
+376,NOVERT,Francis,francis.novert@addfrance.com,06 35 27 94 21,06 08 22 17 20,ANNEMASSE,74100,1968,52,Chantal,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+378,OBERBEK,Rodolphe,rodobk@gmail.com,06 88 48 07 66,,RIVE DE GIER,42800,1971,49,Stéphanie,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+501,OGOULA,Landry,landry.ogoula@addfrance.Com,07 81 70 95 93,09 53 70 74 09,CHEVIGNY SAINT SAUVEUR,21800,1970,50,Christelle,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+865,PAMEN,Cédric,pamen1@hotmail.fr,07 81 71 53 97,03 85 56 34 40,LE CREUSOT,71200,1986,34,,Rhône-Alpes Bourgogne,Pasteur AEM,Actif
+383,PAPAYANNI,Dominique,eglise.depentecote@akeonet.com,06 19 92 56 25,04 26 47 32 75,ODENAS,69460,1955,65,Isabelle,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+388,PELLETIER,Bruno,pelletierbruno1962@gmail.com,06 50 60 66 80,09 86 69 98 86,SAINT FONS,69190,1962,58,Sylvène,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+393,PERRIER,Francis,perrier.francis@club-internet.fr,06 80 63 52 13,,VALENCE,26000,1956,64,Agnès,Rhône-Alpes Bourgogne,Pasteur APE,Retraité
+636,PERRONE,Sébastien,sebiameo@yahoo.fr,06 70 79 22 90,,PRIVAS,7000,1979,41,Myriam,Rhône-Alpes Bourgogne,Pasteur AEM,Actif
+401,PINGUET,André,,,04 75 59 14 68,CHABEUIL,26120,1932,88,,Rhône-Alpes Bourgogne,,Retraité
+402,PONCET,Maurice,poncet.mau@orange.fr,,09 61 38 80 38,MONTELIMAR,26200,1932,88,Denise,Rhône-Alpes Bourgogne,,Retraité
+409,PRINCE,Daniel,princedaniel7@orange.fr,06 73 60 17 04,04 75 01 16 05,SAINT GERVAIS SUR ROUBION,26160,1955,65,Joelle,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+694,RICHARD,Jean-Luc,richardjeanluc7@gmail.com,06 50 13 28 66,,MONTELIMAR,26200,1965,55,Danielle,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+91,RIGLER,Jacques,jacques.rigler@wanadoo.fr,06 21 13 00 34,,CHAMBERY,73000,1958,62,Manuela,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+670,RIVERA,Isaac,isaac.rivera@hotmail.fr,06 89 36 61 31,,LUSSAS,7170,1984,36,Julie,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+455,SIVASLEIAN,Alain,aletrose.sivas39@gmail.com,06 77 41 01 24,,LES NANS,39300,1953,67,Roselyne,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+778,TAGLIAMENTO,Christophe,christophe.tagliamento@gmail.com,06 18 50 68 97,,THONON LES BAINS,74200,1980,40,Elisabeth,Rhône-Alpes Bourgogne,Pasteur AEM,Actif
+465,THUNIN,Nicolas,nicolas.thunin@gmail.com,06 25 19 17 20,04 75 82 28 33,CHABEUIL,26120,1975,45,Géraldine,Rhône-Alpes Bourgogne,Pasteur APE,Actif
+996,TOCANIER,Daniel,daniel.tocanier@gmail.com,06 60 29 54 31,,SOYONS,7130,1984,36,Manuella,Rhône-Alpes Bourgogne,Stagiaire,Actif
+997,VU,Richard,hvu@bbox.fr,07 62 53 90 41,09 86 17 10 20,BEAUNE,21200,1969,51,Maria,Rhône-Alpes Bourgogne,Stagiaire,Actif
+991,WAHMETRUA,Kevin,Wahmetruakvin@yahoo.fr,07 71 66 81 40,09 52 20 54 90,LA TOUR DU PIN,38110,1987,33,Tatiana,Rhône-Alpes Bourgogne,Probatoire,Actif
+490,WILHELM,Stephan,sbwilhelm@orange.fr,,04 50 32 24 36,FAVERGES,74210,1970,50,,Rhône-Alpes Bourgogne,Pasteur APE,Actif

@@ -2,8 +2,14 @@ class StructuresController < ApplicationController
   before_filter :set_structure, except: [:index, :new, :create]
 
   def index
+
+    if params[:page].blank?
+      params[:page] = session[:structure_page]
+    end
+
     @q = Structure.ransack(params[:q])
     @structures = @q.result(distinct: true).paginate(:page => params[:page])
+    session[:structure_page] = params[:page] if params[:page]
   end
 
   def show
@@ -31,6 +37,12 @@ class StructuresController < ApplicationController
      else
       render :edit
     end
+  end
+
+  def destroy
+    @structure.destroy
+
+    redirect_to :back, flash:{success: 'Structure supprimée'}
   end
 
 

@@ -106,6 +106,11 @@ class Structure < ActiveRecord::Base
     role
   end
   def remove_role role_name, resource = nil
+    if resource && !resource.is_a?(Class)
+      elector = Elector.find_by(resource: self, structure_id: resource.id)
+      elector.destroy unless elector.blank?
+    end
+
     cond = { :name => role_name }
     cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
     cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
@@ -121,7 +126,6 @@ class Structure < ActiveRecord::Base
       role.destroy
     end
 
-    Elector.find_by(resource: self, structure_id: resource.id).destroy if resource && !resource.is_a?(Class)
   end
 
   def get_class
