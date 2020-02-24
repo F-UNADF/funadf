@@ -11,62 +11,72 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180321100918) do
+ActiveRecord::Schema.define(version: 20200116104750) do
 
-  create_table "campaigns", force: true do |t|
-    t.integer  "structure_id"
-    t.string   "name"
-    t.text     "description"
-    t.string   "code"
+  create_table "campaigns", force: :cascade do |t|
+    t.integer  "structure_id", limit: 4
+    t.string   "name",         limit: 255
+    t.text     "description",  limit: 65535
+    t.string   "code",         limit: 255
     t.datetime "start_at"
     t.datetime "end_at"
     t.boolean  "opened"
-    t.string   "state"
+    t.string   "state",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_public"
+    t.integer  "meeting_id",   limit: 4
   end
 
   add_index "campaigns", ["structure_id"], name: "index_campaigns_on_structure_id", using: :btree
 
-  create_table "electors", force: true do |t|
-    t.integer  "resource_id"
-    t.string   "resource_type"
-    t.integer  "structure_id"
-    t.boolean  "can_vote",      default: true
+  create_table "electors", force: :cascade do |t|
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 255
+    t.integer  "structure_id",  limit: 4
+    t.boolean  "can_vote",                    default: true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "note"
+    t.text     "note",          limit: 65535
   end
 
   add_index "electors", ["resource_id", "resource_type"], name: "index_electors_on_resource_id_and_resource_type", using: :btree
   add_index "electors", ["structure_id"], name: "index_electors_on_structure_id", using: :btree
 
-  create_table "motions", force: true do |t|
-    t.integer  "campaign_id"
-    t.integer  "order"
-    t.string   "name"
-    t.string   "kind"
+  create_table "meetings", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.date     "begin_at"
+    t.date     "end_at"
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "motions", force: :cascade do |t|
+    t.integer  "campaign_id", limit: 4
+    t.integer  "order",       limit: 4
+    t.string   "name",        limit: 255
+    t.string   "kind",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "motions", ["campaign_id"], name: "index_motions_on_campaign_id", using: :btree
 
-  create_table "roles", force: true do |t|
-    t.string   "name"
-    t.integer  "resource_id"
-    t.string   "resource_type"
+  create_table "roles", force: :cascade do |t|
+    t.string   "name",          limit: 255
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "roles", ["resource_id", "resource_type"], name: "index_roles_on_resource_id_and_resource_type", using: :btree
 
-  create_table "rolizations", force: true do |t|
-    t.integer  "role_id"
-    t.integer  "resource_id"
-    t.string   "resource_type"
+  create_table "rolizations", force: :cascade do |t|
+    t.integer  "role_id",       limit: 4
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,61 +84,61 @@ ActiveRecord::Schema.define(version: 20180321100918) do
   add_index "rolizations", ["resource_id", "resource_type"], name: "index_rolizations_on_resource_id_and_resource_type", using: :btree
   add_index "rolizations", ["role_id"], name: "index_rolizations_on_role_id", using: :btree
 
-  create_table "structures", force: true do |t|
-    t.string   "name"
-    t.string   "address_1"
-    t.string   "address_2"
-    t.string   "zipcode"
-    t.string   "town"
-    t.string   "phone_1"
-    t.string   "phone_2"
-    t.string   "type"
+  create_table "structures", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "address_1",  limit: 255
+    t.string   "address_2",  limit: 255
+    t.string   "zipcode",    limit: 255
+    t.string   "town",       limit: 255
+    t.string   "phone_1",    limit: 255
+    t.string   "phone_2",    limit: 255
+    t.string   "type",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email"
+    t.string   "email",      limit: 255
   end
 
-  create_table "uploads", force: true do |t|
-    t.string   "file"
+  create_table "uploads", force: :cascade do |t|
+    t.string   "file",        limit: 255
     t.boolean  "has_heading"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: true do |t|
-    t.string   "firstname"
-    t.string   "lastname"
-    t.string   "address_1"
-    t.string   "address_2"
-    t.string   "zipcode"
-    t.string   "town"
-    t.string   "phone_1"
-    t.string   "phone_2"
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+  create_table "users", force: :cascade do |t|
+    t.string   "firstname",              limit: 255
+    t.string   "lastname",               limit: 255
+    t.string   "address_1",              limit: 255
+    t.string   "address_2",              limit: 255
+    t.string   "zipcode",                limit: 255
+    t.string   "town",                   limit: 255
+    t.string   "phone_1",                limit: 255
+    t.string   "phone_2",                limit: 255
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.string   "avatar_file_name",       limit: 255
+    t.string   "avatar_content_type",    limit: 255
+    t.integer  "avatar_file_size",       limit: 4
     t.datetime "avatar_updated_at"
-    t.string   "invitation_token"
+    t.string   "invitation_token",       limit: 255
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
-    t.integer  "invitation_limit"
-    t.integer  "invited_by_id"
-    t.string   "invited_by_type"
-    t.integer  "invitations_count",      default: 0
-    t.string   "level"
+    t.integer  "invitation_limit",       limit: 4
+    t.integer  "invited_by_id",          limit: 4
+    t.string   "invited_by_type",        limit: 255
+    t.integer  "invitations_count",      limit: 4,   default: 0
+    t.string   "level",                  limit: 255
     t.date     "birthdate"
   end
 
@@ -139,22 +149,22 @@ ActiveRecord::Schema.define(version: 20180321100918) do
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "voters", id: false, force: true do |t|
-    t.integer  "motion_id"
-    t.integer  "elector_id"
+  create_table "voters", id: false, force: :cascade do |t|
+    t.integer  "motion_id",     limit: 4
+    t.integer  "elector_id",    limit: 4
     t.datetime "voted_at"
-    t.string   "ip"
-    t.integer  "resource_id"
-    t.string   "resource_type"
+    t.string   "ip",            limit: 255
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 255
   end
 
   add_index "voters", ["elector_id"], name: "index_voters_on_elector_id", using: :btree
   add_index "voters", ["motion_id"], name: "index_voters_on_motion_id", using: :btree
   add_index "voters", ["resource_id", "resource_type"], name: "index_voters_on_resource_id_and_resource_type", using: :btree
 
-  create_table "votes", id: false, force: true do |t|
-    t.integer "motion_id"
-    t.string  "result"
+  create_table "votes", id: false, force: :cascade do |t|
+    t.integer "motion_id",       limit: 4
+    t.string  "result",          limit: 255
     t.boolean "is_consultative"
   end
 

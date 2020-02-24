@@ -1,6 +1,7 @@
 class Campaign < ActiveRecord::Base
 
   belongs_to :structure
+  belongs_to :meeting
   has_many :motions, -> { order 'motions.order asc' }, dependent: :destroy
 
   accepts_nested_attributes_for :motions, reject_if: :all_blank, allow_destroy: true

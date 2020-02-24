@@ -6,6 +6,7 @@ class UsersController < ApplicationController
     @q = params['search']
 
     @users = User.where('firstname LIKE ? OR lastname LIKE ?', "%#{@q}%", "%#{@q}%").order(:lastname)
+
     respond_to do |format|
       format.json {
         render json: @users

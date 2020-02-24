@@ -1,0 +1,39 @@
+.breadcrumbs
+  .page-header
+    %h1 Gestion des congrès
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong= @meeting.name
+        Gestion des campagnes
+
+        .card-actions
+          = link_to new_admin_meeting_campaign_path, class: "btn-setting" do
+            = icon 'plus'
+            Nouvelle campagne
+
+
+
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th= sort_link(@q, :name, 'Nom')
+                %th= sort_link(@q, :begin_at, 'Dates')
+                %th
+
+            - @campaigns.each do |campaign|
+              %tr
+                %td= campaign.structure_name
+                %td= campaign.name
+                %td TODO
+                %td
+                  = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                    Commencer le vote
+                    = icon 'arrow-right'
+
+          = will_paginate @campaigns, params: :member_page
+

@@ -2,7 +2,13 @@ class Admin::UsersController < AdminController
 
   def index
     @q = User.ransack(params[:q])
-    @users = @q.result(distinct: true).paginate(:page => params[:page])
+
+    if params[:page].blank?
+      params[:page] = session[:user_page]
+    end
+
+    @users = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
+    session[:user_page] = params[:page] if params[:page]
   end
 
   def edit

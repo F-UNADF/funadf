@@ -17,7 +17,7 @@ gem 'devise',           '~> 4.2'
 gem 'devise_invitable', '~> 1.7.0'
 gem 'haml-rails'
 gem 'high_voltage'
-gem 'mysql2', '~> 0.5.2'
+gem 'mysql2', '~> 0.5.3'
 gem 'font-awesome-sass', '~> 4.7.0'
 gem "paperclip"
 gem 'popper_js', '~> 1.12.9'

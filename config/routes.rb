@@ -9,6 +9,9 @@ Rails.application.routes.draw do
         post '/admins/delete', to: "admins#destroy", as: :admin
       end
       resources :imports
+      resources :meetings do
+        resources :campaigns, controller: 'meetings/campaigns'
+      end
     end
 
     resources :structures do

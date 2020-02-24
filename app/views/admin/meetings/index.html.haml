@@ -1,0 +1,61 @@
+.breadcrumbs
+  .page-header
+    %h1 Gestion des congrès
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Liste des congrès
+        .card-actions
+
+          = link_to new_admin_meeting_path, class: "btn-setting" do
+            = icon 'plus'
+            Ajouter
+
+      .card-body
+        = search_form_for [:admin, @q] do |f|
+          .row
+            .col-md-4
+              .form-group
+                = f.label :name_cont
+                = f.text_field :name_cont, class: "form-control"
+            .col-md-4
+              %button.btn.btn-success.mt-4{type: :submit}
+                = icon "search"
+                Rechercher
+
+
+
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th= sort_link(@q, :name, 'Nom')
+                %th= sort_link(@q, :begin_at, 'Dates')
+                %th
+
+            - @meetings.each do |meeting|
+              %tr
+                %td
+                  = link_to [:admin, meeting, :campaigns], class: "text-info" do
+                    = meeting.name
+                    = icon "eye"
+                %td
+                  %em= meeting.dates
+                %td
+                  %ul.list-inline.mb-0
+                    - if can? :edit, meeting
+                      %li.list-inline-item
+                        = link_to [:edit, :admin, meeting], class: "text-success" do
+                          = icon "edit"
+                          Modifier
+                    - if can? :delete, meeting
+                      %li.list-inline-item
+                        = link_to [:admin, meeting], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
+                          = icon "times"
+                          Supprimer
+
+        .float-right
+          = will_paginate @meetings
