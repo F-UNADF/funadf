@@ -21,15 +21,24 @@
       .card-body
         = search_form_for [:admin, @q] do |f|
           .row
-            .col-md-4
+            .col-md-3
               .form-group
                 = f.label :firstname_or_lastname_cont
                 = f.text_field :firstname_or_lastname_cont, class: "form-control"
-            .col-md-4
+            .col-md-3
               .form-group
                 = f.label :level_eq
                 = f.select :level_eq, options_for_select(User.get_levels, @q.level_eq), {include_blank: " Tous "}, class: "form-control"
-            .col-md-4
+
+            .col-md-3{class: "#{'d-none' unless can? :manage, User}"}
+              .form-group
+                .checkbox
+                  = f.check_box :disabled_true
+                  Afficher les pasteurs désactivés
+
+
+
+            .col-md-3
               %button.btn.btn-success.mt-4{type: :submit}
                 = icon "search"
                 Rechercher
@@ -67,10 +76,21 @@
                           = link_to [:edit, :admin, user], class: "text-success" do
                             = icon "edit"
                             Modifier
+                      - if can? :manage, user
+                        - if user.disabled
+                          %li.list-inline-item
+                            = link_to admin_user_enable_path(user), class: "text-info" do
+                              = icon "check"
+                              Restaurer
+                        - unless user.disabled
+                          %li.list-inline-item
+                            = link_to admin_user_disable_path(user), class: "text-warning" do
+                              = icon "times"
+                              Desactiver
                       - if can? :delete, user
                         %li.list-inline-item
                           = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
-                            = icon "times"
+                            = icon "trash"
                             Supprimer
 
         .float-right

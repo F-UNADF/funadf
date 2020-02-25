@@ -18,6 +18,9 @@ class User < ActiveRecord::Base
 
   validates :firstname, :lastname, presence: true
 
+  scope :enabled, -> { where(disabled: false) }
+  scope :disabled, -> { where(disabled: true) }
+
   def application_roles
     roles.where(resource_id: nil, resource_type: nil)
   end

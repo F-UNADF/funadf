@@ -1,7 +1,7 @@
 class Admin::UsersController < AdminController
 
   def index
-    @q = User.ransack(params[:q])
+    @q = User.order(id: :asc).ransack(params[:q])
 
     if params[:page].blank?
       params[:page] = session[:user_page]
@@ -28,6 +28,21 @@ class Admin::UsersController < AdminController
     @user = User.find params[:id]
     @user.destroy
     redirect_to [:admin, :users], flash:{success: 'Utilisateur supprimé'}
+  end
+
+  def enable
+    @user = User.find params[:user_id]
+    @user.disabled = false
+    @user.save
+
+    redirect_to :back, flash:{success: 'Utilisateur mis a jour'}
+  end
+  def disable
+    @user = User.find params[:user_id]
+    @user.disabled = true
+    @user.save
+
+    redirect_to :back, flash:{success: 'Utilisateur mis a jour'}
   end
 
   private

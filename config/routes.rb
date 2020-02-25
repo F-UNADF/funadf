@@ -7,6 +7,8 @@ Rails.application.routes.draw do
       resources :users do
         get '/admins/new', to: "admins#new", as: :new_admin
         post '/admins/delete', to: "admins#destroy", as: :admin
+        get '/enable', to: "users#enable", as: :enable
+        get '/disable', to: "users#disable", as: :disable
       end
       resources :imports
       resources :meetings do

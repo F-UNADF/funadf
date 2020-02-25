@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200116104750) do
+ActiveRecord::Schema.define(version: 20200225100411) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer  "structure_id", limit: 4
@@ -114,18 +114,18 @@ ActiveRecord::Schema.define(version: 20200116104750) do
     t.string   "town",                   limit: 255
     t.string   "phone_1",                limit: 255
     t.string   "phone_2",                limit: 255
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "email",                  limit: 255, default: "",    null: false
+    t.string   "encrypted_password",     limit: 255, default: "",    null: false
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,   default: 0,  null: false
+    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "avatar_file_name",       limit: 255
     t.string   "avatar_content_type",    limit: 255
     t.integer  "avatar_file_size",       limit: 4
@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(version: 20200116104750) do
     t.integer  "invitations_count",      limit: 4,   default: 0
     t.string   "level",                  limit: 255
     t.date     "birthdate"
+    t.boolean  "disabled",                           default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
