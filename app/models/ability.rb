@@ -13,6 +13,10 @@ class Ability
       if user.has_any_role? s
         can :view, s
       end
+
+      if user.has_role? [:president, :secretary, :treasurer], s
+        can :manage, s
+      end
     end
   end
 end

@@ -1,0 +1,27 @@
+= form_for [:admin, meeting] do |f|
+  - if meeting.errors.any?
+    .alert.alert-danger
+      %h3.h4 Merci de corriger les erreurs ci-dessous
+      %ul.list
+        - meeting.errors.full_messages.each do |msg|
+          %li= msg
+
+  .row
+    .col-md-6
+
+      .form-group
+        = f.label :name
+        = f.text_field :name, class: 'form-control'
+
+      .form-group
+        = f.label :begin_at
+        = f.date_field :begin_at, class: "form-control"
+
+      .form-group
+        = f.label :end_at
+        = f.date_field :end_at, class: "form-control"
+
+
+  .float-right
+    %button.btn.btn-primary{type: :submit}
+      Enregistrer
