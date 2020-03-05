@@ -1,6 +1,6 @@
 = form_for :role, url: structure_structure_resource_roles_path(@structure, @resource.id, @resource.class.to_s) do |f|
   .form-group
-    - [:president, :secretary, :treasurer, :member].each do |role|
+    - [:president, :secretary, :treasurer, :director, :member].each do |role|
       .form-check
         = radio_button_tag 'role[role]', role, @structure.get_role(@resource) == role.to_s, class: 'form-check-input'
         .form-check-label

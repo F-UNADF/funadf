@@ -174,8 +174,9 @@ class User < ActiveRecord::Base
   end
 
   def self.get_levels
-    %w(Probatoire Stagiaire AEM APE Ancien Agréé Partenaire Autre)
+    ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre']
   end
+
   def can_vote
     true
   end

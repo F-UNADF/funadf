@@ -30,6 +30,7 @@ fr:
           president: Président
           secretary: Secrétaire
           treasurer: Trésorier
+          director: Directeur
           member: Membre
       campaign:
         name: Nom

@@ -7,6 +7,10 @@ class Admin::Meetings::CampaignsController < ApplicationController
     @campaigns = @q.result(distinct: true).paginate(:page => params[:page])
   end
 
+  def new
+    @campaign = @meeting.campaigns.build
+  end
+
 
   private
     def set_meeting

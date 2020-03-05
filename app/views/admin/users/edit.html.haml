@@ -59,7 +59,7 @@
 
               .form-group
                 = f.label :level
-                = f.select :level, options_for_select(User.get_levels), {include_blank: "Non communiqué"}, class: "form-control"
+                = f.select :level, options_for_select(User.get_levels, @user.level), {include_blank: "Non communiqué"}, class: "form-control"
 
               .form-group
                 = f.label :birthdate
