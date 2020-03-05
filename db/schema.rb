@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200225100411) do
+ActiveRecord::Schema.define(version: 20200305115031) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer  "structure_id", limit: 4
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20200225100411) do
     t.datetime "updated_at"
     t.boolean  "is_public"
     t.integer  "meeting_id",   limit: 4
+    t.boolean  "manual"
   end
 
   add_index "campaigns", ["structure_id"], name: "index_campaigns_on_structure_id", using: :btree
@@ -141,8 +142,10 @@ ActiveRecord::Schema.define(version: 20200225100411) do
     t.string   "level",                  limit: 255
     t.date     "birthdate"
     t.boolean  "disabled",                           default: false
+    t.string   "access_token",           limit: 255
   end
 
+  add_index "users", ["access_token"], name: "index_users_on_access_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree

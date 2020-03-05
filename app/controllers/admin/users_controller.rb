@@ -1,7 +1,7 @@
 class Admin::UsersController < AdminController
 
   def index
-    @q = User.order(id: :asc).ransack(params[:q])
+    @q = User.order(lastname: :asc).ransack(params[:q])
 
     if params[:page].blank?
       params[:page] = session[:user_page]

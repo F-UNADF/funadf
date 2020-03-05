@@ -16,25 +16,25 @@
             Nouvelle campagne
 
 
-
+      .card-body.p-0
         .table-responsive
           %table.table.table-striped.table-sm
             %thead
               %tr
                 %th= sort_link(@q, :name, 'Nom')
                 %th= sort_link(@q, :begin_at, 'Dates')
-                %th
+                %th Votes manuels ?
                 %th
 
             - @campaigns.each do |campaign|
               %tr
-                %td= campaign.structure_name
                 %td= campaign.name
-                %td TODO
+                %td= campaign.period
+                %td= icon "#{(campaign.manual) ? 'check' : 'times'}"
                 %td
-                  = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                    Commencer le vote
-                    = icon 'arrow-right'
+                  = link_to [:edit, :admin, @meeting, campaign], class: 'btn btn-sm btn-success' do
+                    = icon 'edit'
+                    Modifier
 
           = will_paginate @campaigns, params: :member_page
 

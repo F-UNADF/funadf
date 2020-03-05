@@ -37,6 +37,8 @@ fr:
         description: Description
         start_at: Débute le
         end_at: Términe le
+        structure_id: Association
+        manual: Votes manuels ?
       motion:
         kind: Type
         name: Nom

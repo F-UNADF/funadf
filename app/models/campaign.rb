@@ -8,7 +8,11 @@ class Campaign < ActiveRecord::Base
 
   delegate :name, to: :structure, prefix: true
 
-  validates :name, presence: true
+  validates :structure_id, :meeting_id, :manual, presence: true
+
+  def name
+    "#{meeting.name} - #{structure.name}"
+  end
 
   def period
     "Du #{I18n.l self.start_at} au #{I18n.l self.end_at}"

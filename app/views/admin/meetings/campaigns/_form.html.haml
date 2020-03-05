@@ -1,0 +1,60 @@
+= form_for [:admin, @meeting, @campaign] do |f|
+
+  - if @campaign.errors.any?
+    .alert.alert-danger
+      %h3.h4 Merci de corriger les erreurs ci-dessous
+      %ul.list
+        - @campaign.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    = f.label :manual
+    .form-check
+      = f.radio_button :manual, true
+      Oui
+    .form-check
+      = f.radio_button :manual, true
+      Non
+
+  .form-group
+    = f.label :structure_id
+    = f.select :structure_id, options_from_collection_for_select(@structures, :id, :name, @campaign.structure_id), {prompt: '-- Choisissez --'}, class: 'form-control'
+
+  .form-group
+    = f.label :description
+    = f.text_field :description, class: 'form-control'
+
+  .row
+    .col-md-6
+      .form-group
+        = f.label :start_at
+        = f.text_field :start_at, class: 'form-control datetimepicker', value: "#{ldate @campaign.start_at}", data: {target: '#campaign_start_at', toggle: "datetimepicker"}
+
+    .col-md-6
+      .form-group
+        = f.label :end_at
+        = f.text_field :end_at, class: 'form-control datetimepicker', value: "#{ldate @campaign.end_at}", data: {target: '#campaign_end_at', toggle: "datetimepicker"}
+
+
+  %h3.page-header Motions
+
+  %table.table
+    %thead
+      %tr
+        %th Ordre
+        %th Nom
+        %th Type
+        %th
+    %tbody#motions
+      = f.fields_for :motions do |ff|
+        = render 'motion_fields', :f => ff
+
+      %tr
+        %td{colspan: 3}
+          .form-group
+            = link_to_add_association f, :motions, class: "btn btn-sm btn-primary", data: {"association-insertion-node" => "tbody#motions", "association-insertion-method" => "prepend"} do
+              = icon "plus"
+              Ajouter une motion
+
+  %button.btn.btn-success{type: :submit}
+    Enregistrer

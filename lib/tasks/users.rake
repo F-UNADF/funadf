@@ -2,11 +2,7 @@ require 'csv'
 
 namespace :users do
 
-  desc "Add Meeting to Campaign"
-
   task :update_or_create_from_file => :environment do |t, args|
-
-
     file = './db/seeds/pasteurs-2020.csv'
 
 
@@ -71,5 +67,19 @@ namespace :users do
 
     puts "**** NOMBRE DE PASTEURS DESACTIVES *****"
     puts disabled_user
+  end
+
+  task :generate_token => :environment do |t, args|
+
+    puts "Generate Roken for each User"
+
+    User.all.each do |u|
+      if u.access_token.blank?
+        puts "U : #{u.id} - Set Token"
+        u.set_access_token
+        u.save
+      end
+    end
+
   end
 end

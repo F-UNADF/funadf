@@ -32,6 +32,7 @@ gem 'wicked'
 gem 'carrierwave', '~> 1.0'
 gem 'will_paginate', '~> 3.1.0'
 gem 'ransack'
+gem "switch_user"
 
 group :development do
   gem "mini_racer"

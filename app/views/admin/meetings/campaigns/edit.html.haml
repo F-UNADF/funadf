@@ -8,7 +8,10 @@
     .card
       .card-header
         %strong= @meeting.name
-        Ajouter une campagne
+        >
+        %em= @campaign.name
+        \-
+        Modifier une campagne
 
         .card-actions
           = link_to admin_meeting_campaigns_path, class: "btn-setting" do

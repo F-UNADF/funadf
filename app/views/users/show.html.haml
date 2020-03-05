@@ -41,7 +41,7 @@
                         = icon 'phone', class: "fa-li"
                         = @user.phone_2
           .card-footer
-            = link_to edit_me_path, class: 'btn btn-outline-dark btn-icon' do
+            = link_to edit_admin_user_path(@user), class: 'btn btn-outline-dark btn-icon' do
               = icon "edit"
               Modifier mon profil
 

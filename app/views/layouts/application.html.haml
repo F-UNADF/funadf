@@ -34,8 +34,21 @@
       %header#header.header
         .header-menu
           .col-md-12
+
             %a#menuToggle.menutoggle.float-left
               = icon 'tasks'
+
+
+
+            /= link_to "switch back", "/switch_user/remember_user"
+
+            -  original_user = user_signed_in? && SwitchUser::Provider.init(controller).original_user
+            - if original_user
+              - next_path = ERB::Util.url_encode "/switch_user/remember_user?remember=false&path=/"
+              = link_to "/switch_user?scope_identifier=user_#{original_user.id}&path=#{next_path}", class: 'btn btn-warning' do
+                = icon "back"
+                Changer d'utilisateurs
+
             .user-area.dropdown.float-right
               %a.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
                 = image_tag current_user.avatar.url(:thumb), class: "user-avatar rounded-circle"

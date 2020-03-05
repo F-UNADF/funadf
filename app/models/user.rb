@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, default_url: "default_avatar.png"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
-
   has_many :rolizations, as: :resource, dependent: :destroy
   has_many :roles, through: :rolizations
   has_many :associations, through: :roles, source: :resource, source_type: 'Association'
@@ -17,9 +16,24 @@ class User < ActiveRecord::Base
   has_many :electors, as: :resource, dependent: :destroy
 
   validates :firstname, :lastname, presence: true
+  validates_uniqueness_of :access_token
 
   scope :enabled, -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
+
+  before_create :set_access_token
+
+
+  def set_access_token
+    self.access_token = generate_token
+  end
+
+  def generate_token
+    loop do
+      token = SecureRandom.hex(10)
+      break token unless User.where(access_token: token).exists?
+    end
+  end
 
   def application_roles
     roles.where(resource_id: nil, resource_type: nil)
@@ -127,6 +141,10 @@ class User < ActiveRecord::Base
   def is_elector?(structure)
     elector = electors.find_by(structure: structure)
     elector && elector.can_vote
+  end
+
+  def is_admin?
+    has_role? :admin
   end
 
   def has_voted?(campaign)

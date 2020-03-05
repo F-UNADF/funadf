@@ -49,22 +49,18 @@
           %table.table.table-striped.table-sm
             %thead
               %tr
-                %th= sort_link(@q, :id, 'Identifiant', default_order: :asc)
-                %th= sort_link(@q, :firstname, 'Nom')
+                %th= sort_link(@q, :lastname, 'Nom', default: :asc)
                 %th Email
-                %th Téléphone
                 %th= sort_link(@q, :level, 'Reconnaissance')
                 %th
 
             - @users.each do |user|
               %tr
-                %td= user.friendly_id
                 %td
                   = link_to user, class: "text-info" do
                     = user.fullname
                     = icon "eye"
                 %td= user.email
-                %td= user.phone_1
                 %td= user.level
                 %td
                   - if user.id == current_user.id
@@ -92,6 +88,15 @@
                           = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
                             = icon "trash"
                             Supprimer
+
+                      - if can? :manage, user
+                        %li.list-inline-item
+                          - next_path = ERB::Util.url_encode("/switch_user?scope_identifier=user_#{user.id}")
+                          = link_to "/switch_user/remember_user?remember=true&path=#{next_path}", class: 'text-infos' do
+                            = icon 'warning'
+                            Se connecter en tant que
+
+                          /remember_user?
 
         .float-right
           = will_paginate @users
