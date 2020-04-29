@@ -10,13 +10,11 @@ class Campaign < ActiveRecord::Base
 
   validates :structure_id, :meeting_id, :manual, presence: true
 
-  def name
-    "#{meeting.name} - #{structure.name}"
-  end
 
   def period
     "Du #{I18n.l self.start_at} au #{I18n.l self.end_at}"
   end
+
   def motions_count
     motions.count
   end
