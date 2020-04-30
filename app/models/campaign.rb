@@ -8,7 +8,7 @@ class Campaign < ActiveRecord::Base
 
   delegate :name, to: :structure, prefix: true
 
-  validates :structure_id, :meeting_id, :manual, presence: true
+  validates :structure_id, :start_at, :end_at, presence: true
 
 
   def period
