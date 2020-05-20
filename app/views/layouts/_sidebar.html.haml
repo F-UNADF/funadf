@@ -39,3 +39,8 @@
       = link_to admin_meetings_path do
         = icon "building", class: "menu-icon"
         Gestion des congrès
+
+    %li{class: "#{(params[:controller] == 'admin/campaigns') ? 'active' : ''}"}
+      = link_to admin_campaigns_path do
+        = icon "comments", class: "menu-icon"
+        Gestion des campagnes

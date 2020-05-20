@@ -26,17 +26,17 @@
             %h2.h3
               = "Campagne : #{@campaign.name}"
 
-              - if Time.now < @campaign.start_at
+              - if @campaign.coming?
                 .float-right
                   = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-success btn-sm m-3" do
                     = icon "edit"
                     Modifier la campagne
 
 
-              - elsif Time.now > @campaign.end_at
+              - elsif @campaign.closed?
                 .float-right.m-3
                   %span.alert.alert-info Votes cloturés
-              - else
+              - elsif @campaign.opened?
                 .float-right.m-3
                   %span.alert.alert-danger Période de vote
 
@@ -72,7 +72,7 @@
             .bg-light.p-3
               %h4.h5.m-3 Résultats
 
-              - if Time.now > @campaign.end_at
+              - if @campaign.closed?
                 %table.table.table-bordered
                   %tr
                     %td
@@ -173,6 +173,17 @@
                         %td= motion.votes.consultatives.count
                         %td= motion.votes.consultatives.where("result IS NOT NULL").count
                         %td= motion.votes.consultatives.where(result: nil).count
-              - else
+
+              - elsif @campaign.coming?
                 .alert.alert-danger
-                  La période de vote n'est pas fini. Les résultats seront disponibles une fois les votes clos.
+                  La campagne de vote n'est pas commencé.
+
+              - elsif @campaign.opened?
+                .alert.alert-success
+                  La campagne de vote est en cours.
+                  %br
+                  %b Votes retenus :
+                  = "#{@campaign.motions.map{ |m| m.votes.officials.count }.first} ont voté / #{@structure.members.count} membres"
+                  %br
+                  %b Votes consultatifs :
+                  = "Il y a #{@campaign.motions.map{ |m| m.votes.consultatives.count}.first} votes consultatifs"

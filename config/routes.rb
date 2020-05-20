@@ -11,15 +11,18 @@ Rails.application.routes.draw do
         get '/disable', to: "users#disable", as: :disable
       end
       resources :imports
-
-      resources :meetings do
-        resources :campaigns, controller: 'meetings/campaigns'
+      resources :campaigns do
+        get '/open', to: 'campaigns#open', as: :open
+        get '/close_definitly', to: 'campaigns#close_definitly', as: :close_definitly
+        get '/close_temporarily', to: 'campaigns#close_temporarily', as: :close_temporarily
       end
+      resources :meetings
     end
 
     resources :structures do
       resources :has_memberships, controller: 'structures/has_memberships', except: :create
       resources :campaigns, controller: 'structures/campaigns'
+
 
       get '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships
       delete '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#destroy', as: :delete_memberships
@@ -34,6 +37,7 @@ Rails.application.routes.draw do
 
     resources :users, only: [:show, :index]
     resources :structures
+
     resources :campaigns
 
     post '/voting', to: 'votings#create', as: :voting

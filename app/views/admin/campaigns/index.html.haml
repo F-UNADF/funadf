@@ -1,0 +1,92 @@
+.breadcrumbs
+  .page-header
+    %h1 Gestion des congrès
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Liste des congrès
+        .card-actions
+          = link_to new_admin_campaign_path, class: "btn-setting" do
+            = icon 'plus'
+            Ajouter
+
+      .card-body
+        = search_form_for [:admin, @q] do |f|
+          .row
+            .col-md-4
+              .form-group
+                = f.label :name_cont
+                = f.text_field :name_cont, class: "form-control"
+            .col-md-4
+              %button.btn.btn-success.mt-4{type: :submit}
+                = icon "search"
+                Rechercher
+
+
+
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th Identifiant
+                %th Status
+                %th Nom
+                %th Débute le
+                %th
+
+            - @campaigns.each do |campaign|
+              %tr
+                %td= campaign.id
+                %td
+                  %span.badge{class: "badge-#{campaign.state_class}"}= I18n.t "activerecord.attributes.campaign.states.#{campaign.state}"
+                %td= campaign.name
+                %td= l campaign.start_at
+                %td
+                  %ul.list-inline.mb-0
+                    %li.list-inline-item
+                      = link_to [:edit, :admin, campaign], class: "text-primary" do
+                        = icon "edit"
+                        Modifier
+                    %li.list-inline-item
+                      = link_to [:admin, campaign], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
+                        = icon "times"
+                        Supprimer
+
+
+                    - if campaign.can_close_temporarily?
+                      %li.list-inline-item
+                        = link_to [:admin, campaign, :close_temporarily], class: "text-info" do
+                          = icon "times-circle"
+                          Fermer la campagne*
+
+                    - if campaign.can_opening?
+                      %li.list-inline-item
+                        = link_to [:admin, campaign, :open], class: "text-success" do
+                          = icon "check-circle"
+                          Ouvrir la campagne*
+
+                    - if campaign.can_close_definitly?
+                      %li.list-inline-item
+                        = link_to [:admin, campaign, :close_definitly], data:{confirm: 'Êtes vous sûr, cette action est irreversible ?'}, class: "text-warning" do
+                          = icon "times-circle"
+                          Cloturer la campagne*
+
+        %p
+          %b.text-info
+            = icon "times-circle"
+            Fermer la campagne :
+          Ferme la campagne, rend les votes impossibles, mais permet une réouverture (les votes ne sont pas réinitialisés)
+          %br
+          %b.text-success
+            = icon "check-circle"
+            Ouvrir la campagne :
+          Ouvre la campagne de vote
+          %br
+          %b.text-black
+            = icon "times-circle"
+            Cloturer la campagne :
+          Cloture la camapane, ferme les votes, ne permet pas la réouverture
+
+        = will_paginate @campaigns

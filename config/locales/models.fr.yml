@@ -39,6 +39,10 @@ fr:
         end_at: Términe le
         structure_id: Association
         manual: Votes manuels ?
+        states:
+          coming: A venir
+          opened: Ouverte
+          closed: Cloturée
       motion:
         kind: Type
         name: Nom

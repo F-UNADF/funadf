@@ -4,6 +4,48 @@ class Campaign < ActiveRecord::Base
   belongs_to :meeting
   has_many :motions, -> { order 'motions.order asc' }, dependent: :destroy
 
+  state_machine :state, initial: :coming do
+
+    event :opening do
+      transition :coming => :opened
+    end
+    event :close_temporarily do
+      transition :opened => :coming
+    end
+    event :close_definitly do
+      transition [:coming, :opened] => :closed
+    end
+
+    state :coming do
+      def state_class
+        "primary"
+      end
+    end
+
+    state :opened do
+      def state_class
+        "success"
+      end
+    end
+
+    state :closed do
+      def state_class
+        "warning"
+      end
+    end
+
+    state :coming, :closed do
+      def can_vote?
+        false
+      end
+    end
+    state :opened do
+      def can_vote?
+        true
+      end
+    end
+  end
+
   accepts_nested_attributes_for :motions, reject_if: :all_blank, allow_destroy: true
 
   delegate :name, to: :structure, prefix: true
@@ -30,15 +72,17 @@ class Campaign < ActiveRecord::Base
   end
 
   def elector_can_vote? elector
-    (elector && self.is_public && Time.now.between?(start_at, end_at) && !has_already_vote?(elector)) || (elector && elector.can_vote && Time.now.between?(start_at, end_at) && !has_already_vote?(elector))
+    (elector && self.is_public && self.can_vote? && !has_already_vote?(elector)) || (elector && elector.can_vote && self.can_vote? && !has_already_vote?(elector))
   end
 
   def get_elector_note elector
     unless elector.blank?
       if !elector.can_vote
         elector.note
-      elsif !Time.now.between?(start_at, end_at)
-        "Les votes de cette campagne ne sont pas ouverts. Période de vote : #{self.period}"
+      elsif self.closed?
+        "Les votes de cette campagne sont cloturés"
+      elsif self.coming?
+        "Les votes de cette campagne ne sont pas encore ouverts"
       elsif has_already_vote?(elector)
         "Vous avez déjà voté pour cette campagne."
       end
@@ -69,7 +113,7 @@ class Campaign < ActiveRecord::Base
   end
 
   def self.currents
-    Campaign.where('end_at >= ?', Time.now).order('name')
+    Campaign.with_states([:coming, :opened]).order(name: :asc)
   end
 
   def get_voters opts=nil
@@ -80,4 +124,5 @@ class Campaign < ActiveRecord::Base
       Voter.where('motion_id IN (?) AND elector_id IS NULL', motion_ids).group([:resource_id, :resource_type]).count.count
     end
   end
+
 end

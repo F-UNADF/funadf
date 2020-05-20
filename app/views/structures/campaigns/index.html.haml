@@ -26,6 +26,7 @@
                 %thead
                   %tr
                     %th Identifiant
+                    %th Status
                     %th Nom
                     %th Débute le
                     %th
@@ -33,6 +34,8 @@
                 - @campaigns.each do |campaign|
                   %tr
                     %td= campaign.id
+                    %td
+                      %span.badge{class: "badge-#{campaign.state_class}"}= I18n.t "activerecord.attributes.campaign.states.#{campaign.state}"
                     %td
                       = link_to [@structure.becomes(Structure), campaign], class: 'text-info' do
                         = campaign.name
@@ -47,5 +50,40 @@
                           = link_to [@structure.becomes(Structure), campaign], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
                             = icon "times"
                             Supprimer
+
+
+                        - if campaign.can_close_temporarily?
+                          %li.list-inline-item
+                            = link_to [:admin, campaign, :close_temporarily], class: "text-info" do
+                              = icon "times-circle"
+                              Fermer la campagne*
+
+                        - if campaign.can_opening?
+                          %li.list-inline-item
+                            = link_to [:admin, campaign, :open], class: "text-success" do
+                              = icon "check-circle"
+                              Ouvrir la campagne*
+
+                        - if campaign.can_close_definitly?
+                          %li.list-inline-item
+                            = link_to [:admin, campaign, :close_definitly], data:{confirm: 'Êtes vous sûr, cette action est irreversible ?'}, class: "text-warning" do
+                              = icon "times-circle"
+                              Cloturer la campagne*
+
+            %p
+              %b.text-info
+                = icon "times-circle"
+                Fermer la campagne :
+              Ferme la campagne, rend les votes impossibles, mais permet une réouverture (les votes ne sont pas réinitialisés)
+              %br
+              %b.text-success
+                = icon "check-circle"
+                Ouvrir la campagne :
+              Ouvre la campagne de vote
+              %br
+              %b.text-black
+                = icon "times-circle"
+                Cloturer la campagne :
+              Cloture la camapane, ferme les votes, ne permet pas la réouverture
 
             = will_paginate @campaigns

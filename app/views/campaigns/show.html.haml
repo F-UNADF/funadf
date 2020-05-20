@@ -60,7 +60,8 @@
                         = "Présidence de <b>#{s.name}</b>".html_safe
                         %small= "(#{(s.is_elector?(@structure)) ? 'Vote contabilisé' : 'Vote consultatif'})"
 
-          - if Time.now < @campaign.start_at.to_time
+
+          - unless @campaign.can_vote?
             .alert.alert-danger.mt-3 Les votes n'ont pas encore commencés
           - else
             - if !@user.has_voted?(@campaign) || !@presidences.blank?

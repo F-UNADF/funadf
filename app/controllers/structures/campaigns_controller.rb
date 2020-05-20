@@ -2,7 +2,7 @@ class Structures::CampaignsController < ApplicationController
   before_filter :set_structure
 
   def index
-    @campaigns = @structure.campaigns.order(:start_at).paginate(:page => params[:page])
+    @campaigns = @structure.campaigns.order(start_at: :desc).paginate(:page => params[:page])
   end
 
   def show

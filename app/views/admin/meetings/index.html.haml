@@ -2,14 +2,12 @@
   .page-header
     %h1 Gestion des congrès
 
-
 .content.mt-3
   .container-fluid
     .card
       .card-header
         %strong Liste des congrès
         .card-actions
-
           = link_to new_admin_meeting_path, class: "btn-setting" do
             = icon 'plus'
             Ajouter
@@ -27,7 +25,6 @@
                 Rechercher
 
 
-
         .table-responsive
           %table.table.table-striped.table-sm
             %thead
@@ -38,10 +35,7 @@
 
             - @meetings.each do |meeting|
               %tr
-                %td
-                  = link_to [:admin, meeting, :campaigns], class: "text-info" do
-                    = meeting.name
-                    = icon "eye"
+                %td= meeting.name
                 %td
                   %em= meeting.dates
                 %td
