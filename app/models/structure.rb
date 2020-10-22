@@ -101,7 +101,7 @@ class Structure < ActiveRecord::Base
 
     Rolization.find_or_create_by(role: role, resource: self)
 
-    Elector.find_or_create_by(resource_id: self.id, resource_type: self.class, structure_id: resource) if resource && !resource.is_a?(Class)
+    Elector.find_or_create_by(resource_id: self.id, resource_type: self.class, structure_id: resource, can_vote: true) if resource && !resource.is_a?(Class)
 
     role
   end
