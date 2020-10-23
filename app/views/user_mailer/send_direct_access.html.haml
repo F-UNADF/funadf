@@ -2,7 +2,16 @@
   Bonjour,
 
 %p
-  Afin de participer aux votes électroniques, nous vous invitons à vous connecter à votre espace de votes.
+  Afin de participer aux votes électroniques organisé par la FNADF qui auront lieu les :
+
+%ul
+  %li 26 octobre pour ITB/V&V/ADERE/DM2A
+  %li 6 novembre pour MI Nord/AEP/AM/MI Sud
+  %li 13 novembre pour UdA/SE/AJEF/EP
+  %li 14 novembre pour FCEM
+
+%p
+  Nous vous invitons à vous connecter à votre espace de votes.
 
 %p
   Pour cela, nous avons mis en place un lien d'accès direct que vous trouverez ci-dessous.
@@ -25,5 +34,12 @@
     = link_to direct_access_user_url(@user.access_token), style:"text-decoration:none;color:#000" do
       = direct_access_user_url(@user.access_token)
 
+%p
+  En cas de soucis technique, veuillez nous écrire à l'adresse suivante :
+
+%p
+  %span{:style => "display:block;padding:10px 15px;background:#dedede;"}
+    = link_to "mailto:votes@add-fnadf.fr", style:"text-decoration:none;color:#000" do
+      votes@add-fnadf.fr
 
 Que Dieu vous bénisse.
