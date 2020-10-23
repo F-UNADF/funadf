@@ -1,0 +1,29 @@
+%p
+  Bonjour,
+
+%p
+  Afin de participer aux votes électroniques, nous vous invitons à vous connecter à votre espace de votes.
+
+%p
+  Pour cela, nous avons mis en place un lien d'accès direct que vous trouverez ci-dessous.
+  %br
+  Ce lien est personnel et unique, ne le communiquez à personne et gardez le précieusement.
+
+%p
+  Pour accéder à l'application, cliquez sur ce boutton :
+
+%p
+  %span{:style => "display:block;padding:10px 15px;background:#dedede;"}
+    = link_to direct_access_user_url(@user.access_token), style:"text-decoration:none;color:#000" do
+      %strong Accéder à l'application.
+
+%p
+  Ou copiez le lien ci-dessous :
+
+%p
+  %span{:style => "display:block;padding:10px 15px;background:#dedede;"}
+    = link_to direct_access_user_url(@user.access_token), style:"text-decoration:none;color:#000" do
+      = direct_access_user_url(@user.access_token)
+
+
+Que Dieu vous bénisse.

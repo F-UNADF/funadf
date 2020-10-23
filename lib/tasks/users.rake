@@ -108,6 +108,17 @@ namespace :users do
         u.save
       end
     end
+  end
+
+  task :send_direct_access_link_to_all => :environment do |t, args|
+
+    users = User.all
+
+    users.each do |user|
+      puts "Envoie du lien d'accès direct à #{user.firstname} #{user.lastname} (#{user.email})"
+      user.send_direct_access_link
+    end
 
   end
+
 end

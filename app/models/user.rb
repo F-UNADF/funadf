@@ -211,4 +211,9 @@ class User < ActiveRecord::Base
   def my_roles
     roles
   end
+
+  def send_direct_access_link
+    UserMailer.send_direct_access(self).deliver
+  end
+
  end
