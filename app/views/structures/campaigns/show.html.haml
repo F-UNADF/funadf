@@ -70,7 +70,13 @@
                         %td= t 'activerecord.attributes.motion.kinds.'+motion.kind
 
             .bg-light.p-3
-              %h4.h5.m-3 Résultats
+              %h4.h5.m-3.clearfix
+                Résultats
+
+                .float-right
+                  = link_to structure_campaign_path(@structure, @campaign, format: :pdf), target: '_blank', class: "btn btn-success" do
+                    = icon "file-pdf"
+                    Télécharger au format PDF
 
               - if @campaign.closed?
                 %table.table.table-bordered

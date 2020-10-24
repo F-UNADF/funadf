@@ -12,6 +12,11 @@
       Mes votes
 
 
+  %li{class: "#{(params[:controller] == 'results') ? 'active' : ''}"}
+    = link_to results_url do
+      = icon "comments", class: "menu-icon"
+      Résultats
+
   / /.menu-title
 
   %h3.menu-title Mon compte

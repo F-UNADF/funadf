@@ -7,6 +7,12 @@ class Structures::CampaignsController < ApplicationController
 
   def show
     @campaign = @structure.campaigns.find params[:id]
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "#{@campaign.name} - resultats", layout: "pdf"
+      end
+    end
   end
 
   def new

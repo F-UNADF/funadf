@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'results/index'
+
+  get 'results/show'
+
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   authenticated :user do
@@ -39,6 +43,7 @@ Rails.application.routes.draw do
     resources :structures
 
     resources :campaigns
+    resources :results, only: [:index, :show]
 
     post '/voting', to: 'votings#create', as: :voting
 

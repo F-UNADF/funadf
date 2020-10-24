@@ -34,6 +34,8 @@ gem 'will_paginate', '~> 3.1.0'
 gem 'ransack'
 gem "switch_user"
 gem 'state_machines-activerecord'
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'
 
 group :development do
   gem "mini_racer"

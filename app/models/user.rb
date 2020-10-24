@@ -127,11 +127,7 @@ class User < ActiveRecord::Base
   end
 
   def get_presidences
-    presidences = []
-    structures.each do |s|
-      presidences << s if self.has_role? :president, s
-    end
-    presidences
+    self.roles.where(name: 'president')
   end
 
   def get_class
