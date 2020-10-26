@@ -2,7 +2,7 @@ class ResultsController < ApplicationController
 
   def index
 
-    presidences = current_user.get_presidences.pluck(:resource_id)
+    presidences = current_user.get_prez.pluck(:resource_id)
 
     electors = Elector.where(resource_id: presidences).pluck(:structure_id)
 
