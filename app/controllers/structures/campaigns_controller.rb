@@ -44,7 +44,7 @@ class Structures::CampaignsController < ApplicationController
 
   def destroy
     @campaign = @structure.campaigns.find params[:id]
-    @campaign.destroy
+    @campaign.delete
     redirect_to [@structure.becomes(Structure), :campaigns], notice: "Campagne supprimée"
   end
 
