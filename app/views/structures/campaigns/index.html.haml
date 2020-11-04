@@ -46,10 +46,11 @@
                           = link_to [:edit, @structure.becomes(Structure), campaign], class: "text-primary" do
                             = icon "edit"
                             Modifier
-                        %li.list-inline-item
-                          = link_to [@structure.becomes(Structure), campaign], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
-                            = icon "times"
-                            Supprimer
+                        - if current_user.is_admin?
+                          %li.list-inline-item
+                            = link_to [@structure.becomes(Structure), campaign], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
+                              = icon "times"
+                              Supprimer
 
 
                         - if campaign.can_close_temporarily?

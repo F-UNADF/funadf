@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'results/index'
-
-  get 'results/show'
-
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   authenticated :user do
@@ -27,7 +23,6 @@ Rails.application.routes.draw do
       resources :has_memberships, controller: 'structures/has_memberships', except: :create
       resources :campaigns, controller: 'structures/campaigns'
 
-
       get '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships
       delete '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#destroy', as: :delete_memberships
 
@@ -36,8 +31,8 @@ Rails.application.routes.draw do
       post '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#update', as: :structure_resource_roles
       post '/elector/:resource_id/:resource_type', to: 'structures/electors#update', as: :elector
     end
-    resources :imports, to: 'structures/imports', as: :structure_import
 
+    resources :imports, to: 'structures/imports', as: :structure_import
 
     resources :users, only: [:show, :index]
     resources :structures
@@ -58,6 +53,7 @@ Rails.application.routes.draw do
   end
 
   get '/direct_access_user/:token', to: 'users/access#new', as: :direct_access_user
+  get '*path' => redirect('/users/sign_in')
 
   root to: redirect('/users/sign_in')
 

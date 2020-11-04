@@ -9,12 +9,11 @@
   .row
     .col-md-6
       .form-group
-        = f.label :name
-        = f.text_field :name, class: 'form-control'
+        = f.text_field :name, class: 'form-control', placeholder: 'Nom de la campagne'
 
       .form-group
         = f.label :description
-        = f.text_field :description, class: 'form-control'
+        = f.text_field :description, class: 'form-control', placeholder: 'Courte description'
 
       .form-group
         = f.label :start_at
@@ -24,15 +23,77 @@
         = f.label :end_at
         = f.text_field :end_at, class: 'form-control datetimepicker', value: "#{ldate campaign.end_at}", data: {target: '#campaign_end_at', toggle: "datetimepicker"}
 
-      .form-group
-        .form-check
-          = f.check_box :is_public, class: "form-check-input"
-          = f.label :is_public, "Campagne public ?", class: "form-check-label"
-          %p.text-muted
-            Détermine si la campagne est accessible également aux "non-membres".
-            %br
-            %em Exemple : Consultation de l'ensemble des pasteurs pour une motion.
+  %h3.mb-3 Table de votes
 
+  .p-3.bg-infos
+    Les tables de votes vous permettent de déterminer qui vote.
+
+  .row
+    .col-md-6
+      %h4 Les personnes physiques MEMBRES
+
+      %table.table
+        %tr
+          %th Niveau de reconnaissance
+          %th Statut de vote
+
+        - User.get_levels.each do |level|
+          = f.fields_for :voting_tables, @campaign.voting_tables.find_or_initialize_by(position: level, as_member: true) do |vt|
+            %tr
+              %td
+                = level
+                = vt.hidden_field :position, value: level
+                = vt.hidden_field :as_member, value: true
+              %td
+                = vt.select :voting, options_for_select(VotingTable.get_votings, vt.object.voting), {}, class: 'form-control'
+
+    .col-md-6
+      %h4 Les personnes physiques NON MEMBRES
+
+      %table.table
+        %tr
+          %th Niveau de reconnaissance
+          %th Statut de vote
+
+        - User.get_levels.each do |level|
+          = f.fields_for :voting_tables, @campaign.voting_tables.find_or_initialize_by(position: level, as_member: false) do |vt|
+            %tr
+              %td
+                = level
+                = vt.hidden_field :position, value: level
+                = vt.hidden_field :as_member, value: false
+              %td
+                = vt.select :voting, options_for_select(VotingTable.get_votings, vt.object.voting), {}, class: 'form-control'
+
+    .col-md-6
+      %h4 Les présidents d'Eglise
+
+      %table.table
+        %tr
+          %th Statut de l'église
+          %th Statut de vote
+
+        = f.fields_for :voting_tables, @campaign.voting_tables.find_or_initialize_by(position: "eglises membres", as_member: true) do |vt|
+          %tr
+            %td
+              MEMBRES
+              = vt.hidden_field :position
+              = vt.hidden_field :as_member, value: true
+            %td
+              = vt.select :voting, options_for_select(VotingTable.get_votings, vt.object.voting), {}, class: 'form-control'
+
+
+        = f.fields_for :voting_tables, @campaign.voting_tables.find_or_initialize_by(position: "eglises non membres", as_member: false) do |vt|
+          %tr
+            %td
+              NON MEMBRES
+              = vt.hidden_field :position
+              = vt.hidden_field :as_member, value: false
+            %td
+              = vt.select :voting, options_for_select(VotingTable.get_votings, vt.object.voting), {}, class: 'form-control'
+
+
+  .row
     .col-md-12
       %h3 Motions
       %table.table

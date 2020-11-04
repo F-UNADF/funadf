@@ -3,6 +3,7 @@ class Campaign < ActiveRecord::Base
   belongs_to :structure
   belongs_to :meeting
   has_many :motions, -> { order 'motions.order asc' }, dependent: :destroy
+  has_many :voting_tables, dependent: :destroy
 
   state_machine :state, initial: :coming do
 
@@ -47,6 +48,7 @@ class Campaign < ActiveRecord::Base
   end
 
   accepts_nested_attributes_for :motions, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :voting_tables, reject_if: :all_blank, allow_destroy: true
 
   delegate :name, to: :structure, prefix: true
 
@@ -97,7 +99,6 @@ class Campaign < ActiveRecord::Base
     electors = structure.self_electors
     Campaign.joins(:structure).where('structure_id IN (?)', electors.pluck(:structure_id)).order('structures.name')
   end
-
   def self.get_campaigns_for_president user
     president_roles = Role.where(name: :president, rolizations:{resource_id: user.id, resource_type: user.get_class}).joins(:rolizations)
     campaigns = []
@@ -122,6 +123,74 @@ class Campaign < ActiveRecord::Base
       Voter.where('motion_id IN (?) AND elector_id IS NOT NULL', motion_ids).group(:elector_id).count.count
     else
       Voter.where('motion_id IN (?) AND elector_id IS NULL', motion_ids).group([:resource_id, :resource_type]).count.count
+    end
+  end
+
+
+  def user_can_vote(user)
+    user_level = user.level
+    structure = self.structure
+
+    is_member = structure.member_can_vote?(user)
+
+    vt = self.voting_tables.where(position: user_level, as_member: is_member).first
+
+    (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
+  end
+
+  def user_vote_kind(user)
+    user_level = user.level
+    structure = self.structure
+
+    is_member = structure.member_can_vote?(user)
+
+    vt = self.voting_tables.where(position: user_level, as_member: is_member).first
+
+    if vt
+      vt.voting
+    else
+      nil
+    end
+  end
+
+  def users_churches_can_vote(user)
+    structure = self.structure
+    church_presidences = user.church_presidences
+    can_vote = false
+
+    church_presidences.each do |church|
+
+      is_member = structure.member_can_vote?(church)
+
+      vt = self.voting_tables.where(position: ((is_member) ? 'eglises membres' : 'eglises non membres'), as_member: is_member)
+
+      can_vote = (vt == 'count' || vt == 'consultative')
+      exit if can_vote
+    end
+    can_vote
+  end
+
+  def structure_can_vote(voting_structure)
+    structure = self.structure
+
+    is_member = structure.member_can_vote?(voting_structure)
+
+    vt = self.voting_tables.where(position: (is_member) ? 'eglises membres' : 'eglises non membres', as_member: is_member).first
+
+    (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
+  end
+
+  def structure_vote_kind(voting_structure)
+    structure = self.structure
+
+    is_member = structure.member_can_vote?(voting_structure)
+
+    vt = self.voting_tables.where(position: (is_member) ? 'eglises membres' : 'eglises non membres', as_member: is_member).first
+
+    if vt
+      vt.voting
+    else
+      nil
     end
   end
 

@@ -138,6 +138,10 @@ class User < ActiveRecord::Base
     self.roles.where(name: 'president')
   end
 
+  def church_presidences
+    Structure.where(id: self.roles.where(resource_type: 'Church').pluck(:resource_id))
+  end
+
   def get_class
     User.to_s
   end
@@ -196,7 +200,7 @@ class User < ActiveRecord::Base
   end
 
   def self.get_levels
-    ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre']
+    ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre', 'Femme de pasteur', 'Hors ADD']
   end
 
   def can_vote

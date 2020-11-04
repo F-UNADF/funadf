@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   skip_before_filter :verify_authenticity_token
   protect_from_forgery prepend: true, with: :exception
 
-  before_filter :get_original_user
+  before_filter :get_original_user, :authenticate_user!
 
   def get_original_user
     @original_user_scope_identifier = session[:original_user_scope_identifier]

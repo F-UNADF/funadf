@@ -184,4 +184,25 @@ jQuery(document).ready(function($) {
   });
 
 
+  $('.submit-vote').on('click', function(){
+
+    var has_voter = false;
+
+    $('.voter_check').each(function(){
+      console.log(!has_voter && $(this).is(':checked'));
+      if(!has_voter && $(this).is(':checked')){
+        has_voter = true;
+      }
+    });
+
+    if(has_voter){
+      if(confirm('Attention, une fois le vote effectué, il est impossible de revenir en arrière ! Merci de bien vérifier votre vote avant de valider !')){
+        return true;
+      }
+    }else{
+      alert("Pour valider ce bulletin, merci de selectionner au moins une qualité de vote. S'il ne vous reste plus de qualité, vous ne pouvez pas voter.");
+      return false;
+    }
+  })
+
 });

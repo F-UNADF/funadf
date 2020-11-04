@@ -67,6 +67,13 @@
                 = f.label :avatar
                 = f.file_field :avatar
 
+              %hr
+              .form-group
+                = f.label :password
+                = f.password_field :password, class: "form-control"
+              .form-group
+                = f.label :password_confirmation
+                = f.password_field :password_confirmation, class: "form-control"
 
               .float-right
                 %button.btn.btn-primary{type: :submit}

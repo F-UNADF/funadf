@@ -5,6 +5,8 @@ class Ability
 
     user ||= User.new
 
+    alias_action :create, :read, :update, :to => :cru
+
     if user.has_role? :admin
         can :manage, :all
     end
@@ -15,7 +17,7 @@ class Ability
       end
 
       if user.has_role? [:president, :secretary, :treasurer, :director], s
-        can :manage, s
+        can :cru, s
       end
     end
   end

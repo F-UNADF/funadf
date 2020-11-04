@@ -19,22 +19,11 @@
           .row
             .col-md-6
               %h2.h5.mb-3
-                Je vote en qualité de
-                %strong
-                  = @user.name
-                  %small
-                    = "(#{(@user.is_elector?(@structure)) ? 'Vote contabilisé' : 'Vote consultatif'})"
+                Bulletin de vote
+
               - if @user.has_voted?(@campaign) && @presidences.blank?
                 %p.text-danger Vous avez déjà rempli tous vos bulletins
               - else
-                - if @user.has_voted?(@campaign)
-                  .alert.alert-info
-                    %p Votre vote a déjà été pris en compte.
-                    %p Vous pouvez encore remplir un bulletin selon vos responsabilités.
-                - else
-                  = hidden_field_tag "votings[voter][][resource_id]", @user.id
-                  = hidden_field_tag "votings[voter][][resource_class]", @user.get_class
-
                 .well.bg-light.p-3
                   %h3.h5.text-center.mb-3= @campaign.name
                   %table.table
@@ -47,18 +36,49 @@
                           = get_field "vote[#{motion.id}][result]", motion.kind
 
             .col-md-6
-              %h2.h5.mb-3 Mon vote est identique pour les responsabilités suivantes
-              - if @presidences.blank?
-                %p.text-danger Vous n'avez plus de bulletin disponible
-              - else
-                - @presidences.each_with_index do |s, index|
-                  - unless s == @structure || @campaign.has_already_vote?( (s.is_elector?(@structure)) ? s.get_elector(@structure) : s )
-                    .form-check
-                      = hidden_field_tag "votings[voter][][resource_class]", s.get_class
-                      = check_box_tag "votings[voter][][resource_id]", s.id, false, class: 'form-check-input'
-                      = label_tag "voter[voter][][resource_class]", class: 'form-check-label' do
-                        = "Présidence de <b>#{s.name}</b>".html_safe
-                        %small= "(#{(s.is_elector?(@structure)) ? 'Vote contabilisé' : 'Vote consultatif'})"
+              .alert.alert-info
+                %p
+                  Il est possible que vous ayez plusieurs bulletins de vote disponibles (en fonction du nombre de présidence et du niveau de reconnaissance).
+
+                %p
+                  Chaque ligne, ci-dessous, vous indique en quelle qualité vous votez.
+
+                %p
+                  Votre vote peut être différent pour chaque qualité. Pour cela, il suffit de
+
+                %ul.pl-3
+                  %li Remplir le bulletin une première fois
+                  %li Selectionner la qualité qui correspond
+                  %li Valider le vote
+                  %li Recommancer autant de fois que nécessaire.
+
+
+              %h2.h4.mb-3 Mes bulletins en qualité de Président d'église :
+
+              - @presidences.each_with_index do |s, index|
+                - if @campaign.structure_can_vote(s)
+                  .form-check
+                    = hidden_field_tag "votings[voter][][resource_class]", s.get_class
+                    = hidden_field_tag "votings[voter][][is_consultative]", @campaign.structure_vote_kind(s) != "count"
+
+                    = check_box_tag "votings[voter][][resource_id]", s.id, false, class: 'form-check-input voter_check', id: "check_resource_#{s.id}"
+                    = label_tag "voter[voter][][resource_class]", class: 'form-check-label', for: "check_resource_#{s.id}" do
+                      = "Présidence de <b>#{s.name}</b> (#{s.town})".html_safe
+                      %small= "(#{(@campaign.structure_vote_kind(s) == "count") ? 'Vote comptabilisé' : 'Vote consultatif'})"
+
+
+
+              %h2.h4.mb-3 Mon bulletin en qualité de personne physique :
+              - if @campaign.user_can_vote(@user) && !@campaign.has_already_vote?(@user)
+                .form-check
+                  = hidden_field_tag "votings[voter][][resource_class]", @user.get_class
+                  = hidden_field_tag "votings[voter][][is_consultative]", @campaign.user_vote_kind(@user) != "count"
+                  = check_box_tag "votings[voter][][resource_id]", @user.id, false, class: 'form-check-input voter_check', id: 'as_user'
+                  = label_tag "voter[voter][][resource_class]", class: 'form-check-label', for: 'as_user' do
+                    = @user.level
+                    %small= "(#{(@campaign.user_vote_kind(@user) == "count") ? 'Vote comptabilisé' : 'Vote consultatif'})"
+
+
 
 
           - unless @campaign.can_vote?
@@ -68,7 +88,7 @@
               .row
                 .col-md-12
                   .text-center.mt-3
-                    %button.btn.btn-success{type: :submit, data:{confirm: 'Attention, une fois le vote effectué, il est impossible de revenir en arrière ! Merci de bien vérifier votre vote avant de valider !'}}
+                    %button.btn.btn-success.submit-vote{type: :submit}
                       = icon 'warning'
                       JE VALIDE MON VOTE
                       = icon 'warning'

@@ -14,6 +14,7 @@ class Structure < ActiveRecord::Base
   def users
     User.where('id IN (?)', rolizations.where('resource_type = "User"').pluck(:resource_id))
   end
+
   def structures
     Structure.where('id IN (?)', rolizations.where('resource_type = "Structure"').pluck(:resource_id))
   end
@@ -61,7 +62,7 @@ class Structure < ActiveRecord::Base
   end
 
   def self.global_search q
-    where(['(name LIKE ? OR email LIKE ? OR id LIKE ? OR town LIKE ?)', "#{q}%", "#{q}%", "#{q}%", "#{q}%"])
+    where(['(name LIKE ? OR email LIKE ? OR id LIKE ? OR town LIKE ?)', "%#{q}%", "%#{q}%", "%#{q}%", "%#{q}%"])
   end
 
   def self.types
@@ -143,8 +144,9 @@ class Structure < ActiveRecord::Base
   end
 
   def member_can_vote?(resource)
-    elector = electors.find_by(resource: resource)
-    elector && elector.can_vote
+    self.structures.pluck(:id).include?(resource.id) || self.users.pluck(:id).include?(resource.id)
+
+
   end
   def member_cant_vote_note(resource)
     self_electors.find_by(resource: resource).note

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200520111615) do
+ActiveRecord::Schema.define(version: 20201103084937) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer  "structure_id", limit: 4
@@ -174,4 +174,16 @@ ActiveRecord::Schema.define(version: 20200520111615) do
 
   add_index "votes", ["motion_id"], name: "index_votes_on_motion_id", using: :btree
 
+  create_table "voting_tables", force: :cascade do |t|
+    t.integer  "campaign_id", limit: 4
+    t.string   "position",    limit: 255
+    t.string   "voting",      limit: 255
+    t.boolean  "as_member"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "voting_tables", ["campaign_id"], name: "index_voting_tables_on_campaign_id", using: :btree
+
+  add_foreign_key "voting_tables", "campaigns"
 end

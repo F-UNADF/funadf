@@ -54,7 +54,9 @@ class Structures::CampaignsController < ApplicationController
     end
 
     def campaign_params
-      params[:campaign].permit(:name, :description, :code, :start_at, :end_at, :is_public, motions_attributes: [:id, :name, :kind, :order, :_destroy])
+      params[:campaign].permit(:name, :description, :code, :start_at, :end_at, :is_public,
+                                motions_attributes: [:id, :name, :kind, :order, :_destroy],
+                                voting_tables_attributes: [:id, :position, :voting, :as_member, :_destroy])
     end
 
 end

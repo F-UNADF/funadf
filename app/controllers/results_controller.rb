@@ -4,7 +4,7 @@ class ResultsController < ApplicationController
 
     presidences = current_user.get_prez.pluck(:resource_id)
 
-    electors = Elector.where(resource_id: presidences).pluck(:structure_id)
+    electors = Elector.where('resource_id = ? OR resource_id = ?', presidences, current_user.id).pluck(:structure_id)
 
     @campaigns = Campaign.where(structure_id: electors, state: :closed).order(start_at: :desc).paginate(:page => params[:page])
   end
