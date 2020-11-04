@@ -97,6 +97,34 @@ namespace :users do
     end
   end
 
+  task :add_min_users => :environment do |t, args|
+    file = './db/seeds/membres-min.csv'
+
+
+    csv_text = File.read(file)
+    csv = CSV.parse(csv_text, headers: true, :col_sep => ",", :row_sep => :auto)
+
+    itb = Structure.find(6)
+    puts "AJOUT DES MEMBRES A MA MI NORD"
+
+    csv.each do |row|
+      town = row['town']
+      puts town
+
+      structure = Church.where(town: town).first
+      if structure
+        puts "Ajouté l'eglise : #{structure.name} comme membre de la MI NORD"
+
+        structure.add_role :member, itb
+
+        Elector.find_or_create_by(resource_id: structure.id, resource_type: "structure", structure_id: itb.id, can_vote: true)
+      else
+        puts "IMPOSSIBLE D'AJOUTER L'EGLISE DE #{town}"
+      end
+
+    end
+  end
+
   task :generate_token => :environment do |t, args|
 
     puts "Generate Roken for each User"
