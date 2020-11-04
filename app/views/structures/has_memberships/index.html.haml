@@ -17,7 +17,7 @@
             .float-left= render 'structures/navbar', structure: @structure
 
           .card-body
-            .table-responsive
+            .table-responsive.mb-3
               %table.table.table-striped.table-sm
                 %thead
                   %tr
@@ -26,7 +26,6 @@
                     %th Nom
                     %th Email
                     %th Téléphone
-                    %th Votant ?
                     %th Rôle
 
                 - @members.each do |member|
@@ -37,10 +36,7 @@
                     %td= member.email
                     %td= member.phone_1
                     %td
-                      = check_box_tag :can_vote, :can_vote, @structure.member_can_vote?(member), class: 'switch', data:{elector_id: member.id, elector_type: member.get_class.downcase, structure: @structure.id}
-                    %td
                       = @structure.get_resource_role(member)
-
                       - if can? :manage, @structure
                         .float-right
                           = link_to structure_edit_structure_resource_roles_path(@structure, member.id, member.class.to_s), class: "btn btn-info mr-1 btn-sm change_role" do
@@ -52,7 +48,7 @@
 
 
 
-            .float-right
+            .mb-3
               = will_paginate @members
 
             %hr
