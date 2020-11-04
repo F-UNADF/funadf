@@ -104,7 +104,7 @@ namespace :users do
     csv_text = File.read(file)
     csv = CSV.parse(csv_text, headers: true, :col_sep => ",", :row_sep => :auto)
 
-    itb = Structure.find(6)
+    itb = Structure.find(8)
     puts "AJOUT DES MEMBRES A MA MI NORD"
 
     csv.each do |row|
