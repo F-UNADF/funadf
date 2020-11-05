@@ -125,6 +125,23 @@ namespace :users do
     end
   end
 
+  task :check_users_level => :environment do |t, args|
+
+    valid_levels = User.get_levels
+
+    all_users = User.all
+
+    all_users.each do |user|
+      user_level = user.level
+
+      unless valid_levels.include?(user_level)
+        puts "L'utilisateur #{user.id} #{user.lastname} #{user.firstname} n'est pas valide (Champs : Niveau de reconnaissance)"
+      end
+    end
+
+
+  end
+
   task :generate_token => :environment do |t, args|
 
     puts "Generate Roken for each User"
