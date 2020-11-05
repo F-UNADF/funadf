@@ -72,7 +72,7 @@
                 = vt.select :voting, options_for_select(VotingTable.get_votings, vt.object.voting), {}, class: 'form-control'
 
     .col-md-6
-      %h4 Les présidents d'Eglise
+      %h4 Les églises (représentées par leur président)
 
       %table.table
         %tr
@@ -90,6 +90,33 @@
 
 
         = f.fields_for :voting_tables, @campaign.voting_tables.find_or_initialize_by(position: "eglises non membres", as_member: false) do |vt|
+          %tr
+            %td
+              NON MEMBRES
+              = vt.hidden_field :position
+              = vt.hidden_field :as_member, value: false
+            %td
+              = vt.select :voting, options_for_select(VotingTable.get_votings, vt.object.voting), {}, class: 'form-control'
+
+    .col-md-6
+      %h4 Les oeuvres (représentées par leur président)
+
+      %table.table
+        %tr
+          %th Statut de l'oeuvre
+          %th Statut de vote
+
+        = f.fields_for :voting_tables, @campaign.voting_tables.find_or_initialize_by(position: "oeuvres membres", as_member: true) do |vt|
+          %tr
+            %td
+              MEMBRES
+              = vt.hidden_field :position
+              = vt.hidden_field :as_member, value: true
+            %td
+              = vt.select :voting, options_for_select(VotingTable.get_votings, vt.object.voting), {}, class: 'form-control'
+
+
+        = f.fields_for :voting_tables, @campaign.voting_tables.find_or_initialize_by(position: "oeuvres non membres", as_member: false) do |vt|
           %tr
             %td
               NON MEMBRES

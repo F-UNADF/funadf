@@ -175,7 +175,13 @@ class Campaign < ActiveRecord::Base
 
     is_member = structure.member_can_vote?(voting_structure)
 
-    vt = self.voting_tables.where(position: (is_member) ? 'eglises membres' : 'eglises non membres', as_member: is_member).first
+    if voting_structure.type == "Church"
+      vt = self.voting_tables.where(position: (is_member) ? 'eglises membres' : 'eglises non membres', as_member: is_member).first
+    else
+      vt = self.voting_tables.where(position: (is_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: is_member).first
+    end
+
+
 
     (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
   end
@@ -185,7 +191,11 @@ class Campaign < ActiveRecord::Base
 
     is_member = structure.member_can_vote?(voting_structure)
 
-    vt = self.voting_tables.where(position: (is_member) ? 'eglises membres' : 'eglises non membres', as_member: is_member).first
+    if voting_structure.type == "Church"
+      vt = self.voting_tables.where(position: (is_member) ? 'eglises membres' : 'eglises non membres', as_member: is_member).first
+    else
+      vt = self.voting_tables.where(position: (is_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: is_member).first
+    end
 
     if vt
       vt.voting

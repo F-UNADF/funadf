@@ -50,10 +50,10 @@
                   %li Remplir le bulletin une première fois
                   %li Selectionner la qualité qui correspond
                   %li Valider le vote
-                  %li Recommancer autant de fois que nécessaire.
+                  %li Recommencer autant de fois que nécessaire.
 
 
-              %h2.h4.mb-3 Mes bulletins en qualité de Président d'église :
+              %h2.h4.mb-3 Mes bulletins en qualité de Président d'église ou d'oeuvre :
 
               - @presidences.each_with_index do |s, index|
                 - if @campaign.structure_can_vote(s)

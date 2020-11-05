@@ -24,17 +24,23 @@
                     %th Identifiant
                     %th Type
                     %th Nom
-                    %th Email
-                    %th Téléphone
+                    %th Niveau de reconnaissance
                     %th Rôle
 
                 - @members.each do |member|
                   %tr
                     %td= member.friendly_id
                     %td= t "activerecord.models."+member.class.name.downcase+".one"
-                    %td= "#{member.name} - (#{member.town})"
-                    %td= member.email
-                    %td= member.phone_1
+                    %td
+                      - if member.is_a? User
+                        = link_to member, target: '_blank', class: "text-info" do
+                          = "#{member.name} - (#{member.town})"
+                      - else
+                        = "#{member.name} - (#{member.town})"
+                    %td
+                      - if member.is_a? User
+                        = member.level
+
                     %td
                       = @structure.get_resource_role(member)
                       - if can? :manage, @structure

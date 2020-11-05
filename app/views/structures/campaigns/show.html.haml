@@ -23,21 +23,41 @@
           .card-body
             - if @campaign.is_public
               .alert.alert-success.mb-3 Campagne publique
-            %h2.h3
+            %h2.h3.float-left
               = "Campagne : #{@campaign.name}"
 
+            %ul.list-inline.float-right
               - if @campaign.coming?
-                .float-right
+                %li.list-inline-item
                   = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-success btn-sm m-3" do
                     = icon "edit"
                     Modifier la campagne
 
 
-              - elsif @campaign.closed?
-                .float-right.m-3
+              - if @campaign.can_close_temporarily?
+                %li.list-inline-item
+                  = link_to [:admin, @campaign, :close_temporarily], class: "btn btn-info" do
+                    = icon "times-circle"
+                    Fermer la campagne*
+
+              - if @campaign.can_opening?
+                %li.list-inline-item
+                  = link_to [:admin, @campaign, :open], class: "btn btn-success" do
+                    = icon "check-circle"
+                    Ouvrir la campagne*
+
+              - if @campaign.can_close_definitly?
+                %li.list-inline-item
+                  = link_to [:admin, @campaign, :close_definitly], data:{confirm: 'Êtes vous sûr, cette action est irreversible ?'}, class: "btn btn-warning" do
+                    = icon "times-circle"
+                    Cloturer la campagne*
+
+
+              - if @campaign.closed?
+                %li.list-inline-item
                   %span.alert.alert-info Votes cloturés
-              - elsif @campaign.opened?
-                .float-right.m-3
+              - if @campaign.opened?
+                %li.list-inline-item
                   %span.alert.alert-danger Période de vote
 
             .clearfix
