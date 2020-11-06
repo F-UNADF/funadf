@@ -1,12 +1,14 @@
 class ResultsController < ApplicationController
 
   def index
+    # JE SUIS MEMBRE DIRECT
+    structures = current_user.structures.map{ |struc| struc.id}
 
-    presidences = current_user.get_prez.pluck(:resource_id)
+    # JE SUIS PRESIDENT
+    presidences = current_user.get_presidences.map{ |struc| struc.id}
 
-    electors = Elector.where('resource_id = ? OR resource_id = ?', presidences, current_user.id).pluck(:structure_id)
 
-    @campaigns = Campaign.where(structure_id: electors, state: :closed).order(start_at: :desc).paginate(:page => params[:page])
+    @campaigns = Campaign.where(structure_id: structures+presidences, state: :closed).order(start_at: :desc).paginate(:page => params[:page])
   end
 
   def show
