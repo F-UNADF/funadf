@@ -56,7 +56,7 @@
               %h2.h4.mb-3 Mes bulletins en qualité de Président d'église ou d'oeuvre :
 
               - @presidences.each_with_index do |s, index|
-                - if @campaign.structure_can_vote(s)
+                - if @campaign.structure_can_vote(s) && !@campaign.has_already_vote?(s)
                   .form-check
                     = hidden_field_tag "votings[voter][][resource_class]", s.get_class
                     = hidden_field_tag "votings[voter][][is_consultative]", @campaign.structure_vote_kind(s) != "count"
