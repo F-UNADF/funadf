@@ -22,14 +22,13 @@
                 %th
 
             - @campaigns.each do |campaign|
-              - if campaign.user_can_vote(current_user) || campaign.users_churches_can_vote(current_user)
-                %tr
-                  %td= campaign.structure_name
-                  %td= campaign.name
-                  %td
-                    = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                      Commencer le vote
-                      = icon 'arrow-right'
+              %tr
+                %td= campaign.structure_name
+                %td= campaign.name
+                %td
+                  = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                    Commencer le vote
+                    = icon 'arrow-right'
 
         = will_paginate @member_campaigns, params: :member_page
 
