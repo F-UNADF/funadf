@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   authenticated :user do
@@ -53,8 +54,6 @@ Rails.application.routes.draw do
   end
 
   get '/direct_access_user/:token', to: 'users/access#new', as: :direct_access_user
-  get '*path' => redirect('/users/sign_in')
-
   root to: redirect('/users/sign_in')
 
 end
