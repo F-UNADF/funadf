@@ -8,7 +8,7 @@ class Ability
     alias_action :create, :read, :update, :to => :cru
 
     if user.has_role? :admin
-      # can :manage, :all
+      can :manage, :all
     end
 
     Structure.all.each do |s|
