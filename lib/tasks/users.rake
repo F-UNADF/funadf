@@ -157,7 +157,7 @@ namespace :users do
     puts "AJOUT DES MEMBRES A LA SOLIDARITE EVANG"
 
     csv.each do |row|
-      town = row['zipcode']
+      zipcode = row['zipcode']
       puts zipcode
 
       structure = Church.where(zipcode: zipcode).first
@@ -168,7 +168,7 @@ namespace :users do
 
         Elector.find_or_create_by(resource_id: structure.id, resource_type: "structure", structure_id: se.id, can_vote: true)
       else
-        puts "IMPOSSIBLE D'AJOUTER L'EGLISE DE #{town}"
+        puts "IMPOSSIBLE D'AJOUTER L'EGLISE DE #{zipcode}"
       end
 
     end
