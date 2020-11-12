@@ -125,6 +125,26 @@ namespace :users do
     end
   end
 
+  task :add_epse_users => :environment do |t, args|
+
+
+    itb = Structure.find(8)
+    puts "AJOUT DES MEMBRES A SOLIDARITE EVANGELIQUE ET ENTRAIDE PASTO"
+
+    users = User.where(level: ['Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Pasteur Agréé', 'Pasteur Partenaire'])
+
+    ep = Structure.find 12
+    se = Structure.find 7
+
+    users.each do |user|
+
+      user.add_role :member, ep
+      user.add_role :member, se
+
+      puts "Ajouté l'eglise : #{user.name} comme membre de la SOLIDARITE EVANGELIQUE ET ENTRAINE PASTO"
+    end
+  end
+
   task :check_users_level => :environment do |t, args|
 
     valid_levels = User.get_levels
@@ -138,8 +158,6 @@ namespace :users do
         puts "L'utilisateur #{user.id} #{user.lastname} #{user.firstname} n'est pas valide (Champs : Niveau de reconnaissance)"
       end
     end
-
-
   end
 
   task :generate_token => :environment do |t, args|
@@ -163,7 +181,6 @@ namespace :users do
       puts "Envoie du lien d'accès direct à #{user.firstname} #{user.lastname} (#{user.email})"
       user.send_direct_access_link
     end
-
   end
 
 end
