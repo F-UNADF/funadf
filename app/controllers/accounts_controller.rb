@@ -3,6 +3,7 @@ class AccountsController < ApplicationController
   before_filter :set_user
 
   def show
+    @structures = current_user.structures
   end
 
   def edit

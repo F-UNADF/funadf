@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
   end
 
   def structures
-    (associations + churches).sort_by{|s| s.name}
+    Structure.where(id: (associations + churches))
   end
 
   def get_presidences

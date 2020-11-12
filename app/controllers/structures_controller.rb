@@ -2,12 +2,18 @@ class StructuresController < ApplicationController
   before_filter :set_structure, except: [:index, :new, :create]
 
   def index
-
     if params[:page].blank?
       params[:page] = session[:structure_page]
     end
 
-    @q = Structure.ransack(params[:q])
+    #AFFICHER LES STRUCTURES POUR LESQUELLES JE SUIS ABILITÉ A METTRE A JOUR
+
+    @q = current_user.structures.ransack(params[:q])
+    if current_user.is_admin?
+      @q = Structure.all.ransack(params[:q])
+    end
+
+
     @structures = @q.result(distinct: true).paginate(:page => params[:page])
     session[:structure_page] = params[:page] if params[:page]
   end
