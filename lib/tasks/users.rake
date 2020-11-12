@@ -145,6 +145,35 @@ namespace :users do
     end
   end
 
+
+  task :add_se_users => :environment do |t, args|
+    file = './db/seeds/membres-se.csv'
+
+
+    csv_text = File.read(file)
+    csv = CSV.parse(csv_text, headers: true, :col_sep => ",", :row_sep => :auto)
+
+    se = Structure.find(7)
+    puts "AJOUT DES MEMBRES A LA SOLIDARITE EVANG"
+
+    csv.each do |row|
+      town = row['zipcode']
+      puts zipcode
+
+      structure = Church.where(zipcode: zipcode).first
+      if structure
+        puts "Ajouté l'eglise : #{structure.name} comme membre de la MI NORD"
+
+        structure.add_role :member, se
+
+        Elector.find_or_create_by(resource_id: structure.id, resource_type: "structure", structure_id: se.id, can_vote: true)
+      else
+        puts "IMPOSSIBLE D'AJOUTER L'EGLISE DE #{town}"
+      end
+
+    end
+  end
+
   task :check_users_level => :environment do |t, args|
 
     valid_levels = User.get_levels
