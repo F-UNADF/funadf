@@ -212,4 +212,16 @@ namespace :users do
     end
   end
 
+  task :send_direct_access_link_to_fcem => :environment do |t, args|
+
+    fcem = Structure.find 13
+
+    users = fcem.users
+
+    users.each do |user|
+      puts "Envoie du lien d'accès direct à #{user.firstname} #{user.lastname} (#{user.email})"
+      user.send_direct_access_link
+    end
+  end
+
 end
