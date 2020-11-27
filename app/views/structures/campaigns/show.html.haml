@@ -200,6 +200,20 @@
                         %td= motion.votes.consultatives.where("result IS NOT NULL").count
                         %td= motion.votes.consultatives.where(result: nil).count
 
+                %h4.h5.m-3 Liste de votants
+
+                %table.table.table-bordered
+                  %tr
+                    %th Nom
+                    %th Ville
+                  - @campaign.motions.each do |motion|
+                    %tr.bg-info
+                      %td{colspan: 2}= motion.name
+                    - motion.voters.each do |voter|
+                      %tr
+                        %td= voter.resource.name
+                        %td= voter.resource.town
+
               - elsif @campaign.coming?
                 .alert.alert-danger
                   La campagne de vote n'est pas commencé.
