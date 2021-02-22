@@ -12,11 +12,11 @@ class Structure < ActiveRecord::Base
     Rolization.where('role_id IN (?)', roles.pluck(:id))
   end
   def users
-    User.where('id IN (?)', rolizations.where('resource_type = "User"').pluck(:resource_id))
+    User.where('id IN (?)', rolizations.where('resource_type = "User"').pluck(:resource_id)).order(lastname: :asc)
   end
 
   def structures
-    Structure.where('id IN (?)', rolizations.where('resource_type = "Structure"').pluck(:resource_id))
+    Structure.where('id IN (?)', rolizations.where('resource_type = "Structure"').pluck(:resource_id)).order(town: :asc)
   end
   def members
     (users + structures)
@@ -155,6 +155,20 @@ class Structure < ActiveRecord::Base
   def self.get_structure_with_president user
     role_presidents = Role.joins(:rolizations).where(roles:{name: :president}, rolizations:{resource_id: user.id, resource_type: user.get_class})
     self.where(id: role_presidents.pluck(:resource_id))
+  end
+
+  def president_name
+    role = self.roles.where(name: :president).first
+    if role
+      rolization = Rolization.where(role_id: role.id).first
+      if rolization && rolization.resource
+        rolization.resource.name
+      else
+        "Ressource introuvable"
+      end
+    else
+      "Pas de président"
+    end
   end
 
 end

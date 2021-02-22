@@ -3,6 +3,15 @@ class Structures::HasMembershipsController < ApplicationController
 
   def index
     @members = @structure.members.paginate(:page => params[:page])
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        @members = @structure.members
+        render pdf: "emargement_#{@structure.name}",
+           encoding: 'utf8'
+      end
+    end
   end
 
   def create

@@ -7,8 +7,15 @@
 .content.mt-3
   .container-fluid
     .row
-      .col-md-12
+      .col-md-4
         = render 'structures/infos', structure: @structure
+
+      .col-md-8
+        .card
+          .card-body
+            = link_to structure_has_memberships_path(@structure, format: :pdf), target: '_blank', class: "btn btn-success btn-block btn-lg" do
+              = icon "download", class: "mr-5"
+              Télécharger la feuille d'émargement
 
       .col-md-12
         .card

@@ -6,11 +6,12 @@
     %br
     = structure.full_address
     %hr
-    %ul.fa-ul
-      %li
-        = icon 'envelope', class: "fa-li"
-        = link_to "mailto:#{structure.email}" do
-          = structure.email
+    %ul.fa-ul.mb-3
+      - if structure.email?
+        %li
+          = icon 'envelope', class: "fa-li"
+          = link_to "mailto:#{structure.email}" do
+            = structure.email
 
       - if structure.phone_1?
         %li

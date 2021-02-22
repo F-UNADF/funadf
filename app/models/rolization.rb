@@ -5,5 +5,4 @@ class Rolization < ActiveRecord::Base
 
   validates :role_id, presence: true
 
-
 end

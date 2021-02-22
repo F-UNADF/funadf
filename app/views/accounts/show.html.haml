@@ -10,8 +10,6 @@
           .card-body
             .mx-auto.d-block
               .text-center
-                .client-avatar
-                  = image_tag @user.avatar.url(:medium), class: 'img-fluid rounded-circle mx-auto d-block', alt: 'Default Avatar', width: 200
                 .client-title.mt-2.mb-1
                   %h3= @user.fullname
                   %p
