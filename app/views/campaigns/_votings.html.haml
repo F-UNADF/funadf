@@ -1,0 +1,18 @@
+- if voter.get_class == 'User'
+  .form-check.mb-3
+    = hidden_field_tag "votings[voter][][resource_class]", @user.get_class
+    = hidden_field_tag "votings[voter][][is_consultative]", @campaign.user_vote_kind(@user) != "count"
+    = check_box_tag "votings[voter][][resource_id]", @user.id, false, class: 'form-check-input voter_check', id: 'as_user'
+    = label_tag "voter[voter][][resource_class]", class: 'form-check-label', for: 'as_user' do
+      = @user.level
+      %small= "(#{(@campaign.user_vote_kind(@user) == "count") ? 'Vote comptabilisé' : 'Vote consultatif'})"
+
+- else
+  .form-check.mb-3
+    = hidden_field_tag "votings[voter][][resource_class]", voter.get_class
+    = hidden_field_tag "votings[voter][][is_consultative]", @campaign.structure_vote_kind(voter) != "count"
+
+    = check_box_tag "votings[voter][][resource_id]", voter.id, false, class: 'form-check-input voter_check', id: "check_resource_#{voter.id}"
+    = label_tag "voter[voter][][resource_class]", class: 'form-check-label', for: "check_resource_#{voter.id}" do
+      = "Présidence de <b>#{voter.name}</b> (#{voter.town})".html_safe
+      %small= "(#{(@campaign.structure_vote_kind(voter) == "count") ? 'Vote comptabilisé' : 'Vote consultatif'})"

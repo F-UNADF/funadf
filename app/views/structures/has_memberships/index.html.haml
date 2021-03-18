@@ -33,6 +33,7 @@
                     %th Nom
                     %th Niveau de reconnaissance
                     %th Rôle
+                    %th Peut vôter ?
                     %th
 
                 - @members.each do |member|
@@ -51,6 +52,14 @@
 
                     %td
                       = @structure.get_resource_role(member)
+                    %td
+
+                      .d-flex
+                        = check_box_tag 'can_vote', true, @structure.member_can_vote?(member), class: 'switch', data:{'resource-id' => member.id, 'resource-type' => member.get_class, 'structure' => @structure.id}
+
+                        .reason{class: "reason-#{member.id} #{(@structure.member_can_vote?(member)) ? "d-none" : ''}"}
+                          = select_tag :reason, options_for_select(reasons_for_select, @structure.member_cant_vote_note(member)), class: "select-reason form-control form-control-sm", data:{'resource-id' => member.id, 'resource-type' => member.get_class, 'structure' => @structure.id}
+
                     %td
                       - if can? :update, @structure
                         .btn-group

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210318085243) do
+ActiveRecord::Schema.define(version: 20210318092320) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer  "structure_id", limit: 4
@@ -67,6 +67,8 @@ ActiveRecord::Schema.define(version: 20210318085243) do
     t.string   "resource_type", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "can_vote",                  default: true
+    t.string   "reason",        limit: 255
   end
 
   add_index "rolizations", ["resource_id", "resource_type"], name: "index_rolizations_on_resource_id_and_resource_type", using: :btree

@@ -56,29 +56,40 @@
               %h2.h4.mb-3 Mes bulletins en qualité de Président d'église ou d'oeuvre :
 
               - @presidences.each_with_index do |s, index|
-                - if @campaign.structure_can_vote(s) && !@campaign.has_already_vote?(s)
-                  .form-check
-                    = hidden_field_tag "votings[voter][][resource_class]", s.get_class
-                    = hidden_field_tag "votings[voter][][is_consultative]", @campaign.structure_vote_kind(s) != "count"
 
-                    = check_box_tag "votings[voter][][resource_id]", s.id, false, class: 'form-check-input voter_check', id: "check_resource_#{s.id}"
-                    = label_tag "voter[voter][][resource_class]", class: 'form-check-label', for: "check_resource_#{s.id}" do
-                      = "Présidence de <b>#{s.name}</b> (#{s.town})".html_safe
-                      %small= "(#{(@campaign.structure_vote_kind(s) == "count") ? 'Vote comptabilisé' : 'Vote consultatif'})"
+                - if @structure.is_member?(s)
+                  - if @structure.member_can_vote?(s) && !@campaign.has_already_vote?(s)
+                    // MEMBRE DE L'ASSOC, CAN_VOTE
+                    = render 'votings', voter: s
+
+                  - elsif !@structure.member_can_vote?(s)
+                    // MEMBRE DE L'ASSOC, MAIS CANT_VOTE
+                    .alert.alert-danger
+                      %b= "Présidence de <b>#{s.name}</b> (#{s.town})".html_safe
+                      %br
+                      = @structure.member_cant_vote_note_friendly(s)
+
+                - elsif @campaign.structure_can_vote?(s) && !@campaign.has_already_vote?(s)
+                  // NON MEMBRE, CAN VOTE
+                  = render 'votings'
 
 
 
               %h2.h4.mb-3 Mon bulletin en qualité de personne physique :
-              - if @campaign.user_can_vote(@user) && !@campaign.has_already_vote?(@user)
-                .form-check
-                  = hidden_field_tag "votings[voter][][resource_class]", @user.get_class
-                  = hidden_field_tag "votings[voter][][is_consultative]", @campaign.user_vote_kind(@user) != "count"
-                  = check_box_tag "votings[voter][][resource_id]", @user.id, false, class: 'form-check-input voter_check', id: 'as_user'
-                  = label_tag "voter[voter][][resource_class]", class: 'form-check-label', for: 'as_user' do
-                    = @user.level
-                    %small= "(#{(@campaign.user_vote_kind(@user) == "count") ? 'Vote comptabilisé' : 'Vote consultatif'})"
 
+              - if @structure.is_member?(@user)
+                - if @campaign.user_can_vote?(@user) && !@campaign.has_already_vote?(@user)
+                  // MEMBRE DE L'ASSOC, CAN_VOTE
+                  = render 'votings', voter: @user
 
+                - elsif !@structure.member_can_vote?(@user)
+                  // MEMBRE DE L'ASSOC, MAIS CANT_VOTE
+                  .alert.alert-danger
+                    = @structure.member_cant_vote_note_friendly(@user)
+
+              - elsif @campaign.user_can_vote?(@user) && !@campaign.has_already_vote?(@user)
+                // NON MEMBRE, CAN VOTE
+                = render 'votings', voter: @user
 
 
           - unless @campaign.can_vote?

@@ -8,7 +8,7 @@ class UserMailer < ApplicationMailer
     @to = "p.gruson@gmail.com" if Rails.env == "development"
     @to = user.email if Rails.env == "production"
 
-    @from = "paul@lapepiniere.church"
+    @from = "sec.fnadf@addfrance.fr"
 
     mail(to: @to, from: @from, subject: "[FNADF / UNADF] Votre lien d'accès aux votes électroniques") do |format|
       format.html

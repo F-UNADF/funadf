@@ -39,6 +39,28 @@ class Structures::HasMembershipsController < ApplicationController
     redirect_to :back, alert: 'Membre supprimé'
   end
 
+  def update
+    rolization = @structure.rolizations.where(resource_id: params[:resource_id], resource_type: params[:resource_type]).first
+
+    rolization.can_vote = params[:can_vote]
+    if rolization.save
+      render json: {updated: :ok}, status: 200
+    else
+      render json: {updated: :nok}, status: 200
+    end
+  end
+
+  def reason
+    rolization = @structure.rolizations.where(resource_id: params[:resource_id], resource_type: params[:resource_type]).first
+
+    rolization.reason = params[:reason]
+    if rolization.save
+      render json: {updated: :ok}, status: 200
+    else
+      render json: {updated: :nok}, status: 200
+    end
+  end
+
   private
     def set_structure
       @structure = Structure.find params[:structure_id]

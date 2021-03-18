@@ -98,8 +98,6 @@ class User < ActiveRecord::Base
       self.save
     end
 
-    Elector.find_or_create_by(resource: self, structure_id: resource.id) if resource && !resource.is_a?(Class)
-
     role
   end
   def remove_role role_name, resource = nil
@@ -113,8 +111,6 @@ class User < ActiveRecord::Base
         role.destroy if role.rolizations.blank?
       end
     end
-
-    Elector.find_by(resource: self, structure_id: resource.id).destroy if resource && !resource.is_a?(Class)
 
     roles
   end

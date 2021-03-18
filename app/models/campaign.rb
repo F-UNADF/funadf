@@ -127,7 +127,7 @@ class Campaign < ActiveRecord::Base
   end
 
 
-  def user_can_vote(user)
+  def user_can_vote?(user)
     user_level = user.level
     structure = self.structure
 
@@ -170,7 +170,7 @@ class Campaign < ActiveRecord::Base
     can_vote
   end
 
-  def structure_can_vote(voting_structure)
+  def structure_can_vote?(voting_structure)
     structure = self.structure
 
     is_member = structure.member_can_vote?(voting_structure)

@@ -122,19 +122,37 @@ class Structure < ActiveRecord::Base
     Structure.to_s
   end
 
+  #CHECK IF RESOURCE IS MEMBER OF STRUCTURE
+  def is_member?(resource)
+    rolization = self.rolizations.where(resource_type: resource.get_class, resource_id: resource.id).first
 
-  def get_elector(resource)
-    elector = electors.find_by(resource_id: resource.id, resource_type: resource.class)
-    elector
+    #true if there is a rolization, false instead
+    !rolization.blank?
   end
+
 
   def member_can_vote?(resource)
-    self.structures.pluck(:id).include?(resource.id) || self.users.pluck(:id).include?(resource.id)
+    rolization = self.rolizations.where(resource_type: resource.get_class, resource_id: resource.id).first
 
-
+    rolization && rolization.can_vote
   end
   def member_cant_vote_note(resource)
-    self_electors.find_by(resource: resource).note
+    rolization = self.rolizations.where(resource_type: resource.get_class, resource_id: resource.id).first
+
+    (rolization) ? rolization.reason : nil
+  end
+  def member_cant_vote_note_friendly(resource)
+    rolization = self.rolizations.where(resource_type: resource.get_class, resource_id: resource.id).first
+
+    case rolization.reason
+    when 'signing'
+      "Il semblerait que vous n'ayez pas émargé."
+    when 'contribution'
+      "Vous n'êtes pas à jours de vos cotisations."
+    else
+      "Merci de contacter le responsable des votes de la structure pour plus d'information."
+    end
+
   end
 
   def self.get_structure_with_president user

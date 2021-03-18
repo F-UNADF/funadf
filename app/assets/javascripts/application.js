@@ -19,6 +19,7 @@
 //= require tempusdominus-bootstrap-4
 //= require cocoon
 //= require bootstrap-toggle
+//= require toastr
 //= require_tree .
 
 $.noConflict();
@@ -35,14 +36,50 @@ jQuery(document).ready(function($) {
     onstyle: 'success',
     offstyle: 'danger'
   }).change(function() {
-    var url = '/structures/' + $(this).data('structure') + '/elector/' + $(this).data('elector-id') + '/' + $(this).data('elector-type');
+    var url = '/structures/' + $(this).data('structure') + '/resource/' + $(this).data('resource-id') + '/' + $(this).data('resource-type');
+    var selector = '.reason-' + $(this).data('resource-id');
+
+    var $this = $(this);
+    console.log(selector);
+    $.ajax({
+      url: url,
+      method: "post",
+      data: {can_vote: $(this).prop('checked')},
+      success: function(data){
+        console.log(data.updated);
+        if (data.updated=='ok'){
+          toastr.success('Membre mis à jour');
+          console.log($(selector));
+          console.log($(this).prop('checked'));
+          if($this.prop('checked')){
+            $(selector).addClass('d-none');
+          }else{
+            $(selector).removeClass('d-none');
+          }
+        }else{
+          toastr.danger('Une erreur est survenue');
+        }
+      }
+    });
+  });
+
+  $('.select-reason').on('change', function(e){
+    var url = '/structures/' + $(this).data('structure') + '/reason/' + $(this).data('resource-id') + '/' + $(this).data('resource-type');
 
     $.ajax({
       url: url,
       method: "post",
-      data: {elector: {can_vote: $(this).prop('checked')}}
+      data: {reason: $(this).val()},
+      success: function(data){
+        console.log(data.updated);
+        if (data.updated=='ok'){
+          toastr.success('Raison mise à jour');
+        }else{
+          toastr.danger('Une erreur est survenue');
+        }
+      }
     });
-  });
+  })
 
 
   moment.locale('fr', {

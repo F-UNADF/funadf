@@ -27,12 +27,13 @@ Rails.application.routes.draw do
       get '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships
       delete '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#destroy', as: :delete_memberships
 
+      post '/resource/:resource_id/:resource_type', to: 'structures/has_memberships#update'
+      post '/reason/:resource_id/:resource_type', to: 'structures/has_memberships#reason'
+
       resources :is_memberships, controller: 'structures/is_memberships'
       get '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#edit', as: :edit_structure_resource_roles
       post '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#update', as: :structure_resource_roles
     end
-
-    resources :imports, to: 'structures/imports', as: :structure_import
 
     resources :users, only: [:show, :index]
     resources :structures

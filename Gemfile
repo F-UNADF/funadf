@@ -36,6 +36,7 @@ gem "switch_user"
 gem 'state_machines-activerecord'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
+gem 'toastr-rails'
 
 group :development do
   gem "mini_racer"
