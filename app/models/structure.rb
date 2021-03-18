@@ -22,10 +22,6 @@ class Structure < ActiveRecord::Base
     (users + structures)
   end
 
-  def self_electors
-    Elector.where(resource_id: self.id, resource_type: self.get_class)
-  end
-
   def my_rolisations
     Rolization.where('resource_id = ? AND resource_type = ?', self.id, "Structure")
   end
@@ -102,16 +98,9 @@ class Structure < ActiveRecord::Base
 
     Rolization.find_or_create_by(role: role, resource: self)
 
-    Elector.find_or_create_by(resource_id: self.id, resource_type: self.class, structure_id: resource, can_vote: true) if resource && !resource.is_a?(Class)
-
     role
   end
   def remove_role role_name, resource = nil
-    if resource && !resource.is_a?(Class)
-      elector = Elector.find_by(resource: self, structure_id: resource.id)
-      elector.destroy unless elector.blank?
-    end
-
     cond = { :name => role_name }
     cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
     cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
@@ -133,10 +122,6 @@ class Structure < ActiveRecord::Base
     Structure.to_s
   end
 
-  def is_elector?(resource)
-    elector = self_electors.find_by(structure: resource)
-    elector && elector.can_vote
-  end
 
   def get_elector(resource)
     elector = electors.find_by(resource_id: resource.id, resource_type: resource.class)

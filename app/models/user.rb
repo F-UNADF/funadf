@@ -157,12 +157,8 @@ class User < ActiveRecord::Base
 
   def has_voted?(campaign)
     structure = Structure.find(campaign.structure_id)
-    elector = electors.find_by(structure: structure)
-    if elector
-      campaign.has_already_vote?(elector)
-    else
-      campaign.has_already_vote?(self)
-    end
+
+    campaign.has_already_vote?(self)
   end
 
   def self.prepare_import(upload)

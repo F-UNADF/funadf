@@ -2,7 +2,7 @@ class Structures::HasMembershipsController < ApplicationController
   before_filter :set_structure
 
   def index
-    @members = @structure.members.paginate(:page => params[:page])
+    @members = @structure.members.paginate(:page => params[:page], per_page: 600)
 
     respond_to do |format|
       format.html
@@ -15,7 +15,6 @@ class Structures::HasMembershipsController < ApplicationController
   end
 
   def create
-
     klass = Object.const_get params[:member_type]
     @member = klass.find params[:member_id]
 
@@ -26,7 +25,6 @@ class Structures::HasMembershipsController < ApplicationController
   end
 
   def destroy
-
     @structure = Structure.find params[:structure_id]
 
     klass = Object.const_get params[:member_type]

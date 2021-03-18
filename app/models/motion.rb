@@ -6,7 +6,7 @@ class Motion < ActiveRecord::Base
   has_many :votes, dependent: :destroy
 
   def has_voted? elector
-    elector && (voters.pluck(:elector_id).include?(elector.id) || voters.pluck(:resource_id, :resource_type).include?([elector.id, elector.get_class]))
+    elector && (voters.pluck(:resource_id, :resource_type).include?([elector.id, elector.get_class]))
   end
 
   def self.kinds

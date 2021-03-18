@@ -1,6 +1,0 @@
-<%- if !@elector.can_vote %>
-  jQuery('#roles_form .modal-body').html('<%= j render "structures/electors/form", structure: @structure, elector: @elector %>');
-  jQuery('#roles_form').modal('toggle');
-<%- else %>
-  toastr.success('Electeur mis à jours');
-<%- end %>

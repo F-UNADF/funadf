@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20201103084937) do
+ActiveRecord::Schema.define(version: 20210318085243) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer  "structure_id", limit: 4
@@ -30,19 +30,6 @@ ActiveRecord::Schema.define(version: 20201103084937) do
   end
 
   add_index "campaigns", ["structure_id"], name: "index_campaigns_on_structure_id", using: :btree
-
-  create_table "electors", force: :cascade do |t|
-    t.integer  "resource_id",   limit: 4
-    t.string   "resource_type", limit: 255
-    t.integer  "structure_id",  limit: 4
-    t.boolean  "can_vote",                    default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "note",          limit: 65535
-  end
-
-  add_index "electors", ["resource_id", "resource_type"], name: "index_electors_on_resource_id_and_resource_type", using: :btree
-  add_index "electors", ["structure_id"], name: "index_electors_on_structure_id", using: :btree
 
   create_table "meetings", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -155,14 +142,12 @@ ActiveRecord::Schema.define(version: 20201103084937) do
 
   create_table "voters", id: false, force: :cascade do |t|
     t.integer  "motion_id",     limit: 4
-    t.integer  "elector_id",    limit: 4
     t.datetime "voted_at"
     t.string   "ip",            limit: 255
     t.integer  "resource_id",   limit: 4
     t.string   "resource_type", limit: 255
   end
 
-  add_index "voters", ["elector_id"], name: "index_voters_on_elector_id", using: :btree
   add_index "voters", ["motion_id"], name: "index_voters_on_motion_id", using: :btree
   add_index "voters", ["resource_id", "resource_type"], name: "index_voters_on_resource_id_and_resource_type", using: :btree
 

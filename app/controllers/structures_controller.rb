@@ -10,11 +10,11 @@ class StructuresController < ApplicationController
 
     @q = current_user.structures.ransack(params[:q])
     if current_user.is_admin?
-      @q = Structure.all.ransack(params[:q])
+      @q = Structure.all.ransack(params[:q], per_page: 50)
     end
 
 
-    @structures = @q.result(distinct: true).paginate(:page => params[:page])
+    @structures = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
     session[:structure_page] = params[:page] if params[:page]
   end
 

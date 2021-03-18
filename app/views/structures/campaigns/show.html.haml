@@ -23,42 +23,43 @@
           .card-body
             - if @campaign.is_public
               .alert.alert-success.mb-3 Campagne publique
+
             %h2.h3.float-left
               = "Campagne : #{@campaign.name}"
 
-            %ul.list-inline.float-right
+            .btn-group.float-right
               - if @campaign.coming?
-                %li.list-inline-item
-                  = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-success btn-sm m-3" do
-                    = icon "edit"
-                    Modifier la campagne
+                = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-primary" do
+                  = icon "edit"
+                  Modifier
 
+              - if !@campaign.closed?
+                = link_to '#', class: "btn btn-secondary" do
+                  = icon "hand-o-up"
+                  Vote manuel
 
               - if @campaign.can_close_temporarily?
-                %li.list-inline-item
-                  = link_to [:admin, @campaign, :close_temporarily], class: "btn btn-info" do
-                    = icon "times-circle"
-                    Fermer la campagne*
+                = link_to [:admin, @campaign, :close_temporarily], class: "btn btn-info" do
+                  = icon "times-circle"
+                  Fermer *
 
               - if @campaign.can_opening?
-                %li.list-inline-item
-                  = link_to [:admin, @campaign, :open], class: "btn btn-success" do
-                    = icon "check-circle"
-                    Ouvrir la campagne*
+                = link_to [:admin, @campaign, :open], class: "btn btn-success" do
+                  = icon "check-circle"
+                  Ouvrir *
 
               - if @campaign.can_close_definitly?
-                %li.list-inline-item
-                  = link_to [:admin, @campaign, :close_definitly], data:{confirm: 'Êtes vous sûr, cette action est irreversible ?'}, class: "btn btn-warning" do
-                    = icon "times-circle"
-                    Cloturer la campagne*
+                = link_to [:admin, @campaign, :close_definitly], data:{confirm: 'Êtes vous sûr, cette action est irreversible ?'}, class: "btn btn-warning" do
+                  = icon "times-circle"
+                  Cloturer *
 
-
-              - if @campaign.closed?
-                %li.list-inline-item
-                  %span.alert.alert-info Votes cloturés
-              - if @campaign.opened?
-                %li.list-inline-item
-                  %span.alert.alert-danger Période de vote
+              %ul.list-inline
+                - if @campaign.closed?
+                  %li.list-inline-item
+                    %span.alert.alert-info Votes cloturés
+                - if @campaign.opened?
+                  %li.list-inline-item
+                    %span.alert.alert-danger Période de vote
 
             .clearfix
 
@@ -210,9 +211,14 @@
                     %tr.bg-info
                       %td{colspan: 2}= motion.name
                     - motion.voters.each do |voter|
-                      %tr
-                        %td= voter.resource.name
-                        %td= voter.resource.town
+                      - if voter.resource
+                        %tr
+                          %td= voter.resource.name
+                          %td= voter.resource.town
+                      - else
+                        %tr
+                          %td{colspan: 2}
+                            %em.text-warning= "Le votant n'existe plus (#{voter.resource_type} - #{voter.resource_id})"
 
               - elsif @campaign.coming?
                 .alert.alert-danger

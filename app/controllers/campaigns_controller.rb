@@ -13,7 +13,7 @@ class CampaignsController < ApplicationController
     pres = @user.get_presidences
     @presidences = []
     pres.each do |s|
-      unless s == @structure || @campaign.has_already_vote?( (s.is_elector?(@structure)) ? s.get_elector(@structure) : s )
+      unless s == @structure
         @presidences << s
       end
     end
