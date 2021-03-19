@@ -17,7 +17,10 @@ class Admin::UsersController < AdminController
 
   def update
     @user = User.find params[:id]
-    if @user.update(user_params)
+
+
+
+    if @user.update!(user_params)
       redirect_to [:admin, :users], flash:{success: 'L\'utilisateur a été mis à jour.'}
      else
       render :edit

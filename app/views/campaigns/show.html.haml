@@ -60,7 +60,7 @@
                 - if @structure.is_member?(s)
                   - if @structure.member_can_vote?(s) && !@campaign.has_already_vote?(s)
                     // MEMBRE DE L'ASSOC, CAN_VOTE
-                    = render 'votings', voter: s
+                    = render 'votings', voter: s, as_member: true
 
                   - elsif !@structure.member_can_vote?(s)
                     // MEMBRE DE L'ASSOC, MAIS CANT_VOTE
@@ -69,9 +69,9 @@
                       %br
                       = @structure.member_cant_vote_note_friendly(s)
 
-                - elsif @campaign.structure_can_vote?(s) && !@campaign.has_already_vote?(s)
+                - elsif @campaign.structure_can_vote?(s, false) && !@campaign.has_already_vote?(s)
                   // NON MEMBRE, CAN VOTE
-                  = render 'votings'
+                  = render 'votings', voter: s, as_member: false
 
 
 
@@ -80,16 +80,16 @@
               - if @structure.is_member?(@user)
                 - if @campaign.user_can_vote?(@user) && !@campaign.has_already_vote?(@user)
                   // MEMBRE DE L'ASSOC, CAN_VOTE
-                  = render 'votings', voter: @user
+                  = render 'votings', voter: @user, as_member: true
 
                 - elsif !@structure.member_can_vote?(@user)
                   // MEMBRE DE L'ASSOC, MAIS CANT_VOTE
                   .alert.alert-danger
                     = @structure.member_cant_vote_note_friendly(@user)
 
-              - elsif @campaign.user_can_vote?(@user) && !@campaign.has_already_vote?(@user)
+              - elsif @campaign.user_can_vote?(@user, false) && !@campaign.has_already_vote?(@user)
                 // NON MEMBRE, CAN VOTE
-                = render 'votings', voter: @user
+                = render 'votings', voter: @user, as_member: false
 
 
           - unless @campaign.can_vote?

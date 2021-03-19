@@ -127,24 +127,26 @@ class Campaign < ActiveRecord::Base
   end
 
 
-  def user_can_vote?(user)
+  def user_can_vote?(user, as_member = true)
     user_level = user.level
     structure = self.structure
 
-    is_member = structure.member_can_vote?(user)
+    vt = self.voting_tables.where(position: user_level, as_member: as_member).first
 
-    vt = self.voting_tables.where(position: user_level, as_member: is_member).first
+    if as_member
+      can_vote = structure.member_can_vote?(user)
 
-    (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
+      can_vote && (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
+    else
+      (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
+    end
   end
 
-  def user_vote_kind(user)
+  def user_vote_kind(user, as_member = true)
     user_level = user.level
     structure = self.structure
 
-    is_member = structure.member_can_vote?(user)
-
-    vt = self.voting_tables.where(position: user_level, as_member: is_member).first
+    vt = self.voting_tables.where(position: user_level, as_member: as_member).first
 
     if vt
       vt.voting
@@ -170,31 +172,31 @@ class Campaign < ActiveRecord::Base
     can_vote
   end
 
-  def structure_can_vote?(voting_structure)
+  def structure_can_vote?(voting_structure, as_member = true)
     structure = self.structure
 
-    is_member = structure.member_can_vote?(voting_structure)
-
     if voting_structure.type == "Church"
-      vt = self.voting_tables.where(position: (is_member) ? 'eglises membres' : 'eglises non membres', as_member: is_member).first
+      vt = self.voting_tables.where(position: (as_member) ? 'eglises membres' : 'eglises non membres', as_member: as_member).first
     else
-      vt = self.voting_tables.where(position: (is_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: is_member).first
+      vt = self.voting_tables.where(position: (as_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: as_member).first
     end
 
+    if as_member
+      can_vote = structure.member_can_vote?(voting_structure)
 
-
-    (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
+      can_vote && (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
+    else
+      (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
+    end
   end
 
-  def structure_vote_kind(voting_structure)
+  def structure_vote_kind(voting_structure, as_member = true)
     structure = self.structure
 
-    is_member = structure.member_can_vote?(voting_structure)
-
     if voting_structure.type == "Church"
-      vt = self.voting_tables.where(position: (is_member) ? 'eglises membres' : 'eglises non membres', as_member: is_member).first
+      vt = self.voting_tables.where(position: (as_member) ? 'eglises membres' : 'eglises non membres', as_member: as_member).first
     else
-      vt = self.voting_tables.where(position: (is_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: is_member).first
+      vt = self.voting_tables.where(position: (as_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: as_member).first
     end
 
     if vt

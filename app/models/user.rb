@@ -12,35 +12,17 @@ class User < ActiveRecord::Base
   has_many :associations, through: :roles, source: :resource, source_type: 'Association'
   has_many :churches, through: :roles, source: :resource, source_type: 'Church'
 
-  # ELECTEURS DIRECT
-  has_many :electors, as: :resource, dependent: :destroy
-
   validates :firstname, :lastname, presence: true
-  validates_uniqueness_of :access_token
 
   scope :enabled, -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
-
-  before_create :set_access_token
-
-
-  def set_access_token
-    self.access_token = generate_token
-  end
-
-  def generate_token
-    loop do
-      token = SecureRandom.hex(10)
-      break token unless User.where(access_token: token).exists?
-    end
-  end
 
   def application_roles
     roles.where(resource_id: nil, resource_type: nil)
   end
 
   def fullname
-    firstname + " " + lastname
+    lastname + " " + firstname
   end
   alias name fullname
 
@@ -212,8 +194,14 @@ class User < ActiveRecord::Base
     roles
   end
 
-  def send_direct_access_link
-    UserMailer.send_direct_access(self).deliver
+  def campaigns
+    #ON CHERCH LES CAMPAGNES :
+    # - ASSOC DONT JE SUIS MEMBRE ET OU JE PEUX VOTER
+    # - ASSOC DONT JE NE SUIS PAS MEMBRE ET OU JE PEUX VOTER
+
+    # JE PEUX VOTER : MEMBERSHIP CAN_VOTE OU TABLE DES VOTES
+    Campaign.where(structure_id: (associations + churches)).with_states([:coming, :opened]).order(name: :asc)
+
   end
 
  end

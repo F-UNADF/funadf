@@ -53,7 +53,6 @@ Rails.application.routes.draw do
     root :to => redirect('/mon-compte'), as: :authenticated_user
   end
 
-  get '/direct_access_user/:token', to: 'users/access#new', as: :direct_access_user
   root to: redirect('/users/sign_in')
 
 end

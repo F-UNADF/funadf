@@ -3,6 +3,8 @@ class Ability
 
   def initialize(user)
 
+    puts "YOU ARE IN ABILITY"
+
     user ||= User.new
 
     alias_action :create, :read, :update, :to => :cru

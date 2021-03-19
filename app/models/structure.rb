@@ -3,6 +3,7 @@ class Structure < ActiveRecord::Base
   has_many :campaigns, dependent: :destroy
   has_many :electors, dependent: :destroy
 
+
   validates :name, :type, presence: true
 
   def roles
@@ -78,9 +79,11 @@ class Structure < ActiveRecord::Base
     roles = Role.where('id IN (?)', rolizations.where(resource_id: resource.id, resource_type: resource.get_class).pluck(:role_id))
     roles.pluck(:name).first
   end
+
   def get_resource_role(resource)
-    roles = Role.where('id IN (?)', rolizations.where(resource_id: resource.id, resource_type: resource.get_class).pluck(:role_id))
-    results = roles.pluck(:name).map{ |r| I18n.t 'activerecord.attributes.roles.names.'+r}.join(', ')
+
+    results = rolizations.where(resource_id: resource.id, resource_type: resource.get_class).joins(:role).pluck(:name).map{ |r| I18n.t 'activerecord.attributes.roles.names.'+r}.join(', ')
+
     if results.blank?
       "<em>Pas membre</em>".html_safe
     else
