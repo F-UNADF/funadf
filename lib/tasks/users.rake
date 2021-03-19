@@ -224,4 +224,152 @@ namespace :users do
     end
   end
 
+  task :add_france_nord_users => :environment do |t, args|
+    file = './db/seeds/convention-nord.csv'
+
+
+    csv_text = File.read(file)
+    csv = CSV.parse(csv_text, headers: true, :col_sep => ",", :row_sep => :auto)
+
+    se = Structure.find_by(name: 'FRANCE NORD')
+    puts "AJOUT DES MEMBRES A LA FRANCE NORD"
+
+    csv.each do |row|
+
+      user = User.find_by(email: row['Email'])
+
+      # puts user.inspect
+
+      if user
+        puts "AJOUTER L'UTILISATEUR : #{user.name} COMME MEMBRE DE FRANCE NORD"
+        user.add_role :member, se
+
+      else
+        puts "IMPOSSIBLE D'AJOUTER L'UTILISATEUR : #{row['Noms']} #{row['Prénom']}"
+      end
+      # structure = Church.where(zipcode: zipcode).first
+      # if structure
+      #   puts "Ajouté l'eglise : #{structure.name} comme membre de la MI NORD"
+
+      #   structure.add_role :member, se
+
+
+      # else
+      #   puts "IMPOSSIBLE D'AJOUTER L'EGLISE DE #{zipcode}"
+      # end
+
+    end
+
+  end
+
+
+  task :add_france_sud_users => :environment do |t, args|
+    file = './db/seeds/convention-sud.csv'
+
+
+    csv_text = File.read(file)
+    csv = CSV.parse(csv_text, headers: true, :col_sep => ",", :row_sep => :auto)
+
+    se = Structure.find_by(name: 'FRANCE SUD')
+    puts "AJOUT DES MEMBRES A LA FRANCE SUD"
+
+    csv.each do |row|
+
+      user = User.find_by(email: row['Email'])
+
+      # puts user.inspect
+
+      if user
+        puts "AJOUTER L'UTILISATEUR : #{user.name} COMME MEMBRE DE FRANCE SUD"
+        user.add_role :member, se
+
+      else
+        puts "IMPOSSIBLE D'AJOUTER L'UTILISATEUR : #{row['Noms']} #{row['Prénoms']}"
+      end
+      # structure = Church.where(zipcode: zipcode).first
+      # if structure
+      #   puts "Ajouté l'eglise : #{structure.name} comme membre de la MI NORD"
+
+      #   structure.add_role :member, se
+
+
+      # else
+      #   puts "IMPOSSIBLE D'AJOUTER L'EGLISE DE #{zipcode}"
+      # end
+
+    end
+
+  end
+
+  task :add_convention_nationale_users => :environment do |t, args|
+    file = './db/seeds/convention-nord.csv'
+
+
+    csv_text = File.read(file)
+    csv = CSV.parse(csv_text, headers: true, :col_sep => ",", :row_sep => :auto)
+
+    se = Structure.find_by(name: 'CONVENTION NATIONALE')
+    puts "AJOUT DES MEMBRES A LA CONVENTION NATIONALE"
+
+    csv.each do |row|
+
+      user = User.find_by(email: row['Email'])
+
+      # puts user.inspect
+
+      if user
+        puts "AJOUTER L'UTILISATEUR : #{user.name} COMME MEMBRE DE CONVENTION NATIONALE"
+        user.add_role :member, se
+
+      else
+        puts "IMPOSSIBLE D'AJOUTER L'UTILISATEUR : #{row['Noms']} #{row['Prénom']}"
+      end
+      # structure = Church.where(zipcode: zipcode).first
+      # if structure
+      #   puts "Ajouté l'eglise : #{structure.name} comme membre de la MI NORD"
+
+      #   structure.add_role :member, se
+
+
+      # else
+      #   puts "IMPOSSIBLE D'AJOUTER L'EGLISE DE #{zipcode}"
+      # end
+
+    end
+
+    file = './db/seeds/convention-sud.csv'
+
+
+    csv_text = File.read(file)
+    csv = CSV.parse(csv_text, headers: true, :col_sep => ",", :row_sep => :auto)
+
+    csv.each do |row|
+
+      user = User.find_by(email: row['Email'])
+
+      # puts user.inspect
+
+      if user
+        puts "AJOUTER L'UTILISATEUR : #{user.name} COMME MEMBRE DE CONVENTION NATIONALE"
+        user.add_role :member, se
+
+      else
+        puts "IMPOSSIBLE D'AJOUTER L'UTILISATEUR : #{row['Noms']} #{row['Prénoms']}"
+      end
+      # structure = Church.where(zipcode: zipcode).first
+      # if structure
+      #   puts "Ajouté l'eglise : #{structure.name} comme membre de la MI NORD"
+
+      #   structure.add_role :member, se
+
+
+      # else
+      #   puts "IMPOSSIBLE D'AJOUTER L'EGLISE DE #{zipcode}"
+      # end
+
+    end
+
+  end
+
+
 end
