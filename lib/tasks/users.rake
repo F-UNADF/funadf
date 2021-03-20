@@ -208,7 +208,7 @@ namespace :users do
 
     users.each do |user|
       puts "Envoie du lien d'accès direct à #{user.firstname} #{user.lastname} (#{user.email})"
-      user.send_direct_access_link
+      user.send_invitation_email
     end
   end
 

@@ -37,6 +37,7 @@ gem 'state_machines-activerecord'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'toastr-rails'
+gem 'rails_email_preview', '~> 2.2.1'
 
 group :development do
   gem "mini_racer"

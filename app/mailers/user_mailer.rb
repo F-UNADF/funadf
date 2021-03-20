@@ -10,7 +10,7 @@ class UserMailer < ApplicationMailer
 
     @from = "sec.fnadf@addfrance.fr"
 
-    mail(to: @to, from: @from, subject: "[FNADF / UNADF] Votre lien d'accès aux votes électroniques") do |format|
+    mail(to: @to, from: @from, subject: "[FNADF / UNADF] ACTION REQUISE - Accès aux votes electroniques") do |format|
       format.html
     end
 

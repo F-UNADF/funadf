@@ -2,26 +2,19 @@
   Bonjour,
 
 %p
-  Afin de participer aux votes électroniques organisé par la FNADF qui auront lieu les :
-
-%ul
-  %li 13 novembre pour EVANDIS/UdA/SE/AJEF/EP
-  %li 14 novembre pour FCEM
+  Afin de participer aux votes électroniques organisés par la FNADF qui auront lieu du
+  %b 22 au 26 Mars 2021
 
 %p
-  Nous vous invitons à vous connecter à votre espace de votes.
+  Nous vous invitons à vous connecter à votre espace de votes. Afin de vérifiez que vous avez bien les accès.
 
-%p
-  Pour cela, nous avons mis en place un lien d'accès direct que vous trouverez ci-dessous.
-  %br
-  Ce lien est personnel et unique, ne le communiquez à personne et gardez le précieusement.
 
 %p
   Pour accéder à l'application, cliquez sur ce boutton :
 
 %p
   %span{:style => "display:block;padding:10px 15px;background:#dedede;"}
-    = link_to direct_access_user_url(@user.access_token), style:"text-decoration:none;color:#000" do
+    = link_to root_url, style:"text-decoration:none;color:#000" do
       %strong Accéder à l'application.
 
 %p
@@ -29,8 +22,8 @@
 
 %p
   %span{:style => "display:block;padding:10px 15px;background:#dedede;"}
-    = link_to direct_access_user_url(@user.access_token), style:"text-decoration:none;color:#000" do
-      = direct_access_user_url(@user.access_token)
+    = link_to root_url, style:"text-decoration:none;color:#000" do
+      = root_url
 
 %p
   En cas de soucis technique, veuillez nous écrire à l'adresse suivante :

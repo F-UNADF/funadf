@@ -194,14 +194,9 @@ class User < ActiveRecord::Base
     roles
   end
 
-  def campaigns
-    #ON CHERCH LES CAMPAGNES :
-    # - ASSOC DONT JE SUIS MEMBRE ET OU JE PEUX VOTER
-    # - ASSOC DONT JE NE SUIS PAS MEMBRE ET OU JE PEUX VOTER
-
-    # JE PEUX VOTER : MEMBERSHIP CAN_VOTE OU TABLE DES VOTES
-    Campaign.where(structure_id: (associations + churches)).with_states([:coming, :opened]).order(name: :asc)
-
+  def send_invitation_email
+    UserMailer.send_direct_access(self).deliver
   end
+
 
  end

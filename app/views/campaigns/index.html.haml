@@ -10,7 +10,7 @@
 
       .card-body
         .alert.alert-info
-          %p Vous allez voir l'ensemble des bulletins de votes pour lesquels vous ou les églises dont vous êtes présidents.
+          Voici la liste des campagne de votes pour lesquelles vous ou vos églises sont membres.
 
 
         .table-responsive
@@ -32,9 +32,13 @@
                       %td= campaign.structure_name
                       %td= campaign.name
                       %td
-                        = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                          Commencer le vote
-                          = icon 'arrow-right'
+                        - if campaign.opened?
+                          = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                            Commencer le vote
+                            = icon 'arrow-right'
+                        - else
+                          .badge.badge-warning
+                            Les votes ne sont pas encore ouverts
 
                     - break
 
@@ -58,9 +62,13 @@
                     %td= campaign.structure_name
                     %td= campaign.name
                     %td
-                      = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                        Commencer le vote
-                        = icon 'arrow-right'
+                      - if campaign.opened?
+                        = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                          Commencer le vote
+                          = icon 'arrow-right'
+                      - else
+                        .badge.badge-warning
+                          Les votes ne sont pas encore ouverts
                   - break
 
 
@@ -71,9 +79,13 @@
                     %td= campaign.structure_name
                     %td= campaign.name
                     %td
-                      = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                        Commencer le vote
-                        = icon 'arrow-right'
+                      - if campaign.opened?
+                        = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                          Commencer le vote
+                          = icon 'arrow-right'
+                      - else
+                        .badge.badge-warning
+                          Les votes ne sont pas encore ouverts
 
 
                 - elsif !campaign.structure.member_can_vote?(@user)
@@ -92,9 +104,13 @@
                   %td= campaign.structure_name
                   %td= campaign.name
                   %td
-                    = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                      Commencer le vote
-                      = icon 'arrow-right'
+                    - if campaign.opened?
+                      = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                        Commencer le vote
+                        = icon 'arrow-right'
+                    - else
+                      .badge.badge-warning
+                        Les votes ne sont pas encore ouverts
 
 
 

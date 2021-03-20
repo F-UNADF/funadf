@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
 
+  mount RailsEmailPreview::Engine, at: 'emails'
+
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   authenticated :user do

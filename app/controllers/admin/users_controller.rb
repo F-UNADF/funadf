@@ -17,8 +17,7 @@ class Admin::UsersController < AdminController
 
   def update
     @user = User.find params[:id]
-
-
+    @user.reset_password_token = Time.now
 
     if @user.update!(user_params)
       redirect_to [:admin, :users], flash:{success: 'L\'utilisateur a été mis à jour.'}

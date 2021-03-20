@@ -187,6 +187,11 @@ GEM
       loofah (~> 2.2, >= 2.2.2)
     rails_apps_pages (0.6.7)
     rails_apps_testing (0.3.13)
+    rails_email_preview (2.2.1)
+      rails (>= 4.2)
+      request_store
+      sassc-rails (>= 2.0.0)
+      turbolinks
     rails_layout (1.0.42)
     rake (12.3.2)
     ransack (1.8.10)
@@ -200,6 +205,8 @@ GEM
     rb-inotify (0.10.0)
       ffi (~> 1.0)
     rdoc (4.3.0)
+    request_store (1.5.0)
+      rack (>= 1.4)
     responders (2.4.1)
       actionpack (>= 4.2.0, < 6.0)
       railties (>= 4.2.0, < 6.0)
@@ -217,6 +224,14 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    sassc (2.2.1)
+      ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -298,6 +313,7 @@ DEPENDENCIES
   rails (~> 4.2.4)!
   rails_apps_pages
   rails_apps_testing
+  rails_email_preview (~> 2.2.1)
   rails_layout
   ransack
   rb-fchange

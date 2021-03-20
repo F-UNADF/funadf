@@ -45,7 +45,15 @@ class Structures::CampaignsController < ApplicationController
 
   def destroy
     @campaign = @structure.campaigns.find params[:id]
-    @campaign.delete
+
+    @campaign.motions.each do |motion|
+      Voter.where(motion_id: motion.id).delete_all
+      Vote.where(motion_id: motion.id).delete_all
+    end
+    @campaign.motions.delete_all
+
+    @campaign.destroy
+
     redirect_to [@structure.becomes(Structure), :campaigns], notice: "Campagne supprimée"
   end
 
