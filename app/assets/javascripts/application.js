@@ -155,6 +155,11 @@ jQuery(document).ready(function($) {
   $('.remove_fields').click(function(){
     $(this).parents('tr').fadeOut();
   });
+  $('#motions').on('cocoon:after-insert', function(e, insertedItem, originalEvent) {
+    insertedItem.find('a.remove_fields').click(function(){
+      $(this).parents('tr').fadeOut();
+    });
+  });
 
   $('#menuToggle').on('click', function(event) {
     $('body').toggleClass('open');

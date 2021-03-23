@@ -22,100 +22,15 @@
                 %th
 
             - @campaigns.each do |campaign|
-
-              - @presidences.each_with_index do |s, index|
-
-                - if campaign.structure.is_member?(s)
-                  - if campaign.structure.member_can_vote?(s) && !campaign.has_already_vote?(s)
-                    // MEMBRE DE L'ASSOC, CAN_VOTE
-                    %tr
-                      %td= campaign.structure_name
-                      %td= campaign.name
-                      %td
-                        - if campaign.opened?
-                          = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                            Commencer le vote
-                            = icon 'arrow-right'
-                        - else
-                          .badge.badge-warning
-                            Les votes ne sont pas encore ouverts
-
-                    - break
-
-                  - elsif !campaign.structure.member_can_vote?(s)
-                    // MEMBRE DE L'ASSOC, MAIS CANT_VOTE
-                    %tr
-                      %td= campaign.structure_name
-                      %td= campaign.name
-                      %td
-                        .alert.alert-danger.mb-0
-                          %b= "Présidence de <b>#{s.name}</b> (#{s.town})".html_safe
-                          %br
-                          = campaign.structure.member_cant_vote_note_friendly(s)
-
-                    - break
-
-
-                - elsif campaign.structure_can_vote?(s, false) && !campaign.has_already_vote?(s)
-                  // NON MEMBRE, CAN VOTE
-                  %tr
-                    %td= campaign.structure_name
-                    %td= campaign.name
-                    %td
-                      - if campaign.opened?
-                        = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                          Commencer le vote
-                          = icon 'arrow-right'
-                      - else
-                        .badge.badge-warning
-                          Les votes ne sont pas encore ouverts
-                  - break
-
-
-              - if campaign.structure.is_member?(@user)
-                - if campaign.structure.member_can_vote?(@user) && campaign.user_can_vote?(@user) && !campaign.has_already_vote?(@user)
-                  // MEMBRE DE L'ASSOC, CAN_VOTE
-                  %tr
-                    %td= campaign.structure_name
-                    %td= campaign.name
-                    %td
-                      - if campaign.opened?
-                        = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                          Commencer le vote
-                          = icon 'arrow-right'
-                      - else
-                        .badge.badge-warning
-                          Les votes ne sont pas encore ouverts
-
-
-                - elsif !campaign.structure.member_can_vote?(@user)
-
-                  // MEMBRE DE L'ASSOC, MAIS CANT_VOTE
-                  %tr
-                    %td= campaign.structure_name
-                    %td= campaign.name
-                    %td
-                      .alert.alert-danger.mb-0
-                        = campaign.structure.member_cant_vote_note_friendly(@user)
-
-              - elsif campaign.user_can_vote?(@user, false) && !campaign.has_already_vote?(@user)
-                // NON MEMBRE, CAN VOTE
-                %tr
-                  %td= campaign.structure_name
-                  %td= campaign.name
-                  %td
-                    - if campaign.opened?
-                      = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
-                        Commencer le vote
-                        = icon 'arrow-right'
-                    - else
-                      .badge.badge-warning
-                        Les votes ne sont pas encore ouverts
-
-
-
-
-
-
-
+              %tr
+                %td= campaign.structure_name
+                %td= campaign.name
+                %td
+                  - if campaign.opened?
+                    = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                      Commencer le vote
+                      = icon 'arrow-right'
+                  - else
+                    .badge.badge-warning
+                      Les votes ne sont pas encore ouverts
 
