@@ -10,18 +10,15 @@ class ApplicationController < ActionController::Base
     @original_user_scope_identifier = session[:original_user_scope_identifier]
   end
 
-  if !Rails.env.development?
-    def current_ability
-      cached_ability = Rails.cache.read("#{current_user.cache_key}::ability")
-      if cached_ability.present?
-        ability = Marshal.load( cached_ability )
-        ability.user = current_user
-      else
-        ability = super
-        Rails.cache.write("#{current_user.cache_key}::ability", Marshal.dump( ability ))
-      end
-      @current_ability = ability
+  def current_ability
+    cached_ability = Rails.cache.read("#{current_user.cache_key}::ability")
+    if cached_ability.present?
+      ability = Marshal.load( cached_ability )
+    else
+      ability = super
+      Rails.cache.write("#{current_user.cache_key}::ability", Marshal.dump( ability ))
     end
+    @current_ability = ability
   end
 
 end

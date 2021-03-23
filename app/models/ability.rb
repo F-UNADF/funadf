@@ -1,9 +1,12 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def marshal_dump
+    #blocks cannot be cached
+    @rules.reject{|rule| rule.instance_variable_get :@block }.map{|rule| Marshal.dump(rule) }
+  end
+  def marshal_load array
 
-    puts "YOU ARE IN ABILITY"
 
     user ||= User.new
 
@@ -18,5 +21,8 @@ class Ability
         can :cru, s
       end
     end
+
+    @rules += array.map{|rule| Marshal.load(rule) }
+
   end
 end
