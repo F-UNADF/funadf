@@ -2,7 +2,7 @@ class Structures::HasMembershipsController < ApplicationController
   before_filter :set_structure
 
   def index
-    @members = @structure.members.paginate(:page => params[:page], per_page: 600)
+    @members = @structure.members.paginate(:page => params[:page], per_page: 200)
 
     respond_to do |format|
       format.html

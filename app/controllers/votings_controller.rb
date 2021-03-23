@@ -9,12 +9,18 @@ class VotingsController < ApplicationController
 
       unless voter[:resource_id].blank?
         params[:vote].each do |index, vote|
-          Vote.create(motion_id: vote[:motion_id], result: vote[:result], is_consultative: voter[:is_consultative])
-          Voter.create(motion_id: vote[:motion_id],
-                        voted_at: Time.now,
-                        ip: request.remote_ip,
-                        resource_id: voter[:resource_id],
-                        resource_type: voter[:resource_class])
+
+          exist_voter = Voter.where(motion_id: vote[:motion_id], resource_id: voter[:resource_id], resource_type: voter[:resource_class])
+
+          if exist_voter.blank?
+
+            Vote.create(motion_id: vote[:motion_id], result: vote[:result], is_consultative: voter[:is_consultative])
+            Voter.create(motion_id: vote[:motion_id],
+                          voted_at: Time.now,
+                          ip: request.remote_ip,
+                          resource_id: voter[:resource_id],
+                          resource_type: voter[:resource_class])
+          end
         end
       end
 
