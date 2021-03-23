@@ -53,18 +53,14 @@ class User < ActiveRecord::Base
 
   def has_role?(role_name, resource = nil)
 
-    Rails.cache.fetch(
-      ["user_cache_role_#{self.id}", "has_role?", role_name, resource = nil], expires_in: '1d'
-    ){
-      resource_id = resource.id if resource
-      resource_type = resource.class if resource
-      unless new_record?
-        role_array = roles.where(name: role_name, resource_id: resource_id, resource_type: resource_type)
-      end
+    resource_id = resource.id if resource
+    resource_type = resource.class if resource
+    unless new_record?
+      role_array = roles.where(name: role_name, resource_id: resource_id, resource_type: resource_type)
+    end
 
-      return false if role_array.nil?
-      role_array != []
-    }
+    return false if role_array.nil?
+    role_array != []
 
   end
 

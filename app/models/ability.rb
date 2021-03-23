@@ -10,7 +10,7 @@ class Ability
       can :manage, :all
     end
 
-    Structure.all.each do |s|
+    user.structures.each do |s|
       if user.has_role? [:president, :secretary, :treasurer, :director], s
         can :cru, s
       end
