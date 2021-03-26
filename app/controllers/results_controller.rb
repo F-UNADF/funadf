@@ -3,11 +3,14 @@ class ResultsController < ApplicationController
   def index
 
 
-    # JE SUIS PRESIDENT
+    # JE SUIS PRESIDENT DE CES OEUVRES
     presidences = current_user.get_presidences.map{ |struc| struc.id}
 
+    # J'AI VOTE POUR
     motions_ids = Voter.where(resource_id: presidences, resource_type: 'Structure').pluck(:motion_id)
     my_motions_ids = Voter.where(resource_id: current_user.id, resource_type: 'User').pluck(:motion_id)
+
+
     campaigns_ids = Motion.where(id: [motions_ids+my_motions_ids]).pluck(:campaign_id)
 
 
