@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-ruby '2.6.3'
-gem 'rails', '~> 4.2.4', git: "https://github.com/rails/rails.git", branch: '4-2-stable'
+ruby '2.7.1'
+gem 'rails', '4.2.11.3'
+
 gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
@@ -38,6 +39,7 @@ gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'toastr-rails'
 gem 'rails_email_preview', '~> 2.2.1'
+gem 'bigdecimal', '1.3.5'
 
 group :development do
   gem "mini_racer"

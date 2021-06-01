@@ -25,17 +25,18 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = true
+  config.assets.debug = false
+  config.assets.check_precompiled_asset = false
 
-config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_settings = {
-  :user_name => '6cdcb3bf51772f',
-  :password => 'af2664b6e1e2fe',
-  :address => 'smtp.mailtrap.io',
-  :domain => 'smtp.mailtrap.io',
-  :port => '2525',
-  :authentication => :cram_md5
-}
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :user_name => '6cdcb3bf51772f',
+    :password => 'af2664b6e1e2fe',
+    :address => 'smtp.mailtrap.io',
+    :domain => 'smtp.mailtrap.io',
+    :port => '2525',
+    :authentication => :cram_md5
+  }
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => 'lvh.me:3000' }
   config.action_mailer.raise_delivery_errors = false
