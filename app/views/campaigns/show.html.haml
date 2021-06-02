@@ -10,7 +10,7 @@
           = @campaign.structure_name
         .card-actions.float-right
           = link_to :campaigns, class: 'btn btn-default' do
-            = icon "angle-left"
+            = icon 'fa', "angle-left"
             Revenir aux campagnes
 
       .card-body
@@ -100,7 +100,7 @@
                 .col-md-12
                   .text-center.mt-3
                     %button.btn.btn-success.submit-vote{type: :submit}
-                      = icon 'warning'
+                      = icon 'fa', 'warning'
                       JE VALIDE MON VOTE
-                      = icon 'warning'
+                      = icon 'fa', 'warning'
 

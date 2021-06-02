@@ -11,11 +11,11 @@
         .card-actions
 
           = link_to new_user_invitation_path, class: "btn-setting" do
-            = icon 'plus'
+            = icon 'fa', 'plus'
             Ajouter
 
           = link_to admin_import_path(:get_file), class: "btn-setting" do
-            = icon "upload"
+            = icon 'fa', "upload"
             Importer depuis un fichier
 
       .card-body
@@ -40,7 +40,7 @@
 
             .col-md-3
               %button.btn.btn-success.mt-4{type: :submit}
-                = icon "search"
+                = icon 'fa', "search"
                 Rechercher
 
 
@@ -59,7 +59,7 @@
                 %td
                   = link_to user, class: "text-info" do
                     = user.fullname
-                    = icon "eye"
+                    = icon 'fa', "eye"
                 %td= user.email
                 %td= user.level
                 %td
@@ -70,30 +70,30 @@
                       - if can? :edit, user
                         %li.list-inline-item
                           = link_to [:edit, :admin, user], class: "text-success" do
-                            = icon "edit"
+                            = icon 'fa', "edit"
                             Modifier
                       - if can? :manage, user
                         - if user.disabled
                           %li.list-inline-item
                             = link_to admin_user_enable_path(user), class: "text-info" do
-                              = icon "check"
+                              = icon 'fa', "check"
                               Restaurer
                         - unless user.disabled
                           %li.list-inline-item
                             = link_to admin_user_disable_path(user), class: "text-warning" do
-                              = icon "times"
+                              = icon 'fa', "times"
                               Desactiver
                       - if can? :delete, user
                         %li.list-inline-item
                           = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
-                            = icon "trash"
+                            = icon 'fa', "trash"
                             Supprimer
 
                       - if can? :manage, user
                         %li.list-inline-item
                           - next_path = ERB::Util.url_encode("/switch_user?scope_identifier=user_#{user.id}")
                           = link_to "/switch_user/remember_user?remember=true&path=#{next_path}", class: 'text-infos' do
-                            = icon 'warning'
+                            = icon 'fa', 'warning'
                             Se connecter en tant que
 
                           /remember_user?

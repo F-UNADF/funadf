@@ -30,6 +30,6 @@
                 %td
                   = link_to result_path(campaign.id), class: 'btn btn-sm btn-primary' do
                     Consulter les résultats
-                    = icon 'arrow-right'
+                    = icon 'fa', 'arrow-right'
 
         = will_paginate @campaigns, params: :member_page

@@ -46,10 +46,10 @@ GEM
     bigdecimal (1.3.5)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
-    bootstrap (4.0.0)
-      autoprefixer-rails (>= 6.0.3)
-      popper_js (>= 1.12.9, < 2)
-      sass (>= 3.5.2)
+    bootstrap (4.6.0)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
     bootstrap-toggle-rails (2.2.1.0)
     bootstrap4-datetime-picker-rails (0.3.1)
       jquery-rails (~> 4.2, >= 4.2.0)
@@ -90,8 +90,8 @@ GEM
     erubis (2.7.0)
     execjs (2.8.1)
     ffi (1.15.1)
-    font-awesome-sass (4.7.0)
-      sass (>= 3.2)
+    font-awesome-sass (5.15.1)
+      sassc (>= 1.11)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     haml (5.2.1)
@@ -152,7 +152,7 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
-    popper_js (1.12.9)
+    popper_js (1.16.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     racc (1.5.2)
@@ -212,11 +212,6 @@ GEM
     rolify (6.0.0)
     ruby_parser (3.16.0)
       sexp_processor (~> 4.15, >= 4.15.1)
-    sass (3.7.4)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -285,7 +280,7 @@ DEPENDENCIES
   better_errors
   bigdecimal (= 1.3.5)
   binding_of_caller
-  bootstrap (~> 4.0.0.alpha6)
+  bootstrap (~> 4.6)
   bootstrap-toggle-rails
   bootstrap4-datetime-picker-rails
   bourbon
@@ -295,7 +290,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   devise (~> 4.2)
   devise_invitable (~> 1.7.0)
-  font-awesome-sass (~> 4.7.0)
+  font-awesome-sass (~> 5.15.1)
   haml-rails
   high_voltage
   html2haml
@@ -306,19 +301,19 @@ DEPENDENCIES
   momentjs-rails
   mysql2 (~> 0.5.3)
   paperclip
-  popper_js (~> 1.12.9)
+  popper_js (>= 1.14.3, < 2)
   quiet_assets
   rails (= 4.2.11.3)
   rails_apps_pages
   rails_apps_testing
-  rails_email_preview (~> 2.2.1)
+  rails_email_preview
   rails_layout
   ransack
   rb-fchange
   rb-fsevent
   rb-inotify
   rolify
-  sass-rails
+  sass-rails (~> 6.0)
   sdoc (~> 0.4.0)
   select2-rails
   spring

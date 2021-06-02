@@ -14,16 +14,16 @@
             - if can? :add, Structure
               %li.list-inline-item
                 = link_to new_structure_path, class: 'btn btn-default' do
-                  = icon 'plus'
+                  = icon 'fa', 'plus'
                   Ajouter
 
       .card-body
         %ul.list-inline
           %li.list-inline-item
-            = icon 'fire'
+            = icon 'fa', 'fire'
             Eglise
           %li.list-inline-item
-            = icon 'building'
+            = icon 'fa', 'building'
             Association
 
         = search_form_for @q do |f|
@@ -42,7 +42,7 @@
                 = f.select :type_eq, options_for_select(Structure.types, @q.type_eq), {include_blank: " Toutes "}, class: "form-control"
             .col-md-3
               %button.btn.btn-success.mt-4{type: :submit}
-                = icon "search"
+                = icon 'fa', "search"
                 Rechercher
 
         .table-responsive
@@ -58,7 +58,7 @@
 
             - @structures.each do |structure|
               %tr
-                %td= icon "#{structure.get_icon}"
+                %td= icon 'fa', "#{structure.get_icon}"
                 %td= structure.id
                 %td= structure.name
                 %td= structure.town
@@ -67,11 +67,11 @@
                   .btn-group
                     - if can? :cru, structure
                       = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
-                        = icon "eye"
+                        = icon 'fa', "eye"
                         Gérer la structure
                     - if can? :destroy, structure
                       = link_to structure_path(structure), method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
-                        = icon "times"
+                        = icon 'fa', "times"
 
         .float-right
           = will_paginate @structures

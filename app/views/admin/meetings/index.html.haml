@@ -9,7 +9,7 @@
         %strong Liste des congrès
         .card-actions
           = link_to new_admin_meeting_path, class: "btn-setting" do
-            = icon 'plus'
+            = icon 'fa', 'plus'
             Ajouter
 
       .card-body
@@ -21,7 +21,7 @@
                 = f.text_field :name_cont, class: "form-control"
             .col-md-4
               %button.btn.btn-success.mt-4{type: :submit}
-                = icon "search"
+                = icon 'fa', "search"
                 Rechercher
 
 
@@ -43,12 +43,12 @@
                     - if can? :edit, meeting
                       %li.list-inline-item
                         = link_to [:edit, :admin, meeting], class: "text-success" do
-                          = icon "edit"
+                          = icon 'fa', "edit"
                           Modifier
                     - if can? :delete, meeting
                       %li.list-inline-item
                         = link_to [:admin, meeting], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
-                          = icon "times"
+                          = icon 'fa', "times"
                           Supprimer
 
         .float-right

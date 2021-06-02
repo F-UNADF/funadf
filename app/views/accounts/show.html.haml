@@ -13,7 +13,7 @@
                 .client-title.mt-2.mb-1
                   %h3= @user.fullname
                   %p
-                    = icon 'id-card'
+                    = icon 'fa', 'id-card'
                     = @user.friendly_id
               .client-info
                 %address
@@ -23,27 +23,27 @@
 
                   %ul.fa-ul
                     %li
-                      = icon 'envelope', class: "fa-li"
+                      = icon 'fa', 'envelope', class: "fa-li"
                       = link_to "mailto:#{@user.email}" do
                         = @user.email
 
                     - if @user.phone_1?
                       %li
-                        = icon 'phone', class: "fa-li"
+                        = icon 'fa', 'phone', class: "fa-li"
                         = @user.phone_1
                     - if @user.phone_2?
                       %li
-                        = icon 'phone', class: "fa-li"
+                        = icon 'fa', 'phone', class: "fa-li"
                         = @user.phone_2
 
                     - if @user.birthdate?
                       %li
-                        = icon 'birthday-cake', class: "fa-li"
+                        = icon 'fa', 'birthday-cake', class: "fa-li"
                         = l @user.birthdate
 
           .card-footer
             = link_to edit_me_path, class: 'btn btn-outline-dark btn-icon' do
-              = icon "edit"
+              = icon 'fa', "edit"
               Modifier mon profil
 
       .col-md-8
@@ -63,7 +63,7 @@
 
               - @structures.each do |structure|
                 %tr
-                  %td= icon "#{structure.get_icon}"
+                  %td= icon 'fa', "#{structure.get_icon}"
                   %td= structure.name
                   %td= structure.town
                   %td= structure.get_resource_role(@user)
@@ -72,6 +72,6 @@
                       - if can? :cru, structure
                         %li.list-inline-item
                           = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
-                            = icon "eye"
+                            = icon 'fa', "eye"
                             Gérer la structure
 

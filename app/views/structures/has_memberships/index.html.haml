@@ -15,7 +15,7 @@
         .card
           .card-body
             = link_to structure_has_memberships_path(@structure, format: :pdf), target: '_blank', class: "btn btn-success btn-block btn-lg" do
-              = icon "download", class: "mr-5"
+              = icon 'fa', "download", class: "mr-5"
               Télécharger la feuille d'émargement
 
       .col-md-12
@@ -64,11 +64,11 @@
                       - if can? :update, @structure
                         .btn-group
                           = link_to structure_edit_structure_resource_roles_path(@structure, member.id, member.class.to_s), class: "btn btn-info btn-sm change_role" do
-                            = icon "edit"
+                            = icon 'fa', "edit"
                             Modifier le rôle
 
                           = link_to structure_delete_memberships_path(@structure, member.id, member.class.to_s) , method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
-                            = icon "times"
+                            = icon 'fa', "times"
 
 
 
@@ -86,7 +86,7 @@
                   .input-group-append
                     .input-group-text
                       %button.btn.btn-link{type: :submit}
-                        = icon "search"
+                        = icon 'fa', "search"
 
             #result
               .alert.alert-info

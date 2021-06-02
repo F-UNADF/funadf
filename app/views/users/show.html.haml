@@ -16,7 +16,7 @@
                 .client-title.mt-2.mb-1
                   %h3= @user.fullname
                   %p
-                    = icon 'id-card'
+                    = icon 'fa', 'id-card'
                     = @user.friendly_id
               .client-info
                 %address
@@ -26,21 +26,21 @@
 
                   %ul.fa-ul
                     %li
-                      = icon 'envelope', class: "fa-li"
+                      = icon 'fa', 'envelope', class: "fa-li"
                       = link_to "mailto:#{@user.email}" do
                         = @user.email
 
                     - if @user.phone_1?
                       %li
-                        = icon 'phone', class: "fa-li"
+                        = icon 'fa', 'phone', class: "fa-li"
                         = @user.phone_1
                     - if @user.phone_2?
                       %li
-                        = icon 'phone', class: "fa-li"
+                        = icon 'fa', 'phone', class: "fa-li"
                         = @user.phone_2
           .card-footer
             = link_to edit_admin_user_path(@user), class: 'btn btn-outline-dark btn-icon' do
-              = icon "edit"
+              = icon 'fa', "edit"
               Modifier mon profil
 
 
@@ -63,7 +63,7 @@
 
               - @structures.each do |structure|
                 %tr
-                  %td= icon "#{structure.get_icon}"
+                  %td= icon 'fa', "#{structure.get_icon}"
                   %td= structure.id
                   %td= structure.name
                   %td= structure.town

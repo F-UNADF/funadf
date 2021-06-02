@@ -3,18 +3,18 @@
   %h3.menu-title Menu Principal
   %li{class: "#{(params[:controller] == 'pages') ? 'active' : ''}"}
     = link_to root_url do
-      = icon "home", class: "menu-icon"
+      = icon 'fa', "home", class: "menu-icon"
       Accueil
 
   %li{class: "#{(params[:controller] == 'campaigns') ? 'active' : ''}"}
     = link_to campaigns_url do
-      = icon "comment", class: "menu-icon"
+      = icon 'fa', "comment", class: "menu-icon"
       Mes votes
 
 
   %li{class: "#{(params[:controller] == 'results') ? 'active' : ''}"}
     = link_to results_url do
-      = icon "comments", class: "menu-icon"
+      = icon 'fa', "comments", class: "menu-icon"
       Résultats
 
   / /.menu-title
@@ -24,12 +24,12 @@
 
   %li{class: "#{(params[:controller] == 'accounts') ? 'active' : ''}"}
     = link_to me_path do
-      = icon "user", class: "menu-icon"
+      = icon 'fa', "user", class: "menu-icon"
       Consulter mon profil
 
   %li{class: "#{(params[:controller] == 'structures') ? 'active' : ''}"}
     = link_to structures_path do
-      = icon "address-book", class: "menu-icon"
+      = icon 'fa', "address-book", class: "menu-icon"
       Consulter mes structures
 
 
@@ -37,15 +37,15 @@
     %h3.menu-title Administration
     %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
       = link_to admin_users_path do
-        = icon "users", class: "menu-icon"
+        = icon 'fa', "users", class: "menu-icon"
         Gestion des utilisateurs
 
     %li{class: "#{(params[:controller] == 'admin/meetings') ? 'active' : ''}"}
       = link_to admin_meetings_path do
-        = icon "building", class: "menu-icon"
+        = icon 'fa', "building", class: "menu-icon"
         Gestion des congrès
 
     %li{class: "#{(params[:controller] == 'admin/campaigns') ? 'active' : ''}"}
       = link_to admin_campaigns_path do
-        = icon "comments", class: "menu-icon"
+        = icon 'fa', "comments", class: "menu-icon"
         Gestion des campagnes

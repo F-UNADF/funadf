@@ -17,7 +17,7 @@
             .float-left= render 'structures/navbar', structure: @structure
             .card-actions.float-right
               = link_to structure_campaigns_path(@structure), class: 'btn btn-sm btn-default' do
-                = icon 'angle-left'
+                = icon 'fa', 'angle-left'
                 Revenir aux campagnes
 
           .card-body
@@ -30,27 +30,27 @@
             .btn-group.float-right
               - if @campaign.coming?
                 = link_to [:edit, @structure.becomes(Structure), @campaign], class: "btn btn-primary" do
-                  = icon "edit"
+                  = icon 'fa', "edit"
                   Modifier
 
               - if !@campaign.closed?
                 = link_to '#', class: "btn btn-secondary" do
-                  = icon "hand-o-up"
+                  = icon 'fa', "hand-o-up"
                   Vote manuel
 
               - if @campaign.can_close_temporarily?
                 = link_to [:admin, @campaign, :close_temporarily], class: "btn btn-info" do
-                  = icon "times-circle"
+                  = icon 'fa', "times-circle"
                   Fermer *
 
               - if @campaign.can_opening?
                 = link_to [:admin, @campaign, :open], class: "btn btn-success" do
-                  = icon "check-circle"
+                  = icon 'fa', "check-circle"
                   Ouvrir *
 
               - if @campaign.can_close_definitly?
                 = link_to [:admin, @campaign, :close_definitly], data:{confirm: 'Êtes vous sûr, cette action est irreversible ?'}, class: "btn btn-warning" do
-                  = icon "times-circle"
+                  = icon 'fa', "times-circle"
                   Cloturer *
 
               %ul.list-inline
@@ -96,7 +96,7 @@
 
                 .float-right
                   = link_to structure_campaign_path(@structure, @campaign, format: :pdf), target: '_blank', class: "btn btn-success" do
-                    = icon "file-pdf"
+                    = icon 'fa', "file-pdf"
                     Télécharger au format PDF
 
               - if @campaign.closed?

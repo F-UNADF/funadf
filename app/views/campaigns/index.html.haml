@@ -29,7 +29,7 @@
                   - if campaign.opened?
                     = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
                       Commencer le vote
-                      = icon 'arrow-right'
+                      = icon 'fa', 'arrow-right'
                   - else
                     .badge.badge-warning
                       Les votes ne sont pas encore ouverts
