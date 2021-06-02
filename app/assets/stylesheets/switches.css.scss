@@ -1,3 +1,5 @@
+@import 'variables';
+
 @mixin switch-size($width, $height, $font-size, $handle-margin) {
   width: $width;
   height: $height;
@@ -43,11 +45,11 @@
     font-weight: 600;
     text-transform: uppercase;
     @if $type == ddd {
-      background-color: $gray-100;
+      background-color: #f8f9fa;
     } @else {
       background-color: #fff;
     }
-    border: 1px solid $border-color;
+    border: 1px solid #e9ecef;
     border-radius: 2px;
     transition: opacity background .15s ease-out;
   }
@@ -64,7 +66,7 @@
     }
     .switch-label::before {
       right: 1px;
-      color: $gray-200;
+      color:  #e9ecef;
       content: attr(data-off);
     }
     .switch-label::after {
@@ -91,7 +93,7 @@
     width: $height - $handle-margin * 2;
     height: $height - $handle-margin * 2;
     background: #fff;
-    border: 1px solid $border-color;
+    border: 1px solid #e9ecef;
     border-radius: 1px;
     transition: left .15s ease-out;
     @if $type == ddd {
