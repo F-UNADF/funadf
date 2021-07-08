@@ -1,7 +1,6 @@
 class AdminController < ApplicationController
 
   before_filter :user_is_admin?
-  layout 'admin/layouts/admin'
 
   private
     def user_is_admin?

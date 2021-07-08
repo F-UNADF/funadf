@@ -7,20 +7,18 @@
       Accueil
 
   %li{class: "#{(params[:controller] == 'campaigns') ? 'active' : ''}"}
-    = link_to campaigns_url do
+    = link_to votes_campaigns_url do
       = icon 'fa', "comment", class: "menu-icon"
       Mes votes
 
 
   %li{class: "#{(params[:controller] == 'results') ? 'active' : ''}"}
-    = link_to results_url do
+    = link_to votes_results_url do
       = icon 'fa', "comments", class: "menu-icon"
       Résultats
 
-  / /.menu-title
 
   %h3.menu-title Mon compte
-  / /.menu-title
 
   %li{class: "#{(params[:controller] == 'accounts') ? 'active' : ''}"}
     = link_to me_path do
@@ -32,15 +30,11 @@
       = icon 'fa', "address-book", class: "menu-icon"
       Consulter mes structures
 
+  %h3.menu-title
 
-  - if can? :manage, :all
-    %h3.menu-title Administration
-    %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
-      = link_to admin_users_url(subdomain: :admin) do
-        = icon 'fa', "users", class: "menu-icon"
-        Gestion des utilisateurs
+  - if current_user.has_role? :admin
 
-    %li{class: "#{(params[:controller] == 'admin/campaigns') ? 'active' : ''}"}
-      = link_to admin_campaigns_url(subdomain: :admin) do
-        = icon 'fa', "comments", class: "menu-icon"
-        Gestion des campagnes
+    %li
+      = link_to root_url(subdomain: :admin) do
+        = icon "fa", "cogs", class: "menu-icon"
+        Accéder à l'adminitration

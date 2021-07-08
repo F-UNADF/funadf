@@ -9,12 +9,12 @@
         .float-left
           = @campaign.structure_name
         .card-actions.float-right
-          = link_to :campaigns, class: 'btn btn-default' do
+          = link_to [:votes, :campaigns], class: 'btn btn-default' do
             = icon 'fa', "angle-left"
             Revenir aux campagnes
 
       .card-body
-        = form_for :votings, url: voting_path do |f|
+        = form_for :votings, url: votes_voting_path do |f|
           = f.hidden_field :campaign_id, value: @campaign.id
           .row
             .col-md-6

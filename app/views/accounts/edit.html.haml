@@ -2,7 +2,6 @@
   .page-header
     %h1 Mon compte
 
-
 .content.mt-3
   .container-fluid
 
@@ -10,7 +9,7 @@
       .col-md-8
         .card
           .card-body
-            = form_for @user, url: account_path(@user) do |f|
+            = form_for @user, url: votes_account_path(@user) do |f|
               - if @user.errors.any?
                 .panel.panel-danger
                   .panel-heading= "#{pluralize(@user.errors.count, "erreur")}"

@@ -1,4 +1,4 @@
-class VotingsController < ApplicationController
+class Votes::VotingsController < VotesController
 
   def create
     @campaign = Campaign.find params[:votings][:campaign_id]
@@ -25,7 +25,7 @@ class VotingsController < ApplicationController
 
     end
 
-    redirect_to :campaigns, alert: "Votre vote a bien été pris en compte"
+    redirect_to [:votes, :campaigns], alert: "Votre vote a bien été pris en compte"
   end
 
 end

@@ -28,7 +28,7 @@
                 %td= campaign.structure_name
                 %td= campaign.name
                 %td
-                  = link_to result_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                  = link_to votes_result_path(campaign.id), class: 'btn btn-sm btn-primary' do
                     Consulter les résultats
                     = icon 'fa', 'arrow-right'
 

@@ -27,7 +27,7 @@
                 %td= campaign.name
                 %td
                   - if campaign.opened?
-                    = link_to campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
+                    = link_to votes_campaign_path(campaign.id), class: 'btn btn-sm btn-primary' do
                       Commencer le vote
                       = icon 'fa', 'arrow-right'
                   - else

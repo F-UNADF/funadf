@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
 
   private
     def set_layout
-      folder = ''
-      if request.subdomain
+      folder = 'votes/'
+      if request.subdomain && request.subdomain != ''
         case request.subdomain
         when 'admin'
           folder = 'admin/'
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
     end
 
     def set_intranet_structure
-      if request.subdomain && request.subdomain != 'admin'
+      if request.subdomain && request.subdomain != '' && request.subdomain != 'admin'
         @intranet = Intranet.find_by subdomain: request.subdomain
         unless @intranet
           redirect_to root_url

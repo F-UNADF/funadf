@@ -14,10 +14,6 @@
             = icon 'fa', 'plus'
             Ajouter
 
-          = link_to admin_import_path(:get_file), class: "btn-setting" do
-            = icon 'fa', "upload"
-            Importer depuis un fichier
-
       .card-body
         = search_form_for [:admin, @q] do |f|
           .row

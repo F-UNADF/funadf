@@ -1,4 +1,4 @@
-class CampaignsController < ApplicationController
+class Votes::CampaignsController < VotesController
 
   def index
     @campaigns = Campaign.currents

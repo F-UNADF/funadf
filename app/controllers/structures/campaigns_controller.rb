@@ -42,7 +42,6 @@ class Structures::CampaignsController < ApplicationController
     end
   end
 
-
   def destroy
     @campaign = @structure.campaigns.find params[:id]
 
@@ -55,6 +54,25 @@ class Structures::CampaignsController < ApplicationController
     @campaign.destroy
 
     redirect_to [@structure.becomes(Structure), :campaigns], notice: "Campagne supprimée"
+  end
+
+
+  def close_definitly
+    @campaign = Campaign.find params[:campaign_id]
+    @campaign.close_definitly
+    redirect_to :back
+  end
+
+  def close_temporarily
+    @campaign = Campaign.find params[:campaign_id]
+    @campaign.close_temporarily
+    redirect_to :back
+  end
+
+  def open
+    @campaign = Campaign.find params[:campaign_id]
+    @campaign.opening
+    redirect_to :back
   end
 
   private

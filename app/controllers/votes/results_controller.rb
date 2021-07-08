@@ -1,4 +1,4 @@
-class ResultsController < ApplicationController
+class Votes::ResultsController < VotesController
 
   def index
 
