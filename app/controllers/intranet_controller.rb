@@ -1,0 +1,5 @@
+class IntranetController < ApplicationController
+
+
+
+end

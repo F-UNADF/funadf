@@ -1,0 +1,28 @@
+!!!
+%html
+  %head
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1; maximum-scale=1.0"}
+
+    %title
+      INTRANET
+      = @intranet_structure.name
+
+    %meta{:name => "description", :content => "Intranet FNADF / UNADF"}
+
+    = stylesheet_link_tag 'application', media: 'all'
+    = favicon_link_tag "/favicon.ico"
+    = csrf_meta_tags
+
+  %body.bg-dark
+    .sufee-login.d-flex.align-content-center.flex-wrap
+      .container
+        .login-content
+          .display-3.login-logo
+            = link_to root_url do
+              = @intranet_structure.name
+
+          .login-form
+            = yield
+
+
+    = javascript_include_tag 'application'

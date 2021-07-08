@@ -36,16 +36,11 @@
   - if can? :manage, :all
     %h3.menu-title Administration
     %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
-      = link_to admin_users_path do
+      = link_to admin_users_url(subdomain: :admin) do
         = icon 'fa', "users", class: "menu-icon"
         Gestion des utilisateurs
 
-    %li{class: "#{(params[:controller] == 'admin/meetings') ? 'active' : ''}"}
-      = link_to admin_meetings_path do
-        = icon 'fa', "building", class: "menu-icon"
-        Gestion des congrès
-
     %li{class: "#{(params[:controller] == 'admin/campaigns') ? 'active' : ''}"}
-      = link_to admin_campaigns_path do
+      = link_to admin_campaigns_url(subdomain: :admin) do
         = icon 'fa', "comments", class: "menu-icon"
         Gestion des campagnes

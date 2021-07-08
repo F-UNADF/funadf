@@ -6,53 +6,68 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   authenticated :user do
-    namespace :admin do
-      resources :users do
-        get '/admins/new', to: "admins#new", as: :new_admin
-        post '/admins/delete', to: "admins#destroy", as: :admin
-        get '/enable', to: "users#enable", as: :enable
-        get '/disable', to: "users#disable", as: :disable
+
+    # ADMIN SUBDOMAIN
+    namespace :admin, path: '' do
+      constraints(:subdomain => /admin/) do
+        resources :users do
+          get '/admins/new', to: "admins#new", as: :new_admin
+          post '/admins/delete', to: "admins#destroy", as: :admin
+          get '/enable', to: "users#enable", as: :enable
+          get '/disable', to: "users#disable", as: :disable
+        end
+        resources :imports
+        resources :campaigns do
+          get '/open', to: 'campaigns#open', as: :open
+          get '/close_definitly', to: 'campaigns#close_definitly', as: :close_definitly
+          get '/close_temporarily', to: 'campaigns#close_temporarily', as: :close_temporarily
+        end
+        resources :intranets
       end
-      resources :imports
-      resources :campaigns do
-        get '/open', to: 'campaigns#open', as: :open
-        get '/close_definitly', to: 'campaigns#close_definitly', as: :close_definitly
-        get '/close_temporarily', to: 'campaigns#close_temporarily', as: :close_temporarily
-      end
-      resources :meetings
     end
 
-    resources :structures do
-      resources :has_memberships, controller: 'structures/has_memberships', except: :create
-      resources :campaigns, controller: 'structures/campaigns'
+    # ITNTRANETS SUBDOMAIN
+    namespace :intranet, path: '' do
+      constraints(:subdomain => /[a-z]*/) do
 
-      get '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships
-      delete '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#destroy', as: :delete_memberships
+        root to: 'home#show', as: :intranet
 
-      post '/resource/:resource_id/:resource_type', to: 'structures/has_memberships#update'
-      post '/reason/:resource_id/:resource_type', to: 'structures/has_memberships#reason'
-
-      resources :is_memberships, controller: 'structures/is_memberships'
-      get '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#edit', as: :edit_structure_resource_roles
-      post '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#update', as: :structure_resource_roles
+      end
     end
 
-    resources :users, only: [:show, :index]
-    resources :structures
+    constraints(:subdomain => nil) do
+      resources :structures do
+        resources :has_memberships, controller: 'structures/has_memberships', except: :create
+        resources :campaigns, controller: 'structures/campaigns'
 
-    resources :campaigns
-    resources :results, only: [:index, :show]
+        get '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships
+        delete '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#destroy', as: :delete_memberships
 
-    post '/voting', to: 'votings#create', as: :voting
+        post '/resource/:resource_id/:resource_type', to: 'structures/has_memberships#update'
+        post '/reason/:resource_id/:resource_type', to: 'structures/has_memberships#reason'
 
-    get '/mon-compte', to: "accounts#show", as: :me
-    get '/mon-compte/modifier', to: 'accounts#edit', as: :edit_me
+        resources :is_memberships, controller: 'structures/is_memberships'
+        get '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#edit', as: :edit_structure_resource_roles
+        post '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#update', as: :structure_resource_roles
+      end
 
-    get '/search', to: "search#index", as: :search
+      resources :users, only: [:show, :index]
+      resources :structures
 
-    resources :accounts, only: :update
+      resources :campaigns
+      resources :results, only: [:index, :show]
 
-    root :to => redirect('/mon-compte'), as: :authenticated_user
+      post '/voting', to: 'votings#create', as: :voting
+
+      get '/mon-compte', to: "accounts#show", as: :me
+      get '/mon-compte/modifier', to: 'accounts#edit', as: :edit_me
+
+      get '/search', to: "search#index", as: :search
+
+      resources :accounts, only: :update
+
+      root :to => redirect('/mon-compte'), as: :authenticated_user
+    end
   end
 
   root to: redirect('/users/sign_in')

@@ -1,4 +1,4 @@
-class Admin::CampaignsController < ApplicationController
+class Admin::CampaignsController < AdminController
   before_action :set_campaign, only: [:show, :edit, :update, :destroy, :close_definitly, :close_temporarily, :open]
 
   # GET /admin/campaigns
@@ -11,6 +11,7 @@ class Admin::CampaignsController < ApplicationController
   # GET /admin/campaigns/1
   # GET /admin/campaigns/1.json
   def show
+    @structure = @campaign.structure
   end
 
   # GET /admin/campaigns/new

@@ -79,9 +79,9 @@ Devise.setup do |config|
   config.sign_out_via = :delete
 
 
-  Devise::SessionsController.layout "devise"
-  Devise::InvitationsController.layout "application"
-  Devise::Mailer.layout "mailer"
+  # Devise::SessionsController.layout "devise"
+  # Devise::InvitationsController.layout "application"
+  # Devise::Mailer.layout "mailer"
 
   config.mailer = 'DeviseMailer'
 

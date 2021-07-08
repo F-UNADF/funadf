@@ -12,5 +12,18 @@ module ApplicationHelper
     }
   end
 
+  def state_for_select
+    {
+      "A venir" => :coming,
+      "Ouverte" => :opened,
+      "Cloturée" => :closed
+    }
+  end
+
+
+  def get_url intranet
+    "#{intranet.subdomain}.#{Rails.application.secrets.app_domain}"
+  end
+
 
 end

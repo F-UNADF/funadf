@@ -1,0 +1,46 @@
+.breadcrumbs
+  .page-header
+    %h1 Gestion des intranets
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Liste des intranets
+
+      .card-body
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th Structure
+                %th Domaine
+                %th
+
+            - @intranets.each do |intranet|
+              %tr
+                %td= intranet.structure_name
+                %td
+                  = link_to get_url(intranet), target: '_blank' do
+                    = get_url intranet
+                %td
+                  .btn-group
+                    = link_to [:edit, :admin, intranet], class: "btn btn-link btn-sm text-primary" do
+                      = icon 'fa', "edit"
+                      Modifier
+
+                    = link_to [:admin, intranet], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-link btn-sm text-danger" do
+                      = icon 'fa', "trash"
+                      Supprimer
+
+            %tr
+              = form_for [:admin, @intranet] do |f|
+                %td
+                  = f.select :structure_id, options_from_collection_for_select(Structure.order(name: :asc), :id, :name, @intranet.structure_id), {prompt: 'Structure'}, class: "form-control"
+                %td
+                  = f.text_field :subdomain, class: "form-control", placeholder: 'Sous-domaine'
+                %td
+                  %button.btn.btn-success{type: :submit}
+                    = icon 'fa', 'save'
+                    Enregistrer

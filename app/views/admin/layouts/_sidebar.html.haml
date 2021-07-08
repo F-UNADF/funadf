@@ -1,0 +1,16 @@
+%ul.nav.navbar-nav
+  %h3.menu-title Administration
+  %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
+    = link_to admin_users_path do
+      = icon 'fa', "users", class: "menu-icon"
+      Gestion des utilisateurs
+
+  %li{class: "#{(params[:controller] == 'admin/campaigns') ? 'active' : ''}"}
+    = link_to admin_campaigns_path do
+      = icon 'fa', "comments", class: "menu-icon"
+      Gestion des campagnes
+
+  %li{class: "#{(params[:controller] == 'admin/intranets') ? 'active' : ''}"}
+    = link_to admin_intranets_path do
+      = icon 'fa', "tools", class: "menu-icon"
+      Gestion des intranets

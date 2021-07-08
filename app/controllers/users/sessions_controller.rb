@@ -3,6 +3,8 @@
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
+  layout :set_layout
+
   # GET /resource/sign_in
   # def new
   #   super
@@ -24,4 +26,20 @@ class Users::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+
+  private
+    def set_layout
+
+      dd
+      if request.subdomain
+        case request.subdomain
+        when 'admin'
+          layout 'layouts/devise'
+        else
+          layout 'intranet/layouts/devise'
+        end
+      else
+        layout 'layouts/devise'
+      end
+    end
 end
