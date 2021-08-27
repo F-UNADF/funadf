@@ -16,7 +16,7 @@ gem 'sprockets-rails', :require => 'sprockets/railtie'
 gem 'bootstrap', '~> 4.6'
 gem 'bourbon'
 gem 'devise',           '~> 4.2'
-gem 'devise_invitable', '~> 1.7.0'
+gem 'devise_invitable', '~> 1.5', '>= 1.5.5'
 gem 'haml-rails'
 gem 'high_voltage'
 gem 'mysql2', '~> 0.5.3'
@@ -41,6 +41,7 @@ gem 'wicked_pdf'
 gem 'toastr-rails'
 gem 'rails_email_preview'
 gem 'bigdecimal', '1.3.5'
+gem 'onesignal'
 
 group :development do
   gem "mini_racer"

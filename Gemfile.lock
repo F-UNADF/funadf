@@ -145,6 +145,7 @@ GEM
     nokogiri (1.11.6)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
+    onesignal (0.3.0)
     orm_adapter (0.5.0)
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
@@ -289,7 +290,7 @@ DEPENDENCIES
   cocoon
   coffee-rails (~> 4.0.0)
   devise (~> 4.2)
-  devise_invitable (~> 1.7.0)
+  devise_invitable (~> 1.5, >= 1.5.5)
   font-awesome-sass (~> 5.15.1)
   haml-rails
   high_voltage
@@ -300,6 +301,7 @@ DEPENDENCIES
   mini_racer
   momentjs-rails
   mysql2 (~> 0.5.3)
+  onesignal
   paperclip
   popper_js (>= 1.14.3, < 2)
   quiet_assets

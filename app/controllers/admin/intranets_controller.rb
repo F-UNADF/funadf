@@ -1,5 +1,5 @@
 class Admin::IntranetsController < AdminController
-  before_action :set_campaign, only: [:edit, :update, :destroy]
+  before_action :set_intranet, only: [:edit, :update, :destroy]
 
   def index
     @intranets = Intranet.all
@@ -9,6 +9,7 @@ class Admin::IntranetsController < AdminController
 
   # GET /admin/campaigns/1/edit
   def edit
+    @intranets = Intranet.all
     render :index
   end
 
