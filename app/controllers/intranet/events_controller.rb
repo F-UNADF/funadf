@@ -12,6 +12,13 @@ class Intranet::EventsController < IntranetController
 
   end
 
+  def show
+    @event = Event.find params[:id]
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def new
     @event = @intranet_structure.events.build(start_at: params[:start_at], end_at: params[:end_at])
 

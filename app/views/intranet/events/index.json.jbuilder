@@ -3,5 +3,9 @@ json.array! @events do |event|
   json.title event.title
   json.start event.start_at
   json.end event.end_at
-  json.url edit_intranet_event_path(event)
+  if current_user.is_admin?
+    json.url edit_intranet_event_path(event)
+  else
+    json.url intranet_event_path(event)
+  end
 end
