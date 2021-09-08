@@ -23,5 +23,7 @@ module Funadf
 
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.assets.paths << "#{Rails.root}/app/assets/javascripts/intranet"
+
   end
 end
