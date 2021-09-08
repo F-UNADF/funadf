@@ -11,3 +11,12 @@
     = link_to [:intranet, :events] do
       = icon 'fa', "calendar", class: "menu-icon"
       %span Calendrier
+
+
+  %h3.menu-title Annuaire
+
+
+  %li{class: "#{(params[:controller].match(/users/)) ? 'active' : ''}"}
+    = link_to [:intranet, :users] do
+      = icon 'fa', "users", class: "menu-icon"
+      %span Chercher un pasteur
