@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     # ITNTRANETS SUBDOMAIN
     namespace :intranet, path: '' do
       constraints(:subdomain => /[a-z]+/) do
+        resources :events
         root to: 'home#show', as: :intranet
       end
     end

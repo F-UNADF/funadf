@@ -43,6 +43,8 @@ gem 'rails_email_preview'
 gem 'bigdecimal', '1.3.5'
 gem 'onesignal'
 
+gem 'fullcalendar-rails'
+
 group :development do
   gem "mini_racer"
   gem 'better_errors'

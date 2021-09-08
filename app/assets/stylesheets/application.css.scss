@@ -10,6 +10,7 @@
 @import "tempusdominus-bootstrap-4";
 @import "bootstrap-toggle";
 @import "toastr";
+@import "fullcalendar";
 
 @import "variables";
 @import "animate";
@@ -29,8 +30,6 @@
  *
  *= require_self
  */
-
-
 
 .page-item.active .page-link {
   background-color: #282C33;

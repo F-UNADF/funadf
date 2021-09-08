@@ -1,0 +1,49 @@
+.modal-header
+  - if event.new_record?
+    %h4.modal-title.pull-left Ajouter un événement
+  - else
+    %h4.modal-title.pull-left Modifier un événement
+  %button.close{type: 'button', data:{dismiss: 'modal'}, aria:{label: 'Close'}}
+    = icon "fa", "times"
+
+= form_for [:intranet, event] do |f|
+  .modal-body
+    - if event.errors.any?
+      .callout.callout-danger
+        %h4= "#{pluralize(event.errors.count, "erreur")}"
+        %ul
+          - event.errors.full_messages.each do |msg|
+            %li= msg
+
+
+    .form-group
+      %label Nom
+      = f.text_field :title, class: "form-control"
+      %span.help-block Exemple : "Pastorale Ressource 18/09", "Congrès National"...
+
+    .form-group
+      %label Catégorie
+      = f.select :category, options_for_select(categories_for_events, event.category), {prompt: '-- Catégorie --'}, class: "form-control"
+
+    .form-group
+      %label Date et heure de début
+      = f.datetime_field :start_at, class: "form-control datetimepicker", value: "#{l event.start_at unless event.start_at.blank? }"
+
+    .form-group
+      %label Date et heure de fin
+      = f.datetime_field :end_at, class: "form-control datetimepicker", value: "#{l event.end_at unless event.end_at.blank? }"
+
+    .form-group
+      %label Description
+      = f.text_area :description, class: "form-control", rows: 3
+
+
+  .modal-footer
+    - unless event.new_record?
+      = link_to [:intranet, event], method: :delete, data:{confirm: 'Voulez vous suppimer cet événement ?'}, class: 'btn btn-xs btn-danger pull-left' do
+        = icon 'fa', 'trash'
+        Supprimer l'événement
+    %button.btn-xs.btn.btn-success{type: :submit}
+      Enregistrer
+    %button.btn-xs.btn.btn-danger{data:{dismiss: 'modal'}}
+      Annuler

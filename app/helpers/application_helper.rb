@@ -20,6 +20,9 @@ module ApplicationHelper
     }
   end
 
+  def categories_for_events
+    ["Réseau", "Ressource", "Plénière", "National", "Divers"]
+  end
 
   def get_url intranet
     "#{intranet.subdomain}.#{Rails.application.secrets.app_domain}"

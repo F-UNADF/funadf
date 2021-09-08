@@ -1,3 +1,13 @@
 %ul.nav.navbar-nav
 
   %h3.menu-title Menu Principal
+
+  %li{class: "#{(params[:controller].match(/home/)) ? 'active' : ''}"}
+    = link_to root_url do
+      = icon 'fas', "tachometer-alt", class: "menu-icon"
+      %span Accueil
+
+  %li{class: "#{(params[:controller].match(/events/)) ? 'active' : ''}"}
+    = link_to [:intranet, :events] do
+      = icon 'fa', "calendar", class: "menu-icon"
+      %span Calendrier

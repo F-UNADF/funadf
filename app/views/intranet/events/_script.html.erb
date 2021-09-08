@@ -1,0 +1,14 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+    var sources = [
+      <%- categories_for_events.each do |category| %>
+        {
+          url: '/events.json?category=<%= category %>',
+          color: "<%= Event.get_color(category) %>",
+        },
+      <%- end %>
+    ];
+
+    init_fullCalendar('#calendar', sources, <%= current_user.is_admin? %>);
+  })
+</script>
