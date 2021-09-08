@@ -1,4 +1,3 @@
-//
 //= require jquery
 //= require jquery_ujs
 //= require popper
@@ -11,7 +10,7 @@
 //= require toastr
 //= require fullcalendar
 //= require fullcalendar/locale-all
-//= require_tree .
+
 
 $(document).ready(function(){
 

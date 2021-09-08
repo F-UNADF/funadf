@@ -20,9 +20,6 @@
 //= require cocoon
 //= require bootstrap-toggle
 //= require toastr
-//= require fullcalendar
-//= require fullcalendar/locale-all
-//= require_tree .
 
 $.noConflict();
 
