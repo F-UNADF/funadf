@@ -81,7 +81,6 @@ Rails.application.routes.draw do
     get '/search', to: "search#index", as: :search
 
     root :to => redirect('/mon-compte'), as: :authenticated_user
-
   end
 
   root to: redirect('/users/sign_in')
