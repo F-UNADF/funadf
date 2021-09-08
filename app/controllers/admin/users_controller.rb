@@ -11,6 +11,11 @@ class Admin::UsersController < AdminController
     session[:user_page] = params[:page] if params[:page]
   end
 
+  def show
+    @user = User.find params[:id]
+    @structures = @user.structures
+  end
+
   def edit
     @user = User.find params[:id]
   end
