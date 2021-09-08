@@ -20,3 +20,8 @@
     = link_to [:intranet, :users] do
       = icon 'fa', "users", class: "menu-icon"
       %span Chercher un pasteur
+
+  %li{class: "#{(params[:controller].match(/structures/)) ? 'active' : ''}"}
+    = link_to [:intranet, :structures] do
+      = icon 'fa', "fire", class: "menu-icon"
+      %span Chercher une église

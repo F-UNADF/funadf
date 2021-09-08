@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       constraints(:subdomain => /[a-z]+/) do
         resources :events
         resources :users
+        resources :structures
         root to: 'home#show', as: :intranet
       end
     end

@@ -1,0 +1,57 @@
+.breadcrumbs
+  .page-header
+    %h1 Chercher une église
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong.float-left Liste des églises
+
+        .cars-actions.float-right
+          %ul.list-inline
+            - if can? :add, Structure
+              %li.list-inline-item
+                = link_to new_structure_path, class: 'btn btn-default' do
+                  = icon 'fa', 'plus'
+                  Ajouter
+
+      .card-body
+
+        = search_form_for @q do |f|
+          .row.mb-3
+            .col-md-3
+              .form-group
+                = f.label :name_cont
+                = f.text_field :name_cont, class: "form-control"
+            .col-md-3
+              .form-group
+                = f.label :town_cont
+                = f.text_field :town_cont, class: "form-control"
+            .col-md-3
+              %button.btn.btn-success.mt-4{type: :submit}
+                = icon 'fa', "search"
+                Rechercher
+
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th
+                %th Identifiant
+                %th Nom
+                %th Ville
+                %th
+
+            - @structures.each do |structure|
+              %tr
+                %td= icon 'fa', "#{structure.get_icon}"
+                %td= structure.id
+                %td= structure.name
+                %td= structure.town
+
+        .float-right
+          = will_paginate @structures
+
+
