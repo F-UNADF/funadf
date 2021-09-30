@@ -12,6 +12,13 @@ Rails.application.routes.draw do
         resources :users do
           get '/admins/new', to: "admins#new", as: :new_admin
           post '/admins/delete', to: "admins#destroy", as: :admin
+
+          get '/moderators/new', to: "moderators#new", as: :new_moderator
+          post '/moderators/delete', to: "moderators#destroy", as: :moderator
+
+          get '/stewards/new', to: "stewards#new", as: :new_steward
+          post '/stewards/delete', to: "stewards#destroy", as: :steward
+
           get '/enable', to: "users#enable", as: :enable
           get '/disable', to: "users#disable", as: :disable
         end
@@ -39,14 +46,9 @@ Rails.application.routes.draw do
     # VOTES SPACES
     namespace :votes, path: '' do
       constraints(:subdomain => '') do
-
         resources :campaigns
-
-
         resources :results, only: [:index, :show]
-
         post '/voting', to: 'votings#create', as: :voting
-
         root :to => redirect('/mon-compte'), as: :authenticated_user
       end
     end

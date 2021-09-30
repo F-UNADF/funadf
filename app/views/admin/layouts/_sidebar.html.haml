@@ -1,16 +1,27 @@
 %ul.nav.navbar-nav
   %h3.menu-title Administration
-  %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
-    = link_to admin_users_path do
-      = icon 'fa', "users", class: "menu-icon"
-      Gestion des utilisateurs
 
-  %li{class: "#{(params[:controller] == 'admin/campaigns') ? 'active' : ''}"}
-    = link_to admin_campaigns_path do
-      = icon 'fa', "comments", class: "menu-icon"
-      Gestion des campagnes
+  - if can? :read, :users
+    %li{class: "#{(params[:controller] == 'admin/users') ? 'active' : ''}"}
+      = link_to admin_users_path do
+        = icon 'fa', "users", class: "menu-icon"
+        Gestion des utilisateurs
 
-  %li{class: "#{(params[:controller] == 'admin/intranets') ? 'active' : ''}"}
-    = link_to admin_intranets_path do
-      = icon 'fa', "tools", class: "menu-icon"
-      Gestion des intranets
+  - if can? :read, :campaigns
+    %li{class: "#{(params[:controller] == 'admin/campaigns') ? 'active' : ''}"}
+      = link_to admin_campaigns_path do
+        = icon 'fa', "comments", class: "menu-icon"
+        Gestion des campagnes
+
+  - if can? :read, :intranets
+    %li{class: "#{(params[:controller] == 'admin/intranets') ? 'active' : ''}"}
+      = link_to admin_intranets_path do
+        = icon 'fa', "tools", class: "menu-icon"
+        Gestion des intranets
+
+  %h3.menu-title
+
+  %li
+    = link_to root_url(subdomain: '') do
+      = icon "fa", "person-booth", class: "menu-icon"
+      Application de votes

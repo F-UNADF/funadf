@@ -65,7 +65,7 @@
                 %td= structure.get_resource_role(current_user)
                 %td
                   .btn-group
-                    - if can? :cru, structure
+                    - if can? :update, structure
                       = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
                         = icon 'fa', "eye"
                         Gérer la structure

@@ -32,8 +32,7 @@
 
   %h3.menu-title
 
-  - if current_user.has_role? :admin
-
+  - if current_user.has_role? [:admin, :moderator]
     %li
       = link_to root_url(subdomain: :admin) do
         = icon "fa", "cogs", class: "menu-icon"

@@ -68,14 +68,32 @@
             = f.password_field :password_confirmation, class: "form-control"
 
         .col-md-4
-          %h3.h5.mb-3 Rôle espace admin
+          %h3.h5.mb-3 Rôles sur l'application
 
           - if @user.has_role? :admin
             = link_to admin_user_admin_path(@user), method: :destroy, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
               Destituer administrateur
           - else
-            = link_to admin_user_new_admin_path(@user), class: "btn btn-primary btn-sm" do
+            = link_to admin_user_new_admin_path(@user), class: "btn btn-success btn-sm" do
               Promouvoir administrateur
+
+          %hr
+
+          - if @user.has_role? :moderator
+            = link_to admin_user_moderator_path(@user), method: :destroy, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
+              Destituer modérateur
+          - else
+            = link_to admin_user_new_moderator_path(@user), class: "btn btn-primary btn-sm" do
+              Promouvoir modérateur
+
+          %hr
+
+          - if @user.has_role? :steward
+            = link_to admin_user_steward_path(@user), method: :destroy, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
+              Destituer intendant
+          - else
+            = link_to admin_user_new_steward_path(@user), class: "btn btn-info btn-sm" do
+              Promouvoir intendant
 
       .float-right
         %button.btn.btn-primary{type: :submit}

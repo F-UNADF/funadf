@@ -3,11 +3,15 @@
   %li.nav-item
     = link_to structure_has_memberships_path(structure), class: "nav-link #{'active' if params[:controller] == 'structures/has_memberships'}" do
       Ses membres
-  %li.nav-item
-    = link_to structure_is_memberships_path(structure), class: "nav-link #{'active' if params[:controller] == 'structures/is_memberships'}" do
-      Ses adhésions
-  %li.nav-item
-    = link_to structure_campaigns_path(structure), class: "nav-link #{'active' if params[:controller] == 'structures/campaigns'}" do
-      Ses campagnes
+
+  - if can? :cru, structure
+
+    %li.nav-item
+      = link_to structure_is_memberships_path(structure), class: "nav-link #{'active' if params[:controller] == 'structures/is_memberships'}" do
+        Ses adhésions
+
+    %li.nav-item
+      = link_to structure_campaigns_path(structure), class: "nav-link #{'active' if params[:controller] == 'structures/campaigns'}" do
+        Ses campagnes
 
 

@@ -12,7 +12,7 @@ class Admin::AdminsController < AdminController
   def destroy
     @user = User.find(params[:user_id])
     if @user.remove_role :admin
-      redirect_to edit_admin_user_path(@user), alert: 'Utilisateur promu administrateur'
+      redirect_to edit_admin_user_path(@user), alert: 'Administrateur supprimé'
     else
       render 'users/edit'
     end

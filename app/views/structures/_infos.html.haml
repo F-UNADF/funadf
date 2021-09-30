@@ -23,6 +23,7 @@
           = structure.phone_2
 
   .card-footer
-    = link_to edit_structure_path(structure), class: 'btn btn-sm btn-outline-dark btn-icon' do
-      = icon 'fa', "edit"
-      Modifier ces infos
+    - if can? :cru, @structure
+      = link_to edit_structure_path(structure), class: 'btn btn-sm btn-outline-dark btn-icon' do
+        = icon 'fa', "edit"
+        Modifier ces infos

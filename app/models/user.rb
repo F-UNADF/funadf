@@ -135,6 +135,10 @@ class User < ActiveRecord::Base
     has_role? :admin
   end
 
+  def can_switch?
+    has_role? [:admin, :moderator]
+  end
+
   def has_voted?(campaign)
     structure = Structure.find(campaign.structure_id)
 

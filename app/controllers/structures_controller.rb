@@ -3,7 +3,8 @@ class StructuresController < ApplicationController
 
   def index
     @q = current_user.structures.ransack(params[:q])
-    if current_user.is_admin?
+
+    if current_user.has_role? [:admin, :steward]
       @q = Structure.all.ransack(params[:q], per_page: 50)
     end
 

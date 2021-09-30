@@ -40,8 +40,6 @@
             %a#menuToggle.menutoggle.float-left
               = icon 'fa', 'tasks'
 
-
-
             /= link_to "switch back", "/switch_user/remember_user"
 
             -  original_user = user_signed_in? && SwitchUser::Provider.init(controller).original_user

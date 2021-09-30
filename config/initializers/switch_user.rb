@@ -37,5 +37,5 @@ SwitchUser.setup do |config|
   config.redirect_path = lambda { |request, params| params[:path].presence || request.referrer || '/' }
 
   config.switch_back = true
-  config.controller_guard = ->(current_user, request, original_user) { current_user && current_user.is_admin? || original_user && original_user.is_admin? }
+  config.controller_guard = ->(current_user, request, original_user) { current_user && current_user.can_switch? || original_user && original_user.can_switch? }
 end
