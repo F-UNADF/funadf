@@ -12,6 +12,13 @@ class Admin::CampaignsController < AdminController
   # GET /admin/campaigns/1.json
   def show
     @structure = @campaign.structure
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "#{@campaign.name} - resultats", layout: "votes/layouts/pdf"
+      end
+    end
   end
 
   # GET /admin/campaigns/new
