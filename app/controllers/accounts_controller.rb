@@ -11,7 +11,7 @@ class AccountsController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to  me_url, flash:{success: 'Votre compte a été mis à jour.'}
+      redirect_to me_url, flash:{success: 'Votre compte a été mis à jour.'}
      else
       render :edit
     end

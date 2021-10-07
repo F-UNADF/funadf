@@ -78,6 +78,7 @@ Rails.application.routes.draw do
 
     get '/mon-compte', to: "accounts#show", as: :me
     get '/mon-compte/modifier', to: 'accounts#edit', as: :edit_me
+
     resources :accounts, only: :update
 
 
@@ -86,6 +87,7 @@ Rails.application.routes.draw do
     root :to => redirect('/mon-compte'), as: :authenticated_user
   end
 
+  get '/mon-compte', to: redirect('/users/sign_in')
   root to: redirect('/users/sign_in')
 
 end

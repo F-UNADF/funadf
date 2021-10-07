@@ -11,12 +11,13 @@
           .card-body
             = form_for @user, url: account_path(@user) do |f|
               - if @user.errors.any?
-                .panel.panel-danger
-                  .panel-heading= "#{pluralize(@user.errors.count, "erreur")}"
-                  .panel-body
-                    %ul
-                      - @user.errors.full_messages.each do |msg|
-                        %li= msg
+                .alert.alert-danger
+                  %h3.h5 Une ou plusieurs erreurs doivent être corrigées :
+                  %ul.pl-3
+                    - @user.errors.full_messages.each do |msg|
+                      %li= msg
+
+
               .row
                 .col-md-6
                   .form-group
@@ -63,16 +64,16 @@
 
               %hr
               .form-group
-                = f.label :avatar
-                = f.file_field :avatar
-
-              %hr
-              .form-group
                 = f.label :password
-                = f.password_field :password, class: "form-control"
+                = f.password_field :password, class: "form-control password"
               .form-group
                 = f.label :password_confirmation
-                = f.password_field :password_confirmation, class: "form-control"
+                = f.password_field :password_confirmation, class: "form-control password_confirmation"
+
+
+              .form-check.pl-0
+                = check_box_tag :toggle_password, class: 'form-check-input', id: 'toggle-password'
+                %label.form-check-label{for: :toggle_password} Voir le mot de passe
 
               .float-right
                 %button.btn.btn-primary{type: :submit}

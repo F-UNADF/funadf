@@ -20,6 +20,7 @@
 //= require cocoon
 //= require bootstrap-toggle
 //= require toastr
+//= require users
 
 $.noConflict();
 

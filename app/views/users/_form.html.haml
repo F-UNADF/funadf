@@ -6,7 +6,7 @@
     .card-body
       - if @user.errors.any?
         .alert.alert-danger
-          %h3.h4= "#{pluralize(@user.errors.count, "erreur")}"
+          %h3.h5 Une ou plusieurs erreurs doivent être corrigé :
           %ul
             - @user.errors.full_messages.each do |msg|
               %li= msg
@@ -62,10 +62,15 @@
           %hr
           .form-group
             = f.label :password
-            = f.password_field :password, class: "form-control"
+            = f.password_field :password, class: "form-control password"
           .form-group
             = f.label :password_confirmation
-            = f.password_field :password_confirmation, class: "form-control"
+            = f.password_field :password_confirmation, class: "form-control password_confirmation"
+
+          .form-check.pl-0
+            = check_box_tag :toggle_password, class: 'form-check-input', id: 'toggle-password'
+            %label.form-check-label{for: :toggle_password} Voir le mot de passe
+
 
         .col-md-4
           %h3.h5.mb-3 Rôles sur l'application
