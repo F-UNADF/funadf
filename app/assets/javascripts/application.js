@@ -22,8 +22,6 @@
 //= require toastr
 //= require users
 
-$.noConflict();
-
 jQuery(document).ready(function($) {
 
   "use strict";
