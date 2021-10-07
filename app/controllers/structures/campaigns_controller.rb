@@ -11,7 +11,7 @@ class Structures::CampaignsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        render pdf: "#{@campaign.name} - resultats", layout: "pdf"
+        render pdf: "#{@campaign.name} - resultats", layout: "votes/layouts/pdf"
       end
     end
   end
