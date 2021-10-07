@@ -6,7 +6,7 @@ class Intranet::EventsController < IntranetController
     respond_to do |format|
       format.html
       format.json {
-        @events = @intranet_structure.events.where(category: params[:category]).where('start_at BETWEEN ? AND ?', params[:start], params[:end])
+        @events = @intranet_structure.events.where(category_id: params[:category_id]).where('start_at BETWEEN ? AND ?', params[:start], params[:end])
       }
     end
 
@@ -63,7 +63,7 @@ class Intranet::EventsController < IntranetController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.required(:event).permit(:title, :description, :category, :start_at, :end_at)
+      params.required(:event).permit(:title, :description, :category_id, :start_at, :end_at)
     end
 
 

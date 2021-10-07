@@ -22,8 +22,9 @@
               %tr
                 %td= intranet.structure_name
                 %td
-                  = link_to get_url(intranet), target: '_blank' do
-                    = get_url intranet
+                  = link_to root_url(subdomain: intranet.subdomain), target: '_blank' do
+                    Accéder à l'intranet
+
                 %td
                   .btn-group
                     = link_to [:edit, :admin, intranet], class: "btn btn-link btn-sm text-primary" do

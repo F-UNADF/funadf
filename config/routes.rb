@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         resources :events
         resources :users
         resources :structures
+        resources :categories
         root to: 'home#show', as: :intranet
       end
     end

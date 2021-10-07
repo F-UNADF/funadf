@@ -1,10 +1,11 @@
 <script type="text/javascript">
   $(document).ready(function(){
     var sources = [
-      <%- categories_for_events.each do |category| %>
+      <%- @intranet_structure.categories.each do |category| %>
         {
-          url: '/events.json?category=<%= category %>',
-          color: "<%= Event.get_color(category) %>",
+          url: '/events.json?category_id=<%= category.id %>',
+          color: "<%= category.color %>",
+          textColor: "<%= category.font_color %>"
         },
       <%- end %>
     ];

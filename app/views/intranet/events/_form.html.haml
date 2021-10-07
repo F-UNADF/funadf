@@ -23,7 +23,7 @@
 
     .form-group
       %label Catégorie
-      = f.select :category, options_for_select(categories_for_events, event.category), {prompt: '-- Catégorie --'}, class: "form-control"
+      = f.select :category_id, options_from_collection_for_select(@intranet_structure.categories, :id, :name, event.category_id), {prompt: '-- Catégorie --'}, class: "form-control"
 
     .form-group
       %label Date et heure de début

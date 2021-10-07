@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # skip_before_filter :verify_authenticity_token
   protect_from_forgery prepend: true, with: :exception
 
-  before_filter :get_original_user, :set_intranet_structure
+  before_filter :get_original_user
 
   layout :set_layout
 
@@ -28,16 +28,6 @@ class ApplicationController < ActionController::Base
 
       return "#{folder}layouts/#{mod}"
 
-    end
-
-    def set_intranet_structure
-      if request.subdomain && request.subdomain != '' && request.subdomain != 'admin'
-        @intranet = Intranet.find_by subdomain: request.subdomain
-        unless @intranet
-          redirect_to root_url
-        end
-        @intranet_structure = @intranet.structure
-      end
     end
 
 end

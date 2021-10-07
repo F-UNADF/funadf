@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  categorizable_type: MyString
+  categorizable_id: 1
+
+two:
+  name: MyString
+  categorizable_type: MyString
+  categorizable_id: 1

@@ -1,0 +1,62 @@
+.breadcrumbs
+  .page-header
+    %h1 Catégories
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Liste des catégories
+        .card-actions
+          - if can? :add, Category
+            = link_to new_intranet_category_path, class: "btn-setting" do
+              = icon 'fa', 'plus'
+              Ajouter
+
+      .card-body
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th Nom
+                %th Couleur
+                %th
+
+            - @categories.each do |category|
+              %tr
+                %td= category.name
+                %td
+                  %span.p-1.rounded{style: "background-color: ##{category.color}; color: #{category.font_color}"}
+                    = category.color
+
+                %td
+                  %ul.list-inline.mb-0
+                    - if can? :update, category
+                      %li.list-inline-item
+                        = link_to [:edit, :intranet, category], class: "text-success" do
+                          = icon 'fa', "edit"
+                          Modifier
+
+                    - if can? :delete, category
+                      %li.list-inline-item
+                        = link_to [:intranet, category], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
+                          = icon 'fa', "trash"
+                          Supprimer
+
+            = form_for [:intranet, @category] do |f|
+              %tr
+                %tr
+                  %td
+                    = f.text_field :name, class: "form-control", required: true
+                    = f.hidden_field :structure_id
+                    = f.hidden_field :kind, value: :event
+
+                  %td
+                    = f.color_field :color, class: "form-control", required: true
+
+                  %td
+                    %button.btn.btn-success.btn-sm{type: :submit}
+                      = icon "fa", "save"
+                      Enregistrer
+

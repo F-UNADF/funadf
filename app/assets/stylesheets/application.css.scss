@@ -16,6 +16,7 @@
 @import "animate";
 @import "gauge";
 @import "switches";
+
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -291,9 +292,10 @@ aside.left-panel {
         a {
           line-height: 30px;
           &:before {
-            content: "\f105";
+            content: '\f105';
             color: #c8c9ce;
-            font-family: 'Fontawesome';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
             font-size: 16px;
             position: absolute;
             top: 10px;

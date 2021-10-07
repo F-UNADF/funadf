@@ -7,11 +7,21 @@
       = icon 'fas', "tachometer-alt", class: "menu-icon"
       %span Accueil
 
-  %li{class: "#{(params[:controller].match(/events/)) ? 'active' : ''}"}
-    = link_to [:intranet, :events] do
-      = icon 'fa', "calendar", class: "menu-icon"
-      %span Calendrier
+  %li.menu-item-has-children.dropdown{class: "#{(params[:controller].match(/events|categories/)) ? 'show active' : ''}"}
+    = link_to [:intranet, :events], class: 'dropdown-toggle', 'data-toggle' => 'dropdown', 'aria-haspopup' => true, 'aria-expanded' => false do
+      = icon "fa", 'calendar', class: "menu-icon"
+      %span Agenda
 
+    %ul.sub-menu.children.dropdown-menu{class: "#{(params[:controller].match(/events|categories/)) ? 'show' : ''}"}
+      %li
+        = link_to [:intranet, :events], class: "#{(params[:controller].match(/events/)) ? 'active' : ''}" do
+          = icon 'fa', "calendar"
+          Calendrier
+
+      %li
+        = link_to [:intranet, :categories], class: "#{(params[:controller].match(/categories/)) ? 'active' : ''}" do
+          = icon 'fa', "tags"
+          Catégories
 
   %h3.menu-title Annuaire
 
@@ -25,3 +35,4 @@
     = link_to [:intranet, :structures] do
       = icon 'fa', "fire", class: "menu-icon"
       %span Chercher une église
+
