@@ -101,8 +101,18 @@ ActiveRecord::Schema.define(version: 20210930100455) do
 
   add_index "roles", ["resource_id", "resource_type"], name: "index_roles_on_resource_id_and_resource_type", using: :btree
 
-# Could not dump table "rolizations" because of following FrozenError
-#   can't modify frozen String: "true"
+  create_table "rolizations", force: :cascade do |t|
+    t.integer  "role_id",       limit: 4
+    t.integer  "resource_id",   limit: 4
+    t.string   "resource_type", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "can_vote",                  default: true
+    t.string   "reason",        limit: 255
+  end
+
+  add_index "rolizations", ["resource_id", "resource_type"], name: "index_rolizations_on_resource_id_and_resource_type", using: :btree
+  add_index "rolizations", ["role_id"], name: "index_rolizations_on_role_id", using: :btree
 
   create_table "structures", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -125,8 +135,52 @@ ActiveRecord::Schema.define(version: 20210930100455) do
     t.datetime "updated_at"
   end
 
-# Could not dump table "users" because of following FrozenError
-#   can't modify frozen String: "false"
+  create_table "users", force: :cascade do |t|
+    t.string   "firstname",              limit: 255
+    t.string   "lastname",               limit: 255
+    t.string   "address_1",              limit: 255
+    t.string   "address_2",              limit: 255
+    t.string   "zipcode",                limit: 255
+    t.string   "town",                   limit: 255
+    t.string   "phone_1",                limit: 255
+    t.string   "phone_2",                limit: 255
+    t.string   "email",                  limit: 255, default: "",    null: false
+    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "reset_password_token",   limit: 255
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.string   "avatar_file_name",       limit: 255
+    t.string   "avatar_content_type",    limit: 255
+    t.integer  "avatar_file_size",       limit: 4
+    t.datetime "avatar_updated_at"
+    t.string   "invitation_token",       limit: 255
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer  "invitation_limit",       limit: 4
+    t.integer  "invited_by_id",          limit: 4
+    t.string   "invited_by_type",        limit: 255
+    t.integer  "invitations_count",      limit: 4,   default: 0
+    t.string   "level",                  limit: 255
+    t.date     "birthdate"
+    t.boolean  "disabled",                           default: false
+    t.string   "access_token",           limit: 255
+  end
+
+  add_index "users", ["access_token"], name: "index_users_on_access_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
+  add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
+  add_index "users", ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type", using: :btree
+  add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "voters", id: false, force: :cascade do |t|
     t.integer  "motion_id",     limit: 4
