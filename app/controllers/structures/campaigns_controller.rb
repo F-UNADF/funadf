@@ -1,5 +1,5 @@
 class Structures::CampaignsController < ApplicationController
-  before_filter :set_structure
+  before_action :set_structure
 
   def index
     @campaigns = @structure.campaigns.order(start_at: :desc).paginate(:page => params[:page])

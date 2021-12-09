@@ -1,219 +1,256 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210930100455) do
+ActiveRecord::Schema.define(version: 2021_12_09_165659) do
 
-  create_table "campaigns", force: :cascade do |t|
-    t.integer  "structure_id", limit: 4
-    t.string   "name",         limit: 255
-    t.text     "description",  limit: 65535
-    t.string   "code",         limit: 255
+  create_table "active_storage_attachments", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "attachments", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_attachments_on_post_id"
+  end
+
+  create_table "campaigns", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.integer "structure_id"
+    t.string "name"
+    t.text "description"
+    t.string "code"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.boolean  "opened"
+    t.boolean "opened"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_public"
-    t.integer  "meeting_id",   limit: 4
-    t.boolean  "manual"
-    t.string   "state",        limit: 255,   default: "coming"
+    t.boolean "is_public"
+    t.integer "meeting_id"
+    t.boolean "manual"
+    t.string "state", default: "coming"
+    t.index ["structure_id"], name: "index_campaigns_on_structure_id"
   end
 
-  add_index "campaigns", ["structure_id"], name: "index_campaigns_on_structure_id", using: :btree
-
-  create_table "categories", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.string   "color",        limit: 255
-    t.string   "kind",         limit: 255
-    t.integer  "structure_id", limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+  create_table "categories", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "color"
+    t.string "kind"
+    t.integer "structure_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "events", force: :cascade do |t|
-    t.string   "title",        limit: 255
-    t.string   "description",  limit: 255
+  create_table "events", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.string   "category",     limit: 255
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.integer  "structure_id", limit: 4
-    t.integer  "category_id",  limit: 4
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "structure_id"
+    t.integer "category_id"
+    t.index ["category_id"], name: "index_events_on_category_id"
+    t.index ["structure_id"], name: "index_events_on_structure_id"
   end
 
-  add_index "events", ["category_id"], name: "index_events_on_category_id", using: :btree
-  add_index "events", ["structure_id"], name: "index_events_on_structure_id", using: :btree
-
-  create_table "intranets", force: :cascade do |t|
-    t.string   "subdomain",    limit: 255
-    t.integer  "structure_id", limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+  create_table "intranets", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "subdomain"
+    t.integer "structure_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["structure_id"], name: "index_intranets_on_structure_id"
   end
 
-  add_index "intranets", ["structure_id"], name: "index_intranets_on_structure_id", using: :btree
-
-  create_table "meetings", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.date     "begin_at"
-    t.date     "end_at"
-    t.text     "description", limit: 65535
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+  create_table "meetings", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.string "name"
+    t.date "begin_at"
+    t.date "end_at"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "motions", force: :cascade do |t|
-    t.integer  "campaign_id", limit: 4
-    t.integer  "order",       limit: 4
-    t.string   "name",        limit: 255
-    t.string   "kind",        limit: 255
+  create_table "motions", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.integer "campaign_id"
+    t.integer "order"
+    t.string "name"
+    t.string "kind"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["campaign_id"], name: "index_motions_on_campaign_id"
+  end
+
+  create_table "notifications", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "posts", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.integer "structure_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["structure_id"], name: "index_posts_on_structure_id"
+  end
+
+  create_table "roles", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.string "name"
+    t.integer "resource_id"
+    t.string "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["resource_id", "resource_type"], name: "index_roles_on_resource_id_and_resource_type"
+  end
+
+  create_table "rolizations", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.integer "role_id"
+    t.integer "resource_id"
+    t.string "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean "can_vote", default: true
+    t.string "reason"
+    t.index ["resource_id", "resource_type"], name: "index_rolizations_on_resource_id_and_resource_type"
+    t.index ["role_id"], name: "index_rolizations_on_role_id"
+  end
+
+  create_table "structures", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.string "name"
+    t.string "address_1"
+    t.string "address_2"
+    t.string "zipcode"
+    t.string "town"
+    t.string "phone_1"
+    t.string "phone_2"
+    t.string "type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "email"
+  end
+
+  create_table "uploads", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.string "file"
+    t.boolean "has_heading"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "motions", ["campaign_id"], name: "index_motions_on_campaign_id", using: :btree
-
-  create_table "notifications", force: :cascade do |t|
-    t.string   "title",      limit: 255
-    t.string   "content",    limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  create_table "roles", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.integer  "resource_id",   limit: 4
-    t.string   "resource_type", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "roles", ["resource_id", "resource_type"], name: "index_roles_on_resource_id_and_resource_type", using: :btree
-
-  create_table "rolizations", force: :cascade do |t|
-    t.integer  "role_id",       limit: 4
-    t.integer  "resource_id",   limit: 4
-    t.string   "resource_type", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "can_vote",                  default: true
-    t.string   "reason",        limit: 255
-  end
-
-  add_index "rolizations", ["resource_id", "resource_type"], name: "index_rolizations_on_resource_id_and_resource_type", using: :btree
-  add_index "rolizations", ["role_id"], name: "index_rolizations_on_role_id", using: :btree
-
-  create_table "structures", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "address_1",  limit: 255
-    t.string   "address_2",  limit: 255
-    t.string   "zipcode",    limit: 255
-    t.string   "town",       limit: 255
-    t.string   "phone_1",    limit: 255
-    t.string   "phone_2",    limit: 255
-    t.string   "type",       limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "email",      limit: 255
-  end
-
-  create_table "uploads", force: :cascade do |t|
-    t.string   "file",        limit: 255
-    t.boolean  "has_heading"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string   "firstname",              limit: 255
-    t.string   "lastname",               limit: 255
-    t.string   "address_1",              limit: 255
-    t.string   "address_2",              limit: 255
-    t.string   "zipcode",                limit: 255
-    t.string   "town",                   limit: 255
-    t.string   "phone_1",                limit: 255
-    t.string   "phone_2",                limit: 255
-    t.string   "email",                  limit: 255, default: "",    null: false
-    t.string   "encrypted_password",     limit: 255, default: "",    null: false
-    t.string   "reset_password_token",   limit: 255
+  create_table "users", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.string "firstname"
+    t.string "lastname"
+    t.string "address_1"
+    t.string "address_2"
+    t.string "zipcode"
+    t.string "town"
+    t.string "phone_1"
+    t.string "phone_2"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          limit: 4,   default: 0,     null: false
+    t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
-    t.string   "avatar_file_name",       limit: 255
-    t.string   "avatar_content_type",    limit: 255
-    t.integer  "avatar_file_size",       limit: 4
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "invitation_token",       limit: 255
+    t.string "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
-    t.integer  "invitation_limit",       limit: 4
-    t.integer  "invited_by_id",          limit: 4
-    t.string   "invited_by_type",        limit: 255
-    t.integer  "invitations_count",      limit: 4,   default: 0
-    t.string   "level",                  limit: 255
-    t.date     "birthdate"
-    t.boolean  "disabled",                           default: false
-    t.string   "access_token",           limit: 255
+    t.integer "invitation_limit"
+    t.integer "invited_by_id"
+    t.string "invited_by_type"
+    t.integer "invitations_count", default: 0
+    t.string "level"
+    t.date "birthdate"
+    t.boolean "disabled", default: false
+    t.string "access_token"
+    t.index ["access_token"], name: "index_users_on_access_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invitations_count"], name: "index_users_on_invitations_count"
+    t.index ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type"
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_index "users", ["access_token"], name: "index_users_on_access_token", unique: true, using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
-  add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
-  add_index "users", ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type", using: :btree
-  add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-
-  create_table "voters", id: false, force: :cascade do |t|
-    t.integer  "motion_id",     limit: 4
+  create_table "voters", id: false, charset: "utf8", force: :cascade do |t|
+    t.integer "motion_id"
     t.datetime "voted_at"
-    t.string   "ip",            limit: 255
-    t.integer  "resource_id",   limit: 4
-    t.string   "resource_type", limit: 255
+    t.string "ip"
+    t.integer "resource_id"
+    t.string "resource_type"
+    t.index ["motion_id"], name: "index_voters_on_motion_id"
+    t.index ["resource_id", "resource_type"], name: "index_voters_on_resource_id_and_resource_type"
   end
 
-  add_index "voters", ["motion_id"], name: "index_voters_on_motion_id", using: :btree
-  add_index "voters", ["resource_id", "resource_type"], name: "index_voters_on_resource_id_and_resource_type", using: :btree
-
-  create_table "votes", id: false, force: :cascade do |t|
-    t.integer "motion_id",       limit: 4
-    t.string  "result",          limit: 255
+  create_table "votes", id: false, charset: "utf8", force: :cascade do |t|
+    t.integer "motion_id"
+    t.string "result"
     t.boolean "is_consultative"
+    t.index ["motion_id"], name: "index_votes_on_motion_id"
   end
 
-  add_index "votes", ["motion_id"], name: "index_votes_on_motion_id", using: :btree
-
-  create_table "voting_tables", force: :cascade do |t|
-    t.integer  "campaign_id", limit: 4
-    t.string   "position",    limit: 255
-    t.string   "voting",      limit: 255
-    t.boolean  "as_member"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+  create_table "voting_tables", id: :integer, charset: "utf8", force: :cascade do |t|
+    t.integer "campaign_id"
+    t.string "position"
+    t.string "voting"
+    t.boolean "as_member"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id"], name: "index_voting_tables_on_campaign_id"
   end
 
-  add_index "voting_tables", ["campaign_id"], name: "index_voting_tables_on_campaign_id", using: :btree
-
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "attachments", "posts"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"
   add_foreign_key "intranets", "structures"
+  add_foreign_key "posts", "structures"
   add_foreign_key "voting_tables", "campaigns"
 end

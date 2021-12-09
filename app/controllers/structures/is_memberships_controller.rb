@@ -1,5 +1,5 @@
 class Structures::IsMembershipsController < ApplicationController
-  before_filter :set_structure
+  before_action :set_structure
 
   def index
     @is_members = @structure.memberships.paginate(:page => params[:page])

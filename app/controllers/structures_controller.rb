@@ -1,5 +1,6 @@
 class StructuresController < ApplicationController
-  before_filter :set_structure, except: [:index, :new, :create]
+
+  before_action :set_structure, except: [:index, :new, :create]
 
   def index
     @q = current_user.structures.ransack(params[:q])

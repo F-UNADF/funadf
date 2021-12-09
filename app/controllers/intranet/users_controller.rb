@@ -1,6 +1,6 @@
 class Intranet::UsersController < IntranetController
 
-  before_filter :check_current_user
+  before_action :check_current_user
 
   def index
 

@@ -1,5 +1,5 @@
 class Structures::HasMembershipsController < ApplicationController
-  before_filter :set_structure
+  before_action :set_structure
 
   def index
     @members = @structure.members.paginate(:page => params[:page], per_page: 200)

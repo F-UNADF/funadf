@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
 
-  before_filter :set_user
+  before_action :set_user
 
   def show
     @structures = current_user.structures
