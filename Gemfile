@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 ruby '2.7.1'
-gem 'rails', '6.1'
+gem 'rails', '6.1.1'
 
 gem 'sass-rails'
 gem 'uglifier'
