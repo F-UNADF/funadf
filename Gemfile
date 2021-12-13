@@ -21,7 +21,6 @@ gem 'haml-rails'
 gem 'high_voltage'
 gem 'mysql2'
 gem 'font-awesome-sass'
-gem "paperclip"
 gem 'popper_js'
 gem "rolify"
 gem "cancan"
@@ -40,8 +39,8 @@ gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'toastr-rails'
 gem 'onesignal'
-
 gem 'fullcalendar-rails'
+gem 'tinymce-rails'
 
 group :development do
   gem "mini_racer"

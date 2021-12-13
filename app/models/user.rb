@@ -4,9 +4,6 @@ class User < ActiveRecord::Base
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :invitable, :validate_on_invite => true
 
-  has_attached_file :avatar, default_url: "default_avatar.png"
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
-
   has_many :rolizations, as: :resource, dependent: :destroy
   has_many :roles, through: :rolizations
   has_many :associations, through: :roles, source: :resource, source_type: 'Association'

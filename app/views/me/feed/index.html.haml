@@ -1,0 +1,27 @@
+- @posts.each do |post|
+  .bg-white.p-3.feed-item.rounded-4.mb-3.shadow-sm
+    .d-flex
+      .d-flex.ms-3.align-items-start.w-100
+        .w-100
+          .d-flex.align-items-center.justify-content-between.pb-3.mb-3.border-bottom
+            %a.text-decoration-none.d-flex.align-items-center{:href => "#"}
+              %h4.font-weight-bold.mb-0.text-body= post.structure_name
+
+
+            .d-flex.align-items-center.small
+              %p.text-muted.mb-0= l post.created_at
+
+          .my-2.mb-3.border-bottom
+            %h5.mb-3= post.title
+
+            = post.content.html_safe
+
+          - unless post.files.blank?
+            .my-2
+              %h5 Pièces jointes
+              %ul.list-inline
+                - post.files.each do |file|
+                  %li.list-item
+                    = link_to rails_blob_path(file, disposition: "attachment"), class: "btn btn-link btn-sm" do
+                      = icon "fa", "download"
+                      = file.filename

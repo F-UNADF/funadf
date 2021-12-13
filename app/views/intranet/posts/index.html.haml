@@ -1,0 +1,43 @@
+.breadcrumbs
+  .page-header
+    %h1 Actualités
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Liste des actualités
+        .card-actions
+          - if can? :add, Post
+            = link_to new_intranet_post_path, class: "btn-setting" do
+              = icon 'fa', 'plus'
+              Ajouter
+
+      .card-body
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th Titre
+                %th Date
+                %th
+
+            - @posts.each do |post|
+              %tr
+                %td= post.title
+                %td= l post.created_at
+
+                %td
+                  %ul.list-inline.mb-0
+                    - if can? :update, post
+                      %li.list-inline-item
+                        = link_to [:edit, :intranet, post], class: "text-success" do
+                          = icon 'fa', "edit"
+                          Modifier
+
+                    - if can? :delete, post
+                      %li.list-inline-item
+                        = link_to [:intranet, post], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do
+                          = icon 'fa', "trash"
+                          Supprimer

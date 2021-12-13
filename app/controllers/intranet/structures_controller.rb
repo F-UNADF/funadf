@@ -17,17 +17,6 @@ class Intranet::StructuresController < IntranetController
     @user = User.find params[:id]
   end
 
-  def update
-    @user = User.find params[:id]
-    @user.reset_password_token = Time.now
-
-    if @user.update(user_params)
-      redirect_to [:intranet, :users], flash:{success: 'L\'utilisateur a été mis à jour.'}
-     else
-      render :edit
-    end
-  end
-
 
   private
     def check_current_user

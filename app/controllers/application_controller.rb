@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
         case request.subdomain
         when 'admin'
           folder = 'admin/'
+        when 'me'
+          folder = 'me/'
         else
           folder = 'intranet/'
         end

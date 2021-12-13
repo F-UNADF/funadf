@@ -1,0 +1,13 @@
+.breadcrumbs
+  .page-header
+    %h1 Gestion des actualités
+
+
+.content.mt-3
+  .container-fluid
+    .card
+      .card-header
+        %strong Ajouter une actualité
+
+      .card-body
+        = render 'form', post: @post

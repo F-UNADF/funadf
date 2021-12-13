@@ -1,0 +1,26 @@
+= form_for [:intranet, post] do |f|
+
+  = f.hidden_field :structure_id
+
+  .form-group
+    = f.text_field :title, class: 'form-control', placeholder: 'Titre'
+
+  .form-group
+    = f.text_area :content, class: 'form-control tinymce', rows: 10
+
+  .form-group
+    %p.font-weight-bold Joindre des fichiers
+    = f.file_field :files, multiple: true, direct_upload: true
+
+  - unless post.files.blank?
+    %ul.list-unstyled
+      - post.files.each do |file|
+        %li.list-item
+          = link_to rails_blob_path(file, disposition: "attachment"), class: "btn btn-link btn-sm" do
+            = icon "fa", "download"
+            = file.filename
+
+
+  %button.btn.btn-success{type: :submit}
+    = icon "fa", "save"
+    Enregistrer

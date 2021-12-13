@@ -1,0 +1,69 @@
+!!!
+%html
+  %head
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1.0"}
+    %title
+      INTRANET - Mon espace
+
+    %meta{:name => "description", :content => "Espace personnel de l'intranet des ADD"}
+
+    = stylesheet_link_tag 'me/application', media: 'all'
+
+    = favicon_link_tag "/favicon.ico"
+    = csrf_meta_tags
+
+
+    = javascript_include_tag 'me'
+    / = render "intranet/layouts/onsignal_script"
+
+  %body.bg-light
+    .py-4
+      .container
+        .row.position-relative
+          %main.col.col-xl-6.order-xl-2.col-lg-12.order-lg-1.col-md-12.col-sm-12.col-12
+            .main-content= yield
+
+          %aside.col.col-xl-3.order-xl-1.col-lg-6.order-lg-2.col-md-6.col-sm-6.col-12
+            .ps-0.m-none.fix-sidebar
+              .sidebar-nav.mb-3
+                .pb-4.mb-4
+                  = link_to '#', class: 'text-decoration-none' do
+                    = image_tag 'logo.png', class: 'img-fluid'
+
+                %ul.navbar-nav.justify-content-end.flex-grow-1
+                  %li.nav-item
+                    = link_to '#', class: 'nav-link active' do
+                      %span.mr-3
+                        = icon 'fa', 'home'
+                      %span Accueil
+                  %li.nav-item
+                    = link_to root_url(subdomain: nil), class: 'nav-link' do
+                      %span.mr-3
+                        = icon 'fa', 'arrow-left'
+                      %span Espace vote
+
+
+
+    .py-3.bg-white.footer-copyright
+      .container
+        .row.align-items-center
+          .col-md-8
+            %span.me-3.small
+              &copy;
+              = Date.today.year
+              %b.text-primary Mon espace personnel
+              Tous droits réservés
+
+          .col-md-4.text-right
+            = link_to '#', class: 'btn social-btn btn-sm text-decoration-none' do
+              = icon "fab", "facebook"
+            = link_to '#', class: 'btn social-btn btn-sm text-decoration-none' do
+              = icon "fab", "twitter"
+            = link_to '#', class: 'btn social-btn btn-sm text-decoration-none' do
+              = icon "fab", "instagram"
+            = link_to '#', class: 'btn social-btn btn-sm text-decoration-none' do
+              = icon "fab", "youtube"
+
+
+
+    = custom_bootstrap_flash

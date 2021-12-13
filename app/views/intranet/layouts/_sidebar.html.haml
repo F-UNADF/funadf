@@ -23,6 +23,11 @@
           = icon 'fa', "tags"
           Catégories
 
+  %li{class: "#{(params[:controller].match(/posts/)) ? 'active' : ''}"}
+    = link_to [:intranet, :posts] do
+      = icon "fa", 'comments', class: "menu-icon"
+      %span Actualités
+
   %h3.menu-title Annuaire
 
 

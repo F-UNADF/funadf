@@ -8,6 +8,8 @@
 //= require cocoon
 //= require bootstrap-toggle
 //= require toastr
+//= require tinymce-jquery
+//= require activestorage
 //= require fullcalendar
 //= require fullcalendar/locale-all
 
@@ -90,6 +92,20 @@ $(document).ready(function(){
 
   $('#menuToggle').on('click', function(event) {
     $('body').toggleClass('open');
+  });
+
+  tinyMCE.init({
+    selector: 'textarea.tinymce',
+    menubar: false,
+    plugins: [
+      'advlist autolink lists link image charmap print preview anchor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table paste code help wordcount'
+    ],
+    toolbar: 'undo redo | formatselect | ' +
+    'bold italic underline | alignleft aligncenter ' +
+    'alignright alignjustify | bullist numlist outdent indent | ' +
+    'removeformat | help',
   });
 
 

@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
 
@@ -33,6 +32,14 @@ Rails.application.routes.draw do
       end
     end
 
+
+    namespace :me, path: '' do
+      constraints(:subdomain => 'me') do
+
+        root to: 'feed#index', as: :me
+      end
+    end
+
     # ITNTRANETS SUBDOMAIN
     namespace :intranet, path: '' do
       constraints(:subdomain => /[a-z]+/) do
@@ -40,6 +47,7 @@ Rails.application.routes.draw do
         resources :users
         resources :structures
         resources :categories
+        resources :posts
         root to: 'home#show', as: :intranet
       end
     end

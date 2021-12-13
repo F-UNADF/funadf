@@ -1,0 +1,2 @@
+module Intranet::PostsHelper
+end

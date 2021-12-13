@@ -55,4 +55,7 @@ Rails.application.configure do
   config.hosts << "me.myloc.me"
   config.hosts << "uadpif.myloc.me"
   config.hosts << "myloc.me"
+
+
+  config.active_storage.service = :local
 end
