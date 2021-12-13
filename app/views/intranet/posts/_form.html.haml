@@ -10,7 +10,7 @@
 
   .form-group
     %p.font-weight-bold Joindre des fichiers
-    = f.file_field :files, multiple: true, direct_upload: true
+    = f.file_field :files, multiple: true
 
   - unless post.files.blank?
     %ul.list-unstyled
