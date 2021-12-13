@@ -35,7 +35,12 @@ class Intranet::PostsController < IntranetController
     end
   end
 
-  def delete
+  def destroy
+    @post = Post.find params[:id]
+
+    @post.destroy
+
+    redirect_to :back, flash:{success: 'Actualité supprimée'}
   end
 
   private
