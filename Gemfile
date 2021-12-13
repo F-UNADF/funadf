@@ -60,5 +60,6 @@ end
 
 group :production do
   gem 'unicorn'
+  gem "aws-sdk-s3"
 end
 
