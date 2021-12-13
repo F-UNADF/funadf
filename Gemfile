@@ -42,6 +42,8 @@ gem 'onesignal'
 gem 'fullcalendar-rails'
 gem 'tinymce-rails'
 
+gem "aws-sdk-s3", require: false
+
 group :development do
   gem "mini_racer"
   gem 'better_errors'
@@ -60,6 +62,5 @@ end
 
 group :production do
   gem 'unicorn'
-  gem "aws-sdk-s3"
 end
 
