@@ -12,6 +12,8 @@
 //= require activestorage
 //= require fullcalendar
 //= require fullcalendar/locale-all
+//= require handlebars
+//= require twitter/typeahead
 
 
 $(document).ready(function(){
@@ -106,6 +108,53 @@ $(document).ready(function(){
     'bold italic underline | alignleft aligncenter ' +
     'alignright alignjustify | bullist numlist outdent indent | ' +
     'removeformat | help',
+  });
+
+  $('.remove_fields').on('click', function(e){
+    $(this).parents('.gratitude').fadeOut(500, function(){
+      $(this).removeClass('d-flex').addClass('d-none');
+    });
+  });
+
+  var pastors = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: '/users.json',
+    remote: {
+      url: '/users.json?query=%QUERY',
+      wildcard: '%QUERY',
+      filter: function (users) {
+        return $.map(users, function (user) {
+          console.log(user)
+          return {
+            id: user.id,
+            value: user.firstname + ' ' + user.lastname
+          };
+        });
+      }
+    }
+  });
+
+  $('.referent').each(function(){
+    $(this).typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+      },{
+        name: 'pastors',
+        source: pastors,
+        display: 'value',
+        limit: 50,
+        templates: {
+          suggestion: Handlebars.compile('<div class="pastor"><i class="fa fa-user mr-1"></i> {{value}}</div>')
+        }
+    }).bind('typeahead:select', function(ev, suggestion) {
+      console.log(ev);
+      console.log(suggestion);
+      console.log($(this));
+
+      $(this).parents('.form-group').find('input.referent_id').val(suggestion.id);
+    });
   });
 
 

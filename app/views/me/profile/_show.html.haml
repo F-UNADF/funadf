@@ -1,0 +1,59 @@
+.bg-white.rounded-4.shadow-sm.profile
+  .d-flex.align-items-center.px-3.pt-3
+    - if user.avatar.attached?
+      = image_tag user.avatar.representation(resize_to_limit: [500, 500]), class: "rounded-circle img-fluid"
+    - else
+      = image_tag user.gravatar_url, class: "rounded-circle img-fluid"
+
+    .mx-3
+      %h6.mb-0.d-flex.align-items-start.text-body.fs-6.fw-bold
+        = user.fullname
+      %p.text-muted.mb-0= user.level
+  .p-3
+    .biography.mb-3.text-italic.text-muted
+      = simple_format user.biography
+
+
+    %p.d-flex.flex-row.justify-content-start.align-items-center.mb-3
+      %span.mr-3
+        = icon 'fa', 'envelope', class: 'text-muted mr-1'
+        = link_to "mailto:#{user.email}", class: 'text-decoration-none text-primary' do
+          = user.email
+
+      %span.mr-3
+        = icon 'fa', 'phone', class: 'text-muted mr-1'
+        = link_to "tel:#{user.phone_1}", class: 'text-decoration-none text-primary' do
+          = user.phone_1
+
+
+%ul#pills-tab.top-osahan-nav-tab.nav.nav-pills.justify-content-center.align-items-stretch.nav-justified.mb-4.shadow-sm.rounded-4.overflow-hidden.bg-white.mt-4{:role => "tablist"}
+
+  %li.nav-item{:role => "presentation"}
+    %button#pills-parcours-tab.h-100.p-3.nav-link.text-muted{"aria-controls" => "pills-parcours", "aria-selected" => "false", "data-bs-target" => "#pills-parcours", "data-bs-toggle" => "pill", :role => "tab", :type => "button"} Parcours ministériel
+
+  %li.nav-item{:role => "presentation"}
+    %button#pills-nationals-tab.h-100.p-3.nav-link.text-muted{"aria-controls" => "pills-nationals", "aria-selected" => "false", "data-bs-target" => "#pills-nationals", "data-bs-toggle" => "pill", :role => "tab", :type => "button"} Responsabilités nationales
+
+
+  %li.nav-item{:role => "presentation"}
+    %button#pills-cursus-tab.h-100.p-3.nav-link.text-muted{"aria-controls" => "pills-cursus", "aria-selected" => "false", "data-bs-target" => "#pills-cursus", "data-bs-toggle" => "pill", :role => "tab", :type => "button"} Reconnaissances
+
+#pills-tabContent.tab-content
+  #pills-parcours.tab-pane.fade{"aria-labelledby" => "pills-parcours-tab", :role => "tabpanel"}
+    Mon parcours
+
+  #pills-nationals.tab-pane.fade{"aria-labelledby" => "pills-nationals-tab", :role => "tabpanel"}
+    Responsabilités nationales
+
+  #pills-cursus.tab-pane.fade{"aria-labelledby" => "pills-cursus-tab", :role => "tabpanel"}
+    - user.gratitudes.each do |gratitude|
+      .bg-white.p-2.shadow-sm.mb-1
+        .row
+          .col
+            %strong= gratitude.level
+          .col= gratitude.get_dates
+          .col
+            %em= "avec #{gratitude.referent_fullname}"
+
+
+

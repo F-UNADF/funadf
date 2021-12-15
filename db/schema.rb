@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_09_165659) do
+ActiveRecord::Schema.define(version: 2021_12_15_101925) do
 
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -85,6 +85,17 @@ ActiveRecord::Schema.define(version: 2021_12_09_165659) do
     t.integer "category_id"
     t.index ["category_id"], name: "index_events_on_category_id"
     t.index ["structure_id"], name: "index_events_on_structure_id"
+  end
+
+  create_table "gratitudes", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "level"
+    t.integer "referent_id"
+    t.date "start_at"
+    t.date "end_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_gratitudes_on_user_id"
   end
 
   create_table "intranets", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -209,6 +220,7 @@ ActiveRecord::Schema.define(version: 2021_12_09_165659) do
     t.date "birthdate"
     t.boolean "disabled", default: false
     t.string "access_token"
+    t.text "biography"
     t.index ["access_token"], name: "index_users_on_access_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

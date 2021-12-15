@@ -150,6 +150,10 @@ GEM
       haml (>= 4.0.6, < 6.0)
       html2haml (>= 1.0.1)
       railties (>= 5.1)
+    handlebars_assets (0.23.9)
+      execjs (~> 2.0)
+      sprockets (>= 2.0.0)
+      tilt (>= 1.2)
     high_voltage (3.1.2)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
@@ -302,6 +306,10 @@ GEM
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
+    twitter-typeahead-rails (0.11.1)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
@@ -342,6 +350,7 @@ DEPENDENCIES
   font-awesome-sass
   fullcalendar-rails
   haml-rails
+  handlebars_assets
   high_voltage
   html2haml
   hub
@@ -373,6 +382,7 @@ DEPENDENCIES
   tinymce-rails
   toastr-rails
   turbolinks
+  twitter-typeahead-rails
   uglifier
   unicorn
   wicked

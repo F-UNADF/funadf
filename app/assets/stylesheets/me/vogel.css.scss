@@ -392,6 +392,15 @@ body {
     margin: 0 -6px 0 0px;
 }
 
+.side-profile{
+    border-radius: 11px;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+}
+
+.biography p{
+    margin-bottom: 0px !important;
+}
+
 /* Media Css */
 @media (max-width: 576px) {
     .m-sm-none {

@@ -4,9 +4,19 @@ class Intranet::UsersController < IntranetController
 
   def index
 
-    @q = @intranet_structure.users.order(lastname: :asc).ransack(params[:q])
-
-    @users = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
+    respond_to do |format|
+      format.json {
+        @users = User.all
+        if params[:query]
+          @users = User.where("firstname LIKE '#{params[:query]}%' OR lastname LIKE '#{params[:query]}%' ")
+        end
+        render json: @users
+      }
+      format.html {
+        @q = @intranet_structure.users.order(lastname: :asc).ransack(params[:q])
+        @users = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
+      }
+    end
   end
 
   def show
@@ -41,11 +51,13 @@ class Intranet::UsersController < IntranetController
       if params[:user][:password].blank?
         params[:user].permit(:firstname, :lastname, :avatar, :address_1,
                           :address_2, :zipcode, :town, :phone_1, :phone_2,
-                          :email, :level, :birthdate)
+                          :email, :level, :birthdate, :avatar, :biography,
+                          gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy])
       else
         params[:user].permit(:firstname, :lastname, :avatar, :address_1,
-                          :address_2, :zipcode, :town, :phone_1, :phone_2,
-                          :email, :level, :birthdate, :password, :password_confirmation)
+                          :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
+                          :email, :level, :birthdate, :password, :password_confirmation, :avatar,
+                          gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy])
       end
     end
 

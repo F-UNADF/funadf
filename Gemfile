@@ -41,6 +41,8 @@ gem 'toastr-rails'
 gem 'onesignal'
 gem 'fullcalendar-rails'
 gem 'tinymce-rails'
+gem 'twitter-typeahead-rails'
+gem 'handlebars_assets'
 
 gem "aws-sdk-s3", require: false
 

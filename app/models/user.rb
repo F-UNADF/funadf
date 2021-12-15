@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  require 'digest/md5'
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
@@ -8,6 +10,13 @@ class User < ActiveRecord::Base
   has_many :roles, through: :rolizations
   has_many :associations, through: :roles, source: :resource, source_type: 'Association'
   has_many :churches, through: :roles, source: :resource, source_type: 'Church'
+
+  has_many :gratitudes, ->(gratitude){order(start_at: :asc)}, class_name: "Gratitude", foreign_key: :user_id
+  has_many :interns, class_name: "Gratitude", foreign_key: :referent_id
+
+  has_one_attached :avatar
+
+  accepts_nested_attributes_for :gratitudes, reject_if: :all_blank, allow_destroy: true
 
   validates :firstname, :lastname, presence: true
 
@@ -39,6 +48,24 @@ class User < ActiveRecord::Base
     end
     result.html_safe
   end
+
+  def inline_address
+    result = ""
+    unless address_1.blank?
+      result = address_1 + " "
+    end
+    unless address_2.blank?
+      result = result + address_2 + " "
+    end
+    unless zipcode.blank?
+      result = result + ' - ' + zipcode
+    end
+    unless town.blank?
+      result = result + " " + town
+    end
+    result.html_safe
+  end
+
 
   def friendly_id
     sprintf '%05d', id
@@ -177,7 +204,17 @@ class User < ActiveRecord::Base
   end
 
   def self.get_levels
-    ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre', 'Femme de pasteur', 'Hors ADD']
+    ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre', 'Femme de pasteur', 'Hors ADD', 'Invité']
+  end
+
+  def level
+    g = gratitudes.last
+
+    if g
+      g.level
+    else
+      'Non renseigné'
+    end
   end
 
   def can_vote
@@ -199,6 +236,12 @@ class User < ActiveRecord::Base
 
   def send_invitation_email
     UserMailer.send_direct_access(self).deliver
+  end
+
+  def gravatar_url
+    hash = Digest::MD5.hexdigest(self.email)
+
+    return "https://www.gravatar.com/avatar/#{hash}"
   end
 
 

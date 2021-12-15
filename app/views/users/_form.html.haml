@@ -1,17 +1,32 @@
 = form_for @user, url: action do |f|
-  .card
-    .card-header
-      %strong Modifier un utilisateur
+  .row
+    .col-md-6
+      .card
+        .card-header
+          %strong Modifier un utilisateur
 
-    .card-body
-      - if @user.errors.any?
-        .alert.alert-danger
-          %h3.h5 Une ou plusieurs erreurs doivent être corrigé :
-          %ul
-            - @user.errors.full_messages.each do |msg|
-              %li= msg
-      .row
-        .col-md-8
+        .card-body
+          - if @user.errors.any?
+            .alert.alert-danger
+              %h3.h5 Une ou plusieurs erreurs doivent être corrigé :
+              %ul
+                - @user.errors.full_messages.each do |msg|
+                  %li= msg
+
+
+          .row.mb-3
+            .col-md-6
+              - if @user.avatar.attached?
+                = image_tag @user.avatar.representation(resize_to_limit: [100, 100]), class: "rounded-circle img-fluid"
+              - else
+                = image_tag @user.gravatar_url, class: "rounded-circle img-fluid"
+                %br
+                %em.text-muted image générée depuis GRAVATAR
+            .col-md-6
+              %p Modifier mon avatar
+              .form-group
+                = f.file_field :avatar
+
           .row
             .col-md-6
               .form-group
@@ -52,14 +67,14 @@
                 = f.text_field :town, class: "form-control"
 
           .form-group
-            = f.label :level
-            = f.select :level, options_for_select(User.get_levels, @user.level), {include_blank: "Non communiqué"}, class: "form-control"
-
-          .form-group
             = f.label :birthdate
             = f.date_field :birthdate, class: "form-control datepicker"
 
-          %hr
+      .card
+        .card-header
+          %strong Sécurité
+
+        .card-body
           .form-group
             = f.label :password
             = f.password_field :password, class: "form-control password"
@@ -72,9 +87,41 @@
             %label.form-check-label{for: :toggle_password} Voir le mot de passe
 
 
-        .col-md-4
-          %h3.h5.mb-3 Rôles sur l'application
+    .col-md-6
+      .card
+        .card-header
+          %strong Reconnaissance
 
+        .card-body
+          .row.mb-1
+            .col-3
+              %strong Reconnaissance
+            .col-4
+              %strong Référent
+            .col-4
+              %strong Date
+            .col-1
+
+          = f.fields_for :gratitudes do |ff|
+            = render 'users/gratitude_fields', f: ff
+
+          .form-group
+            = link_to_add_association f, :gratitudes, class: "btn btn-sm btn-primary", partial: 'users/gratitude_fields', data: {"association-insertion-node" => "#gratitudes", "association-insertion-method" => "append"} do
+              = icon 'fa', "plus"
+              Ajouter une reconnaissance
+
+      .card
+        .card-header
+          %strong Bio
+        .card-body
+          .form-group
+            = f.text_area :biography, class: "form-control", rows: 5, maxlength: 255
+
+
+      .card
+        .card-header
+          %strong Rôles sur l'application
+        .card-body
           - if @user.has_role? :admin
             = link_to admin_user_admin_path(@user), method: :destroy, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
               Destituer administrateur
@@ -100,6 +147,12 @@
             = link_to admin_user_new_steward_path(@user), class: "btn btn-info btn-sm" do
               Promouvoir intendant
 
-      .float-right
+  .card
+    .card-body
+      .d-flex.justify-content-end
+        = link_to :back, class: 'btn btn-danger mr-3' do
+          = icon "fa", "angle-left"
+          Annuler
+
         %button.btn.btn-primary{type: :submit}
           Enregistrer

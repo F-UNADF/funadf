@@ -36,6 +36,8 @@ Rails.application.routes.draw do
     namespace :me, path: '' do
       constraints(:subdomain => 'me') do
 
+        get '/mon-profil', to: 'profile#show', as: :profile
+
         root to: 'feed#index', as: :me
       end
     end

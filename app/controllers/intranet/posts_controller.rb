@@ -1,7 +1,7 @@
 class Intranet::PostsController < IntranetController
 
   def index
-    @posts = @intranet_structure.posts
+    @posts = @intranet_structure.posts.order(created_at: :desc)
   end
 
   def show
@@ -40,7 +40,7 @@ class Intranet::PostsController < IntranetController
 
     @post.destroy
 
-    redirect_to :back, flash:{success: 'Actualité supprimée'}
+    redirect_to [:intranet, :posts], flash:{success: 'Actualité supprimée'}
   end
 
   private

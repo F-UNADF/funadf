@@ -5,7 +5,6 @@
 
     %title
       INTRANET
-      = @intranet_structure.name
 
     %meta{:name => "description", :content => "Intranet FNADF / UNADF"}
 
@@ -19,7 +18,7 @@
         .login-content
           .display-3.login-logo
             = link_to root_url do
-              = @intranet_structure.name
+              INTRANET ADD
 
           .login-form
             = yield

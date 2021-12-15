@@ -189,6 +189,16 @@ namespace :users do
     end
   end
 
+  task :update_users_gratitudes => :environment do |t,args|
+    users = User.all
+
+    users.each do |user|
+      g = user.gratitudes.build(start_at: Date.today)
+      g.level = user.level
+      g.save
+    end
+  end
+
   task :generate_token => :environment do |t, args|
 
     puts "Generate Roken for each User"

@@ -73,3 +73,16 @@
                   %td= structure.get_resource_role(@user)
 
 
+
+        .card
+          .card-header
+            %h2.h4 Reconnaissances
+
+          .card-body
+            - @user.gratitudes.each do |g|
+              .gratitude.d-flex.flex-row.justify-content-start
+                %span.mr-3.font-weight-bold= g.level
+                %span.mr-3= g.get_dates
+                %span.mr-3
+                  avec
+                  %em= g.referent_fullname

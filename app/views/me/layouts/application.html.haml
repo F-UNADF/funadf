@@ -26,16 +26,38 @@
           %aside.col.col-xl-3.order-xl-1.col-lg-6.order-lg-2.col-md-6.col-sm-6.col-12
             .ps-0.m-none.fix-sidebar
               .sidebar-nav.mb-3
-                .pb-4.mb-4
+                .pb-4.mb-3
                   = link_to '#', class: 'text-decoration-none' do
                     = image_tag 'logo.png', class: 'img-fluid'
 
+                .side-profile.bg-white.mb-3.p-4.d-flex.flex-column.text-center
+                  .avatar.w-50.mb-3.mx-auto
+                    - if current_user.avatar.attached?
+                      = image_tag current_user.avatar.representation(resize_to_limit: [500, 500]), class: "rounded-circle img-fluid"
+                    - else
+                      = image_tag current_user.gravatar_url, class: "rounded-circle img-fluid"
+                  .name
+                    .h5.mb-1
+                      %span.text-muted
+                        = icon 'fa', 'id-card'
+                        = "%06d" % current_user.id
+                      %br
+                      %strong= current_user.fullname
+                    %em= current_user.level
+
                 %ul.navbar-nav.justify-content-end.flex-grow-1
                   %li.nav-item
-                    = link_to '#', class: 'nav-link active' do
+                    = link_to '#', class: "nav-link #{(params[:controller].match(/feed/)) ? 'active' : ''}" do
                       %span.mr-3
                         = icon 'fa', 'home'
                       %span Accueil
+
+                  %li.nav-item
+                    = link_to me_profile_url, class: "nav-link #{(params[:controller].match(/profile/)) ? 'active' : ''}" do
+                      %span.mr-3
+                        = icon 'fa', 'user-circle'
+                      %span Mon profil
+
                   %li.nav-item
                     = link_to root_url(subdomain: nil), class: 'nav-link' do
                       %span.mr-3

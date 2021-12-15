@@ -1,0 +1,19 @@
+.row
+  .col-3
+    .form-group
+      = f.select :level, options_for_select(User.get_levels, f.object.level), {include_blank: "Non communiqué"}, class: "form-control"
+
+  .col-4
+    .form-group
+      = text_field_tag :referent_name, f.object.referent_fullname, class: 'form-control referent'
+
+      = f.hidden_field :referent_id, class: 'referent_id'
+
+  .col-4
+    .form-group
+      = f.date_field :start_at, class: 'form-control'
+
+  .col-1
+    .form-group
+      = link_to_remove_association f, class: 'btn btn-danger btn-sm' do
+        = icon "fa", "times"
