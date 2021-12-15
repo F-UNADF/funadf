@@ -60,19 +60,19 @@ class Structures::CampaignsController < ApplicationController
   def close_definitly
     @campaign = Campaign.find params[:campaign_id]
     @campaign.close_definitly
-    redirect_back fallback_location: root_path,
+    redirect_back fallback_location: root_path
   end
 
   def close_temporarily
     @campaign = Campaign.find params[:campaign_id]
     @campaign.close_temporarily
-    redirect_back fallback_location: root_path,
+    redirect_back fallback_location: root_path
   end
 
   def open
     @campaign = Campaign.find params[:campaign_id]
     @campaign.opening
-    redirect_back fallback_location: root_path,
+    redirect_back fallback_location: root_path
   end
 
   private
