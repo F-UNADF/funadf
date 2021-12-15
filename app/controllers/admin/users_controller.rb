@@ -14,6 +14,10 @@ class Admin::UsersController < AdminController
   def show
     @user = User.find params[:id]
     @structures = @user.structures
+
+    @activities = PublicActivity::Activity.order("created_at desc")
+                    .where(owner_id: @user.id, owner_type: "User")
+                    .or(PublicActivity::Activity.where(trackable_id: @user.id, trackable_type: 'User'))
   end
 
   def edit
@@ -42,14 +46,14 @@ class Admin::UsersController < AdminController
     @user.disabled = false
     @user.save
 
-    redirect_back(fallback_location: root_path), flash:{success: 'Utilisateur mis a jour'}
+    redirect_back fallback_location: root_path, flash:{success: 'Utilisateur mis a jour'}
   end
   def disable
     @user = User.find params[:user_id]
     @user.disabled = true
     @user.save
 
-    redirect_back(fallback_location: root_path), flash:{success: 'Utilisateur mis a jour'}
+    redirect_back fallback_location: root_path, flash:{success: 'Utilisateur mis a jour'}
   end
 
   private

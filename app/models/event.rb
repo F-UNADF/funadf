@@ -5,4 +5,6 @@ class Event < ActiveRecord::Base
 
   delegate :name, to: :category, prefix: true
 
+  validates :category_id, :start_at, :end_at, :title, presence: true
+
 end

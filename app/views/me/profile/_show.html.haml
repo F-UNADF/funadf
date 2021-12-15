@@ -15,12 +15,12 @@
 
 
     %p.d-flex.flex-row.justify-content-start.align-items-center.mb-3
-      %span.mr-3
+      %span.me-3
         = icon 'fa', 'envelope', class: 'text-muted mr-1'
         = link_to "mailto:#{user.email}", class: 'text-decoration-none text-primary' do
           = user.email
 
-      %span.mr-3
+      %span.me-3
         = icon 'fa', 'phone', class: 'text-muted mr-1'
         = link_to "tel:#{user.phone_1}", class: 'text-decoration-none text-primary' do
           = user.phone_1

@@ -9,7 +9,7 @@ class Intranet::CategoriesController < IntranetController
     @category = @intranet_structure.categories.build(category_params)
 
     if @category.save
-      redirect_back(fallback_location: root_path), flash:{success: 'Catégorie ajoutée.'}
+      redirect_back fallback_location: root_path, flash:{success: 'Catégorie ajoutée.'}
     else
       @categories = @intranet_structure.categories.where(kind: :event)
       render :index

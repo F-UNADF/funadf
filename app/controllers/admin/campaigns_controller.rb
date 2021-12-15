@@ -72,17 +72,17 @@ class Admin::CampaignsController < AdminController
 
   def close_definitly
     @campaign.close_definitly
-    redirect_back(fallback_location: root_path)
+    redirect_back fallback_location: root_path,
   end
 
   def close_temporarily
     @campaign.close_temporarily
-    redirect_back(fallback_location: root_path)
+    redirect_back fallback_location: root_path,
   end
 
   def open
     @campaign.opening
-    redirect_back(fallback_location: root_path)
+    redirect_back fallback_location: root_path,
   end
 
   private

@@ -9,11 +9,11 @@
 = form_for [:intranet, event] do |f|
   .modal-body
     - if event.errors.any?
-      .callout.callout-danger
+      .alert.alert-danger
         %h4= "#{pluralize(event.errors.count, "erreur")}"
-        %ul
+        %ul.list
           - event.errors.full_messages.each do |msg|
-            %li= msg
+            %li.list-item= msg
 
 
     .form-group
