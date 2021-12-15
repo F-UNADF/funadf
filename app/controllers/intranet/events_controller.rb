@@ -31,7 +31,7 @@ class Intranet::EventsController < IntranetController
     @event = @intranet_structure.events.build(event_params)
 
     if @event.save
-      redirect_to :back, flash:{success: 'Evenement ajouté.'}
+      redirect_back(fallback_location: root_path), flash:{success: 'Evenement ajouté.'}
     else
       render :new
     end
@@ -53,7 +53,7 @@ class Intranet::EventsController < IntranetController
     respond_to do |format|
       format.js
       format.html{
-        redirect_to :back, flash:{success: 'Evenement mis à jour.'}
+        redirect_back(fallback_location: root_path), flash:{success: 'Evenement mis à jour.'}
       }
     end
   end

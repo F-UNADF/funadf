@@ -42,7 +42,7 @@ class StructuresController < ApplicationController
   def destroy
     @structure.destroy
 
-    redirect_to :back, flash:{success: 'Structure supprimée'}
+    redirect_back(fallback_location: root_path), flash:{success: 'Structure supprimée'}
   end
 
 

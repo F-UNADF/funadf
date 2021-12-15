@@ -42,14 +42,14 @@ class Admin::UsersController < AdminController
     @user.disabled = false
     @user.save
 
-    redirect_to :back, flash:{success: 'Utilisateur mis a jour'}
+    redirect_back(fallback_location: root_path), flash:{success: 'Utilisateur mis a jour'}
   end
   def disable
     @user = User.find params[:user_id]
     @user.disabled = true
     @user.save
 
-    redirect_to :back, flash:{success: 'Utilisateur mis a jour'}
+    redirect_back(fallback_location: root_path), flash:{success: 'Utilisateur mis a jour'}
   end
 
   private
