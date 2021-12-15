@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
 
   layout :set_layout
 
+  include PublicActivity::StoreController
+
   def get_original_user
     @original_user_scope_identifier = session[:original_user_scope_identifier]
   end

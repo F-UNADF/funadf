@@ -1,0 +1,6 @@
+fr:
+  activities:
+    user:
+      create: 'a créé'
+      update: 'a modifié'
+      destroy: 'a supprimé'

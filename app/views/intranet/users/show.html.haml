@@ -44,7 +44,6 @@
                 = icon 'fa', "edit"
                 Modifier le profil
 
-
       .col-md-8
         .card
           .card-header
@@ -72,8 +71,6 @@
                   %td= structure.phone_1
                   %td= structure.get_resource_role(@user)
 
-
-
         .card
           .card-header
             %h2.h4 Reconnaissances
@@ -86,3 +83,12 @@
                 %span.mr-3
                   avec
                   %em= g.referent_fullname
+
+        .card
+          .card-header
+            %h2.h4 Activités
+
+          .card-body
+            - @activities.each do |activity|
+              = render "public_activity/activities/activity", activity: activity
+

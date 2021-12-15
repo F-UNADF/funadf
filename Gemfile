@@ -43,6 +43,7 @@ gem 'fullcalendar-rails'
 gem 'tinymce-rails'
 gem 'twitter-typeahead-rails'
 gem 'handlebars_assets'
+gem 'public_activity'
 
 gem "aws-sdk-s3", require: false
 

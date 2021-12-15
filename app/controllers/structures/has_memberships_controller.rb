@@ -21,7 +21,7 @@ class Structures::HasMembershipsController < ApplicationController
 
     @member.add_role :member, @structure
 
-    redirect_to :back, alert: 'Membre ajouté'
+    redirect_back fallback_location: root_path, alert: 'Membre ajouté'
   end
 
   def destroy
@@ -36,7 +36,7 @@ class Structures::HasMembershipsController < ApplicationController
 
     @member.remove_role current_role.to_sym, @structure
 
-    redirect_to :back, alert: 'Membre supprimé'
+    redirect_back fallback_location: root_path, alert: 'Membre supprimé'
   end
 
   def update

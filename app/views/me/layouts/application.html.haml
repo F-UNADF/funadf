@@ -38,30 +38,30 @@
                       = image_tag current_user.gravatar_url, class: "rounded-circle img-fluid"
                   .name
                     .h5.mb-1
-                      %span.text-muted
+                      %span.d-block.small.text-muted.mb-2
                         = icon 'fa', 'id-card'
-                        = "%06d" % current_user.id
-                      %br
+                        = "%05d" % current_user.id
+
                       %strong= current_user.fullname
                     %em= current_user.level
 
                 %ul.navbar-nav.justify-content-end.flex-grow-1
                   %li.nav-item
-                    = link_to '#', class: "nav-link #{(params[:controller].match(/feed/)) ? 'active' : ''}" do
-                      %span.mr-3
-                        = icon 'fa', 'home'
+                    = link_to root_url, class: "nav-link #{(params[:controller].match(/feed/)) ? 'active' : ''}" do
+                      %span
+                        = icon 'fa', 'home', class: 'me-3'
                       %span Accueil
 
                   %li.nav-item
                     = link_to me_profile_url, class: "nav-link #{(params[:controller].match(/profile/)) ? 'active' : ''}" do
-                      %span.mr-3
-                        = icon 'fa', 'user-circle'
+                      %span
+                        = icon 'fa', 'user-circle', class: 'me-3'
                       %span Mon profil
 
                   %li.nav-item
                     = link_to root_url(subdomain: nil), class: 'nav-link' do
-                      %span.mr-3
-                        = icon 'fa', 'arrow-left'
+                      %span
+                        = icon 'fa', 'arrow-left', class: 'me-3'
                       %span Espace vote
 
 

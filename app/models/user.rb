@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   require 'digest/md5'
+  include PublicActivity::Model
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -23,12 +24,24 @@ class User < ActiveRecord::Base
   scope :enabled, -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
 
+  before_update :track_update_activities
+  after_create :track_create_activities
+
+  def track_update_activities
+    c = self.changes.reject! { |k| k.match(/created_at|updated_at|reset_password_token/)}
+    self.create_activity key: 'user.update', owner: Proc.new{ |controller, model| controller.current_user }, parameters: c
+  end
+
+  def track_create_activities
+    self.create_activity key: 'user.create', owner: Proc.new{ |controller, model| controller.current_user }
+  end
+
   def application_roles
     roles.where(resource_id: nil, resource_type: nil)
   end
 
   def fullname
-    lastname + " " + firstname
+    "#{firstname} #{lastname}"
   end
   alias name fullname
 
