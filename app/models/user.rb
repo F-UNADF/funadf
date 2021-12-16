@@ -24,6 +24,14 @@ class User < ActiveRecord::Base
   scope :enabled, -> { where(disabled: false) }
   scope :disabled, -> { where(disabled: true) }
 
+  has_one :wife_marriage, class_name: 'Marriage', foreign_key: :wife_id
+  has_one :husband, class_name: 'User', through: :wife_marriage
+  accepts_nested_attributes_for :wife_marriage, reject_if: :all_blank, allow_destroy: true
+
+  has_one :husband_marriage, class_name: 'Marriage', foreign_key: :husband_id
+  has_one :wife, class_name: 'User', through: :husband_marriage
+  accepts_nested_attributes_for :husband_marriage, reject_if: :all_blank, allow_destroy: true
+
   before_update :track_update_activities
   after_create :track_create_activities
 
@@ -255,6 +263,21 @@ class User < ActiveRecord::Base
     hash = Digest::MD5.hexdigest(self.email)
 
     return "https://www.gravatar.com/avatar/#{hash}"
+  end
+
+  def wife_fullname
+    f = nil
+    if wife
+      f = wife.fullname
+    end
+    f
+  end
+  def husband_fullname
+    f = nil
+    if husband
+      f = husband.fullname
+    end
+    f
   end
 
 

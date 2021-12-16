@@ -35,6 +35,18 @@
                     = icon 'fa', 'phone', class: "fa-li"
                     = user.phone_2
 
+                - if user.wife
+                  %li
+                    = link_to user.wife do
+                      = icon 'fa', 'portrait', class: "fa-li"
+                      = user.wife_fullname
+
+                - if user.husband
+                  %li
+                    = link_to user.husband do
+                      = icon 'fa', 'portrait', class: "fa-li"
+                      = user.husband_fullname
+
       .card-footer
         - if user == current_user
           = link_to edit_me_path, class: 'btn btn-outline-dark btn-icon' do

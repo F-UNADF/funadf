@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_16_153113) do
+ActiveRecord::Schema.define(version: 2021_12_16_172223) do
 
   create_table "accesses", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "resource_type"
@@ -133,6 +133,13 @@ ActiveRecord::Schema.define(version: 2021_12_16_153113) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["structure_id"], name: "index_intranets_on_structure_id"
+  end
+
+  create_table "marriages", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "husband_id"
+    t.integer "wife_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "meetings", id: :integer, charset: "utf8", force: :cascade do |t|

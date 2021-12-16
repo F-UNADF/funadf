@@ -134,6 +134,42 @@ $(document).ready(function(){
       }
     }
   });
+  var husbands = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: '/users.json?husband=1',
+    remote: {
+      url: '/users.json?husband=1&query=%QUERY',
+      wildcard: '%QUERY',
+      filter: function (users) {
+        return $.map(users, function (user) {
+          console.log(user)
+          return {
+            id: user.id,
+            value: user.firstname + ' ' + user.lastname
+          };
+        });
+      }
+    }
+  });
+  var wifes = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: '/users.json?wife=1',
+    remote: {
+      url: '/users.json?wife=1&query=%QUERY',
+      wildcard: '%QUERY',
+      filter: function (users) {
+        return $.map(users, function (user) {
+          console.log(user)
+          return {
+            id: user.id,
+            value: user.firstname + ' ' + user.lastname
+          };
+        });
+      }
+    }
+  });
 
   $('.referent').each(function(){
     $(this).typeahead({
@@ -155,6 +191,46 @@ $(document).ready(function(){
 
       $(this).parents('.form-group').find('input.referent_id').val(suggestion.id);
     });
+  });
+
+  $('.find_husband').typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },{
+      name: 'husbands',
+      source: husbands,
+      display: 'value',
+      limit: 50,
+      templates: {
+        suggestion: Handlebars.compile('<div class="pastor"><i class="fa fa-user mr-1"></i> {{value}}</div>')
+      }
+  }).bind('typeahead:select', function(ev, suggestion) {
+    console.log(ev);
+    console.log(suggestion);
+    console.log($(this));
+
+    $("#husband_id").val(suggestion.id);
+  });
+
+  $('.find_wife').typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },{
+      name: 'wifes',
+      source: wifes,
+      display: 'value',
+      limit: 50,
+      templates: {
+        suggestion: Handlebars.compile('<div class="pastor"><i class="fa fa-user mr-1"></i> {{value}}</div>')
+      }
+  }).bind('typeahead:select', function(ev, suggestion) {
+    console.log(ev);
+    console.log(suggestion);
+    console.log($(this));
+
+    $("#wife_id").val(suggestion.id);
   });
 
   $('.select_all_access').on('click', function(e){

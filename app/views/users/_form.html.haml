@@ -90,6 +90,26 @@
     .col-md-6
       .card
         .card-header
+          %strong Mariage
+        .card-body
+          - if user.level == 'Femme de pasteur'
+            = f.fields_for :wife_marriage, Marriage.find_or_initialize_by(wife_id: user.id) do |ff|
+              %p.text-muted Utilisez le champs ci-dessous pour retrouver votre conjoint
+              = ff.hidden_field :wife_id, value: user.id
+              = ff.hidden_field :husband_id, id: :husband_id
+              .form-group
+                = text_field_tag :conjoint, user.husband_fullname, class: "form-control find_husband"
+
+          - else
+            = f.fields_for :husband_marriage, Marriage.find_or_initialize_by(husband_id: user.id) do |ff|
+              %p.text-muted Utilisez le champs ci-dessous pour retrouver votre conjoint
+              = ff.hidden_field :husband_id, value: user.id
+              = ff.hidden_field :wife_id, id: :wife_id
+              .form-group
+                = text_field_tag :conjoint, user.wife_fullname, class: "form-control find_wife"
+
+      .card
+        .card-header
           %strong Reconnaissance
 
         .card-body
