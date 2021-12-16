@@ -5,9 +5,4 @@
 
 .content.mt-3
   .container-fluid
-    .card
-      .card-header
-        %strong Modifier une actualité
-
-      .card-body
-        = render 'form', post: @post
+    = render 'form', post: @post

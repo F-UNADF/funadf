@@ -46,7 +46,9 @@ class Intranet::PostsController < IntranetController
   private
 
     def post_params
-      params.require(:post).permit(:title, :content, :structure_id, files: [])
+      params.require(:post).permit(:title, :content, :structure_id, files: [],
+          accesses_attributes: [:level, :can_access, :id]
+        )
     end
 
 end

@@ -157,6 +157,14 @@ $(document).ready(function(){
     });
   });
 
+  $('.select_all_access').on('click', function(e){
+    e.preventDefault();
+
+    $('.form-check-input').each(function(){
+      $(this).attr('checked', true);
+    });
+  })
+
 
 });
 

@@ -1,26 +1,58 @@
 = form_for [:intranet, post] do |f|
-
   = f.hidden_field :structure_id
+  .row
+    .col-md-8
+      .card
+        .card-header
+          %strong Actualité
 
-  .form-group
-    = f.text_field :title, class: 'form-control', placeholder: 'Titre'
+        .card-body
+          .form-group
+            = f.text_field :title, class: 'form-control', placeholder: 'Titre'
 
-  .form-group
-    = f.text_area :content, class: 'form-control tinymce', rows: 10
-
-  .form-group
-    %p.font-weight-bold Joindre des fichiers
-    = f.file_field :files, multiple: true
-
-  - unless post.files.blank?
-    %ul.list-unstyled
-      - post.files.each do |file|
-        %li.list-item
-          = link_to rails_blob_path(file, disposition: "attachment"), class: "btn btn-link btn-sm" do
-            = icon "fa", "download"
-            = file.filename
+          .form-group
+            = f.text_area :content, class: 'form-control tinymce', rows: 10
 
 
-  %button.btn.btn-success{type: :submit}
-    = icon "fa", "save"
-    Enregistrer
+    .col-md-4
+      .card
+        .card-header
+          %strong Fichiers
+
+        .card-body
+          .form-group
+            %p.font-weight-bold Joindre des fichiers
+            = f.file_field :files, multiple: true
+
+          - unless post.files.blank?
+            %ul.list-unstyled
+              - post.files.each do |file|
+                %li.list-item
+                  = link_to rails_blob_path(file, disposition: "attachment"), class: "btn btn-link btn-sm" do
+                    = icon "fa", "download"
+                    = file.filename
+
+      .card
+        .card-header
+          %strong Qui peut consulter ?
+
+        .card-body
+          = link_to '#', class: 'd-block text-primary text-decoration-underline mb-3 select_all_access' do
+            %em Selectionner tout
+
+          .form-check
+            - User.get_levels.each do |level|
+              = f.fields_for :accesses, post.accesses.find_or_initialize_by(level: level) do |a|
+                .checkbox
+                  %label.form-check-label
+                    = a.check_box :can_access, class: 'form-check-input'
+                    = level
+                    = a.hidden_field :level, value: level
+
+
+
+  .card
+    .card-body
+      %button.btn.btn-success{type: :submit}
+        = icon "fa", "save"
+        Enregistrer

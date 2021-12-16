@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ressource: one
+  ressource_type: Ressource
+  level: MyString
+  can_access: false
+
+two:
+  ressource: two
+  ressource_type: Ressource
+  level: MyString
+  can_access: false

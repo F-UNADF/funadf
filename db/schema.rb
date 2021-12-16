@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_15_130353) do
+ActiveRecord::Schema.define(version: 2021_12_16_153113) do
+
+  create_table "accesses", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.string "level"
+    t.boolean "can_access"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["resource_type", "resource_id"], name: "index_accesses_on_resource"
+  end
 
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
