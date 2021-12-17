@@ -228,15 +228,15 @@ class User < ActiveRecord::Base
     ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre', 'Femme de pasteur', 'Hors ADD', 'Invité']
   end
 
-  # def level
-  #   g = gratitudes.last
+  def level
+    g = gratitudes.last
 
-  #   if g
-  #     g.level
-  #   else
-  #     'Non renseigné'
-  #   end
-  # end
+    if g
+      g.level
+    else
+      'Non renseigné'
+    end
+  end
 
   def can_vote
     true
