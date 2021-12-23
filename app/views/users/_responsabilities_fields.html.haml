@@ -1,0 +1,26 @@
+.row
+  .col-3
+    .form-group
+      = text_field_tag :assoc_name, f.object.church_name, class: 'form-control form-control-sm association'
+
+      = f.hidden_field :association_id, class: 'association_id'
+
+  .col-3
+    .form-group
+      = f.select :function, options_for_select(User.get_responsabilities, f.object.function), {prompt: "Non communiqué"}, class: 'form-control form-control-sm'
+
+  .col-5
+    .form-group
+      .input-group.input-group-sm
+        .input-group-prepend
+          .input-group-text du
+        = f.date_field :start_at, class: 'form-control'
+
+        .input-group-prepend
+          .input-group-text au
+        = f.date_field :end_at, class: 'form-control'
+
+  .col-1
+    .form-group
+      = link_to_remove_association f, class: 'btn btn-danger btn-sm' do
+        = icon "fa", "times"

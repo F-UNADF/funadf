@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_16_172223) do
+ActiveRecord::Schema.define(version: 2021_12_23_134900) do
 
   create_table "accesses", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "resource_type"
@@ -93,6 +93,20 @@ ActiveRecord::Schema.define(version: 2021_12_16_172223) do
     t.index ["structure_id"], name: "index_campaigns_on_structure_id"
   end
 
+  create_table "careers", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.string "level"
+    t.integer "referent_id"
+    t.date "start_at"
+    t.date "end_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.integer "church_id"
+    t.integer "association_id"
+    t.string "function"
+    t.index ["user_id"], name: "index_careers_on_user_id"
+  end
+
   create_table "categories", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "color"
@@ -114,17 +128,6 @@ ActiveRecord::Schema.define(version: 2021_12_16_172223) do
     t.integer "category_id"
     t.index ["category_id"], name: "index_events_on_category_id"
     t.index ["structure_id"], name: "index_events_on_structure_id"
-  end
-
-  create_table "gratitudes", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
-    t.string "level"
-    t.integer "referent_id"
-    t.date "start_at"
-    t.date "end_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id"
-    t.index ["user_id"], name: "index_gratitudes_on_user_id"
   end
 
   create_table "intranets", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

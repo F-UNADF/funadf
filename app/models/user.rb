@@ -12,12 +12,19 @@ class User < ActiveRecord::Base
   has_many :associations, through: :roles, source: :resource, source_type: 'Association'
   has_many :churches, through: :roles, source: :resource, source_type: 'Church'
 
-  has_many :gratitudes, ->(gratitude){order(start_at: :asc)}, class_name: "Gratitude", foreign_key: :user_id
-  has_many :interns, class_name: "Gratitude", foreign_key: :referent_id
-
   has_one_attached :avatar
 
+  has_many :careers, ->(career){order(start_at: :asc)}, class_name: "Career", foreign_key: :user_id
+
+  has_many :interns, class_name: "Career", foreign_key: :referent_id
+  has_many :gratitudes, ->(career){where('level IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
+  has_many :phases, ->(career){where('church_id IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
+  has_many :responsabilities, ->(career){where('association_id IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
+
+  accepts_nested_attributes_for :careers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :gratitudes, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :phases, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :responsabilities, reject_if: :all_blank, allow_destroy: true
 
   validates :firstname, :lastname, presence: true
 
@@ -227,9 +234,28 @@ class User < ActiveRecord::Base
   def self.get_levels
     ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre', 'Femme de pasteur', 'Hors ADD', 'Invité']
   end
+  def self.get_functions
+    ['Président', 'Vice président', 'Pasteur adjoint', 'Pasteur stagiaire', 'Pasteur probatoire', 'Prédicateur', 'Missionnaire']
+  end
+  def self.get_responsabilities
+    ['Président',
+      'Vice président',
+      'Secrétaire',
+      'Secrétaire adjoint',
+      'Trésorier',
+      'Trésorier adjoint',
+      'Chargé de mission',
+      'Directeur',
+      'Directeur adjoint',
+      'Membre du CA',
+      'Délégué',
+      'Salarié',
+      'Rédacteur en chef',
+      'Enseignant']
+  end
 
   def level
-    g = gratitudes.last
+    g = gratitudes.order(start_at: :desc).first
 
     if g
       g.level

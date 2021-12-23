@@ -29,7 +29,7 @@
 %ul#pills-tab.top-osahan-nav-tab.nav.nav-pills.justify-content-center.align-items-stretch.nav-justified.mb-4.shadow-sm.rounded-4.overflow-hidden.bg-white.mt-4{:role => "tablist"}
 
   %li.nav-item{:role => "presentation"}
-    %button#pills-parcours-tab.h-100.p-3.nav-link.text-muted{"aria-controls" => "pills-parcours", "aria-selected" => "false", "data-bs-target" => "#pills-parcours", "data-bs-toggle" => "pill", :role => "tab", :type => "button"} Parcours ministériel
+    %button#pills-parcours-tab.h-100.p-3.nav-link.text-muted.active.show{"aria-controls" => "pills-parcours", "aria-selected" => "false", "data-bs-target" => "#pills-parcours", "data-bs-toggle" => "pill", :role => "tab", :type => "button"} Parcours ministériel
 
   %li.nav-item{:role => "presentation"}
     %button#pills-nationals-tab.h-100.p-3.nav-link.text-muted{"aria-controls" => "pills-nationals", "aria-selected" => "false", "data-bs-target" => "#pills-nationals", "data-bs-toggle" => "pill", :role => "tab", :type => "button"} Responsabilités nationales
@@ -39,11 +39,27 @@
     %button#pills-cursus-tab.h-100.p-3.nav-link.text-muted{"aria-controls" => "pills-cursus", "aria-selected" => "false", "data-bs-target" => "#pills-cursus", "data-bs-toggle" => "pill", :role => "tab", :type => "button"} Reconnaissances
 
 #pills-tabContent.tab-content
-  #pills-parcours.tab-pane.fade{"aria-labelledby" => "pills-parcours-tab", :role => "tabpanel"}
-    Mon parcours
+  #pills-parcours.tab-pane.fade.active.show{"aria-labelledby" => "pills-parcours-tab", :role => "tabpanel"}
+    - user.phases.each do |p|
+      .bg-white.p-2.shadow-sm.mb-1
+        .row
+          .col
+            %strong= p.church_name
+          .col
+            %em.mr-3= p.function
+          .col
+            %span.mr-3= p.get_dates
 
   #pills-nationals.tab-pane.fade{"aria-labelledby" => "pills-nationals-tab", :role => "tabpanel"}
-    Responsabilités nationales
+    - user.responsabilities.each do |p|
+      .bg-white.p-2.shadow-sm.mb-1
+        .row
+          .col
+            %strong= p.assoc_name
+          .col
+            %em.mr-3= p.function
+          .col
+            %span.mr-3= p.get_dates
 
   #pills-cursus.tab-pane.fade{"aria-labelledby" => "pills-cursus-tab", :role => "tabpanel"}
     - user.gratitudes.each do |gratitude|

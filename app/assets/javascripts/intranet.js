@@ -233,16 +233,104 @@ $(document).ready(function(){
     $("#wife_id").val(suggestion.id);
   });
 
+
+  $('.church').each(function(){
+    init_church($(this));
+  });
+
   $('.select_all_access').on('click', function(e){
     e.preventDefault();
 
     $('.form-check-input').each(function(){
       $(this).attr('checked', true);
     });
-  })
+  });
+
+  $('#phases').on('cocoon:after-insert', function(e, insertedItem, originalEvent){
+    init_church(insertedItem.find('.church'));
+  });
+
+  $('#responsabilities').on('cocoon:after-insert', function(e, insertedItem, originalEvent){
+    init_assoc(insertedItem.find('.association'));
+  });
 
 
 });
+
+function init_church(element){
+  var churches = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: '/structures.json?type=church',
+    remote: {
+      url: '/structures.json?type=church&query=%QUERY',
+      wildcard: '%QUERY',
+      filter: function (structures) {
+        return $.map(structures, function (structure) {
+          console.log(structure)
+          return {
+            id: structure.id,
+            value: structure.name + ' (' + structure.town + ')'
+          };
+        });
+      }
+    }
+  });
+
+  element.typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },{
+      name: 'churches',
+      source: churches,
+      display: 'value',
+      limit: 50,
+      templates: {
+        suggestion: Handlebars.compile('<div class="church"><i class="fa fa-fire mr-1"></i> {{value}}</div>')
+      }
+  }).bind('typeahead:select', function(ev, suggestion) {
+
+    element.parents('.form-group').find('input.church_id').val(suggestion.id);
+  });
+}
+function init_assoc(element){
+  var associations = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: '/structures.json?type=association',
+    remote: {
+      url: '/structures.json?type=association&query=%QUERY',
+      wildcard: '%QUERY',
+      filter: function (structures) {
+        return $.map(structures, function (structure) {
+          console.log(structure)
+          return {
+            id: structure.id,
+            value: structure.name
+          };
+        });
+      }
+    }
+  });
+
+  element.typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },{
+      name: 'associations',
+      source: associations,
+      display: 'value',
+      limit: 50,
+      templates: {
+        suggestion: Handlebars.compile('<div class="church"><i class="fa fa-fire mr-1"></i> {{value}}</div>')
+      }
+  }).bind('typeahead:select', function(ev, suggestion) {
+
+    element.parents('.form-group').find('input.association_id').val(suggestion.id);
+  });
+}
 
 function init_fullCalendar(selector, sources, selectable){
   $(selector).fullCalendar({

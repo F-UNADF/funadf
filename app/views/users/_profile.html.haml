@@ -99,6 +99,17 @@
 
     .card
       .card-header
+        %h2.h4 Parcours
+
+      .card-body
+        - user.phases.each do |p|
+          .gratitude.d-flex.flex-row.justify-content-start
+            %span.mr-3.font-weight-bolder= p.church_name
+            %em.mr-3= p.function
+            %span.mr-3= p.get_dates
+
+    .card
+      .card-header
         %h2.h4 Activités
 
       .card-body

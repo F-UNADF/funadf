@@ -3,8 +3,17 @@ class Intranet::StructuresController < IntranetController
 
   def index
 
-    @q = @intranet_structure.structures.order(name: :asc).ransack(params[:q])
-    @structures = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
+
+    respond_to do |format|
+      format.json {
+        @structures = Structure.where(type: params[:type]).where('name LIKE ? OR town LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%").order(name: :asc)
+        render json: @structures
+      }
+      format.html {
+        @q = @intranet_structure.structures.order(name: :asc).ransack(params[:q])
+        @structures = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
+      }
+    end
 
   end
 

@@ -125,10 +125,61 @@
           = f.fields_for :gratitudes do |ff|
             = render 'users/gratitude_fields', f: ff
 
+          #gratitudes
+
           .form-group
             = link_to_add_association f, :gratitudes, class: "btn btn-sm btn-primary", partial: 'users/gratitude_fields', data: {"association-insertion-node" => "#gratitudes", "association-insertion-method" => "append"} do
               = icon 'fa', "plus"
               Ajouter une reconnaissance
+
+      .card
+        .card-header
+          %strong Parcours
+
+        .card-body
+          .row.mb-1
+            .col-3
+              %strong Eglise
+            .col-3
+              %strong Fonction
+            .col-5
+              %strong Date
+            .col-1
+
+          = f.fields_for :phases do |ff|
+            = render 'users/phases_fields', f: ff
+
+          #phases
+
+          .form-group
+            = link_to_add_association f, :phases, class: "btn btn-sm btn-primary", partial: 'users/phases_fields', data: {"association-insertion-node" => "#phases", "association-insertion-method" => "append"} do
+              = icon 'fa', "plus"
+              Ajouter une étape
+
+      .card
+        .card-header
+          %strong Responsabilités Nationales
+
+        .card-body
+          .row.mb-1
+            .col-3
+              %strong Oeuvre
+            .col-3
+              %strong Fonction
+            .col-5
+              %strong Date
+            .col-1
+
+          = f.fields_for :responsabilities do |ff|
+            = render 'users/responsabilities_fields', f: ff
+
+          #responsabilities
+
+          .form-group
+            = link_to_add_association f, :responsabilities, class: "btn btn-sm btn-primary", partial: 'users/responsabilities_fields', data: {"association-insertion-node" => "#responsabilities", "association-insertion-method" => "append"} do
+              = icon 'fa', "plus"
+              Ajouter une responsabilité
+
 
       .card
         .card-header
