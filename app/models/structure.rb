@@ -7,6 +7,9 @@ class Structure < ActiveRecord::Base
   has_many :posts, dependent: :destroy
 
 
+  has_one_attached :logo
+
+
   validates :name, :type, presence: true
 
   def roles
@@ -178,6 +181,13 @@ class Structure < ActiveRecord::Base
     else
       "Pas de président"
     end
+  end
+
+
+  def gravatar_url
+    hash = Digest::MD5.hexdigest(self.email)
+
+    return "https://www.gravatar.com/avatar/#{hash}"
   end
 
 end

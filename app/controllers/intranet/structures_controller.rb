@@ -2,8 +2,6 @@ class Intranet::StructuresController < IntranetController
 
 
   def index
-
-
     respond_to do |format|
       format.json {
         @structures = Structure.where(type: params[:type]).where('name LIKE ? OR town LIKE ?', "%#{params[:query]}%", "%#{params[:query]}%").order(name: :asc)

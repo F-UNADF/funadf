@@ -10,4 +10,4 @@
         %strong Modifier une structure
 
       .card-body
-        = render 'form', structure: @structure
+        = render 'structures/form', structure: @structure, action: structure.becomes(Structure)

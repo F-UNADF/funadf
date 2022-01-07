@@ -9,7 +9,7 @@
   .container-fluid
     .row
       .col-3
-        = render "structures/infos", structure: @structure
+        = render "structures/infos", structure: @structure, edit_path: edit_structure_path(@intranet_structure)
 
       .col-md-9
 

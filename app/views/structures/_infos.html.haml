@@ -2,6 +2,13 @@
   .card-header
     La structure
   .card-body
+    .logo.w-50.mb-5.mx-auto.text-center
+
+      - if structure.logo.attached?
+        = image_tag structure.logo.representation(resize_to_limit: [150, 150]), class: "rounded-circle img-fluid"
+      - else
+        = image_tag structure.gravatar_url, class: "rounded-circle img-fluid"
+
     %strong= structure.name
     %br
     = structure.full_address
@@ -23,7 +30,7 @@
           = structure.phone_2
 
   .card-footer
-    - if can? :cru, @structure
-      = link_to edit_structure_path(structure), class: 'btn btn-sm btn-outline-dark btn-icon' do
+    - if can? :cru, structure
+      = link_to edit_path, class: 'btn btn-sm btn-outline-dark btn-icon' do
         = icon 'fa', "edit"
         Modifier ces infos

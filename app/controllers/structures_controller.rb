@@ -52,6 +52,6 @@ class StructuresController < ApplicationController
     end
 
     def structure_params
-      params[:structure].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :type)
+      params[:structure].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :type, :logo)
     end
 end

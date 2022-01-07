@@ -28,8 +28,14 @@
       = icon "fa", 'comments', class: "menu-icon"
       %span Actualités
 
-  %h3.menu-title Annuaire
+  %li{class: "#{(params[:controller].match(/structure/)) ? 'active' : ''}"}
+    = link_to intranet_the_structure_path do
+      = icon "fa", 'cogs', class: "menu-icon"
+      %span
+        Infos
+        %b= @intranet_structure.name
 
+  %h3.menu-title Annuaire
 
   %li{class: "#{(params[:controller].match(/users/)) ? 'active' : ''}"}
     = link_to [:intranet, :users] do

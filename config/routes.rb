@@ -50,6 +50,7 @@ Rails.application.routes.draw do
         resources :structures
         resources :categories
         resources :posts
+        resource :the_structure, controller: 'structure', only: [:show, :edit, :update]
         root to: 'home#show', as: :intranet
       end
     end

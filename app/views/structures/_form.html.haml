@@ -1,4 +1,4 @@
-= form_for structure.becomes(Structure), as: :structure do |f|
+= form_for structure, url: action, as: :structure do |f|
   - if structure.errors.any?
     .alert.alert-danger
       %h3.h4 Merci de corriger les erreurs ci-dessous
@@ -44,6 +44,20 @@
           .form-group
             = f.label :town
             = f.text_field :town, class: "form-control"
+
+    .col-md-6
+      .row.mb-3
+        .col-md-6
+          - if structure.logo.attached?
+            = image_tag structure.logo.representation(resize_to_limit: [100, 100]), class: "rounded-circle img-fluid"
+          - else
+            = image_tag structure.gravatar_url, class: "rounded-circle img-fluid"
+            %br
+            %em.text-muted image générée depuis GRAVATAR
+        .col-md-6
+          %p Modifier mon logo
+          .form-group
+            = f.file_field :logo
 
   .float-right
     %button.btn.btn-primary{type: :submit}

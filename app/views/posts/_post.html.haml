@@ -1,0 +1,22 @@
+.bg-white.p-3.feed-item.rounded-4.mb-3.shadow-sm
+  .mx-3
+    .d-flex.align-items-center.justify-content-between
+      %a.text-decoration-none.d-flex.align-items-center{:href => "#"}
+        .logo.me-3{style: 'width:50px;'}
+          - if post.structure.logo.attached?
+            = image_tag post.structure.logo.representation(resize_to_limit: [100, 100]), class: "img-fluid rounded-circle user-img"
+          - else
+            = image_tag post.structure.gravatar_url, class: "img-fluid rounded-circle user-img"
+
+        %h6.fw-bold.mb-0.text-body= post.structure_name
+
+      .date
+        %p.text-muted.mb-0= l post.created_at.to_date, format: :short
+
+
+    .my-2.pt-3.border-top
+
+      %h5.mb-3= post.title
+
+      = post.content.html_safe
+
