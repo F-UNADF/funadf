@@ -3,7 +3,6 @@ class Intranet::UsersController < IntranetController
   before_action :check_current_user
 
   def index
-
     respond_to do |format|
       format.json {
         @users = User.all
