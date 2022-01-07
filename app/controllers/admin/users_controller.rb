@@ -88,7 +88,6 @@ class Admin::UsersController < AdminController
                           phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                           responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
       end
-      end
     end
 
 
