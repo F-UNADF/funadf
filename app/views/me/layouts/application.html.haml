@@ -63,7 +63,7 @@
                       = link_to root_url(subdomain: :admin), class: 'nav-link' do
                         %span
                           = icon "fa", "cogs", class: 'me-3'
-                        %span Accéder à l'adminitration
+                        %span Accéder à l'administration
 
                   - Intranet.all.each do |intranet|
                     - if can?(:manage, intranet.structure) && @subdomain != intranet.subdomain

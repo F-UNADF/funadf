@@ -4,7 +4,7 @@
   %li
     = link_to root_url(subdomain: :admin) do
       = icon "fa", "cogs", class: "menu-icon"
-      Accéder à l'adminitration
+      Accéder à l'administration
 
 - Intranet.all.each do |intranet|
   - if can?(:manage, intranet.structure) && @subdomain != intranet.subdomain

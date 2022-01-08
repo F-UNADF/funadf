@@ -17,3 +17,12 @@
 
       = post.content.html_safe
 
+    - unless post.files.blank?
+      .my-2
+        %h5 Pièces jointes
+        %ul.list-inline
+          - post.files.each do |file|
+            %li.list-item
+              = link_to rails_blob_path(file, disposition: "attachment"), class: "btn btn-link btn-sm" do
+                = icon "fa", "download"
+                = file.filename
