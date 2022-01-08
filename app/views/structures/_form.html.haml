@@ -48,12 +48,8 @@
     .col-md-6
       .row.mb-3
         .col-md-6
-          - if structure.logo.attached?
-            = image_tag structure.logo.representation(resize_to_limit: [100, 100]), class: "rounded-circle img-fluid"
-          - else
-            = image_tag structure.gravatar_url, class: "rounded-circle img-fluid"
-            %br
-            %em.text-muted image générée depuis GRAVATAR
+          = image_tag get_structure_logo_link(structure), class: "rounded-circle img-fluid"
+
         .col-md-6
           %p Modifier mon logo
           .form-group

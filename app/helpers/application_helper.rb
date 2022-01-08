@@ -40,7 +40,11 @@ module ApplicationHelper
   end
 
   def get_structure_logo_link(s, resize=[100, 100])
-    url_for(s.logo.representation(resize_to_limit: resize))
+    if s.logo.attached?
+      url_for(s.logo.representation(resize_to_limit: resize)).url
+    else
+      s.gravatar_url
+    end
   end
 
 

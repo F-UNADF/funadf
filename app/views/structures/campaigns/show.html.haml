@@ -9,7 +9,7 @@
   .container-fluid
     .row
       .col-md-12
-        = render 'structures/infos', structure: @structure
+        = render "structures/infos", structure: @structure, edit_path: edit_structure_path(@structure)
 
       .col-md-12
         .card

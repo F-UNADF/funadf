@@ -5,7 +5,9 @@
         .mx-auto.d-block
           .avatar.w-50.mb-3.mx-auto.text-center
             - if user.avatar.attached?
-              = image_tag user.avatar.representation(resize_to_limit: [150, 150]), class: "rounded-circle img-fluid"
+
+              = image_tag user.avatar.url, class: "rounded-circle img-fluid"
+
             - else
               = image_tag user.gravatar_url, class: "rounded-circle img-fluid"
           .text-center
