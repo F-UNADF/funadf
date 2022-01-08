@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # skip_before_action :verify_authenticity_token
   protect_from_forgery prepend: true, with: :exception
 
-  before_action :get_original_user
+  before_action :get_original_user, :set_subdomain
 
   layout :set_layout
 
@@ -12,6 +12,13 @@ class ApplicationController < ActionController::Base
 
   def get_original_user
     @original_user_scope_identifier = session[:original_user_scope_identifier]
+  end
+
+  def set_subdomain
+    @subdomain = ""
+    unless request.subdomain.blank?
+      @subdomain = request.subdomain
+    end
   end
 
   private

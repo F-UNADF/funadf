@@ -58,11 +58,27 @@
                         = icon 'fa', 'user-circle', class: 'me-3'
                       %span Mon profil
 
-                  %li.nav-item
-                    = link_to root_url(subdomain: nil), class: 'nav-link' do
-                      %span
-                        = icon 'fa', 'arrow-left', class: 'me-3'
-                      %span Espace vote
+                  - if current_user.has_role?([:admin, :moderator]) && @subdomain != "admin"
+                    %li.nav-item
+                      = link_to root_url(subdomain: :admin), class: 'nav-link' do
+                        %span
+                          = icon "fa", "cogs", class: 'me-3'
+                        %span Accéder à l'adminitration
+
+                  - Intranet.all.each do |intranet|
+                    - if can?(:manage, intranet.structure) && @subdomain != intranet.subdomain
+                      %li.nav-item
+                        = link_to root_url(subdomain: intranet.subdomain), class: 'nav-link' do
+                          %span
+                            = icon "fa", "cogs", class: 'me-3'
+                          %span= "Intranet #{intranet.structure_name}"
+
+                  - if @subdomain != ""
+                    %li
+                      = link_to root_url(subdomain: ""), class: 'nav-link' do
+                        %span
+                          = icon "fa", "person-booth", class: 'me-3'
+                        %span Accéder aux votes
 
           %aside.col.col-xl-3.order-xl-3.col-lg-6.order-lg-3.col-md-6.col-sm-6.col-12
             .fix-sidebar

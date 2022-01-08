@@ -1,0 +1,25 @@
+%h3.menu-title Navigation
+
+- if current_user.has_role?([:admin, :moderator]) && @subdomain != "admin"
+  %li
+    = link_to root_url(subdomain: :admin) do
+      = icon "fa", "cogs", class: "menu-icon"
+      Accéder à l'adminitration
+
+- Intranet.all.each do |intranet|
+  - if can?(:manage, intranet.structure) && @subdomain != intranet.subdomain
+    %li
+      = link_to root_url(subdomain: intranet.subdomain) do
+        = icon "fa", "cogs", class: "menu-icon"
+        = "Intranet #{intranet.structure_name}"
+
+%li
+  = link_to root_url(subdomain: :me) do
+    = icon "fa", "user", class: "menu-icon"
+    Accéder à mon espace
+
+- if @subdomain != ""
+  %li
+    = link_to root_url(subdomain: "") do
+      = icon "fa", "person-booth", class: "menu-icon"
+      Accéder aux votes

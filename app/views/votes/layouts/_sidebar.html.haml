@@ -6,13 +6,13 @@
       = icon 'fa', "home", class: "menu-icon"
       Accueil
 
-  %li{class: "#{(params[:controller] == 'campaigns') ? 'active' : ''}"}
+  %li{class: "#{(params[:controller].match(/campaigns/)) ? 'active' : ''}"}
     = link_to votes_campaigns_url do
       = icon 'fa', "comment", class: "menu-icon"
       Mes votes
 
 
-  %li{class: "#{(params[:controller] == 'results') ? 'active' : ''}"}
+  %li{class: "#{(params[:controller].match(/results/)) ? 'active' : ''}"}
     = link_to votes_results_url do
       = icon 'fa', "comments", class: "menu-icon"
       Résultats
@@ -20,20 +20,15 @@
 
   %h3.menu-title Mon compte
 
-  %li{class: "#{(params[:controller] == 'accounts') ? 'active' : ''}"}
+  %li{class: "#{(params[:controller].match(/accounts/)) ? 'active' : ''}"}
     = link_to me_path do
       = icon 'fa', "user", class: "menu-icon"
       Consulter mon profil
 
-  %li{class: "#{(params[:controller] == 'structures') ? 'active' : ''}"}
+  %li{class: "#{(params[:controller].match(/structures/)) ? 'active' : ''}"}
     = link_to structures_path do
       = icon 'fa', "address-book", class: "menu-icon"
       Consulter mes structures
 
-  %h3.menu-title
 
-  - if current_user.has_role? [:admin, :moderator]
-    %li
-      = link_to root_url(subdomain: :admin) do
-        = icon "fa", "cogs", class: "menu-icon"
-        Accéder à l'adminitration
+  = render "shared/access_menus"

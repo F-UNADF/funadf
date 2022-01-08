@@ -379,6 +379,113 @@ aside.left-panel {
   text-align: center;
 }
 
+
+.votes{
+  aside.left-panel{
+    background: $menu-bg-votes;
+
+  }
+
+  .navbar {
+    background: $menu-bg-votes;
+    .navbar-brand{
+      color: #fff;
+    }
+    .menu-title {
+      color: #fff;
+    }
+    .navbar-nav li > a{
+      color: #fff !important;
+      .menu-icon{
+        color: #fff !important;
+      }
+      &:hover{
+        color: #185d8a !important;
+        .menu-icon{
+          color: #185d8a !important;
+        }
+      }
+    }
+
+    .navbar-nav li.active > a{
+      color: #185d8a !important;
+      .menu-icon{
+        color: #185d8a !important;
+      }
+    }
+  }
+}
+.admin{
+  aside.left-panel{
+    background: $menu-bg-admin;
+
+  }
+
+  .navbar {
+    background: $menu-bg-admin;
+    .navbar-brand{
+      color: #fff;
+    }
+    .menu-title {
+      color: #fff;
+    }
+    .navbar-nav li > a{
+      color: #fff !important;
+      .menu-icon{
+        color: #fff !important;
+      }
+      &:hover{
+        color: #1c7a44 !important;
+        .menu-icon{
+          color: #1c7a44 !important;
+        }
+      }
+    }
+
+    .navbar-nav li.active > a{
+      color: #1c7a44 !important;
+      .menu-icon{
+        color: #1c7a44 !important;
+      }
+    }
+  }
+}
+.intranet{
+  aside.left-panel{
+    background: $menu-bg-intranet;
+
+  }
+
+  .navbar {
+    background: $menu-bg-intranet;
+    .navbar-brand{
+      color: #fff;
+    }
+    .menu-title {
+      color: #fff;
+    }
+    .navbar-nav li > a{
+      color: #fff !important;
+      .menu-icon{
+        color: #fff !important;
+      }
+      &:hover{
+        color: #8e4b10 !important;
+        .menu-icon{
+          color: #8e4b10 !important;
+        }
+      }
+    }
+
+    .navbar-nav li.active > a{
+      color: #8e4b10 !important;
+      .menu-icon{
+        color: #8e4b10 !important;
+      }
+    }
+  }
+}
+
 body.open {
   .navbar {
     .navbar-brand {
