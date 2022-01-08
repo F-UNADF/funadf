@@ -58,10 +58,10 @@
                   = image_tag current_user.gravatar_url, class: "user-avatar rounded-circle"
 
               .user-menu.dropdown-menu
-                = link_to me_path, class: 'nav-link' do
+                = link_to me_path(subdomain: ''), class: 'nav-link' do
                   %i.fa.fa-.user>
                   Mon profil
-                = link_to edit_me_path, class: 'nav-link' do
+                = link_to edit_me_path(subdomain: ''), class: 'nav-link' do
                   %i.fa.fa.-cog>
                   Modifier mon profil
                 = link_to destroy_user_session_path, method: :delete, class: "nav-link" do

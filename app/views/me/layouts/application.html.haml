@@ -53,7 +53,7 @@
                       %span Accueil
 
                   %li.nav-item
-                    = link_to me_profile_url, class: "nav-link #{(params[:controller].match(/profile/)) ? 'active' : ''}" do
+                    = link_to me_url(subdomain: ''), class: "nav-link #{(params[:controller].match(/profile/)) ? 'active' : ''}" do
                       %span
                         = icon 'fa', 'user-circle', class: 'me-3'
                       %span Mon profil
