@@ -3,11 +3,7 @@
     La structure
   .card-body
     .logo.w-50.mb-5.mx-auto.text-center
-
-      - if structure.logo.attached?
-        = image_tag structure.logo.representation(resize_to_limit: [150, 150]), class: "rounded-circle img-fluid"
-      - else
-        = image_tag structure.gravatar_url, class: "rounded-circle img-fluid"
+      = image_tag get_structure_logo_link(structure), class: "rounded-circle img-fluid"
 
     %strong= structure.name
     %br

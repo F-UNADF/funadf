@@ -39,5 +39,9 @@ module ApplicationHelper
     flash_messages.join("\n").html_safe
   end
 
+  def get_structure_logo_link(s, resize=[100, 100])
+    url_for(s.logo.representation(resize_to_limit: resize))
+  end
+
 
 end

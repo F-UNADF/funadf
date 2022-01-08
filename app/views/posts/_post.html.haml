@@ -3,10 +3,7 @@
     .d-flex.align-items-center.justify-content-between
       %a.text-decoration-none.d-flex.align-items-center{:href => "#"}
         .logo.me-3{style: 'width:50px;'}
-          - if post.structure.logo.attached?
-            = image_tag post.structure.logo.representation(resize_to_limit: [100, 100]), class: "img-fluid rounded-circle user-img"
-          - else
-            = image_tag post.structure.gravatar_url, class: "img-fluid rounded-circle user-img"
+          = image_tag get_structure_logo_link(post.structure), class: "img-fluid rounded-circle user-img"
 
         %h6.fw-bold.mb-0.text-body= post.structure_name
 
