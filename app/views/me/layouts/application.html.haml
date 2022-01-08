@@ -100,7 +100,7 @@
                           %small.text-muted= l e.start_at, format: :long
 
                         - if e.structure.logo.attached?
-                          = image_tag get_structure_logo_link(post.structure, [50, 50]), class: "img-fluid rounded ms-auto"
+                          = image_tag get_structure_logo_link(e.structure, [50, 50]), class: "img-fluid rounded ms-auto"
                         - else
                           = image_tag e.structure.gravatar_url, class: "img-fluid rounded ms-auto"
 
