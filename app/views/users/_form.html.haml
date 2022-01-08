@@ -16,10 +16,8 @@
 
           .row.mb-3
             .col-md-6
-              - if user.avatar.attached?
-                = image_tag user.avatar.url, class: "rounded-circle img-fluid"
-              - else
-                = image_tag user.gravatar_url, class: "rounded-circle img-fluid"
+              = image_tag user.get_avatar_url, class: "rounded-circle img-fluid"
+
             .col-md-6
               %p Modifier mon avatar
               .form-group

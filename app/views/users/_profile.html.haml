@@ -4,10 +4,8 @@
       .card-body
         .mx-auto.d-block
           .avatar.w-50.mb-3.mx-auto.text-center
-            - if user.avatar.attached?
-              = image_tag user.avatar.url, class: "rounded-circle img-fluid"
-            - else
-              = image_tag user.gravatar_url, class: "rounded-circle img-fluid"
+            = image_tag user.get_avatar_url([350,350]), class: "rounded-circle img-fluid"
+
           .text-center
             .client-title.mt-2.mb-1
               %h3= user.fullname

@@ -27,15 +27,13 @@
             .ps-0.m-none.fix-sidebar
               .sidebar-nav.mb-3
                 .pb-4.mb-3
-                  = link_to '#', class: 'text-decoration-none' do
+                  = link_to root_url, class: 'text-decoration-none' do
                     = image_tag 'logo.png', class: 'img-fluid'
 
                 .side-profile.bg-white.mb-3.p-4.d-flex.flex-column.text-center
                   .avatar.w-50.mb-3.mx-auto
-                    - if current_user.avatar.attached?
-                      = image_tag current_user.avatar.representation(resize_to_limit: [500, 500]), class: "rounded-circle img-fluid"
-                    - else
-                      = image_tag current_user.gravatar_url, class: "rounded-circle img-fluid"
+                    = image_tag current_user.get_avatar_url([500,500]), class: "rounded-circle img-fluid"
+
                   .name
                     .h5.mb-1
                       %span.d-block.small.text-muted.mb-2
@@ -99,10 +97,7 @@
                           %p.fw-bold.mb-0.pe-3= e.title
                           %small.text-muted= l e.start_at, format: :long
 
-                        - if e.structure.logo.attached?
-                          = image_tag get_structure_logo_link(e.structure, [50, 50]), class: "img-fluid rounded ms-auto"
-                        - else
-                          = image_tag e.structure.gravatar_url, class: "img-fluid rounded ms-auto"
+                        = image_tag e.structure.get_logo_url([50, 50]), class: "img-fluid rounded ms-auto"
 
 
     .py-3.bg-white.footer-copyright

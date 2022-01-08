@@ -190,4 +190,13 @@ class Structure < ActiveRecord::Base
     return "https://www.gravatar.com/avatar/#{hash}"
   end
 
+
+  def get_logo_url size=[150,150]
+    if self.logo.attached?
+      self.logo.representation(resize_to_limit: size)
+    else
+      gravatar_url
+    end
+  end
+
 end

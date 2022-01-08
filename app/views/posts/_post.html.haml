@@ -3,7 +3,7 @@
     .d-flex.align-items-center.justify-content-between
       %a.text-decoration-none.d-flex.align-items-center{:href => "#"}
         .logo.me-3{style: 'width:50px;'}
-          = image_tag get_structure_logo_link(post.structure), class: "img-fluid rounded-circle user-img"
+          = image_tag post.structure.get_logo_url([150,150]), class: "img-fluid rounded-circle user-img"
 
         %h6.fw-bold.mb-0.text-body= post.structure_name
 

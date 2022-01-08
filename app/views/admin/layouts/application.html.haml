@@ -50,6 +50,7 @@
             .user-area.dropdown.float-right
               %a.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
                 = current_user.name
+                = image_tag current_user.get_avatar_url([100, 100]), class: "user-avatar rounded-circle"
               .user-menu.dropdown-menu
                 = link_to me_path(subdomain: ''), class: 'nav-link' do
                   %i.fa.fa-.user>

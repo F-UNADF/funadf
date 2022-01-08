@@ -306,5 +306,13 @@ class User < ActiveRecord::Base
     f
   end
 
+  def get_avatar_url size=[150,150]
+    if self.avatar.attached?
+      self.avatar.representation(resize_to_limit: size)
+    else
+      gravatar_url
+    end
+  end
+
 
  end

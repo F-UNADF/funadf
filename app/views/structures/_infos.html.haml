@@ -3,7 +3,7 @@
     La structure
   .card-body
     .logo.w-50.mb-5.mx-auto.text-center
-      = image_tag get_structure_logo_link(structure), class: "rounded-circle img-fluid"
+      = image_tag structure.get_logo_url([150,150]), class: "rounded-circle img-fluid"
 
     %strong= structure.name
     %br

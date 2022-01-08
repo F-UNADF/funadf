@@ -52,10 +52,7 @@
             .user-area.dropdown.float-right
               %a.dropdown-toggle.d-flex.justify-content-end.align-items-center{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
                 %span.mr-3= current_user.name
-                - if current_user.avatar.attached?
-                  = image_tag current_user.avatar.representation(resize_to_limit: [150, 150]).url, class: "user-avatar rounded-circle"
-                - else
-                  = image_tag current_user.gravatar_url, class: "user-avatar rounded-circle"
+                = image_tag current_user.get_avatar_url([150, 150]), class: "user-avatar rounded-circle"
 
               .user-menu.dropdown-menu
                 = link_to me_path(subdomain: ''), class: 'nav-link' do

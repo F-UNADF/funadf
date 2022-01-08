@@ -48,7 +48,7 @@
     .col-md-6
       .row.mb-3
         .col-md-6
-          = image_tag get_structure_logo_link(structure), class: "rounded-circle img-fluid"
+          = image_tag structure.get_logo_url([150,150]), class: "rounded-circle img-fluid"
 
         .col-md-6
           %p Modifier mon logo

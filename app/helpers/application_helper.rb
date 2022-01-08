@@ -39,13 +39,4 @@ module ApplicationHelper
     flash_messages.join("\n").html_safe
   end
 
-  def get_structure_logo_link(s, resize=[100, 100])
-    if s.logo.attached?
-      s.logo.representation(resize_to_limit: resize)
-    else
-      s.gravatar_url
-    end
-  end
-
-
 end

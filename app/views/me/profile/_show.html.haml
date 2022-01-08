@@ -1,9 +1,6 @@
 .bg-white.rounded-4.shadow-sm.profile
   .d-flex.align-items-center.px-3.pt-3
-    - if user.avatar.attached?
-      = image_tag user.avatar.representation(resize_to_limit: [500, 500]), class: "rounded-circle img-fluid"
-    - else
-      = image_tag user.gravatar_url, class: "rounded-circle img-fluid"
+    = image_tag user.get_avatar_url([500, 500]), class: "rounded-circle img-fluid"
 
     .mx-3
       %h6.mb-0.d-flex.align-items-start.text-body.fs-6.fw-bold
