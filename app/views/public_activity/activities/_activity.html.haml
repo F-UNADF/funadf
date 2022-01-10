@@ -1,36 +1,37 @@
-.activity.p-3.mb-3.border-bottom.border.shadow-sm
-  %h4.mb-3
-    %span.icon.mr-1
-      - if activity.key.match(/update/)
-        = icon 'fa', 'edit'
-      - elsif activity.key.match(/create/)
-        = icon 'fa', 'plus'
-      - elsif activity.key.match(/destroy/)
-        = icon 'fa', 'times'
+- unless activity.owner.blank?
+  .activity.p-3.mb-3.border-bottom.border.shadow-sm
+    %h4.mb-3
+      %span.icon.mr-1
+        - if activity.key.match(/update/)
+          = icon 'fa', 'edit'
+        - elsif activity.key.match(/create/)
+          = icon 'fa', 'plus'
+        - elsif activity.key.match(/destroy/)
+          = icon 'fa', 'times'
 
-    %strong= activity.owner.fullname
+      %strong= activity.owner.fullname
 
-    = t "activities.#{activity.key}"
+      = t "activities.#{activity.key}"
 
-    - if activity.owner == activity.trackable
-      son profil
-    - else
-      = activity.trackable.fullname
-    %br
-    %small.text-muted
-      Il y a
-      = time_ago_in_words activity.created_at
+      - if activity.owner == activity.trackable
+        son profil
+      - else
+        = activity.trackable.fullname
+      %br
+      %small.text-muted
+        Il y a
+        = time_ago_in_words activity.created_at
 
-  - unless activity.parameters.blank?
-    %table.table.table.table-sm.border-bottom-success
-      %tr
-        %th
-        %th Avant
-        %th Aprés
-
-      - activity.parameters.each do |param|
+    - unless activity.parameters.blank?
+      %table.table.table.table-sm.border-bottom-success
         %tr
-          %td
-            %strong= t "activerecord.attributes.#{activity.trackable_type.downcase}.#{param.first}"
-          - param.last.each do |val|
-            %td= val
+          %th
+          %th Avant
+          %th Aprés
+
+        - activity.parameters.each do |param|
+          %tr
+            %td
+              %strong= t "activerecord.attributes.#{activity.trackable_type.downcase}.#{param.first}"
+            - param.last.each do |val|
+              %td= val
