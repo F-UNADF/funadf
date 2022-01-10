@@ -24,20 +24,24 @@ class ApplicationController < ActionController::Base
   private
     def set_layout
       folder = 'votes/'
-      if request.subdomain && request.subdomain != ''
-        case request.subdomain
-        when 'admin'
-          folder = 'admin/'
-        when 'me'
-          folder = 'me/'
-        else
-          folder = 'intranet/'
-        end
-      end
       module_name = self.class.to_s.split("::").first
-      mod =  (module_name.eql?("Devise") ? "devise" : "application")
 
-      return "#{folder}layouts/#{mod}"
+      if module_name.eql?("Devise")
+        return "devise/layouts"
+      else
+        if request.subdomain && request.subdomain != ''
+          case request.subdomain
+          when 'admin'
+            folder = 'admin/'
+          when 'me'
+            folder = 'me/'
+          else
+            folder = 'intranet/'
+          end
+        end
+
+        return "#{folder}layouts/application"
+      end
 
     end
 
