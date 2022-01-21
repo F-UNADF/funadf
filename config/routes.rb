@@ -38,6 +38,9 @@ Rails.application.routes.draw do
 
         get '/mon-profil', to: 'profile#show', as: :profile
 
+        get '/rechercher', to: 'search#show', as: :search
+        get '/searching', to: 'search#index'
+
         root to: 'feed#index', as: :me
       end
     end

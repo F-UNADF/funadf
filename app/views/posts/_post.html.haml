@@ -15,7 +15,17 @@
 
       %h5.mb-3= post.title
 
-      = post.content.html_safe
+      .content
+        - if post.content.length > 250
+          = truncate(post.content, length: 250, omission: "..." , escape: false)
+
+          = link_to '#', class: "read-more read-more-#{post.id}", data: {replace: post.content.html_safe} do
+            En lire plus...
+
+        - else
+          = post.content.html_safe
+
+
 
     - unless post.files.blank?
       .my-2

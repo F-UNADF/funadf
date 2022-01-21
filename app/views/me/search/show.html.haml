@@ -1,0 +1,23 @@
+= form_tag :search, remote: :true do |f|
+
+  .alert.alert-info
+    %p.text-muted
+      Les résultats de votre recherche apparaitront après avoir renseigné au moins 3 lettres.
+      %br
+      Exemple de recherche :
+      %em Delattre,
+      %em Mulhouse
+      %em 75015
+      \...
+
+
+  .input-group.mb-4.shadow-sm.rounded-4.overflow-hidden.py-2.bg-white
+    %span.input-group-text.border-0.bg-white.text-primary
+      = icon "fa", "search"
+    %input.form-control.border-0.fw-light.ps-1{type: :text, placeholder: 'Que cherchez vous ?', id: "search_field"}
+
+
+  #results
+
+
+= render 'script'

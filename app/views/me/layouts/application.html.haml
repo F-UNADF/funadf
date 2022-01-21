@@ -56,6 +56,12 @@
                         = icon 'fa', 'user-circle', class: 'me-3'
                       %span Mon profil
 
+                  %li.nav-item
+                    = link_to me_search_path, class: "nav-link #{(params[:controller].match(/searcg/)) ? 'active' : ''}" do
+                      %span
+                        = icon 'fa', 'search', class: 'me-3'
+                      %span Annuaire
+
                   - if current_user.has_role?([:admin, :moderator]) && @subdomain != "admin"
                     %li.nav-item
                       = link_to root_url(subdomain: :admin), class: 'nav-link' do

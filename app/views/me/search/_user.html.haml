@@ -1,0 +1,19 @@
+.bg-white.rounded-4.overflow-hidden.shadow-sm.mb-4
+  .p-3.border-bottom.d-flex.align-items-center.text-dark.text-decoration-none
+    %div
+      .text-muted.fw-light.d-flex.align-items-center.mb-1
+        %small= icon "fa", "user"
+        %span.mx-1.material-icons.md-3 circle
+        %small= user.level
+
+      %p.fw-bold.mb-0.pe-3= user.name
+
+      = link_to "mailto:#{user.email}", class: "text-muted small" do
+        = user.email
+
+      %br/
+
+      %span.text-muted= user.phone_1
+
+    = image_tag user.get_avatar_url([80, 80]), class: "img-fluid rounded-circle ms-auto"
+

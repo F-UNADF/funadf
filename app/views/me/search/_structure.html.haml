@@ -1,0 +1,17 @@
+.bg-white.rounded-4.overflow-hidden.shadow-sm.mb-4
+  .p-3.border-bottom.d-flex.align-items-center.text-dark.text-decoration-none{:href => "#"}
+    %div
+      .text-muted.fw-light.d-flex.align-items-center.mb-1
+        %small= icon "fa", structure.get_icon
+        %span.mx-1.material-icons.md-3 circle
+        %small= t "activerecord.models.#{structure.type.downcase}.one"
+
+      %p.fw-bold.mb-0.pe-3= "#{structure.name} - #{structure.town}"
+
+      = link_to "mailto:#{structure.email}", class: "text-muted small" do
+        = structure.email
+      %br/
+      %span.text-primary= structure.phone_1
+
+    = image_tag structure.get_logo_url([80, 80]), class: "img-fluid rounded-circle ms-auto"
+
