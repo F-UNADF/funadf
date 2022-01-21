@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_23_134900) do
+ActiveRecord::Schema.define(version: 2022_01_09_164214) do
 
   create_table "accesses", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "resource_type"
@@ -152,6 +152,17 @@ ActiveRecord::Schema.define(version: 2021_12_23_134900) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "memberships", charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
+    t.integer "role_id"
+    t.integer "structure_id"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["role_id"], name: "index_memberships_on_role_id"
+    t.index ["structure_id"], name: "index_memberships_on_structure_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
   create_table "motions", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -302,6 +313,9 @@ ActiveRecord::Schema.define(version: 2021_12_23_134900) do
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"
   add_foreign_key "intranets", "structures"
+  add_foreign_key "memberships", "roles"
+  add_foreign_key "memberships", "structures"
+  add_foreign_key "memberships", "users"
   add_foreign_key "posts", "structures"
   add_foreign_key "voting_tables", "campaigns"
 end
