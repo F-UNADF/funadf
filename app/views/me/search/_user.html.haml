@@ -6,7 +6,11 @@
         %span.mx-1.material-icons.md-3 circle
         %small= user.level
 
-      %p.fw-bold.mb-0.pe-3= user.name
+      %p.fw-bold.mb-0.pe-3
+
+      %p.fw-bold.mb-0.pe-3
+        = link_to me_user_path(user), class: "text-secondary" do
+          = user.name
 
       = link_to "mailto:#{user.email}", class: "text-muted small" do
         = user.email

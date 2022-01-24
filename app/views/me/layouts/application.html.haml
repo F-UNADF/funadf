@@ -51,13 +51,13 @@
                       %span Accueil
 
                   %li.nav-item
-                    = link_to me_url(subdomain: ''), class: "nav-link #{(params[:controller].match(/profile/)) ? 'active' : ''}" do
+                    = link_to me_profile_path, class: "nav-link #{(params[:controller].match(/profile/)) ? 'active' : ''}" do
                       %span
                         = icon 'fa', 'user-circle', class: 'me-3'
                       %span Mon profil
 
                   %li.nav-item
-                    = link_to me_search_path, class: "nav-link #{(params[:controller].match(/searcg/)) ? 'active' : ''}" do
+                    = link_to me_search_path, class: "nav-link #{(params[:controller].match(/search/)) ? 'active' : ''}" do
                       %span
                         = icon 'fa', 'search', class: 'me-3'
                       %span Annuaire
@@ -94,7 +94,7 @@
 
                     - @events.each do |e|
                       / Trending Item
-                      %a.p-3.border-bottom.d-flex.align-items-top.text-dark.text-decoration-none{:href => "#"}
+                      %a.event-list.p-3.border-bottom.d-flex.align-items-top.text-dark.text-decoration-none{:href => "#", "data-event-id" => e.id}
                         %div
                           .text-muted.fw-light.d-flex.align-items-center
                             %small= e.structure_name
@@ -127,5 +127,8 @@
               = icon "fab", "youtube"
 
 
+    #event.modal.fade{tabindex: '-1', role: "dialog"}
+      .modal-dialog{role: "document"}
+        .modal-content
 
     = custom_bootstrap_flash

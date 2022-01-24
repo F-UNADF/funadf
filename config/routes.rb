@@ -38,6 +38,10 @@ Rails.application.routes.draw do
 
         get '/mon-profil', to: 'profile#show', as: :profile
 
+        resources :structures, only: :show
+        resources :users, only: :show
+        resources :events, only: :show
+
         get '/rechercher', to: 'search#show', as: :search
         get '/searching', to: 'search#index'
 
@@ -100,6 +104,8 @@ Rails.application.routes.draw do
 
     root :to => redirect('/mon-compte'), as: :authenticated_user
   end
+
+  post 'uploader/image', to: 'uploader#image'
 
   get '/mon-compte', to: redirect('/users/sign_in')
   root to: redirect('/users/sign_in')

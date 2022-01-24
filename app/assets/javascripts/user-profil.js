@@ -125,14 +125,6 @@ jQuery(document).ready(function($) {
     init_church($(this));
   });
 
-  $('.select_all_access').on('click', function(e){
-    e.preventDefault();
-
-    $('.form-check-input').each(function(){
-      $(this).attr('checked', true);
-    });
-  });
-
   $('#phases').on('cocoon:after-insert', function(e, insertedItem, originalEvent){
     init_church(insertedItem.find('.church'));
   });

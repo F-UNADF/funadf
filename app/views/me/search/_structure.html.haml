@@ -6,7 +6,9 @@
         %span.mx-1.material-icons.md-3 circle
         %small= t "activerecord.models.#{structure.type.downcase}.one"
 
-      %p.fw-bold.mb-0.pe-3= "#{structure.name} - #{structure.town}"
+      %p.fw-bold.mb-0.pe-3
+        = link_to me_structure_path(structure), class: "text-secondary" do
+          = "#{structure.name} - #{structure.town}"
 
       = link_to "mailto:#{structure.email}", class: "text-muted small" do
         = structure.email

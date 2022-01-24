@@ -1,7 +1,7 @@
 .modal-header
   %h4.modal-title.pull-left= @event.title
-  %button.close{type: 'button', data:{dismiss: 'modal'}, aria:{label: 'Close'}}
-    = icon "fa", "times"
+
+  %button.btn-close{"type"=>"button", "data-bs-dismiss"=>"modal", "aria-label"=>"Close"}
 
 .modal-body
   %p
@@ -25,8 +25,5 @@
             = file.filename
 
 .modal-footer
-  = link_to [:intranet, event], method: :delete, data:{confirm: 'Voulez vous suppimer cet événement ?'}, class: 'btn btn-sm btn-danger pull-left' do
-    = icon 'fa', 'trash'
-    Supprimer l'événement
-  %button.btn-sm.btn.btn-danger{data:{dismiss: 'modal'}}
+  %button.btn-sm.btn.btn-danger{"data-bs-dismiss"=>"modal", "aria-label"=>"Close"}
     Quitter

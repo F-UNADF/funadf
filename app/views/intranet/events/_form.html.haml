@@ -27,15 +27,43 @@
 
     .form-group
       %label Date et heure de début
-      = f.datetime_field :start_at, class: "form-control datetimepicker", value: "#{l event.start_at unless event.start_at.blank? }"
+      = f.datetime_field :start_at, class: "form-control"
 
     .form-group
       %label Date et heure de fin
-      = f.datetime_field :end_at, class: "form-control datetimepicker", value: "#{l event.end_at unless event.end_at.blank? }"
+      = f.datetime_field :end_at, class: "form-control"
 
     .form-group
       %label Description
       = f.text_area :description, class: "form-control", rows: 3
+
+
+    .form-group
+      %p.font-weight-bold Joindre des fichiers
+      = f.file_field :files, multiple: true
+
+    - unless event.files.blank?
+      %ul.list-unstyled
+        - event.files.each do |file|
+          %li.list-item
+            = link_to rails_blob_path(file, disposition: "attachment"), class: "btn btn-link btn-sm" do
+              = icon "fa", "download"
+              = file.filename
+
+    .form-group
+      %p.font-weight-bold Gestion des accès
+
+      = link_to '#', class: 'd-block text-primary text-decoration-underline mb-3 select_all_access' do
+        %em Selectionner tout
+
+      .form-check
+        - User.get_levels.each do |level|
+          = f.fields_for :accesses, event.accesses.find_or_initialize_by(level: level) do |a|
+            .checkbox
+              %label.form-check-label
+                = a.check_box :can_access, class: 'form-check-input'
+                = level
+                = a.hidden_field :level, value: level
 
 
   .modal-footer

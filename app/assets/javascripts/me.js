@@ -12,4 +12,14 @@ $(document).ready(function(){
 
     $(this).hide();
   });
+
+  $('.event-list').on('click', function(e){
+    e.preventDefault();
+    event_id = $(this).attr('data-event-id');
+    $.ajax({
+      url: '/events/'+event_id,
+      dataFormat: 'js'
+    });
+
+  })
 })

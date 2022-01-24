@@ -4,6 +4,6 @@ class MeController < ApplicationController
 
   def get_events
     @my_structures = current_user.structures
-    @events = Event.where(structure_id: @my_structures.pluck(:id)).where('start_at >= ?', DateTime.now).order(start_at: :desc).limit(5)
+    @events = Event.where(structure_id: @my_structures.pluck(:id)).where('start_at >= ?', DateTime.now).joins(:accesses).where('accesses.level = ? AND accesses.can_access = TRUE', current_user.level).order(start_at: :asc).limit(5)
   end
 end

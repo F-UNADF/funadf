@@ -41,7 +41,8 @@
       .bg-white.p-2.shadow-sm.mb-1
         .row
           .col
-            %strong= p.church_name
+            = link_to me_structure_path(p.church_id), class: 'text-secondary' do
+              %strong= p.church_name
           .col
             %em.mr-3= p.function
           .col
@@ -52,7 +53,8 @@
       .bg-white.p-2.shadow-sm.mb-1
         .row
           .col
-            %strong= p.assoc_name
+            = link_to me_structure_path(p.assoc), class: 'text-secondary' do
+              %strong= p.assoc_name
           .col
             %em.mr-3= p.function
           .col

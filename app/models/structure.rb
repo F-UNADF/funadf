@@ -185,7 +185,12 @@ class Structure < ActiveRecord::Base
 
 
   def gravatar_url
-    hash = Digest::MD5.hexdigest(self.email)
+    unless self.email.blank?
+      hash = Digest::MD5.hexdigest(self.email)
+    else
+      hash = Digest::MD5.hexdigest("funadf@yopmail.com")
+    end
+
 
     return "https://www.gravatar.com/avatar/#{hash}"
   end

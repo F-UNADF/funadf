@@ -60,9 +60,10 @@ class Intranet::EventsController < IntranetController
 
   private
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.required(:event).permit(:title, :description, :category_id, :start_at, :end_at)
+      params.required(:event).permit(:title, :description, :category_id, :start_at, :end_at, files: [],
+          accesses_attributes: [:level, :can_access, :id]
+          )
     end
 
 
