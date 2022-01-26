@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
     user ||= User.new
 
-    alias_action :create, :read, :update, :to => :cru
+    # alias_action :create, :read, :update, :to => :manage
 
     if user.has_role? :admin
       can :manage, :all
@@ -20,7 +20,7 @@ class Ability
 
     user.structures.each do |s|
       if user.has_role? [:president, :secretary, :treasurer, :director], s
-        can :cru, s
+        can :manage, s
       end
     end
   end

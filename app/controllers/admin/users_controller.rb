@@ -69,25 +69,7 @@ class Admin::UsersController < AdminController
 
   private
     def user_params
-      if params[:user][:password].blank?
-        params[:user].permit(:firstname, :lastname, :avatar, :address_1,
-                          :address_2, :zipcode, :town, :phone_1, :phone_2,
-                          :email, :level, :birthdate, :avatar, :biography,
-                          husband_marriage_attributes: [:husband_id, :wife_id],
-                          wife_marriage_attributes: [:husband_id, :wife_id],
-                          gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
-                          phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
-                          responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
-      else
-        params[:user].permit(:firstname, :lastname, :avatar, :address_1,
-                          :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
-                          :email, :level, :birthdate, :password, :password_confirmation, :avatar,
-                          husband_marriage_attributes: [:husband_id, :wife_id],
-                          wife_marriage_attributes: [:husband_id, :wife_id],
-                          gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
-                          phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
-                          responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
-      end
+      User.allowed_params(params)
     end
 
 

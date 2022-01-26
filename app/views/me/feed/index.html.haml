@@ -1,3 +1,12 @@
-= render partial: "posts/post", collection: @posts
+.input-group.mb-4.shadow-sm.rounded-4.overflow-hidden.py-2.bg-white
+  %span.input-group-text.border-0.bg-white.text-primary
+    = icon "fa", "search"
+  %input.form-control.border-0.fw-light.ps-1{type: :text, placeholder: 'Que cherchez vous ?', id: "search_posts_field"}
 
-= will_paginate @posts
+#posts
+  = render partial: "posts/post", collection: @posts
+
+  = will_paginate @posts
+
+
+= render 'script'

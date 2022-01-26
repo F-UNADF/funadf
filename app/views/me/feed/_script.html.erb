@@ -1,0 +1,33 @@
+<script>
+  $(document).ready(function(){
+    var typingTimer;                //timer identifier
+    var doneTypingInterval = 1000;  //time in ms, 5 second for example
+    var $input = $('#search_posts_field');
+
+    $input.on('keyup', function(e){
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    });
+
+    //on keydown, clear the countdown
+    $input.on('keydown', function () {
+      clearTimeout(typingTimer);
+    });
+
+    //user is "finished typing," do something
+    function doneTyping () {
+      $('#posts').html($('<div id="waiting" class="d-flex justify-content-center mb-5"><i class="fa fa-2x fa-pulse fa-spinner"></i></div>'));
+
+      query = $input.val();
+
+      $.ajax({
+        url: '/feed.js',
+        format: 'js',
+        data: {query: query},
+        method: 'GET'
+      });
+      console.log($input.val());
+    }
+
+  })
+</script>

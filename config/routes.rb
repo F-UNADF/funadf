@@ -45,7 +45,10 @@ Rails.application.routes.draw do
         get '/rechercher', to: 'search#show', as: :search
         get '/searching', to: 'search#index'
 
-        root to: 'feed#index', as: :me
+        get '/feed', to: 'feed#index'
+
+        root to: redirect('/feed'), as: :me
+
       end
     end
 

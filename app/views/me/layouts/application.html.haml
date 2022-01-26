@@ -17,6 +17,12 @@
     / = render "intranet/layouts/onsignal_script"
 
   %body.bg-light
+    .web-none.d-flex.align-items-center.px-3.pt-3
+      = link_to root_url, class: 'text-decoration-none' do
+        = image_tag 'logo.png', class: 'img-fluid logo-mobile'
+      %button.ms-auto.btn.btn-primary.ln-0{"aria-controls" => "offCanva", "data-bs-target" => "#offCanva", "data-bs-toggle" => "offcanvas", :type => "button"}
+        = icon "fa", "bars"
+
     .py-4
       .container
         .row.position-relative
@@ -24,65 +30,29 @@
             .main-content= yield
 
           %aside.col.col-xl-3.order-xl-1.col-lg-6.order-lg-2.col-md-6.col-sm-6.col-12
-            .ps-0.m-none.fix-sidebar
+            #offCanva.p-2.bg-light.offcanvas.offcanvas-start{:tabindex => "-1"}
               .sidebar-nav.mb-3
-                .pb-4.mb-3
+                .pb-4
                   = link_to root_url, class: 'text-decoration-none' do
                     = image_tag 'logo.png', class: 'img-fluid'
 
-                .side-profile.bg-white.mb-3.p-4.d-flex.flex-column.text-center
-                  .avatar.w-50.mb-3.mx-auto
-                    = image_tag current_user.get_avatar_url([500,500]), class: "rounded-circle img-fluid"
+                = render partial: 'me/layouts/profile'
 
-                  .name
-                    .h5.mb-1
-                      %span.d-block.small.text-muted.mb-2
-                        = icon 'fa', 'id-card'
-                        = "%05d" % current_user.id
+                = render partial: 'me/layouts/sidebar'
 
-                      %strong= current_user.fullname
-                    %em= current_user.level
+            .ps-0.m-none.fix-sidebar
+              .sidebar-nav.mb-3
+                .pb-4.mb-4
+                  = link_to root_url, class: 'text-decoration-none' do
+                    = image_tag 'logo.png', class: 'img-fluid'
 
-                %ul.navbar-nav.justify-content-end.flex-grow-1
-                  %li.nav-item
-                    = link_to root_url, class: "nav-link #{(params[:controller].match(/feed/)) ? 'active' : ''}" do
-                      %span
-                        = icon 'fa', 'home', class: 'me-3'
-                      %span Accueil
 
-                  %li.nav-item
-                    = link_to me_profile_path, class: "nav-link #{(params[:controller].match(/profile/)) ? 'active' : ''}" do
-                      %span
-                        = icon 'fa', 'user-circle', class: 'me-3'
-                      %span Mon profil
+                = render partial: 'me/layouts/profile'
 
-                  %li.nav-item
-                    = link_to me_search_path, class: "nav-link #{(params[:controller].match(/search/)) ? 'active' : ''}" do
-                      %span
-                        = icon 'fa', 'search', class: 'me-3'
-                      %span Annuaire
+                = render partial: 'me/layouts/sidebar'
 
-                  - if current_user.has_role?([:admin, :moderator]) && @subdomain != "admin"
-                    %li.nav-item
-                      = link_to root_url(subdomain: :admin), class: 'nav-link' do
-                        %span
-                          = icon "fa", "cogs", class: 'me-3'
-                        %span Accéder à l'administration
 
-                  - Intranet.all.each do |intranet|
-                    - if can?(:manage, intranet.structure) && @subdomain != intranet.subdomain
-                      %li.nav-item
-                        = link_to root_url(subdomain: intranet.subdomain), class: 'nav-link' do
-                          %span
-                            = icon "fa", "cogs", class: 'me-3'
-                          %span= "Intranet #{intranet.structure_name}"
 
-                  - if @subdomain != ""
-                    %li
-                      = link_to root_url(subdomain: ""), class: 'nav-link' do
-                        %span
-                          = icon "fa", "person-booth", class: 'me-3'
-                        %span Accéder aux votes
 
           %aside.col.col-xl-3.order-xl-3.col-lg-6.order-lg-3.col-md-6.col-sm-6.col-12
             .fix-sidebar
@@ -103,7 +73,7 @@
                           %p.fw-bold.mb-0.pe-3= e.title
                           %small.text-muted= l e.start_at, format: :long
 
-                        = image_tag e.structure.get_logo_url([50, 50]), class: "img-fluid rounded ms-auto"
+                        = image_tag e.structure.get_logo_url(), class: "img-fluid ms-auto", style: 'max-width: 50px'
 
 
     .py-3.bg-white.footer-copyright

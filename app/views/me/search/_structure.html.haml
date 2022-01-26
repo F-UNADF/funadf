@@ -3,7 +3,7 @@
     %div
       .text-muted.fw-light.d-flex.align-items-center.mb-1
         %small= icon "fa", structure.get_icon
-        %span.mx-1.material-icons.md-3 circle
+        = icon "fas", "circle", class: 'mx-1 md-3'
         %small= t "activerecord.models.#{structure.type.downcase}.one"
 
       %p.fw-bold.mb-0.pe-3
