@@ -1,12 +1,16 @@
 .breadcrumbs
   .page-header
-    %h1
-      Modification de la campagne
-      %b= @campaign.name
+    %h1 Modifier un campagne
 
 .content.mt-3
   .container-fluid
     .card
+      .card-header
+        .card-actions.float-right
+          = link_to admin_campaigns_path, class: 'btn btn-sm btn-default' do
+            = icon 'fa', 'angle-left'
+            Revenir aux campagnes
+
       .card-body
         %p.text-muted= @campaign.description
         = render 'form', campaign: @campaign, structure: @structure

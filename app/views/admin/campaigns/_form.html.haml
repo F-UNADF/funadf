@@ -9,6 +9,9 @@
   .row
     .col-md-6
       .form-group
+        = f.select :structure_id, options_from_collection_for_select(@structures, :id, :name, campaign.structure_id), {prompt: 'Choisir une structure'}, class: 'form-control'
+
+      .form-group
         = f.text_field :name, class: 'form-control', placeholder: 'Nom de la campagne'
 
       .form-group
