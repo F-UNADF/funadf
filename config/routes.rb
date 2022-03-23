@@ -2,7 +2,6 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
-
   authenticated :user do
 
     # ADMIN SUBDOMAIN
