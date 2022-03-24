@@ -7,7 +7,7 @@ class AccountsController < ApplicationController
 
     @activities = PublicActivity::Activity.order("created_at desc")
                     .where(owner_id: @user.id, owner_type: "User")
-                    .or(PublicActivity::Activity.where(trackable_id: @user.id, trackable_type: 'User'))
+                    .or(PublicActivity::Activity.where(trackable_id: @user.id, trackable_type: 'User')).last(10)
   end
 
   def edit

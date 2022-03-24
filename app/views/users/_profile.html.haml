@@ -61,26 +61,27 @@
         %h2.h4 Ses adhésions
 
       .card-body
-        %table.table.table-striped.table-sm
-          %thead
-            %tr
-              %th
-              %th Identifiant
-              %th Nom
-              %th Ville
-              %th Email
-              %th Téléphone
-              %th Rôle
+        .table-responsive
+          %table.table.table-striped.table-sm
+            %thead
+              %tr
+                %th
+                %th Identifiant
+                %th Nom
+                %th Ville
+                %th Email
+                %th Téléphone
+                %th Rôle
 
-          - @structures.each do |structure|
-            %tr
-              %td= icon 'fa', "#{structure.get_icon}"
-              %td= structure.id
-              %td= structure.name
-              %td= structure.town
-              %td= structure.email
-              %td= structure.phone_1
-              %td= structure.get_resource_role(user)
+            - @structures.each do |structure|
+              %tr
+                %td= icon 'fa', "#{structure.get_icon}"
+                %td= structure.id
+                %td= structure.name
+                %td= structure.town
+                %td= structure.email
+                %td= structure.phone_1
+                %td= structure.get_resource_role(user)
 
     .card
       .card-header
