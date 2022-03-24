@@ -9,7 +9,7 @@
   Dates :
   = @campaign.period
 
-%table.table.table-bordered
+%table.table.table-bordered{border: 1, style: "text-align:center;"}
   %tr
     %td
     %th{colspan: 6} Resultats retenus
@@ -37,10 +37,16 @@
       %th Blancs
 
     - @campaign.motions.where(kind: :binary).each do |motion|
+      - oui_count = motion.votes.officials.where(result: "oui").count
+      - non_count = motion.votes.officials.where(result: "non").count
       %tr
         %td= motion.name
-        %td= motion.votes.officials.where(result: "oui").count
-        %td{colspan: 2}= motion.votes.officials.where(result: "non").count
+        %td
+          = oui_count
+          %small= "(#{number_to_percentage (oui_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
+        %td{colspan: 2}
+          = non_count
+          %small= "(#{number_to_percentage (non_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
         %td= motion.votes.officials.count
         %td= motion.votes.officials.where("result IS NOT NULL").count
         %td= motion.votes.officials.where(result: nil).count
@@ -61,6 +67,7 @@
       %th Votants
       %th Exprimés
       %th Blancs
+
       %th Oui
       %th Non
       %th Neutre
@@ -68,10 +75,16 @@
       %th Exprimés
       %th Blancs
     - @campaign.motions.where(kind: :neutral).each do |motion|
+      - oui_count = motion.votes.officials.where(result: "oui").count
+      - non_count = motion.votes.officials.where(result: "non").count
       %tr
         %td= motion.name
-        %td= motion.votes.officials.where(result: "oui").count
-        %td= motion.votes.officials.where(result: "non").count
+        %td
+          = oui_count
+          %small= "(#{number_to_percentage (oui_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
+        %td{colspan: 2}
+          = non_count
+          %small= "(#{number_to_percentage (non_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
         %td= motion.votes.officials.where(result: "neutre").count
         %td= motion.votes.officials.count
         %td= motion.votes.officials.where("result IS NOT NULL").count
