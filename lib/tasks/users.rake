@@ -272,7 +272,6 @@ namespace :users do
 
   end
 
-
   task :add_france_sud_users => :environment do |t, args|
     file = './db/seeds/convention-sud.csv'
 
@@ -379,6 +378,38 @@ namespace :users do
 
     end
 
+  end
+
+
+  task :add_fc_users => :environment do |t, args|
+    file = './db/seeds/membres-fc.csv'
+
+
+    csv_text = File.read(file)
+    csv = CSV.parse(csv_text, headers: true, :col_sep => ",", :row_sep => :auto)
+
+    fc = Structure.find(13)
+    puts "AJOUT DES MEMBRES A l'assoc FEMME CHRETIENNE"
+
+    csv.each do |row|
+      email = row['EMAIL']
+      puts email
+
+
+
+      user = User.find_or_create_by(firstname: row['FIRSTNAME'], lastname: row['LASTNAME'], email: row['EMAIL'])
+
+      puts user.inspect
+
+      if user
+        puts "AJOUTER L'UTILISATEUR : #{user.name} COMME MEMBRE DE FEMME CHRETIENNE"
+        user.add_role :member, fc unless user.has_role? :member, fc
+
+      else
+        puts "IMPOSSIBLE D'AJOUTER L'UTILISATEUR : #{row['FIRSTNAME']} #{row['LASTNAME']}"
+      end
+
+    end
   end
 
 
