@@ -395,10 +395,12 @@ namespace :users do
       email = row['EMAIL']
       puts email
 
-      user = User.find_or_create_by(firstname: row['FIRSTNAME'], lastname: row['LASTNAME'], email: row['EMAIL'])
+      user = User.find_or_create_by(email: row['EMAIL'])
+      user.lastname = row['LASTNAME']
+      user.firstname = row['FIRSTNAME']
 
       if user.new_record?
-        user.invite!
+        user.invite
       end
 
       if user
