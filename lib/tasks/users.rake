@@ -397,8 +397,11 @@ namespace :users do
 
       user = User.find_or_create_by(firstname: row['FIRSTNAME'], lastname: row['LASTNAME'], email: row['EMAIL'])
 
+      if user.new_record?
+        user.invite!
+      end
 
-      if user.save
+      if user
         puts "AJOUTER L'UTILISATEUR : #{user.name} COMME MEMBRE DE FEMME CHRETIENNE"
         user.add_role :member, fc unless user.has_role? :member, fc
 
