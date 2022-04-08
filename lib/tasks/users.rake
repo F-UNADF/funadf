@@ -401,7 +401,7 @@ namespace :users do
 
       puts user.inspect
 
-      if user
+      if user.save
         puts "AJOUTER L'UTILISATEUR : #{user.name} COMME MEMBRE DE FEMME CHRETIENNE"
         user.add_role :member, fc unless user.has_role? :member, fc
 
