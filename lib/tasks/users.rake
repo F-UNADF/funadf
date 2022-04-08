@@ -395,11 +395,8 @@ namespace :users do
       email = row['EMAIL']
       puts email
 
-
-
       user = User.find_or_create_by(firstname: row['FIRSTNAME'], lastname: row['LASTNAME'], email: row['EMAIL'])
 
-      puts user.inspect
 
       if user.save
         puts "AJOUTER L'UTILISATEUR : #{user.name} COMME MEMBRE DE FEMME CHRETIENNE"
@@ -407,6 +404,7 @@ namespace :users do
 
       else
         puts "IMPOSSIBLE D'AJOUTER L'UTILISATEUR : #{row['FIRSTNAME']} #{row['LASTNAME']}"
+        puts "ERROS : #{user.errors.inspect}"
       end
 
     end
