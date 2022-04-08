@@ -44,11 +44,11 @@ class User < ActiveRecord::Base
 
   def track_update_activities
     c = self.changes.reject! { |k| k.match(/created_at|updated_at|reset_password_token/)}
-    self.create_activity key: 'user.update', owner: Proc.new{ |controller, model| controller.current_user }, parameters: c
+    self.create_activity key: 'user.update', owner: Proc.new{ |controller, model| (controller)? controller.current_user : nil }, parameters: c
   end
 
   def track_create_activities
-    self.create_activity key: 'user.create', owner: Proc.new{ |controller, model| controller.current_user }
+    self.create_activity key: 'user.create', owner: Proc.new{ |controller, model| (controller)? controller.current_user : nil }
   end
 
   def application_roles
