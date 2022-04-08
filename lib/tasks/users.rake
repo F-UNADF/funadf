@@ -400,7 +400,7 @@ namespace :users do
       user.firstname = row['FIRSTNAME']
 
       if user.new_record?
-        user.invite
+        user.invite!
       end
 
       if user
