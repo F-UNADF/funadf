@@ -9,93 +9,83 @@
   Dates :
   = @campaign.period
 
-%table.table.table-bordered{border: 1, style: "text-align:center;"}
+%table.table.table-bordered{border: 1, width: '100%'}
   %tr
     %td
     %th{colspan: 6} Resultats retenus
-    %th{colspan: 6} Resultats consultatifs
+    - if @campaign.has_consultative_votes?
+      %th{colspan: 6} Resultats consultatifs
 
   %tr
     %th Electorats
     %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.officials.count }.first
-    %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.consultatives.count }.first
+    - if @campaign.has_consultative_votes?
+      %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.consultatives.count }.first
 
-
-  - unless @campaign.motions.where(kind: :binary).blank?
+  
+  - unless @campaign.motions.where(kind: [:binary, :neutral]).blank?
     %tr
-      %th
-      %th Oui
-      %th{colspan: 2} Non
-      %th Votants
-      %th Exprimés
-      %th Blancs
+      %th{rowspan: 2}
+      %th{rowspan: 2} Nb de votants
+      %th{colspan: 3} Voix exprimés
+      %th{rowspan: 2, colspan: 2}
+        Voix non exprimés
+        %br
+        (Blanc ou neutre)
 
-      %th Oui
-      %th{colspan: 2} Non
-      %th Votants
-      %th Exprimés
-      %th Blancs
+      - if @campaign.has_consultative_votes?
+        %th{rowspan: 2} Nb de votants
+        %th{colspan: 3} Voix exprimés
+        %th{rowspan: 2, colspan: 2}
+          Voix non exprimés
+          %br
+          (Blanc ou neutre)
 
-    - @campaign.motions.where(kind: :binary).each do |motion|
+    %tr
+      %th Oui
+      %th Non
+      %th Total
+
+      - if @campaign.has_consultative_votes?
+        %th Oui
+        %th Non
+        %th Total
+
+    - @campaign.motions.where(kind: [:neutral, :binary]).each do |motion|
       - oui_count = motion.votes.officials.where(result: "oui").count
       - non_count = motion.votes.officials.where(result: "non").count
+      - neutral_count = motion.votes.officials.where(result: ["neutre", nil]).count
+
       %tr
         %td= motion.name
+        %td= motion.votes.officials.count
         %td
           = oui_count
           %small= "(#{number_to_percentage (oui_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
-        %td{colspan: 2}
-          = non_count
-          %small= "(#{number_to_percentage (non_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
-        %td= motion.votes.officials.count
-        %td= motion.votes.officials.where("result IS NOT NULL").count
-        %td= motion.votes.officials.where(result: nil).count
-
-        %td= motion.votes.consultatives.where(result: "oui").count
-        %td{colspan: 2}= motion.votes.consultatives.where(result: "non").count
-        %td= motion.votes.consultatives.count
-        %td= motion.votes.consultatives.where("result IS NOT NULL").count
-        %td= motion.votes.consultatives.where(result: nil).count
-
-
-  - unless @campaign.motions.where(kind: :neutral).blank?
-    %tr
-      %th
-      %th Oui
-      %th Non
-      %th Neutre
-      %th Votants
-      %th Exprimés
-      %th Blancs
-
-      %th Oui
-      %th Non
-      %th Neutre
-      %th Votants
-      %th Exprimés
-      %th Blancs
-    - @campaign.motions.where(kind: :neutral).each do |motion|
-      - oui_count = motion.votes.officials.where(result: "oui").count
-      - non_count = motion.votes.officials.where(result: "non").count
-      %tr
-        %td= motion.name
         %td
-          = oui_count
-          %small= "(#{number_to_percentage (oui_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
-        %td{colspan: 2}
           = non_count
           %small= "(#{number_to_percentage (non_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
-        %td= motion.votes.officials.where(result: "neutre").count
-        %td= motion.votes.officials.count
-        %td= motion.votes.officials.where("result IS NOT NULL").count
-        %td= motion.votes.officials.where(result: nil).count
+        %td= non_count + oui_count
 
-        %td= motion.votes.consultatives.where(result: "oui").count
-        %td= motion.votes.consultatives.where(result: "non").count
-        %td= motion.votes.consultatives.where(result: "neutre").count
-        %td= motion.votes.consultatives.count
-        %td= motion.votes.consultatives.where("result IS NOT NULL").count
-        %td= motion.votes.consultatives.where(result: nil).count
+        %td{colspan: 2}= neutral_count
+
+
+        - if @campaign.has_consultative_votes?
+          - oui_count = motion.votes.consultatives.where(result: "oui").count
+          - non_count = motion.votes.consultatives.where(result: "non").count
+          - neutral_count = motion.votes.consultatives.where(result: ["neutre", nil]).count
+
+          %td= motion.votes.consultatives.count
+          %td
+            = oui_count
+            %small= "(#{number_to_percentage (oui_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
+          %td
+            = non_count
+            %small= "(#{number_to_percentage (non_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
+
+          %td= non_count + oui_count
+
+          %td= neutral_count
 
   - unless @campaign.motions.where(kind: :free).blank?
     %tr
@@ -115,11 +105,11 @@
         %td= motion.votes.officials.where("result IS NOT NULL").count
         %td= motion.votes.officials.where(result: nil).count
 
-        %td{colspan: 3}
-          %ul.list-unstyled
-            - motion.votes.consultatives.select(:result, 'COUNT(*) as count').group(:result).each do |r|
-              %li.list-unstyled-item= "#{r.result} (#{r.count})"
-        %td= motion.votes.consultatives.count
-        %td= motion.votes.consultatives.where("result IS NOT NULL").count
-        %td= motion.votes.consultatives.where(result: nil).count
-
+        - if @campaign.has_consultative_votes?
+          %td{colspan: 3}
+            %ul.list-unstyled
+              - motion.votes.consultatives.select(:result, 'COUNT(*) as count').group(:result).each do |r|
+                %li.list-unstyled-item= "#{r.result} (#{r.count})"
+          %td= motion.votes.consultatives.count
+          %td= motion.votes.consultatives.where("result IS NOT NULL").count
+          %td= motion.votes.consultatives.where(result: nil).count

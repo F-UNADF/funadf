@@ -205,4 +205,12 @@ class Campaign < ActiveRecord::Base
     end
   end
 
+  def has_consultative_votes?
+    Vote.where(motion_id: self.motions.pluck(:id)).where(is_consultative: true).count > 0
+  end
+
+  def voters
+    Voter.where(motion_id: self.motions.pluck(:id)).uniq
+  end
+
 end
