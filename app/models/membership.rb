@@ -1,5 +1,8 @@
-class Membership < ApplicationRecord
+class Membership < ActiveRecord::Base
   belongs_to :role
+
   belongs_to :structure
-  belongs_to :user
+
+  belongs_to :member, polymorphic: true
+
 end

@@ -7,10 +7,14 @@ class User < ActiveRecord::Base
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :invitable, :validate_on_invite => true
 
-  has_many :rolizations, as: :resource, dependent: :destroy
-  has_many :roles, through: :rolizations
-  has_many :associations, through: :roles, source: :resource, source_type: 'Association'
-  has_many :churches, through: :roles, source: :resource, source_type: 'Church'
+  # has_many :rolizations, as: :resource, dependent: :destroy
+  # has_many :roles, through: :rolizations
+  # has_many :associations, through: :roles, source: :resource, source_type: 'Association'
+  # has_many :churches, through: :roles, source: :resource, source_type: 'Church'
+
+  has_many :memberships, as: :member
+  has_many :associations, through: :memberships, source: :structure
+  has_many :churches, through: :memberships, source: :structure
 
   has_one_attached :avatar
 
@@ -103,55 +107,29 @@ class User < ActiveRecord::Base
     where(['(firstname LIKE ? OR lastname LIKE ? OR email LIKE ? OR id LIKE ?)', "#{q}%", "#{q}%", "#{q}%", "#{q}%"])
   end
 
-  def has_role?(role_name, resource = nil)
-
-    resource_id = resource.id if resource
-    resource_type = resource.class if resource
-    unless new_record?
-      role_array = roles.where(name: role_name, resource_id: resource_id, resource_type: resource_type)
-    end
-
-    return false if role_array.nil?
-    role_array != []
-
+  def has_role?(role_name, structure = nil)
+    role = Role.find_by(name: role_name)
+    !self.memberships.where(role: role, structure: structure).blank?
   end
 
-  def has_strict_role?(role_name, resource)
-    roles.where_strict(name: role_name, resource: resource).any?
-  end
 
-  def add_role role_name, resource = nil
+  def add_role role_name, structure = nil
     # Crée un rôle seul (Valable sur l'ensemble de l'APP)
     # OU Avec une Class (Valable uniquement sur cette Class)
     # OU Avec une resource (Valable que pour cette resource)
 
-    role = Role.find_or_create_by(name: role_name.to_s,
-      resource_type: (resource.is_a?(Class) ? resource.to_s : resource.class.name if resource),
-      resource_id: (resource.id if resource && !resource.is_a?(Class)))
-
-    if !roles.include?(role)
-      self.roles << role
-      self.save
-    end
+    role = Role.find_or_create_by(name: role_name)
+    Membership.create(role: role, member: self, structure: structure)
 
     role
   end
-  def remove_role role_name, resource = nil
-    cond = { :name => role_name }
-    cond[:resource_type] = (resource.is_a?(Class) ? resource.to_s : resource.class.name) if resource
-    cond[:resource_id] = resource.id if resource && !resource.is_a?(Class)
-    roles = self.roles.where(cond)
-    if roles
-      self.roles.delete(roles)
-      roles.each do |role|
-        role.destroy if role.rolizations.blank?
-      end
-    end
+  def remove_role role_name, structure = nil
+    role = Role.find_or_create_by(name: role_name)
+    membership = self.memberships.where(role: role, structure: structure)
 
-    roles
-  end
-  def has_any_role? structure
-    structures.include?(structure)
+    membership.destroy unless membership.blank?
+
+    role
   end
 
   def structures
@@ -166,12 +144,9 @@ class User < ActiveRecord::Base
     presidences
   end
 
-  def get_prez
-    self.roles.where(name: 'president')
-  end
-
   def church_presidences
-    Structure.where(id: self.roles.where(resource_type: 'Church').pluck(:resource_id))
+    role = Role.where(name: :president).first
+    Structure.where(id: self.memberships.where(role_id: role.id,  resource_type: 'Church').pluck(:resource_id))
   end
 
   def get_class
