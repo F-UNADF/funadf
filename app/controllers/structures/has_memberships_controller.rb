@@ -18,6 +18,9 @@ class Structures::HasMembershipsController < ApplicationController
     klass = Object.const_get params[:member_type]
     @member = klass.find params[:member_id]
 
+    puts
+    puts @member.inspect
+
 
     @member.add_role :member, @structure
 
@@ -40,10 +43,10 @@ class Structures::HasMembershipsController < ApplicationController
   end
 
   def update
-    rolization = @structure.rolizations.where(resource_id: params[:resource_id], resource_type: params[:resource_type]).first
+    membership = Membership.where(structure: @structure, member_id: params[:resource_id], member_type: params[:resource_type]).first
 
-    rolization.can_vote = params[:can_vote]
-    if rolization.save
+    membership.can_vote = params[:can_vote]
+    if membership.save
       render json: {updated: :ok}, status: 200
     else
       render json: {updated: :nok}, status: 200
@@ -51,10 +54,10 @@ class Structures::HasMembershipsController < ApplicationController
   end
 
   def reason
-    rolization = @structure.rolizations.where(resource_id: params[:resource_id], resource_type: params[:resource_type]).first
+    membership = Membership.where(structure: @structure, member_id: params[:resource_id], member_type: params[:resource_type]).first
 
-    rolization.reason = params[:reason]
-    if rolization.save
+    membership.reason = params[:reason]
+    if membership.save
       render json: {updated: :ok}, status: 200
     else
       render json: {updated: :nok}, status: 200

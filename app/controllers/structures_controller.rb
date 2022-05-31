@@ -3,10 +3,10 @@ class StructuresController < ApplicationController
   before_action :set_structure, except: [:index, :new, :create]
 
   def index
-    @q = current_user.structures.ransack(params[:q])
+    @q = current_user.structures.left_outer_joins(memberships: [:role]).ransack(params[:q], per_page: 50)
 
     if current_user.has_role? [:admin, :steward]
-      @q = Structure.all.ransack(params[:q], per_page: 50)
+      @q = Structure.all.left_outer_joins(memberships: [:role]).ransack(params[:q], per_page: 50)
     end
 
     @structures = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)

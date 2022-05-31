@@ -72,9 +72,9 @@ class Campaign < ActiveRecord::Base
     b
   end
 
-  def elector_can_vote? elector
-    (elector && self.is_public && self.can_vote? && !has_already_vote?(elector)) || (elector && elector.can_vote && self.can_vote? && !has_already_vote?(elector))
-  end
+  # def elector_can_vote? elector
+  #   (elector && self.is_public && self.can_vote? && !has_already_vote?(elector)) || (elector && elector.can_vote && self.can_vote? && !has_already_vote?(elector))
+  # end
 
   def get_elector_note elector
     unless elector.blank?

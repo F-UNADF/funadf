@@ -4,14 +4,7 @@ class Votes::CampaignsController < VotesController
     @campaigns = Campaign.currents
 
     @user = current_user
-    # GET ALL PRESIDENCES
-    pres = @user.get_presidences
-    @presidences = []
-    pres.each do |s|
-      unless s == @structure
-        @presidences << s
-      end
-    end
+    @presidences = @user.get_presidences
 
     campaing_ids = []
 

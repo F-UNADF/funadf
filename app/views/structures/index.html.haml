@@ -62,7 +62,7 @@
                 %td= structure.id
                 %td= structure.name
                 %td= structure.town
-                %td= structure.get_resource_role(current_user)
+                %td= t "activerecord.attributes.roles.names.#{structure.get_role(current_user)}"
                 %td
                   .btn-group
                     - if can? :update, structure
@@ -74,6 +74,6 @@
                         = icon 'fa', "times"
 
         .float-right
-          = will_paginate @structures
+          /= will_paginate @structures
 
 

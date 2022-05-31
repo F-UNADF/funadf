@@ -6,6 +6,9 @@ class CreateMemberships < ActiveRecord::Migration[6.1]
       t.references :member, polymorphic: true #le membre de
       t.references :structure #l'asso
 
+      t.boolean :can_vote, default: true
+      t.string :reason
+
       t.timestamps
     end
   end

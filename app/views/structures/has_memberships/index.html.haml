@@ -52,6 +52,7 @@
 
                     %td
                       = @structure.get_resource_role(member)
+                      
                     %td
                       .d-flex
                         = check_box_tag 'can_vote', true, @structure.member_can_vote?(member), class: 'switch', data:{'resource-id' => member.id, 'resource-type' => member.get_class, 'structure' => @structure.id}

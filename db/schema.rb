@@ -159,6 +159,8 @@ ActiveRecord::Schema.define(version: 2022_01_09_164214) do
     t.string "member_type"
     t.bigint "member_id"
     t.bigint "structure_id"
+    t.boolean "can_vote", default: true
+    t.string "reason"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["member_type", "member_id"], name: "index_memberships_on_member"

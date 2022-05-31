@@ -57,39 +57,26 @@
 
               - @presidences.each_with_index do |s, index|
 
-                - if @structure.is_member?(s)
-                  - if @structure.member_can_vote?(s) && !@campaign.has_already_vote?(s)
-                    // MEMBRE DE L'ASSOC, CAN_VOTE
-                    = render 'votings', voter: s, as_member: true
+                // LA TABLE DES VOTES FAIT LOI !
+                - if @campaign.structure_can_vote?(s, @structure.is_member?(s)) && !@campaign.has_already_vote?(s)
+                  = render 'votings', voter: s, as_member: @structure.is_member?(s)
 
-                  - elsif !@structure.member_can_vote?(s)
-                    // MEMBRE DE L'ASSOC, MAIS CANT_VOTE
-                    .alert.alert-danger
-                      %b= "Présidence de <b>#{s.name}</b> (#{s.town})".html_safe
-                      %br
-                      = @structure.member_cant_vote_note_friendly(s)
+                - elsif @structure.is_member?(s) && !@campaign.structure_can_vote?(s)
 
-                - elsif @campaign.structure_can_vote?(s, false) && !@campaign.has_already_vote?(s)
-                  // NON MEMBRE, CAN VOTE
-                  = render 'votings', voter: s, as_member: false
-
+                  .alert.alert-danger= @structure.member_cant_vote_note_friendly(s)
 
 
               %h2.h4.mb-3 Mon bulletin en qualité de personne physique :
 
-              - if @structure.is_member?(@user)
-                - if @campaign.user_can_vote?(@user) && !@campaign.has_already_vote?(@user)
-                  // MEMBRE DE L'ASSOC, CAN_VOTE
-                  = render 'votings', voter: @user, as_member: true
+              // LA TABLE DES VOTES FAIT LOI !
+              - if @campaign.user_can_vote?(@user, @structure.is_member?(@user)) && !@campaign.has_already_vote?(@user)
+                // MEMBRE DE L'ASSOC, CAN_VOTE
+                = render 'votings', voter: @user, as_member: @structure.is_member?(@user)
 
-                - elsif !@structure.member_can_vote?(@user)
-                  // MEMBRE DE L'ASSOC, MAIS CANT_VOTE
-                  .alert.alert-danger
-                    = @structure.member_cant_vote_note_friendly(@user)
+              - elsif @structure.is_member?(@user) && !@campaign.structure_can_vote?(@structure)
 
-              - elsif @campaign.user_can_vote?(@user, false) && !@campaign.has_already_vote?(@user)
-                // NON MEMBRE, CAN VOTE
-                = render 'votings', voter: @user, as_member: false
+                .alert.alert-danger= @structure.member_cant_vote_note_friendly(@user)
+
 
 
           - unless @campaign.can_vote?

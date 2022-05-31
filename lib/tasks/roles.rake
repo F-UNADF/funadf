@@ -10,29 +10,24 @@ namespace :roles do
     new_index_role = 10001
 
     roles.each do |role|
+      puts "*** NOUVEAU RÔLE ***"
 
       #role : Quel role (name) pour quel structure
-      puts "OLD Role : #{role.inspect}"
+      puts "J'ai récupéré le role : #{role.name} #{(!role.resource.blank?)? ('de la structure ' + role.resource.name) : 'de l\'application' }"
 
       #Find Rolization
-      rolization = Rolization.where(role_id: role.id).first #LE ROLE EST ATTRIBUER A (membre)
+      rolizations = Rolization.where(role_id: role.id) #LE ROLE EST ATTRIBUER A (membres)
 
-      unless rolization.blank?
-        puts "Rolization : #{rolization.inspect}"
-
-        #FIND OR CREATE A ROLE UNIQUE WITH 10K+ ID
-        new_role = Role.where('id > 10000 AND name = ?', role.name).first
-        if new_role.blank?
-          new_role = Role.create(id: new_index_role, name: role.name)
-          new_index_role = new_index_role+1
+      rolizations.each_with_index do |rolization, index|
+        unless rolization.blank? || rolization.resource.blank?
+          puts "Ce rôle concerne:  #{rolization.resource.name}"
+          puts "Je créé ou récupère le role : #{role.name} pour #{rolization.resource.name} #{(!role.resource.blank?)? ('de la structure ' + role.resource.name) : 'de l\'application' } "
+          rolization.resource.add_role role.name, role.resource, rolization.can_vote, rolization.reason
         end
-
-        puts "NEW Role : #{new_role.inspect}"
-
-        Membership.create(role_id: new_role, structure: role.resource, member: rolization.resource)
       end
-
     end
 
+    #DELETE ALL UNUSED ROLES
+    Role.left_outer_joins(:memberships).where(memberships: {id: nil}).destroy_all
   end
 end

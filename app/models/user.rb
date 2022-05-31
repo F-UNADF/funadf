@@ -113,21 +113,21 @@ class User < ActiveRecord::Base
   end
 
 
-  def add_role role_name, structure = nil
+  def add_role role_name, structure = nil, can_vote=true, reason=nil
     # Crée un rôle seul (Valable sur l'ensemble de l'APP)
     # OU Avec une Class (Valable uniquement sur cette Class)
     # OU Avec une resource (Valable que pour cette resource)
 
     role = Role.find_or_create_by(name: role_name)
-    Membership.create(role: role, member: self, structure: structure)
+    Membership.find_or_create_by(role: role, member: self, structure: structure, can_vote: can_vote, reason: reason)
 
     role
   end
   def remove_role role_name, structure = nil
     role = Role.find_or_create_by(name: role_name)
-    membership = self.memberships.where(role: role, structure: structure)
+    membership = self.memberships.where(role: role, structure: structure).first
 
-    membership.destroy unless membership.blank?
+    membership.destroy
 
     role
   end

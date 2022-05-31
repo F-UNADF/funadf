@@ -39,19 +39,19 @@
                   Vote manuel
 
               - if @campaign.can_close_temporarily?
-                = link_to [:admin, @campaign, :close_temporarily], class: "btn btn-info" do
+                = link_to [@structure.becomes(Structure), @campaign, :close_temporarily], class: "btn btn-info" do
                   = icon 'fa', "times-circle"
-                  Fermer *
+                  Fermer la campagne*
 
               - if @campaign.can_opening?
-                = link_to [:admin, @campaign, :open], class: "btn btn-success" do
+                = link_to [@structure.becomes(Structure), @campaign, :open], class: "btn btn-success" do
                   = icon 'fa', "check-circle"
-                  Ouvrir *
+                  Ouvrir la campagne*
 
               - if @campaign.can_close_definitly?
-                = link_to [:admin, @campaign, :close_definitly], data:{confirm: 'Êtes vous sûr, cette action est irreversible ?'}, class: "btn btn-warning" do
+                = link_to [@structure.becomes(Structure), @campaign, :close_definitly], data:{confirm: 'Êtes vous sûr, cette action est irreversible ?'}, class: "btn btn-warning" do
                   = icon 'fa', "times-circle"
-                  Cloturer *
+                  Cloturer la campagne*
 
               %ul.list-inline
                 - if @campaign.closed?

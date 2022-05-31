@@ -32,6 +32,7 @@ fr:
           treasurer: Trésorier
           director: Directeur
           member: Membre
+          other: Pas membre
       campaign:
         name: Nom
         description: Description
