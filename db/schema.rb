@@ -317,6 +317,11 @@ ActiveRecord::Schema.define(version: 2022_01_09_164214) do
   add_foreign_key "events", "structures"
   add_foreign_key "intranets", "structures"
   add_foreign_key "memberships", "roles"
+<<<<<<< HEAD
+=======
+  add_foreign_key "memberships", "structures"
+  add_foreign_key "memberships", "users"
+>>>>>>> 2fcb852535dc472b338c9f7420547dfd95138868
   add_foreign_key "posts", "structures"
   add_foreign_key "voting_tables", "campaigns"
 end

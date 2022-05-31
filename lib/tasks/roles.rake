@@ -6,9 +6,6 @@ namespace :roles do
 
     roles = Role.all
 
-    uniq_role = []
-    new_index_role = 10001
-
     roles.each do |role|
       puts "*** NOUVEAU RÔLE ***"
 
