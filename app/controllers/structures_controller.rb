@@ -10,6 +10,17 @@ class StructuresController < ApplicationController
     end
 
     @structures = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
+
+
+    respond_to do |format|
+      format.html
+      format.json {
+        type = params['type']
+        q = params['query']
+        @structures = Structure.where(type: type).where('name LIKE ? OR town LIKE ?', "%#{q}%", "%#{q}%")
+        render json: @structures
+      }
+    end
   end
 
   def show

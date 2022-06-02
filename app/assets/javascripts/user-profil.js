@@ -3,24 +3,6 @@
 
 jQuery(document).ready(function($) {
 
-  var pastors = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    prefetch: '/users.json',
-    remote: {
-      url: '/users.json?query=%QUERY',
-      wildcard: '%QUERY',
-      filter: function (users) {
-        return $.map(users, function (user) {
-          console.log(user)
-          return {
-            id: user.id,
-            value: user.firstname + ' ' + user.lastname
-          };
-        });
-      }
-    }
-  });
   var husbands = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -59,25 +41,7 @@ jQuery(document).ready(function($) {
   });
 
   $('.referent').each(function(){
-    $(this).typeahead({
-        hint: true,
-        highlight: true,
-        minLength: 1
-      },{
-        name: 'pastors',
-        source: pastors,
-        display: 'value',
-        limit: 50,
-        templates: {
-          suggestion: Handlebars.compile('<div class="pastor"><i class="fa fa-user mr-1"></i> {{value}}</div>')
-        }
-    }).bind('typeahead:select', function(ev, suggestion) {
-      console.log(ev);
-      console.log(suggestion);
-      console.log($(this));
-
-      $(this).parents('.form-group').find('input.referent_id').val(suggestion.id);
-    });
+    init_referent($(this))
   });
 
   $('.find_husband').typeahead({
@@ -133,6 +97,10 @@ jQuery(document).ready(function($) {
     init_assoc(insertedItem.find('.association'));
   });
 
+  $('#gratitudes').on('cocoon:after-insert', function(e, insertedItem, originalEvent){
+    init_referent(insertedItem.find('.referent'));
+  });
+
 });
 
 
@@ -145,7 +113,7 @@ function init_church(element){
       url: '/structures.json?type=church&query=%QUERY',
       wildcard: '%QUERY',
       filter: function (structures) {
-        return $.map(structures, function (structure) {
+        return jQuery.map(structures, function (structure) {
           console.log(structure)
           return {
             id: structure.id,
@@ -173,6 +141,49 @@ function init_church(element){
     element.parents('.form-group').find('input.church_id').val(suggestion.id);
   });
 }
+
+function init_referent(elem){
+
+  var pastors = new Bloodhound({
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    prefetch: '/users.json',
+    remote: {
+      url: '/users.json?query=%QUERY',
+      wildcard: '%QUERY',
+      filter: function (users) {
+        console.log(users)
+        return jQuery.map(users, function (user) {
+          return {
+            id: user.id,
+            value: user.firstname + ' ' + user.lastname
+          };
+        });
+      }
+    }
+  });
+
+  elem.typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },{
+      name: 'pastors',
+      source: pastors,
+      display: 'value',
+      limit: 50,
+      templates: {
+        suggestion: Handlebars.compile('<div class="pastor"><i class="fa fa-user mr-1"></i> {{value}}</div>')
+      }
+  }).bind('typeahead:select', function(ev, suggestion) {
+    console.log(ev);
+    console.log(suggestion);
+    console.log(elem);
+
+    elem.parents('.form-group').find('input.referent_id').val(suggestion.id);
+  });
+}
+
 function init_assoc(element){
   var associations = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
@@ -182,8 +193,8 @@ function init_assoc(element){
       url: '/structures.json?type=association&query=%QUERY',
       wildcard: '%QUERY',
       filter: function (structures) {
-        return $.map(structures, function (structure) {
-          console.log(structure)
+        console.log(structures)
+        return jQuery.map(structures, function (structure) {
           return {
             id: structure.id,
             value: structure.name
@@ -203,7 +214,7 @@ function init_assoc(element){
       display: 'value',
       limit: 50,
       templates: {
-        suggestion: Handlebars.compile('<div class="church"><i class="fa fa-fire mr-1"></i> {{value}}</div>')
+        suggestion: Handlebars.compile('<div class="church"><i class="fa fa-building mr-1"></i> {{value}}</div>')
       }
   }).bind('typeahead:select', function(ev, suggestion) {
 

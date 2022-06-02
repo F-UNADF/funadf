@@ -3,7 +3,9 @@ class UsersController < ApplicationController
   before_action :check_current_user
 
   def index
-    @q = params['search']
+    @q = params['search'] unless params['search'].blank?
+    @q = params['query'] unless params['query'].blank?
+
 
     @users = User.where('firstname LIKE ? OR lastname LIKE ?', "%#{@q}%", "%#{@q}%").order(:lastname)
 
