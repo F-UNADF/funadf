@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :memberships, as: :member
   has_many :associations, through: :memberships, source: :structure
   has_many :churches, through: :memberships, source: :structure
+  has_many :roles, through: :memberships
 
   has_one_attached :avatar
 

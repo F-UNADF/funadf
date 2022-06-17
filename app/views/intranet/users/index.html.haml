@@ -79,6 +79,7 @@
                             = link_to admin_user_disable_path(user), class: "text-warning" do
                               = icon 'fa', "times"
                               Desactiver
+
                       - if can? :delete, user
                         %li.list-inline-item
                           = link_to [:admin, user], method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "text-danger" do

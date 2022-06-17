@@ -13,6 +13,7 @@ gem 'jbuilder'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 gem 'sprockets-rails', :require => 'sprockets/railtie'
+
 gem 'bootstrap', '~> 4.6'
 gem 'bourbon'
 gem 'devise'

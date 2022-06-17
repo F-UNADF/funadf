@@ -30,7 +30,6 @@ class Users::SessionsController < Devise::SessionsController
   private
     def set_layout
 
-      dd
       if request.subdomain
         case request.subdomain
         when 'admin'

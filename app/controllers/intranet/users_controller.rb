@@ -44,6 +44,15 @@ class Intranet::UsersController < IntranetController
   end
 
 
+  def destroy
+    @member = User.find params[:id]
+
+    @member.memberships.where(structure_id: @intranet_structure.id).delete_all
+
+    redirect_back fallback_location: root_path, alert: 'Membre supprimé'
+  end
+
+
   private
     def check_current_user
       if current_user.id == params[:id]

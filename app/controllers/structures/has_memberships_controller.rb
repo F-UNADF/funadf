@@ -30,14 +30,12 @@ class Structures::HasMembershipsController < ApplicationController
   def destroy
     @structure = Structure.find params[:structure_id]
 
+
     klass = Object.const_get params[:member_type]
 
     @member = klass.find params[:member_id]
 
-    #current_role
-    current_role = @member.my_roles.where(resource_id: params[:structure_id]).first.name
-
-    @member.remove_role current_role.to_sym, @structure
+    @member.memberships.where(structure_id: @structure.id).delete_all
 
     redirect_back fallback_location: root_path, alert: 'Membre supprimé'
   end
