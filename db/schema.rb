@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_09_164214) do
+ActiveRecord::Schema.define(version: 2022_09_05_153353) do
 
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "resource_type"
@@ -136,6 +136,12 @@ ActiveRecord::Schema.define(version: 2022_01_09_164214) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["structure_id"], name: "index_intranets_on_structure_id"
+  end
+
+  create_table "jwt_denylist", charset: "utf8mb3", force: :cascade do |t|
+    t.string "jti", null: false
+    t.datetime "exp", null: false
+    t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
   create_table "marriages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -274,6 +280,7 @@ ActiveRecord::Schema.define(version: 2022_01_09_164214) do
     t.boolean "disabled", default: false
     t.string "access_token"
     t.text "biography"
+    t.string "authentication_token"
     t.index ["access_token"], name: "index_users_on_access_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -317,11 +324,6 @@ ActiveRecord::Schema.define(version: 2022_01_09_164214) do
   add_foreign_key "events", "structures"
   add_foreign_key "intranets", "structures"
   add_foreign_key "memberships", "roles"
-<<<<<<< HEAD
-=======
-  add_foreign_key "memberships", "structures"
-  add_foreign_key "memberships", "users"
->>>>>>> 2fcb852535dc472b338c9f7420547dfd95138868
   add_foreign_key "posts", "structures"
   add_foreign_key "voting_tables", "campaigns"
 end

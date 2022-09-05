@@ -231,6 +231,7 @@ GEM
       railties (>= 3.2.16)
     json (1.8.6)
     kgio (2.11.4)
+    libv8-node (16.10.0.0)
     libv8-node (16.10.0.0-x86_64-darwin)
     loofah (2.13.0)
       crass (~> 1.0.2)
@@ -249,6 +250,7 @@ GEM
       rake
     mini_magick (4.11.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.6.1)
     mini_racer (0.5.0)
       libv8-node (~> 16.10.0.0)
     minitest (5.14.4)
@@ -259,6 +261,9 @@ GEM
     multi_test (0.1.2)
     mysql2 (0.5.3)
     nio4r (2.5.8)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
+      racc (~> 1.4)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
     onesignal (0.3.0)
@@ -341,6 +346,10 @@ GEM
       rdoc (~> 4.0)
     select2-rails (4.0.13)
     sexp_processor (4.16.0)
+    simple_token_authentication (1.17.0)
+      actionmailer (>= 3.2.6, < 7)
+      actionpack (>= 3.2.6, < 7)
+      devise (>= 3.2, < 6)
     spring (4.0.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
@@ -449,6 +458,7 @@ DEPENDENCIES
   sass-rails
   sdoc (~> 0.4.0)
   select2-rails
+  simple_token_authentication
   spring
   spring-commands-rspec
   sprockets-rails

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   require 'digest/md5'
   include PublicActivity::Model
+  acts_as_token_authenticatable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

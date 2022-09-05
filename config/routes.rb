@@ -1,6 +1,14 @@
+require 'api_constraints'
+
 Rails.application.routes.draw do
 
   devise_for :users, controllers: { invitations: 'users/invitations' }
+
+  namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: {format: 'json'} do
+    devise_for :users, controllers: {
+        sessions: 'v1/custom_devise/sessions'
+    }, as: :api_devise
+  end
 
   authenticated :user do
 
@@ -30,7 +38,6 @@ Rails.application.routes.draw do
         root :to => redirect('/users'), as: :root
       end
     end
-
 
     namespace :me, path: '' do
       constraints(:subdomain => 'me') do
