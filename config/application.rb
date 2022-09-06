@@ -23,5 +23,12 @@ module Funadf
 
     # config.active_record.raise_in_transactional_callbacks = true
     config.assets.precompile += %w( intranet.js me/application.css )
+
+    config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
   end
 end

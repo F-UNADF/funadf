@@ -46,6 +46,7 @@ gem 'twitter-typeahead-rails'
 gem 'handlebars_assets'
 gem 'public_activity'
 gem 'simple_token_authentication'
+gem 'rack-cors', '~> 0.3.1'
 
 gem "aws-sdk-s3", require: false
 

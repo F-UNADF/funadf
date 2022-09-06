@@ -3,6 +3,7 @@ module V1
   module CustomDevise
     class SessionsController < Devise::SessionsController
       respond_to :json
+      protect_from_forgery except: [:create, :destroy]
 
       acts_as_token_authentication_handler_for User, fallback_to_devise: false
       skip_before_action :verify_authenticity_token
