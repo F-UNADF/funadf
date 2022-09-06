@@ -16,7 +16,7 @@ module V1
         self.resource = warden.authenticate!(scope: :user)
 
         reset_token resource
-        render json: resource.authentication_token
+        render json: {token: resource.authentication_token}
       end
 
 
