@@ -82,6 +82,10 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
 
+  Rails.application.routes.default_url_options[:host] = "add-fnadf.fr"
+
+
+
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
 
