@@ -55,6 +55,8 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  Rails.application.routes.default_url_options[:host] = "myloc.me:3001"
+
   config.hosts << "admin.myloc.me"
   config.hosts << "me.myloc.me"
   config.hosts << "uadpif.myloc.me"

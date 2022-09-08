@@ -293,6 +293,24 @@ class User < ActiveRecord::Base
     end
   end
 
+  def current_church
+    self.phases.order(start_at: :desc).first.church
+  end
+
+  def to_json
+    {
+      id: self.friendly_id,
+      fullname: self.fullname,
+      address: self.address_1,
+      zipcode: self.zipcode,
+      town: self.town,
+      email: self.email,
+      phone: self.phone_1,
+      avatar: Rails.application.routes.url_helpers.rails_blob_url(self.avatar),
+      level: self.level
+    }
+  end
+
   def self.allowed_params params
     if params[:user][:password].blank?
       params[:user].permit(:firstname, :lastname, :avatar, :address_1,

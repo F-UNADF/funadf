@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     devise_for :users, controllers: {
         sessions: 'v1/custom_devise/sessions'
     }, as: :api_devise
+
+    get '/users/:token', to: 'users#show'
   end
 
   authenticated :user do
