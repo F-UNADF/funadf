@@ -110,13 +110,11 @@ class User < ActiveRecord::Base
   end
 
   def has_role?(role_name, structure = nil)
-    role = Role.find_by(name: role_name)
-
     if structure.blank?
       return !self.roles.where(name: role_name).blank?
     end
-
-    if !self.memberships.where(role: role, structure: structure).blank?
+    
+    if self.memberships.joins(:role).where('roles.name IN (?)', role_name).pluck(:structure_id).include?(structure.id)
       return true
     end
 
