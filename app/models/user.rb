@@ -111,7 +111,10 @@ class User < ActiveRecord::Base
 
   def has_role?(role_name, structure = nil)
     role = Role.find_by(name: role_name)
-    !self.memberships.where(role: role, structure: structure).blank?
+    if self.memberships.where(role: role, structure: structure).blank?
+      return true
+    end
+    return false
   end
 
 

@@ -20,7 +20,7 @@ class Ability
 
     user.structures.each do |s|
       if user.has_role? [:president, :secretary, :treasurer, :director], s
-        can :manage, s
+        can :update, s
       end
     end
   end
