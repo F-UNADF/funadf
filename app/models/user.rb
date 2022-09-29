@@ -112,7 +112,7 @@ class User < ActiveRecord::Base
   def has_role?(role_name, structure = nil)
     role = Role.find_by(name: role_name)
 
-    if s.blank?
+    if structure.blank?
       return !self.roles.where(name: role_name).blank?
     end
 
