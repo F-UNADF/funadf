@@ -47,11 +47,11 @@ gem 'handlebars_assets'
 gem 'public_activity'
 gem 'simple_token_authentication'
 gem 'rack-cors', '~> 0.3.1'
+gem "mini_racer"
 
 gem "aws-sdk-s3", require: false
 
 group :development do
-  gem "mini_racer"
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'html2haml'
