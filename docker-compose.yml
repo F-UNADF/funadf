@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
-    entrypoint: ["/app/lib/docker-entrypoint.sh"]
     #command: bundle exec unicorn -p 3000 -c /app/config/unicorn.rb  -E ${ENVIRONMENT}
     command: ${COMMAND}
 
