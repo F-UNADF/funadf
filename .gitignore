@@ -89,3 +89,7 @@ pickle-email-*.html
 *~
 
 /config/master.key
+
+.git
+.dockerignore
+.env
