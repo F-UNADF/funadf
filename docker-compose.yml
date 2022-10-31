@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
-    #command: bundle exec unicorn -p 3000 -c /app/config/unicorn.rb  -E ${ENVIRONMENT}
     command: ${COMMAND}
 
     ports:
@@ -32,15 +31,19 @@ services:
       file: ./docker/mysql/password.yml
       service: password
 
-  nginx:
-    container_name: funadf_nginx
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
     build:
       context: .
-      dockerfile: ./docker/nginx/Dockerfile
+      dockerfile: ./docker/jenkins/Dockerfile
     ports:
-      - '8080:80'
-    volumes_from:
-      - app
+      - 8080:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   funadf_db:
