@@ -6,3 +6,4 @@ RUN apt update && \
     sh -c "echo deb https://apt.octopus.com/ stable main > /etc/apt/sources.list.d/octopus.com.list" && \
     apt update && apt install -y octopuscli
 USER jenkins
+ADD . /app
