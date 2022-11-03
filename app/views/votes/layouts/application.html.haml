@@ -2,7 +2,12 @@
 %html
   %head
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1.0"}
-    %title Gestion des Votes FNADF/UNADF
+    %title
+      - if Rails.env == 'recette'
+        RECETTE
+      - elsif Rails.env == 'development'
+        LOCAL
+      Gestion des Votes FNADF/UNADF
     %meta{:name => "description", :content => "Application de votes electroniques de la FNADF"}
 
     = stylesheet_link_tag 'application', media: 'all'

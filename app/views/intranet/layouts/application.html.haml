@@ -3,8 +3,14 @@
   %head
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1.0"}
     %title
-      INTRANET
+      - if Rails.env == 'recette'
+        RECETTE - INTRANET
+      - elsif Rails.env == 'development'
+        LOCAL - INTRANET
+      - else
+        INTRANET
       = @intranet_structure.name
+
 
     %meta{:name => "description", :content => "Intranet #{@intranet_structure.name}"}
 
