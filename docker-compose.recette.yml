@@ -8,7 +8,7 @@ services:
     command: ${COMMAND}
 
     ports:
-      - '3000:3000'
+      - '3001:3001'
     volumes:
       - /var/tmp
       - .:/app
@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
     ports:
-      - '3307:3306'
+      - '3308:3307'
     volumes:
       - funadf_recette_db:/var/lib/mysql
     extends:
