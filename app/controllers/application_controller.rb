@@ -26,11 +26,13 @@ class ApplicationController < ActionController::Base
       folder = 'votes/'
       module_name = self.class.to_s.split("::").first
 
+      sub = request.subdomain.sub! ".recette", ""
+
       if module_name.eql?("Devise")
         return "devise/layouts"
       else
-        if request.subdomain && request.subdomain != ''
-          case request.subdomain
+        if sub && sub != ''
+          case sub
           when 'admin'
             folder = 'admin/'
           when 'me'

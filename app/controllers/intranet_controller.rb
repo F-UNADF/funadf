@@ -3,8 +3,11 @@ class IntranetController < ApplicationController
   before_action :set_intranet_structure, :user_can_access?
 
   def set_intranet_structure
-    if request.subdomain && request.subdomain != '' && !request.subdomain.match(/admin|me/)
-      @intranet = Intranet.find_by subdomain: request.subdomain
+
+    sub = request.subdomain.sub! ".recette", ""
+
+    if sub && sub != '' && !sub.match(/admin|me/)
+      @intranet = Intranet.find_by subdomain: sub
       unless @intranet
         redirect_to root_url
       end
