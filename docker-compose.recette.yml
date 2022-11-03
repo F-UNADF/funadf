@@ -1,7 +1,7 @@
 version: '2'
 services:
   app:
-    container_name: funadf_app
+    container_name: funadf_recette_app
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
@@ -19,7 +19,7 @@ services:
       service: password
 
   db:
-    container_name: funadf_db
+    container_name: funadf_recette_db
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
@@ -32,4 +32,4 @@ services:
       service: password
 
 volumes:
-  funadf_db:
+  funadf_recette_db:
