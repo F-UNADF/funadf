@@ -83,7 +83,8 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = "recette.add-fnadf.fr"
 
-
+  #Manage recette. subdmain
+  config.action_dispatch.tld_length = 2
 
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
