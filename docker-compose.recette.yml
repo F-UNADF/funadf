@@ -1,6 +1,6 @@
 version: '2'
 services:
-  app:
+  recette_app:
     container_name: funadf_recette_app
     build:
       context: .
@@ -13,12 +13,12 @@ services:
       - /var/tmp
       - .:/app
     depends_on:
-      - db
+      - recette_db
     extends:
       file: ./docker/mysql/password.yml
       service: password
 
-  db:
+  recette_db:
     container_name: funadf_recette_db
     build:
       context: .
