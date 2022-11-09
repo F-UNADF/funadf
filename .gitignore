@@ -95,3 +95,4 @@ pickle-email-*.html
 .git
 .dockerignore
 .env
+node_modules
