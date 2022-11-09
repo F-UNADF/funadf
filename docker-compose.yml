@@ -31,19 +31,5 @@ services:
       file: ./docker/mysql/password.yml
       service: password
 
-  jenkins:
-    image: jenkins/jenkins:lts
-    privileged: true
-    user: root
-    build:
-      context: .
-      dockerfile: ./docker/jenkins/Dockerfile
-    ports:
-      - 8080:8080
-      - 50000:50000
-    container_name: jenkins
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
 volumes:
   funadf_db:
