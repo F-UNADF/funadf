@@ -23,18 +23,18 @@ gem 'high_voltage'
 gem 'mysql2'
 gem 'font-awesome-sass'
 gem 'popper_js'
-gem "rolify"
-gem "cancan"
-gem "select2-rails"
+gem 'rolify'
+gem 'cancan'
+gem 'select2-rails'
 gem 'momentjs-rails'
 gem 'bootstrap4-datetime-picker-rails'
-gem "cocoon"
+gem 'cocoon'
 gem 'bootstrap-toggle-rails'
 gem 'wicked'
 gem 'carrierwave'
 gem 'will_paginate'
 gem 'ransack'
-gem "switch_user"
+gem 'switch_user'
 gem 'state_machines-activerecord'
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
@@ -47,9 +47,11 @@ gem 'handlebars_assets'
 gem 'public_activity'
 gem 'simple_token_authentication'
 gem 'rack-cors', '~> 0.3.1'
-gem "mini_racer"
+gem 'mini_racer'
 
-gem "aws-sdk-s3", require: false
+gem 'aws-sdk-s3', require: false
+gem 'exception_notification'
+gem 'slack-notifier'
 
 group :development do
   gem 'better_errors'
