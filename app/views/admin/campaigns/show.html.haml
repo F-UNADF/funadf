@@ -1,8 +1,5 @@
 .content.mt-3
   .container-fluid
-
-
-
     %h2.h3.float-left
       = "Campagne : #{@campaign.name}"
 
@@ -70,4 +67,4 @@
                 %td= t 'activerecord.attributes.motion.kinds.'+motion.kind
 
 
-    = render "campaigns/results", campaign: @campaign
+    = render "campaigns/results", campaign: @campaign, structure: @structure
