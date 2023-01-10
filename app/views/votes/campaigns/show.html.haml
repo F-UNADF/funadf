@@ -61,16 +61,17 @@
                 - if @campaign.structure_can_vote?(s, @structure.is_member?(s)) && !@campaign.has_already_vote?(s)
                   = render 'votings', voter: s, as_member: @structure.is_member?(s)
 
+                - elsif @structure.is_member?(s) && ("not" == @campaign.structure_vote_kind(s, @structure.is_member?(s)) || nil ==  @campaign.structure_vote_kind(s, @structure.is_member?(s)))
+                  .alert.alert-info= "La structure <b>#{s.name} (#{s.town})</b> n'est pas concerné par le vote.".html_safe
+
                 - elsif @structure.is_member?(s) && !@campaign.structure_can_vote?(s, @structure.is_member?(s))
                   .alert.alert-danger
                     = "Le vote de la structure <b>#{s.name} (#{s.town})</b> a été bloqué.".html_safe
                     = @structure.member_cant_vote_note_friendly(s)
 
-                - elsif !@campaign.structure_can_vote?(s, @structure.is_member?(s))
-                  .alert.alert-info= "La structure <b>#{s.name} (#{s.town})</b> n'est pas concerné par le vote.".html_safe
-
                 - elsif @campaign.has_already_vote?(s)
                   .alert.alert-info Vous avez déjà voté
+
 
 
 
@@ -83,13 +84,11 @@
                 // MEMBRE DE L'ASSOC, CAN_VOTE
                 = render 'votings', voter: @user, as_member: @structure.is_member?(@user)
 
-
               - elsif @campaign.has_already_vote?(@user)
                 .alert.alert-info Vous avez déjà voté
 
 
               - elsif @structure.is_member?(@user) && !@campaign.structure_can_vote?(@structure)
-
                 .alert.alert-danger= @structure.member_cant_vote_note_friendly(@user)
 
 
@@ -131,6 +130,9 @@
           %tr
             %td HAS ALREADY VOTE ?
             %td= @campaign.has_already_vote?(s)
+          %tr
+            %td VOTE KIND
+            %td= @campaign.structure_vote_kind(s, @structure.is_member?(s))
         %tr
           %th{colspan: 2} USER
 
