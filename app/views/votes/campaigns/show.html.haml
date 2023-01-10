@@ -61,9 +61,19 @@
                 - if @campaign.structure_can_vote?(s, @structure.is_member?(s)) && !@campaign.has_already_vote?(s)
                   = render 'votings', voter: s, as_member: @structure.is_member?(s)
 
-                - elsif @structure.is_member?(s) && !@campaign.structure_can_vote?(s)
+                - elsif @structure.is_member?(s) && !@campaign.structure_can_vote?(s, @structure.is_member?(s))
+                  .alert.alert-danger
+                    = "Le vote de la structure <b>#{s.name} (#{s.town})</b> a été bloqué.".html_safe
+                    = @structure.member_cant_vote_note_friendly(s)
 
-                  .alert.alert-danger= @structure.member_cant_vote_note_friendly(s)
+                - elsif !@campaign.structure_can_vote?(s, @structure.is_member?(s))
+                  .alert.alert-info= "La structure <b>#{s.name} (#{s.town})</b> n'est pas concerné par le vote.".html_safe
+
+                - elsif @campaign.has_already_vote?(s)
+                  .alert.alert-info Vous avez déjà voté
+
+
+
 
 
               %h2.h4.mb-3 Mon bulletin en qualité de personne physique :
@@ -72,6 +82,11 @@
               - if @campaign.user_can_vote?(@user, @structure.is_member?(@user)) && !@campaign.has_already_vote?(@user)
                 // MEMBRE DE L'ASSOC, CAN_VOTE
                 = render 'votings', voter: @user, as_member: @structure.is_member?(@user)
+
+
+              - elsif @campaign.has_already_vote?(@user)
+                .alert.alert-info Vous avez déjà voté
+
 
               - elsif @structure.is_member?(@user) && !@campaign.structure_can_vote?(@structure)
 
