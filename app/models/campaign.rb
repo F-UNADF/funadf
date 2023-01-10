@@ -180,8 +180,12 @@ class Campaign < ActiveRecord::Base
       vt = self.voting_tables.where(position: (as_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: as_member).first
     end
 
+    logger.debug vt.inspect
+
     if as_member
       can_vote = structure.member_can_vote?(voting_structure)
+
+      logger.debug can_vote.inspect
 
       can_vote && (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
     else

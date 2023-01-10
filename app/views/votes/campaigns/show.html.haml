@@ -91,3 +91,40 @@
                       JE VALIDE MON VOTE
                       = icon 'fa', 'warning'
 
+
+
+
+
+    - if params['show_admin'] == "true"
+      %table.table
+        %tr
+          %th Quoi ?
+          %th Réponse
+
+        %tr
+          %th{colspan: 2} Présidences
+        - @presidences.each_with_index do |s, index|
+          %tr
+            %th{colspan: 2}
+              = "#{s.name} - (#{s.town})"
+          %tr
+            %td IS_MEMBER ?
+            %td= @structure.is_member?(s)
+          %tr
+            %td CAN VOTE ?
+            %td= @campaign.structure_can_vote?(s, @structure.is_member?(s))
+          %tr
+            %td HAS ALREADY VOTE ?
+            %td= @campaign.has_already_vote?(s)
+        %tr
+          %th{colspan: 2} USER
+
+        %tr
+          %td IS_MEMBER ?
+          %td= @structure.is_member?(@user)
+        %tr
+          %td CAN VOTE ?
+          %td= @campaign.user_can_vote?(@user, @structure.is_member?(@user))
+        %tr
+          %td HAS ALREADY VOTE ?
+          %td= @campaign.has_already_vote?(@user)
