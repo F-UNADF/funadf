@@ -27,10 +27,13 @@ class User < ActiveRecord::Base
   has_many :phases, ->(career){where('church_id IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
   has_many :responsabilities, ->(career){where('association_id IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
 
+  has_many :fees
+
   accepts_nested_attributes_for :careers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :gratitudes, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :phases, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :responsabilities, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :fees, reject_if: :all_blank, allow_destroy: true
 
   validates :firstname, :lastname, presence: true
 
@@ -113,7 +116,7 @@ class User < ActiveRecord::Base
     if structure.blank?
       return !self.roles.where(name: role_name).blank?
     end
-    
+
     if self.memberships.joins(:role).where('roles.name IN (?)', role_name).pluck(:structure_id).include?(structure.id)
       return true
     end
@@ -314,8 +317,18 @@ class User < ActiveRecord::Base
       email: self.email,
       phone: self.phone_1,
       avatar: Rails.application.routes.url_helpers.rails_blob_url(self.avatar),
-      level: self.level
+      level: self.level,
+      passphrase: self.passphrase
     }
+  end
+
+  def passphrase
+    last_fee = self.fees.order(paid_at: :desc).first
+    if last_fee
+      "Pas de cotisation"
+    else
+      "Dernière cotisation le #{I18n.l last_fee.paid_at, format: :short}"
+    end
   end
 
   def self.allowed_params params
@@ -325,6 +338,7 @@ class User < ActiveRecord::Base
                         :email, :level, :birthdate, :avatar, :biography,
                         husband_marriage_attributes: [:husband_id, :wife_id],
                         wife_marriage_attributes: [:husband_id, :wife_id],
+                        fees_attributes: [:id, :what, :paid_at, :_destroy],
                         gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                         phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                         responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
@@ -334,6 +348,7 @@ class User < ActiveRecord::Base
                         :email, :level, :birthdate, :password, :password_confirmation, :avatar,
                         husband_marriage_attributes: [:husband_id, :wife_id],
                         wife_marriage_attributes: [:husband_id, :wife_id],
+                        fees_attributes: [:id, :what, :paid_at, :_destroy],
                         gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                         phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                         responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
