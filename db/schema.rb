@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_05_153353) do
+ActiveRecord::Schema.define(version: 2023_01_14_145943) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -128,6 +128,15 @@ ActiveRecord::Schema.define(version: 2022_09_05_153353) do
     t.integer "category_id"
     t.index ["category_id"], name: "index_events_on_category_id"
     t.index ["structure_id"], name: "index_events_on_structure_id"
+  end
+
+  create_table "fees", charset: "latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "what"
+    t.date "paid_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_fees_on_user_id"
   end
 
   create_table "intranets", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -322,6 +331,7 @@ ActiveRecord::Schema.define(version: 2022_09_05_153353) do
   add_foreign_key "attachments", "posts"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"
+  add_foreign_key "fees", "users"
   add_foreign_key "intranets", "structures"
   add_foreign_key "memberships", "roles"
   add_foreign_key "posts", "structures"

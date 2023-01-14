@@ -1,0 +1,13 @@
+.row
+  .col-5
+    .form-group
+      = f.text_field :what, class: "form-control", placeholder: "Quoi ?"
+
+  .col-5
+    .form-group
+      = f.date_field :paid_at, class: "form-control", placeholder: "Quand ?"
+
+  .col-2
+    .form-group
+      = link_to_remove_association f, class: 'btn btn-danger btn-sm' do
+        = icon "fa", "times"
