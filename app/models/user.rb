@@ -297,14 +297,15 @@ class User < ActiveRecord::Base
     width = size.first
     height = size.last
     if self.avatar.attached?
-      self.avatar.representation(resize_and_pad: [width, height, gravity: 'north', background: '#f5f5f5'])
+      self.avatar.representation(resize_and_pad: [width, height, gravity: 'north', background: '#f5f5f5']).url
     else
       gravatar_url
     end
   end
 
   def current_church
-    self.phases.order(start_at: :desc).first.church
+    phase = self.phases.order(start_at: :desc).first
+    phase.present? ? phase.church : nil
   end
 
   def to_json
@@ -316,7 +317,7 @@ class User < ActiveRecord::Base
       town: self.town,
       email: self.email,
       phone: self.phone_1,
-      avatar: Rails.application.routes.url_helpers.rails_blob_url(self.avatar),
+      avatar: self.get_avatar_url([350,350]),
       level: self.level,
       passphrase: self.passphrase
     }

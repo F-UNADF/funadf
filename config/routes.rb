@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     }, as: :api_devise
 
     get '/users/:token', to: 'users#show'
+    get '/votes', to: 'votes#index'
+    get '/votes/:id', to: 'votes#show'
   end
 
   authenticated :user do
