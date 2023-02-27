@@ -324,12 +324,7 @@ class User < ActiveRecord::Base
   end
 
   def passphrase
-    last_fee = self.fees.order(paid_at: :desc).first
-    if last_fee.blank?
-      "Pas de cotisation"
-    else
-      "Dernière cotisation le #{I18n.l last_fee.paid_at, format: :short}"
-    end
+    "TODO : FEE"
   end
 
   def self.allowed_params params
