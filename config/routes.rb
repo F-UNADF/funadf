@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get '/users/:token', to: 'users#show'
     get '/votes', to: 'votes#index'
     get '/votes/:id', to: 'votes#show'
+    post '/votes', to: 'votes#create'
   end
 
   authenticated :user do
