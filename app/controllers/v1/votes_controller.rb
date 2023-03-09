@@ -56,7 +56,7 @@ module V1
                   AND m.member_type = 'Structure'
                   AND m.member_id IN (SELECT s.id
                     FROM structures s
-                    INNER JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'User' AND m.member_id = 1871
+                    INNER JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'User' AND m.member_id = ?
                     INNER JOIN roles r ON r.id = m.role_id AND r.name IN ('president')
                   )
         INNER JOIN voting_tables vt ON vt.voting <> 'not' AND vt.`position` IN ('eglises membres', 'eglises non membres')
@@ -64,7 +64,7 @@ module V1
         INNER JOIN motions mo ON mo.campaign_id = c.id
         INNER JOIN voters v ON v.motion_id = mo.id
         INNER JOIN structures s2 ON s2.id = m.member_id
-        WHERE s.id = ?
+        AND s.id = ?
         UNION
         SELECT
           CONCAT(u.firstname, ' ', u.lastname) as name,
@@ -74,15 +74,15 @@ module V1
           (vt.voting <> 'count') AS is_consultative,
           (SELECT COUNT(*) FROM voters v WHERE v.motion_id = mo.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
         FROM memberships m
-        INNER JOIN roles r ON r.id = m.role_id AND r.name = 'member'
         INNER JOIN voting_tables vt ON vt.voting <> 'not' AND vt.`position` = ?
-        INNER JOIN campaigns c ON c.id = vt.campaign_id AND c.id = ?
+        INNER JOIN campaigns c ON c.id = vt.campaign_id
         INNER JOIN motions mo ON mo.campaign_id = c.id
-        INNER JOIN voters v ON v.motion_id = mo.id
+        LEFT OUTER JOIN voters v ON v.motion_id = mo.id
         INNER JOIN users u ON u.id = m.member_id
-        WHERE m.member_type = 'User' AND m.member_id = ?"
+        WHERE m.member_type = 'User' AND m.member_id = ?
+        AND c.id = ?"
 
-      values = [@campaign.id, @structure.id, @user.level, @campaign.id, @user.id]
+      values = [@user.id, @campaign.id, @structure.id, @user.level, @user.id, @campaign.id]
       result = ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send(:sanitize_sql_array, [sql, *values]))
 
 
