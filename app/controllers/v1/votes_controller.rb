@@ -15,12 +15,23 @@ module V1
                 s.name AS structure_name
         FROM campaigns c
         JOIN structures s ON s.id = c.structure_id
-        JOIN memberships m ON m.structure_id = c.structure_id AND m.member_type = 'User' AND m.member_id = ?
-        LEFT JOIN roles r ON r.id = m.role_id
+        JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'User' and m.member_id = ?
         WHERE c.state IN ('opened', 'coming')
-        AND (r.name = 'president' OR r.name = 'member')"
+        UNION
+        SELECT c.id AS campaign_id,
+                        c.name AS campaign_name,
+                        c.description AS campaign_description,
+                        s.name AS structure_name
+        FROM campaigns c
+        JOIN structures s ON s.id = c.structure_id
+        JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'Structure' and m.member_id IN (
+          SELECT s.id
+          FROM structures s
+          JOIN memberships m ON s.id = m.structure_id AND m.member_type = 'User' AND m.member_id = ?
+          JOIN roles r ON r.id = m.role_id AND r.name = 'president'
+          WHERE c.state IN ('opened', 'coming'))"
 
-      values = [@user.id]
+      values = [@user.id, @user.id]
 
       result = ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send(:sanitize_sql_array, [sql, *values]))
 

@@ -334,7 +334,7 @@ class User < ActiveRecord::Base
                         :email, :level, :birthdate, :avatar, :biography,
                         husband_marriage_attributes: [:husband_id, :wife_id],
                         wife_marriage_attributes: [:husband_id, :wife_id],
-                        fees_attributes: [:id, :what, :paid_at, :_destroy],
+                        fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
                         gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                         phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                         responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
@@ -344,7 +344,7 @@ class User < ActiveRecord::Base
                         :email, :level, :birthdate, :password, :password_confirmation, :avatar,
                         husband_marriage_attributes: [:husband_id, :wife_id],
                         wife_marriage_attributes: [:husband_id, :wife_id],
-                        fees_attributes: [:id, :what, :paid_at, :_destroy],
+                        fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
                         gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                         phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                         responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])

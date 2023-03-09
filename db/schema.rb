@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_14_145943) do
+ActiveRecord::Schema.define(version: 2023_03_08_205200) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(version: 2023_01_14_145943) do
     t.date "paid_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "amount", precision: 10, scale: 2
     t.index ["user_id"], name: "index_fees_on_user_id"
   end
 

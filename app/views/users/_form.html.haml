@@ -84,27 +84,29 @@
 
 
     .col-md-6
-      -# - if current_user.is_admin?
-      -#   .card
-      -#     .card-header
-      -#       %strong Cotisations
-      -#     .card-body
-      -#       .row.mb-1
-      -#         .col-5
-      -#           %strong Quoi
-      -#         .col-5
-      -#           %strong Quand ?
-      -#         .col-2
-      -#
-      -#       = f.fields_for :fees do |ff|
-      -#         = render 'users/fee_fields', f: ff
-      -#
-      -#       #fees
-      -#
-      -#       .form-group
-      -#         = link_to_add_association f, :fees, class: "btn btn-sm btn-primary", partial: 'users/fee_fields', data: {"association-insertion-node" => "#fees", "association-insertion-method" => "append"} do
-      -#           = icon 'fa', "plus"
-      -#           Ajouter une cotisation
+      - if current_user.is_admin?
+        .card
+          .card-header
+            %strong Cotisations
+          .card-body
+            .row.mb-1
+              .col-3
+                %strong Quoi
+              .col-3
+                %strong Quand ?
+              .col-3
+                %strong Combien ?
+              .col-3
+
+            = f.fields_for :fees do |ff|
+              = render 'users/fee_fields', f: ff
+
+            #fees
+
+            .form-group
+              = link_to_add_association f, :fees, class: "btn btn-sm btn-primary", partial: 'users/fee_fields', data: {"association-insertion-node" => "#fees", "association-insertion-method" => "append"} do
+                = icon 'fa', "plus"
+                Ajouter une cotisation
 
 
       .card
