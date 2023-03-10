@@ -324,7 +324,14 @@ class User < ActiveRecord::Base
   end
 
   def passphrase
-    "TODO : FEE"
+    year = Date.today.year - 1
+    fee = self.fees.where(what: year).first
+
+    if fee
+      return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' OK'
+    else
+      return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' KO'
+    end
   end
 
   def self.allowed_params params
