@@ -12,7 +12,8 @@ module V1
         SELECT c.id AS campaign_id,
                 c.name AS campaign_name,
                 c.description AS campaign_description,
-                s.name AS structure_name
+                s.name AS structure_name,
+                c.state AS campaign_state
         FROM campaigns c
         JOIN structures s ON s.id = c.structure_id
         JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'User' and m.member_id = ?
@@ -21,7 +22,8 @@ module V1
         SELECT c.id AS campaign_id,
                         c.name AS campaign_name,
                         c.description AS campaign_description,
-                        s.name AS structure_name
+                        s.name AS structure_name,
+                        c.state AS campaign_state
         FROM campaigns c
         JOIN structures s ON s.id = c.structure_id
         JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'Structure' and m.member_id IN (

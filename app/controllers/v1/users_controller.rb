@@ -8,7 +8,8 @@ module V1
     # POST /users/sign_in
     def show
       user = User.find_by(authentication_token: params[:token])
-      render json: {user: user.to_json, church: user.current_church}
+      fees = user.fees.order(what: :desc).first 5
+      render json: {user: user.to_json, church: user.current_church, fees: fees}
     end
   end
 end
