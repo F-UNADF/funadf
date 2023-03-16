@@ -4,12 +4,17 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
+  get '/support', to: 'pages#support'
+
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: {format: 'json'} do
     devise_for :users, controllers: {
         sessions: 'v1/custom_devise/sessions'
     }, as: :api_devise
 
     get '/users/:token', to: 'users#show'
+    get '/votes', to: 'votes#index'
+    get '/votes/:id', to: 'votes#show'
+    post '/votes', to: 'votes#create'
   end
 
   authenticated :user do

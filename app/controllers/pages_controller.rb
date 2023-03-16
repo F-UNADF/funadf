@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
+  layout 'devise/layouts'
 
-  def home
+  def support
   end
 
 end

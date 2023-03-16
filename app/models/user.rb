@@ -27,10 +27,13 @@ class User < ActiveRecord::Base
   has_many :phases, ->(career){where('church_id IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
   has_many :responsabilities, ->(career){where('association_id IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
 
+  has_many :fees, dependent: :destroy
+
   accepts_nested_attributes_for :careers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :gratitudes, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :phases, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :responsabilities, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :fees, reject_if: :all_blank, allow_destroy: true
 
   validates :firstname, :lastname, presence: true
 
@@ -113,7 +116,7 @@ class User < ActiveRecord::Base
     if structure.blank?
       return !self.roles.where(name: role_name).blank?
     end
-    
+
     if self.memberships.joins(:role).where('roles.name IN (?)', role_name).pluck(:structure_id).include?(structure.id)
       return true
     end
@@ -294,14 +297,15 @@ class User < ActiveRecord::Base
     width = size.first
     height = size.last
     if self.avatar.attached?
-      self.avatar.representation(resize_and_pad: [width, height, gravity: 'north', background: '#f5f5f5'])
+      self.avatar.representation(resize_and_pad: [width, height, gravity: 'north', background: '#f5f5f5']).url
     else
       gravatar_url
     end
   end
 
   def current_church
-    self.phases.order(start_at: :desc).first.church
+    phase = self.phases.order(start_at: :desc).first
+    phase.present? ? phase.church : nil
   end
 
   def to_json
@@ -313,9 +317,21 @@ class User < ActiveRecord::Base
       town: self.town,
       email: self.email,
       phone: self.phone_1,
-      avatar: Rails.application.routes.url_helpers.rails_blob_url(self.avatar),
-      level: self.level
+      avatar: self.get_avatar_url([350,350]),
+      level: self.level,
+      passphrase: self.passphrase
     }
+  end
+
+  def passphrase
+    year = Date.today.year - 1
+    fee = self.fees.where(what: year).first
+
+    if fee
+      return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' OK'
+    else
+      return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' KO'
+    end
   end
 
   def self.allowed_params params
@@ -325,6 +341,7 @@ class User < ActiveRecord::Base
                         :email, :level, :birthdate, :avatar, :biography,
                         husband_marriage_attributes: [:husband_id, :wife_id],
                         wife_marriage_attributes: [:husband_id, :wife_id],
+                        fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
                         gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                         phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                         responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
@@ -334,6 +351,7 @@ class User < ActiveRecord::Base
                         :email, :level, :birthdate, :password, :password_confirmation, :avatar,
                         husband_marriage_attributes: [:husband_id, :wife_id],
                         wife_marriage_attributes: [:husband_id, :wife_id],
+                        fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
                         gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                         phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                         responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])

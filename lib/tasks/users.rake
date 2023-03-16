@@ -145,7 +145,6 @@ namespace :users do
     end
   end
 
-
   task :add_se_users => :environment do |t, args|
     file = './db/seeds/membres-se.csv'
 
@@ -380,7 +379,6 @@ namespace :users do
 
   end
 
-
   task :add_fc_users => :environment do |t, args|
     file = './db/seeds/membres-fc.csv'
 
@@ -415,5 +413,8 @@ namespace :users do
     end
   end
 
+  task :add_fees_from_csv => :environment do |t, args|
+
+  end
 
 end
