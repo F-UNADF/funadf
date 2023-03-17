@@ -7,7 +7,7 @@ class StructuresController < ApplicationController
                    structures.name AS name,
                    structures.town AS town,
                     structures.type AS type")
-                  .order(type: :asc, name: :asc)
+                  .order(type: :asc, town: :asc)
 
     if !current_user.has_role? [:admin, :steward]
       @q = @q.joins(:memberships).where("memberships.member_id = ? AND memberships.member_type = 'User'", current_user.id)
