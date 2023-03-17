@@ -23,7 +23,6 @@
           .card-header
             .float-left= render 'structures/navbar', structure: @structure
 
-
           .card-body
             .table-responsive
               %table.table.table-striped.table-sm
@@ -33,7 +32,6 @@
                     %th Nom
                     %th Email
                     %th Téléphone
-                    %th Rôle
 
                 - @is_members.each do |member|
                   %tr
@@ -41,8 +39,3 @@
                     %td= member.name
                     %td= member.email
                     %td= member.phone_1
-                    %td= member.get_resource_role(@structure)
-
-
-
-            = will_paginate @is_members
