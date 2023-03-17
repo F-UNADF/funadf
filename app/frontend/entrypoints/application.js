@@ -1,12 +1,6 @@
-import { createApp } from 'vue/dist/vue.esm-bundler';
+import { createApp } from 'vue';
+import App from '../components/App.vue'
 
-const app = createApp({
-    data() {
-        return {
-            course: 'Intro to Vue 3 and Rails'
-        }
-    }
-})
+const app = createApp(App);
 
 app.mount('#app');
-console.log("app", app);  

@@ -1,4 +1,7 @@
 FROM ruby:2.7.1
+
+ENV BUNDLER_VERSION=2.3.13
+
 RUN apt-get update -qq && \
     apt-get install -y apt-utils \
                        build-essential \
@@ -10,10 +13,14 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
 
 RUN mkdir /app
 WORKDIR /app
+
 ADD Gemfile /app/Gemfile
 ADD Gemfile.lock /app/Gemfile.lock
-RUN bundle install -j4
+RUN gem install bundler -v "$BUNDLER_VERSION" && bundle install -j4
+
+ADD package.json /app/package.json
 RUN npm install
+
 ADD . /app
 
 EXPOSE 3000

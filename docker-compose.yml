@@ -6,7 +6,9 @@ services:
       context: .
       dockerfile: ./docker/rails/Dockerfile
     command: ${COMMAND}
-
+    environment:
+      RAILS_ENV: development
+      VITE_RUBY_HOST: vite
     ports:
       - '3000:3000'
     volumes:
@@ -14,10 +16,25 @@ services:
       - .:/app
     depends_on:
       - db
+      - vite
     extends:
       file: ./docker/mysql/password.yml
       service: password
 
+  vite:
+    container_name: funadf_vite
+    build:
+      context: .
+      dockerfile: ./docker/rails/Dockerfile
+    entrypoint: ./docker-vite.sh
+    environment:
+      DEBUG: '*vite*'
+      RAILS_ENV: development
+      VITE_RUBY_HOST: 0.0.0.0
+    ports:
+      - "3036:3036"
+    volumes:
+      - .:/app
   db:
     container_name: funadf_db
     build:
