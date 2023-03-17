@@ -3,14 +3,18 @@ class StructuresController < ApplicationController
   before_action :set_structure, except: [:index, :new, :create]
 
   def index
-    @q = current_user.structures.left_outer_joins(memberships: [:role]).ransack(params[:q], per_page: 50)
+    @q = Structure.select("structures.id AS id,
+                   structures.name AS name,
+                   structures.town AS town,
+                    structures.type AS type")
+                  .order(type: :asc, name: :asc)
 
-    if current_user.has_role? [:admin, :steward]
-      @q = Structure.all.left_outer_joins(memberships: [:role]).ransack(params[:q], per_page: 50)
+    if !current_user.has_role? [:admin, :steward]
+      @q = @q.joins(:memberships).where("memberships.member_id = ? AND memberships.member_type = 'User'", current_user.id)
     end
 
-    @structures = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
-
+    @q = @q.ransack(params[:q])
+    @structures = @q.result(distinct: true, ).paginate(:page => params[:page], per_page: 50)
 
     respond_to do |format|
       format.html
@@ -44,8 +48,8 @@ class StructuresController < ApplicationController
 
   def update
     if @structure.update(structure_params)
-      redirect_to [@structure.becomes(Structure), :has_memberships], flash:{success: 'Votre structure a été mise à jour.'}
-     else
+      redirect_to [@structure.becomes(Structure), :has_memberships], flash: { success: 'Votre structure a été mise à jour.' }
+    else
       render :edit
     end
   end
@@ -53,16 +57,16 @@ class StructuresController < ApplicationController
   def destroy
     @structure.destroy
 
-    redirect_back fallback_location: root_path, flash:{success: 'Structure supprimée'}
+    redirect_back fallback_location: root_path, flash: { success: 'Structure supprimée' }
   end
 
-
   private
-    def set_structure
-      @structure = Structure.find params[:id]
-    end
 
-    def structure_params
-      params[:structure].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :type, :logo)
-    end
+  def set_structure
+    @structure = Structure.find params[:id]
+  end
+
+  def structure_params
+    params[:structure].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :type, :logo)
+  end
 end

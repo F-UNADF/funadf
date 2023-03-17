@@ -1,7 +1,6 @@
 class Structure < ActiveRecord::Base
 
   has_many :campaigns, dependent: :destroy
-  has_many :electors, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :categories, dependent: :destroy
   has_many :posts, dependent: :destroy
