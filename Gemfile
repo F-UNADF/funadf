@@ -53,6 +53,9 @@ gem 'aws-sdk-s3', require: false
 gem 'exception_notification'
 gem 'slack-notifier'
 
+gem 'foreman'
+gem 'vite_rails'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

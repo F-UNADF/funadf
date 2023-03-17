@@ -42,7 +42,7 @@ Rails.application.routes.draw do
         end
         resources :intranets
 
-        root :to => redirect('/users'), as: :root
+        root to: 'pages#home', as: :root
       end
     end
 
