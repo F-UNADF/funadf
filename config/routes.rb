@@ -2,9 +2,18 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
 
+  namespace :api do
+    get 'users/index'
+  end
+  get 'current_user/show'
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   get '/support', to: 'pages#support'
+
+  namespace :api, defaults: {format: 'json'} do
+    get 'current_user', to: 'current_user#show'
+    resources :users, only: [:index, :show]
+  end
 
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: {format: 'json'} do
     devise_for :users, controllers: {

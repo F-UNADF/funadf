@@ -4,9 +4,14 @@
   <%= csp_meta_tag %>
   <%= vite_client_tag %>
 
-  <div id="app">
-    <router-view></router-view>
-  </div>
-
-  <%= vite_javascript_tag 'application' %>
+  <%= vite_stylesheet_tag 'typography.scss' %>
 </head>
+<body>
+
+<div id="app">
+  <%= yield %>
+</div>
+
+<%= vite_javascript_tag 'application' %>
+
+</body>

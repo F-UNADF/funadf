@@ -1,25 +1,8 @@
 class Admin::UsersController < AdminController
 
+  layout 'admin/layouts/vuejs'
+
   def index
-    respond_to do |format|
-      format.json {
-        @users = User.all
-        if params[:query]
-          @users = User.where("firstname LIKE '#{params[:query]}%' OR lastname LIKE '#{params[:query]}%' ")
-        end
-        render json: @users
-      }
-      format.html {
-        @q = User.order(lastname: :asc).ransack(params[:q])
-
-        if params[:page].blank?
-          params[:page] = session[:user_page]
-        end
-
-        @users = @q.result(distinct: true).paginate(:page => params[:page], per_page: 50)
-        session[:user_page] = params[:page] if params[:page]
-      }
-    end
   end
 
   def show

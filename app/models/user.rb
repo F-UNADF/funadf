@@ -308,8 +308,8 @@ class User < ActiveRecord::Base
     phase.present? ? phase.church : nil
   end
 
-  def to_json
-    {
+  def to_json(options = {})
+    JSON.pretty_generate({
       id: self.friendly_id,
       fullname: self.fullname,
       address: self.address_1,
@@ -320,7 +320,7 @@ class User < ActiveRecord::Base
       avatar: self.get_avatar_url([350,350]),
       level: self.level,
       passphrase: self.passphrase
-    }
+    }, options)
   end
 
   def passphrase
