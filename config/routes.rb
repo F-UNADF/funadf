@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   get '/support', to: 'pages#support'
+  get '/app', to: 'pages#app'
 
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: {format: 'json'} do
     devise_for :users, controllers: {

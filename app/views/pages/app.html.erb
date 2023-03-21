@@ -1,0 +1,23 @@
+<h2 class="text-center pb-3 border-bottom mb-3">Redirection<br>en cours...</h2>
+<p class="test-center mb-3">
+  Vous allez être redirigé vers l'application mobile.
+  <br>
+  Si vous n'êtes pas redirigé automatiquement, cliquez sur le lien ci-dessous.
+</p>
+<a class="btn btn-info" href="https://itunes.apple.com/us/app/example/id1234567890?mt=8">Cliquez ici</a>
+
+<script>
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    var link = "";
+
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        window.location.href = "https://itunes.apple.com/us/app/example/id1234567890?mt=8";
+        link = "https://itunes.apple.com/us/app/example/id1234567890?mt=8";
+    } else if (/android/i.test(userAgent)) {
+        window.location.href = "https://play.google.com/store/apps/details?id=funadf.app";
+        link = "https://play.google.com/store/apps/details?id=funadf.app";
+    } else {
+        // If the user is not on an iOS or Android device, do nothing.
+    }
+    document.getElementsByClassName("btn").setAttribute('href', link);
+</script>
