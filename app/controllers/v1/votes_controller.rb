@@ -8,6 +8,10 @@ module V1
     def index
       @user = User.find_by(authentication_token: params[:token])
 
+      if(@user.blank?)
+        render json: { status: 'ko', message: 'Token is not valid' }
+      end
+
       sql = "
         SELECT c.id AS campaign_id,
                 c.name AS campaign_name,
@@ -17,6 +21,7 @@ module V1
         FROM campaigns c
         JOIN structures s ON s.id = c.structure_id
         JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'User' and m.member_id = ?
+        JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Pasteur Stagiaire' AND vt.voting <> 'not'
         WHERE c.state IN ('opened', 'coming')
         UNION
         SELECT c.id AS campaign_id,
@@ -30,8 +35,9 @@ module V1
           SELECT s.id
           FROM structures s
           JOIN memberships m ON s.id = m.structure_id AND m.member_type = 'User' AND m.member_id = ?
-          JOIN roles r ON r.id = m.role_id AND r.name = 'president'
-          WHERE c.state IN ('opened', 'coming'))"
+          JOIN roles r ON r.id = m.role_id AND r.name = 'president')
+        JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'eglises membres' AND vt.voting <> 'not'
+        WHERE c.state IN ('opened', 'coming')"
 
       values = [@user.id, @user.id]
 
