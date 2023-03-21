@@ -5,6 +5,7 @@ const state = () => ({
     items: [],
     item: {},
     loading: false,
+    referentiels: [],
 });
 
 // getters
@@ -12,6 +13,7 @@ const getters = {
     getItems: (state) => state.items,
     getItem: (state) => state.item,
     getLoading: (state) => state.loading,
+    getReferentiels: (state) => state.referentiels,
 };
 
 // actions
@@ -28,6 +30,16 @@ const actions = {
             });
         });
     },
+    referentiels: function ({commit}) {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/referentiels/users', {}).then((res) => {
+                commit('setReferentiels', res.data);
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    }
 };
 
 // mutations
@@ -35,6 +47,7 @@ const mutations = {
     setItems: (state, payload) => state.items = payload,
     setItem: (state, payload) => state.item = payload,
     setLoading: (state, payload) => state.loading = payload,
+    setReferentiels: (state, payload) => state.referentiels = payload,
 };
 
 export default {

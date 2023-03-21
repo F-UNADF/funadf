@@ -7,7 +7,11 @@ class Api::UsersController < ApplicationController
        ) latest_career ON users.id = latest_career.user_id"
     ).joins(
       "LEFT JOIN careers ON latest_career.user_id = careers.user_id AND latest_career.max_start_at = careers.start_at"
-    ).select("users.*, COALESCE(careers.level, 'NR') AS current_level")
+    ).select("users.*, COALESCE(careers.level, 'NR') AS current_level, '' AS avatar_url")
+
+    users.each do |user|
+      user.avatar_url = user.get_avatar_url
+    end
 
     render json: users
   end

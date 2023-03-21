@@ -2,23 +2,37 @@
   <v-card>
     <v-card-text class="pa-5">
       <v-row>
-        <v-col cols="12" lg="4" md="6">
+        <v-col cols="12" lg="4" md="4" class="mb-3">
           <v-text-field
               density="compact"
               v-model="search"
-              label="Search Contacts"
+              label="Chercher un utilisateur (Nom, Prénom, Email, Ville...)"
               hide-details
               variant="outlined"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" lg="8" md="6" class="text-right">
+        <v-col cols="12" lg="4" md="4" class="mb-3">
+          <v-select
+              density="compact"
+              v-model="filter.levels"
+              :items="referentiels.levels"
+              label="Reconnaissance"
+              hide-details
+              multiple
+              clearable
+              chips
+              variant="outlined"
+          ></v-select>
+        </v-col>
+        <v-col cols="12" lg="4" md="4" class="text-right">
           <v-dialog v-model="dialog">
             <template v-slot:activator="{ props }">
               <v-btn color="primary" v-bind="props" class="ml-auto">
-                <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>Add
-                Contact
+                <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+                Ajouter un utilisateur
               </v-btn>
             </template>
+
             <v-card>
               <v-card-title class="pa-4 bg-secondary">
                 <span class="title text-white">{{ formTitle }}</span>
@@ -102,74 +116,67 @@
                   "
                     variant="flat"
                     @click="save"
-                >Save</v-btn
+                >Save
+                </v-btn
                 >
               </v-card-actions>
             </v-card>
           </v-dialog>
         </v-col>
       </v-row>
-      <v-table class="mt-5">
-        <thead>
-        <tr>
-          <th>Id</th>
-          <th>Info</th>
-          <th>Téléphone</th>
-          <th>Reconnaissance</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody v-if="!loading">
-          <tr v-for="item in items" :key="item.id">
-            <td>{{ item.id }}</td>
+      <v-data-table
+          :headers="headers"
+          :items="filteredItems"
+          :search="search"
+          item-value="name"
+          class="elevation-1"
+      >
+        <template v-slot:item="{ item }">
+          <tr>
+            <td>{{ item.value.id }}</td>
             <td>
               <div class="d-flex align-center py-4">
                 <div>
                   <v-img
-                      :src="item.avatar_url"
+                      :src="item.value.avatar_url"
                       width="45px"
                       class="rounded-circle img-fluid"
                   ></v-img>
                 </div>
 
                 <div class="ml-5">
-                  <h4>{{ item.lastname }} {{ item.firstname }}</h4>
+                  <h4>{{ item.value.lastname }} {{ item.value.firstname }}</h4>
                   <span class="subtitle-2 d-block font-weight-regular">{{
-                      item.email
+                      item.value.email
                     }}</span>
                 </div>
               </div>
             </td>
-            <td>{{ item.phone }}</td>
+            <td>{{ item.value.zipcode }} {{ item.value.town }}</td>
             <td>
-              <v-chip color="info" label>{{ item.current_level }}</v-chip>
+              <v-chip color="info" label>{{ item.value.current_level }}</v-chip>
             </td>
             <td>
               <v-icon
                   small
                   class="mr-2 text-info cursor-pointer"
-                  @click="editItem(item)"
+                  @click="editItem(item.value)"
                   title="Edit"
-              >mdi-pencil</v-icon
+              >mdi-pencil
+              </v-icon
               >
               <v-icon
                   small
                   class="text-error cursor-pointer"
                   title="Delete"
-                  @click="deleteItem(item)"
-              >mdi-delete</v-icon
+                  @click="deleteItem(item.value)"
+              >mdi-delete
+              </v-icon
               >
             </td>
           </tr>
-        </tbody>
-        <tbody v-else>
-          <tr>
-            <td colspan="5" class="text-center">
-              <v-progress-linear indeterminate color="primary"></v-progress-linear>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
+        </template>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>
@@ -187,7 +194,17 @@ export default {
     ...mapGetters({
       items: 'getItems',
       loading: 'getLoading',
+      referentiels: 'getReferentiels',
     }),
+    filteredItems() {
+      return this.items.filter(item => {
+        if (this.filter.levels.length > 0 && !this.filter.levels.includes(item.current_level)) {
+          return false;
+        }
+
+        return true;
+      });
+    },
   },
   methods: {
     editItem: function (item) {
@@ -210,18 +227,21 @@ export default {
       dialog: false,
       editedItem: {},
       valid: true,
+      filter: {
+        levels: [],
+      },
       headers: [
-        {title: 'ID', key: 'id', sortable: true, display: true},
-        {title: 'Nom', key: 'lastname', sortable: true, display: true},
-        {title: 'Prenom', key: 'firstname', display: false},
-        {title: 'Email', align: 'start', key: 'email', sortable: true, display: true},
-        {title: 'Niveau', align: 'start', key: 'current_level', sortable: true, display: true},
+        {title: 'ID', key: 'id', sortable: true},
+        {title: 'Nom', key: 'lastname', sortable: true},
+        {title: 'Ville', align: 'start', key: 'town', sortable: true},
+        {title: 'Niveau', align: 'start', key: 'current_level', sortable: true},
         {title: 'Actions', key: 'actions', sortable: false},
       ],
     }
   },
   beforeMount: function () {
     this.$store.dispatch('items');
+    this.$store.dispatch('referentiels');
   },
 }
 </script>
