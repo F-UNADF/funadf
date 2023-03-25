@@ -1,7 +1,6 @@
 <template>
   <v-navigation-drawer
       left
-      permanent
       elevation="10"
       rail-width="75"
       mobile-breakpoint="960"

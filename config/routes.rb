@@ -2,17 +2,13 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
 
-  namespace :api do
-    get 'users/index'
-  end
-  get 'current_user/show'
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   get '/support', to: 'pages#support'
 
   namespace :api, defaults: {format: 'json'} do
     get 'current_user', to: 'current_user#show'
-    resources :users, only: [:index, :show]
+    resources :users
     get 'referentiels/:referentiel', to: 'referentiels#show'
   end
 

@@ -1,136 +1,62 @@
 <template>
-  <v-card>
-    <v-card-text class="pa-5">
-      <v-row>
-        <v-col cols="12" lg="4" md="4" class="mb-3">
-          <v-text-field
-              density="compact"
-              v-model="search"
-              label="Chercher un utilisateur (Nom, Prénom, Email, Ville...)"
-              hide-details
-              variant="outlined"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" lg="4" md="4" class="mb-3">
-          <v-select
-              density="compact"
-              v-model="filter.levels"
-              :items="referentiels.levels"
-              label="Reconnaissance"
-              hide-details
-              multiple
-              clearable
-              chips
-              variant="outlined"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" lg="4" md="4" class="text-right">
-          <v-dialog v-model="dialog">
-            <template v-slot:activator="{ props }">
-              <v-btn color="primary" v-bind="props" class="ml-auto">
-                <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
-                Ajouter un utilisateur
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-card-title class="pa-4 bg-secondary">
-                <span class="title text-white">{{ formTitle }}</span>
-              </v-card-title>
-
-              <v-card-text>
-                <v-container>
-                  <v-form ref="form" v-model="valid" lazy-validation>
-                    <v-row>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                            variant="outlined"
-                            hide-details
-                            v-model="editedItem.id"
-                            label="Id"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                            variant="outlined"
-                            hide-details
-                            v-model="editedItem.userinfo"
-                            label="User info"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                            variant="outlined"
-                            hide-details
-                            v-model="editedItem.usermail"
-                            label="User email"
-                            type="email"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                            variant="outlined"
-                            hide-details
-                            v-model="editedItem.phone"
-                            label="Phone"
-                            type="phone"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                            variant="outlined"
-                            hide-details
-                            v-model="editedItem.jdate"
-                            label="Joining Date"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6">
-                        <v-text-field
-                            variant="outlined"
-                            hide-details
-                            v-model="editedItem.role"
-                            label="Role"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="12">
-                        <v-select
-                            variant="outlined"
-                            hide-details
-                            :items="rolesbg"
-                            v-model="editedItem.rolestatus"
-                            label="Role Background"
-                        ></v-select>
-                      </v-col>
-                    </v-row>
-                  </v-form>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions class="pa-4">
-                <v-spacer></v-spacer>
-                <v-btn color="error" @click="close">Cancel</v-btn>
-                <v-btn
-                    color="secondary"
-                    :disabled="
-                    editedItem.userinfo == '' || editedItem.usermail == ''
-                  "
-                    variant="flat"
-                    @click="save"
-                >Save
-                </v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-col>
-      </v-row>
-      <v-data-table
+    <v-row>
+      <v-col cols="12" lg="4" md="4" class="mb-3">
+        <v-text-field
+            density="compact"
+            v-model="search"
+            label="Chercher un utilisateur (Nom, Prénom, Email, Ville...)"
+            hide-details
+            variant="outlined"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" lg="4" md="4" class="mb-3">
+        <v-select
+            density="compact"
+            v-model="filter.levels"
+            :items="referentiels.levels"
+            label="Reconnaissance"
+            hide-details
+            multiple
+            clearable
+            chips
+            variant="outlined"
+        ></v-select>
+      </v-col>
+      <v-col cols="12" lg="4" md="4" class="text-right">
+        <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
+          <v-icon color="primary">mdi-reload</v-icon>
+        </v-btn>
+        <v-btn color="primary" class="ml-auto" @click="newItem()">
+          <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+          Ajouter un utilisateur
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-data-table
           :headers="headers"
           :items="filteredItems"
           :search="search"
           item-value="name"
           class="elevation-1"
       >
+        <template v-slot:no-data>
+          <tr>
+            <td colspan="5">
+              <v-progress-linear
+                  indeterminate
+                  color="cyan"
+                  v-if="loading"
+              ></v-progress-linear>
+              <v-alert
+                  v-else
+                  color="danger"
+                  icon="danger"
+                  title="Aucun utilisateur trouvé"
+                  text="Aucun utilisateur ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."
+              ></v-alert>
+            </td>
+          </tr>
+        </template>
         <template v-slot:item="{ item }">
           <tr>
             <td>{{ item.value.id }}</td>
@@ -157,45 +83,105 @@
               <v-chip color="info" label>{{ item.value.current_level }}</v-chip>
             </td>
             <td>
-              <v-icon
-                  small
-                  class="mr-2 text-info cursor-pointer"
-                  @click="editItem(item.value)"
-                  title="Edit"
-              >mdi-pencil
-              </v-icon
-              >
-              <v-icon
-                  small
-                  class="text-error cursor-pointer"
-                  title="Delete"
-                  @click="deleteItem(item.value)"
-              >mdi-delete
-              </v-icon
-              >
+              <v-tooltip location="top" text="Modifier l'utilisateur">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                      small
+                      v-bind="props"
+                      color="primary"
+                      @click="editItem(item)"
+                      title="Edit">
+                    mdi-pencil
+                  </v-icon>
+                </template>
+              </v-tooltip>
+
+              <v-tooltip location="top" text="Supprimer l'utilisateur">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                      v-bind="props"
+                      small
+                      class="text-error"
+                      title="Delete"
+                      @click="deleteItem(item.value)">
+                    mdi-delete
+                  </v-icon>
+                </template>
+              </v-tooltip>
+
+              <v-tooltip location="top" text="Désactiver l'utilisateur" v-if="!item.value.disabled">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                      v-bind="props"
+                      small
+                      color="orange"
+                      title="Désactiver"
+                      @click="disableItem(item.value)">
+                    mdi-account-off
+                  </v-icon>
+                </template>
+              </v-tooltip>
+
+              <v-tooltip location="top" text="Activer l'utilisateur" v-if="item.value.disabled">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                      v-bind="props"
+                      small
+                      color="green"
+                      title="Activer"
+                      @click="enableItem(item.value)">
+                    mdi-account-off
+                  </v-icon>
+                </template>
+              </v-tooltip>
+
+              <v-tooltip location="top" text="Se connecter en tant que l'utilisateur">
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                      v-bind="props"
+                      small
+                      color="danger"
+                      title="Activer"
+                      @click="enableItem(item.value)">
+                    mdi-drama-masks
+                  </v-icon>
+                </template>
+              </v-tooltip>
             </td>
           </tr>
         </template>
       </v-data-table>
-    </v-card-text>
-  </v-card>
+
+    <v-dialog v-model="dialogForm" max-width="75%">
+      <user-form></user-form>
+    </v-dialog>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
 import {VDataTable} from 'vuetify/labs/VDataTable'
+import UserForm from "./Form.vue";
 
 export default {
   name: "UsersIndex",
   components: {
     VDataTable,
+    UserForm,
   },
   computed: {
-    ...mapGetters({
+    ...mapGetters('usersStore', {
       items: 'getItems',
       loading: 'getLoading',
       referentiels: 'getReferentiels',
     }),
+    dialogForm: {
+      get() {
+        return this.$store.state.usersStore.dialogForm;
+      },
+      set(value) {
+        this.$store.commit('usersStore/setDialogForm', value);
+      },
+    },
     filteredItems() {
       return this.items.filter(item => {
         if (this.filter.levels.length > 0 && !this.filter.levels.includes(item.current_level)) {
@@ -207,8 +193,30 @@ export default {
     },
   },
   methods: {
+    newItem: function () {
+      let newItem = {
+        user: {
+          id: null,
+          lastname: '',
+          firstname: '',
+          email: '',
+          password: '',
+          password_confirmation: '',
+          zipcode: '',
+          town: '',
+          disabled: false,
+        },
+        gratitudes: [],
+        fees: [],
+        phases: [],
+        responsabilites: [],
+      };
+      this.$store.commit('usersStore/setItem', newItem);
+      this.$store.commit('usersStore/setDialogForm', true);
+    },
     editItem: function (item) {
-      console.log(item);
+      this.$store.dispatch('usersStore/getItem', item.value.id);
+      this.$store.commit('usersStore/setDialogForm', true);
     },
     deleteItem: function (item) {
       console.log(item);
@@ -218,7 +226,10 @@ export default {
     },
     disableItem: function (item) {
       console.log(item);
-    }
+    },
+    refresh: function () {
+      this.$store.dispatch('usersStore/items');
+    },
   },
   data() {
     return {
@@ -240,8 +251,8 @@ export default {
     }
   },
   beforeMount: function () {
-    this.$store.dispatch('items');
-    this.$store.dispatch('referentiels');
+    this.$store.dispatch('usersStore/items');
+    this.$store.dispatch('usersStore/referentiels');
   },
 }
 </script>

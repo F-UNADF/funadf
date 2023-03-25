@@ -6,10 +6,9 @@ const debug = process.env.NODE_ENV !== 'production';
 
 const store = createStore({
     modules: {
-        session: sessionStore,
-        users: usersStore,
+        sessionStore,
+        usersStore,
     },
-    namespaced: true,
     strict: debug,
 });
 

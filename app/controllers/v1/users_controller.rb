@@ -9,7 +9,7 @@ module V1
     def show
       user = User.find_by(authentication_token: params[:token])
       fees = user.fees.order(what: :desc).first 5
-      render json: {user: user.to_json, church: user.current_church, fees: fees}
+      render json: {user: user, church: user.current_church, fees: fees}
     end
   end
 end

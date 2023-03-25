@@ -1,5 +1,13 @@
 <head>
-  <title>Example</title>
+  <title>
+    <% if Rails.env == 'recette' %>
+      RE7 - Administration - INTRANET FNADF/UNADF
+    <% elsif Rails.env == 'development' %>
+      MYLOCAL - Administration - INTRANET FNADF/UNADF
+    <% else %>
+      Administration - INTRANET FNADF/UNADF
+    <% end %>
+  </title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
   <%= vite_client_tag %>

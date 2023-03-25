@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 
   has_one_attached :avatar
 
-  has_many :careers, ->(career){order(start_at: :asc)}, class_name: "Career", foreign_key: :user_id
+  has_many :careers, class_name: "Career", foreign_key: :user_id
 
   has_many :interns, class_name: "Career", foreign_key: :referent_id
   has_many :gratitudes, ->(career){where('level IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
