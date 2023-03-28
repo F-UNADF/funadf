@@ -6,12 +6,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :invitable, :validate_on_invite => true
-
-  # has_many :rolizations, as: :resource, dependent: :destroy
-  # has_many :roles, through: :rolizations
-  # has_many :associations, through: :roles, source: :resource, source_type: 'Association'
-  # has_many :churches, through: :roles, source: :resource, source_type: 'Church'
+         :recoverable, :rememberable, :trackable, :validatable, :validate_on_invite => true
 
   has_many :memberships, as: :member
   has_many :associations, through: :memberships, source: :structure
@@ -297,7 +292,7 @@ class User < ActiveRecord::Base
     width = size.first
     height = size.last
     if self.avatar.attached?
-      self.avatar.representation(resize_and_pad: [width, height, gravity: 'north', background: '#f5f5f5']).url
+      self.avatar.variant(resize: "#{width}x#{height}!").url
     else
       gravatar_url
     end

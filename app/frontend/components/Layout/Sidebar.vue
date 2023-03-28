@@ -29,9 +29,9 @@
           <!-- ---------------------------------------------- -->
           <!---Item Sub Header -->
           <!-- ---------------------------------------------- -->
-          <v-list-subheader v-if="item.header">{{
-              item.header
-            }}</v-list-subheader>
+          <v-list-subheader v-if="item.header" style="border-bottom: solid 1px #e5e5e5">
+            {{ item.header }}
+          </v-list-subheader>
           <!-- ---------------------------------------------- -->
           <!---If Has Child -->
           <!-- ---------------------------------------------- -->
@@ -102,7 +102,7 @@ export default {
     return {
       sidebarMenu: [
         {
-          header: "HOME",
+          header: "ADMIN",
         },
         {
           title: "Accueil",
@@ -110,9 +110,14 @@ export default {
           to: "/",
         },
         {
-          title: "Users",
+          title: "Utilisateurs",
           icon: "mdi-account-group",
           to: "/users",
+        },
+        {
+          title: "Eglises",
+          icon: "mdi-church",
+          to: "/churches",
         },
       ],
     };

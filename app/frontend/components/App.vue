@@ -10,7 +10,7 @@
 
 
     <v-snackbar v-model="this.snackbar.show" :timeout="this.snackbar.timeout" :color="this.snackbar.color">
-      {{ snackbar.message }}
+      <div v-html="snackbar.message"></div>
       <template v-slot:actions>
         <v-btn
             color="white"

@@ -25,8 +25,8 @@ const actions = {
     items: function ({commit}) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
-            axios.get('/api/users', {}).then((res) => {
-                commit('setItems', res.data);
+            axios.get('/api/churches', {}).then((res) => {
+                commit('setItems', res.data.churches);
                 commit('setLoading', false);
                 resolve(res);
             }).catch((error) => {
@@ -36,16 +36,16 @@ const actions = {
     },
     save: function ({dispatch, commit, state}, item) {
         return new Promise((resolve, reject) => {
-            if (item.user.id) {
-                axios.patch('/api/users/' + item.user.id, item).then((res) => {
-                    commit('setItemInItemsById', res.data.user);
+            if (item.id) {
+                axios.patch('/api/churches/' + item.user.id, item).then((res) => {
+                    commit('setItemInItemsById', res.data);
                     resolve(res);
                 }).catch((error) => {
                     reject(error, 2000);
                 });
             } else {
-                axios.post('/api/users', item).then((res) => {
-                    commit('setItemInItemsById', res.data.user);
+                axios.post('/api/churches', item).then((res) => {
+                    commit('setItemInItemsById', res.data);
                     resolve(res);
                 }).catch((error) => {
                     reject(error, 2000);
@@ -55,28 +55,8 @@ const actions = {
     },
     delete: function ({dispatch, commit, state}, id) {
         return new Promise((resolve, reject) => {
-            axios.delete('/api/users/' + id, {}).then((res) => {
+            axios.delete('/api/churches/' + id, {}).then((res) => {
                 commit('removeItemInItemsById', id);
-                resolve(res);
-            }).catch((error) => {
-                reject(error, 2000);
-            });
-        });
-    },
-    enable: function ({dispatch, commit, state}, id) {
-        return new Promise((resolve, reject) => {
-            axios.patch('/api/users/' + id + '/enable', {}).then((res) => {
-                commit('setItemInItemsById', res.data.user);
-                resolve(res);
-            }).catch((error) => {
-                reject(error, 2000);
-            });
-        });
-    },
-    disable: function ({dispatch, commit, state}, id) {
-        return new Promise((resolve, reject) => {
-            axios.patch('/api/users/' + id + '/disable', {}).then((res) => {
-                commit('setItemInItemsById', res.data.user);
                 resolve(res);
             }).catch((error) => {
                 reject(error, 2000);
@@ -85,7 +65,7 @@ const actions = {
     },
     referentiels: function ({commit}) {
         return new Promise((resolve, reject) => {
-            axios.get('/api/referentiels/users', {}).then((res) => {
+            axios.get('/api/referentiels/churches', {}).then((res) => {
                 commit('setReferentiels', res.data);
                 resolve(res);
             }).catch((error) => {
@@ -93,18 +73,6 @@ const actions = {
             });
         });
     },
-    getItem: function ({commit}, id) {
-        commit('setFormLoading', true);
-        return new Promise((resolve, reject) => {
-            axios.get('/api/users/' + id, {}).then((res) => {
-                commit('setItem', res.data);
-                commit('setFormLoading', false);
-                resolve(res);
-            }).catch((error) => {
-                reject(error, 2000);
-            });
-        });
-    }
 };
 
 // mutations

@@ -24,10 +24,14 @@
               <v-text-field
                   v-model="editedItem.user.firstname"
                   label="Prénom"
+                  validate-on="blur"
+                  :rules="[rules.required]"
               ></v-text-field>
               <v-text-field
                   v-model="editedItem.user.lastname"
                   label="Nom"
+                  validate-on="blur"
+                  :rules="[rules.required]"
               ></v-text-field>
               <v-text-field
                 type="date"
@@ -38,13 +42,14 @@
             <v-col cols="12" sm="4">
               <v-text-field
                   v-model="editedItem.user.email"
+                  type="email"
                   label="Email"
-                  required
+                  validate-on="blur"
+                  :rules="[rules.required]"
               ></v-text-field>
               <v-text-field
                   v-model="editedItem.user.phone_1"
                   label="Téléphone"
-                  required
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="4">
@@ -294,6 +299,9 @@ export default {
         this.$root.showSnackbar('Utilisateur enregistré avec succès', 'success');
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de l\'utilisateur', 'error');
+        let errors = error.response.data.errors;
+
+        this.$root.showSnackbar(errors.join('<br/>'), 'error');
       });
     },
     addGratitude() {
@@ -340,6 +348,9 @@ export default {
     return {
       editedItem: {},
       tab: 'infos',
+      rules: {
+        required: value => !!value || 'Champ obligatoire',
+      },
     };
   },
 }
