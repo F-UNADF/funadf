@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
+  get '/avatars/:user', to: 'avatars#show'
 
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: {format: 'json'} do
     devise_for :users, controllers: {
