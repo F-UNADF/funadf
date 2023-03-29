@@ -167,7 +167,7 @@ class Structure < ActiveRecord::Base
 
   def get_logo_url size=[150,150]
     if self.logo.attached?
-      self.logo.representation(resize_to_limit: size)
+      self.logo.variant(resize_to_fill: [500, 500])
     else
       gravatar_url
     end
