@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get '/support', to: 'pages#support'
   get '/avatars/:user', to: 'avatars#show'
+  get '/logos/:structure', to: 'logos#show'
 
   namespace :api, defaults: {format: 'json'} do
     get 'current_user', to: 'current_user#show'
@@ -14,6 +15,9 @@ Rails.application.routes.draw do
     patch '/users/:id/disable', to: 'users#disable'
 
     resources :churches
+    post '/churches/:id/members', to: 'churches#add_members'
+    delete '/churches/:id/members/:membership_id', to: 'churches#remove_members'
+    post '/churches/:id/roles/edit', to: 'churches#edit_roles'
 
     get 'referentiels/:referentiel', to: 'referentiels#show'
   end

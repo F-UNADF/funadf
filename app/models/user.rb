@@ -289,13 +289,7 @@ class User < ActiveRecord::Base
   end
 
   def get_avatar_url size=[150,150]
-    width = size.first
-    height = size.last
-    if self.avatar.attached?
-      self.avatar.variant(resize: "#{width}x#{height}!").url
-    else
-      gravatar_url
-    end
+    "/avatars/#{self.id}.png"
   end
 
   def current_church

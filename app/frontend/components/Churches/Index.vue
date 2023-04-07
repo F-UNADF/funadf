@@ -51,6 +51,9 @@
         <td>{{ item.props.title.id }}</td>
         <td>
           <div class="d-flex align-center py-4">
+            <v-avatar
+                :image="'/logos/' + item.props.title.id + '.png'"
+            ></v-avatar>
             <div class="ml-5">
               <h4>{{ item.props.title.name }}</h4>
               <span class="subtitle-2 d-block font-weight-regular">{{
@@ -149,7 +152,7 @@ export default {
       this.$store.commit('churchesStore/setDialogForm', true);
     },
     editItem: function (item) {
-      this.$store.commit('churchesStore/setItem', item);
+      this.$store.dispatch('churchesStore/item', item.id);
       this.$store.commit('churchesStore/setDialogForm', true);
     },
     refresh: function () {

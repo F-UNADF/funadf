@@ -4,6 +4,7 @@ import axios from "axios";
 const state = () => ({
     items: [],
     item: {},
+    members: [],
     loading: false,
     formLoading: false,
     referentiels: [],
@@ -14,6 +15,7 @@ const state = () => ({
 const getters = {
     getItems: (state) => state.items,
     getItem: (state) => state.item,
+    getMembers: (state) => state.members,
     getLoading: (state) => state.loading,
     getFormLoading: (state) => state.formLoading,
     getReferentiels: (state) => state.referentiels,
@@ -34,19 +36,40 @@ const actions = {
             });
         });
     },
+    item: function ({commit}, id) {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/churches/' + id, {}).then((res) => {
+                commit('setItem', res.data.church);
+                commit('setMembers', res.data.members);
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    },
     save: function ({dispatch, commit, state}, item) {
         return new Promise((resolve, reject) => {
             if (item.id) {
-                axios.patch('/api/churches/' + item.user.id, item).then((res) => {
-                    commit('setItemInItemsById', res.data);
-                    resolve(res);
+                axios.patch('/api/churches/' + item.id, {church: item}, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                }).then((res) => {
+                    commit('setItemInItemsById', res.data.church);
+                    commit('setItem', res.data.church);
+                    resolve(res.data.church);
                 }).catch((error) => {
                     reject(error, 2000);
                 });
             } else {
-                axios.post('/api/churches', item).then((res) => {
-                    commit('setItemInItemsById', res.data);
-                    resolve(res);
+                axios.post('/api/churches', {church: item}, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                }).then((res) => {
+                    commit('setItem', res.data.church);
+                    commit('setItemInItemsById', res.data.church);
+                    resolve(res.data.church);
                 }).catch((error) => {
                     reject(error, 2000);
                 });
@@ -57,6 +80,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.delete('/api/churches/' + id, {}).then((res) => {
                 commit('removeItemInItemsById', id);
+                dispatch('item', id);
                 resolve(res);
             }).catch((error) => {
                 reject(error, 2000);
@@ -73,12 +97,46 @@ const actions = {
             });
         });
     },
+    addMembers: function ({dispatch, commit, state}, members) {
+        return new Promise((resolve, reject) => {
+            axios.post('/api/churches/' + state.item.id + '/members', {members: members})
+            .then((res) => {
+                commit('setMembers', res.data.members);
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    },
+    setRole: function ({dispatch, commit, state}, data) {
+        return new Promise((resolve, reject) => {
+            axios.post('/api/churches/' + state.item.id + '/roles/edit', data)
+            .then((res) => {
+                commit('setMemberInMembersById', res.data.membership);
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    },
+    removeMember: function ({dispatch, commit, state}, membership_id) {
+        return new Promise((resolve, reject) => {
+            axios.delete('/api/churches/' + state.item.id + '/members/' + membership_id, {})
+            .then((res) => {
+                commit('removeMemberIdMembersById', membership_id)
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    }
 };
 
 // mutations
 const mutations = {
     setItems: (state, payload) => state.items = payload,
     setItem: (state, payload) => state.item = payload,
+    setMembers: (state, payload) => state.members = payload,
     setLoading: (state, payload) => state.loading = payload,
     setReferentiels: (state, payload) => state.referentiels = payload,
     setDialogForm: (state, payload) => state.dialogForm = payload,
@@ -90,6 +148,25 @@ const mutations = {
         let index = state.items.findIndex(el => el.id === item.id);
         if (-1 !== index) {
             Object.assign(state.items[index], item);
+        } else {
+            state.items.push(item);
+        }
+    },
+    setMemberInMembersById: function (state, item) {
+        if (typeof item !== 'object') {
+            item = JSON.parse(item);
+        }
+        let index = state.members.findIndex(el => el.membership_id === item.membership_id);
+        if (-1 !== index) {
+            Object.assign(state.members[index], item);
+        } else {
+            state.members.push(item);
+        }
+    },
+    removeMemberIdMembersById: function (state, id) {
+        let index = state.members.findIndex(el => el.membership_id === id);
+        if (-1 !== index) {
+            state.members.splice(index, 1);
         }
     },
     removeItemInItemsById: function (state, id) {

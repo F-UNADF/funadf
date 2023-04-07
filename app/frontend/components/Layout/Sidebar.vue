@@ -70,7 +70,7 @@
                 class="first-level-item mb-1"
             >
               <template v-slot:prepend>
-                <vue-feather type="disc" class="feather-sm v-icon"></vue-feather>
+                <v-icon>disc</v-icon>
               </template>
               <v-list-item-title v-text="subitem.title"></v-list-item-title>
             </v-list-item>

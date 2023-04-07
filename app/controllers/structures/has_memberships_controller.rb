@@ -18,10 +18,6 @@ class Structures::HasMembershipsController < ApplicationController
     klass = Object.const_get params[:member_type]
     @member = klass.find params[:member_id]
 
-    puts
-    puts @member.inspect
-
-
     @member.add_role :member, @structure
 
     redirect_back fallback_location: root_path, alert: 'Membre ajouté'
@@ -29,7 +25,6 @@ class Structures::HasMembershipsController < ApplicationController
 
   def destroy
     @structure = Structure.find params[:structure_id]
-
 
     klass = Object.const_get params[:member_type]
 

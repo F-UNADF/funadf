@@ -10,6 +10,7 @@
     "@mdi/font": "^7.1.96",
     "@vitejs/plugin-vue": "^4.1.0",
     "axios": "^1.3.4",
+    "lodash-es": "^4.17.21",
     "vue": "3.2.33",
     "vue-feather": "^2.0.0",
     "vue-router": "^4.0.13",

@@ -1,6 +1,7 @@
 FROM ruby:2.7.1
 
 ENV BUNDLER_VERSION=2.3.13
+ENV PYTHONPATH=/usr/bin/python3
 
 RUN apt-get update -qq && \
     apt-get install -y apt-utils \
