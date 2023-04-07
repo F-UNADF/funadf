@@ -6,12 +6,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :invitable, :validate_on_invite => true
-
-  # has_many :rolizations, as: :resource, dependent: :destroy
-  # has_many :roles, through: :rolizations
-  # has_many :associations, through: :roles, source: :resource, source_type: 'Association'
-  # has_many :churches, through: :roles, source: :resource, source_type: 'Church'
+         :recoverable, :rememberable, :trackable, :validatable, :validate_on_invite => true
 
   has_many :memberships, as: :member
   has_many :associations, through: :memberships, source: :structure
@@ -20,7 +15,7 @@ class User < ActiveRecord::Base
 
   has_one_attached :avatar
 
-  has_many :careers, ->(career){order(start_at: :asc)}, class_name: "Career", foreign_key: :user_id
+  has_many :careers, class_name: "Career", foreign_key: :user_id
 
   has_many :interns, class_name: "Career", foreign_key: :referent_id
   has_many :gratitudes, ->(career){where('level IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
@@ -294,13 +289,7 @@ class User < ActiveRecord::Base
   end
 
   def get_avatar_url size=[150,150]
-    width = size.first
-    height = size.last
-    if self.avatar.attached?
-      self.avatar.representation(resize_and_pad: [width, height, gravity: 'north', background: '#f5f5f5']).url
-    else
-      gravatar_url
-    end
+    "/avatars/#{self.id}.png"
   end
 
   def current_church
@@ -308,8 +297,8 @@ class User < ActiveRecord::Base
     phase.present? ? phase.church : nil
   end
 
-  def to_json
-    {
+  def to_json(options = {})
+    JSON.pretty_generate({
       id: self.friendly_id,
       fullname: self.fullname,
       address: self.address_1,
@@ -320,7 +309,7 @@ class User < ActiveRecord::Base
       avatar: self.get_avatar_url([350,350]),
       level: self.level,
       passphrase: self.passphrase
-    }
+    }, options)
   end
 
   def passphrase

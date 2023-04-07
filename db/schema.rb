@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_08_205200) do
+ActiveRecord::Schema.define(version: 2023_03_23_094522) do
+
+  create_table "TempTable", id: false, charset: "latin1", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "firstname", limit: 100
+    t.string "lastname", limit: 100
+    t.string "email", limit: 100
+    t.float "2017", limit: 53
+    t.float "2018", limit: 53
+    t.float "2019", limit: 53
+    t.float "2020", limit: 53
+    t.float "2021", limit: 53
+    t.float "2022", limit: 53
+    t.integer "id"
+    t.string "2023", limit: 50
+    t.string "Column11", limit: 50
+  end
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -285,7 +301,6 @@ ActiveRecord::Schema.define(version: 2023_03_08_205200) do
     t.integer "invited_by_id"
     t.string "invited_by_type"
     t.integer "invitations_count", default: 0
-    t.string "level"
     t.date "birthdate"
     t.boolean "disabled", default: false
     t.string "access_token"
