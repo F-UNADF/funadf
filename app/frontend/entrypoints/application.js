@@ -12,7 +12,6 @@ import * as directives from 'vuetify/directives'
 
 import PerfectScrollbar from 'vue3-perfect-scrollbar'
 import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
-import VueFeather from 'vue-feather';
 
 const vuetify = createVuetify({
     components,
@@ -29,7 +28,6 @@ const app = createApp(App);
 
 app.use(vuetify)
     .use(PerfectScrollbar)
-    .use(VueFeather)
     .use(router)
     .use(store);
 
