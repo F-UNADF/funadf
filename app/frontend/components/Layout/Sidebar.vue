@@ -119,6 +119,11 @@ export default {
           icon: "mdi-church",
           to: "/churches",
         },
+        {
+          title: "Associations",
+          icon: "mdi-office-building",
+          to: "/associations",
+        },
       ],
     };
   },

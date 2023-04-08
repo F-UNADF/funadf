@@ -4,7 +4,7 @@
       <v-text-field
           density="compact"
           v-model="search"
-          label="Chercher un utilisateur (Nom, Prénom, Email, Ville...)"
+          label="Chercher un utilisateur (Nom, Ville...)"
           hide-details
           variant="outlined"
           clearable

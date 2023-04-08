@@ -19,6 +19,12 @@ Rails.application.routes.draw do
     delete '/churches/:id/members/:membership_id', to: 'churches#remove_members'
     post '/churches/:id/roles/edit', to: 'churches#edit_roles'
 
+
+    resources :associations
+    post '/associations/:id/members', to: 'associations#add_members'
+    delete '/associations/:id/members/:membership_id', to: 'associations#remove_members'
+    post '/associations/:id/roles/edit', to: 'associations#edit_roles'
+
     get 'referentiels/:referentiel', to: 'referentiels#show'
   end
 
@@ -40,6 +46,7 @@ Rails.application.routes.draw do
       constraints(:subdomain => /admin/) do
         resources :users, only: :index
         resources :churches, only: :index
+        resources :associations, only: :index
 
 
         resources :campaigns do

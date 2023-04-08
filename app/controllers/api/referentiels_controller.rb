@@ -37,6 +37,26 @@ class Api::ReferentielsController < ApplicationController
 
       result[:roles]   = roles
       result[:members] = members
+    when 'associations'
+      roles = I18n.t('activerecord.attributes.roles.names')
+
+      sql     = "
+        SELECT
+          s.id AS member_id,
+          'Structure' AS member_type,
+          CONCAT(s.name, ' (', s.town, ')') AS name
+        FROM structures s
+        UNION
+        SELECT
+          u.id AS member_id,
+          'User' AS member_type,
+          CONCAT(u.lastname, ' ', u.firstname) AS name
+        FROM users u
+        "
+      members = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+      result[:roles]   = roles
+      result[:members] = members
     else
       result[:error] = "Invalid referentiel #{referentiel}"
     end

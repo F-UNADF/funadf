@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '../components/Pages/Home.vue'
 import UsersIndex from '../components/Users/Index.vue'
 import ChurchesIndex from '../components/Churches/Index.vue'
+import AssociationsIndex from '../components/Associations/Index.vue'
 
 export default createRouter({
     history: createWebHistory(),
@@ -21,6 +22,10 @@ export default createRouter({
             component: ChurchesIndex,
             name: 'churches',
         },
-
+        {
+            path: '/associations',
+            component: AssociationsIndex,
+            name: 'associations',
+        },
     ],
 })
