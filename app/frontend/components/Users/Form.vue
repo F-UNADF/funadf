@@ -297,6 +297,8 @@ export default {
     save() {
       this.$store.dispatch('usersStore/save', this.editedItem).then(response => {
         this.$root.showSnackbar('Utilisateur enregistré avec succès', 'success');
+        this.$store.dispatch('usersStore/getItems');
+        this.close();
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de l\'utilisateur', 'error');
         let errors = error.response.data.errors;

@@ -25,9 +25,23 @@ class Api::UsersController < ApplicationController
   end
 
   def create
-    user = User.create(user_params)
+    if User.invite! user_params
+      user = User.find_by(email: user_params[:email])
+      params[:gratitudes].each do |gratitude|
+        c = Career.new level: gratitude[:level],
+                       start_at: gratitude[:start_at],
+                       user_id: user.id
+        c.save
+      end
 
-    if User.invite! user.attributes
+      params[:phases].each do |phase|
+        p = Career.new function: phase[:function],
+                       church_id: phase[:church_id],
+                       start_at: phase[:start_at],
+                       end_at: phase[:end_at],
+                       user_id: user.id
+        p.save
+      end
       render json: { user: user }, status: 200
     else
       render json: { user: user, errors: user.errors.full_messages }, status: 422
