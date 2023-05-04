@@ -1,6 +1,6 @@
 <template>
-  <v-row>
-    <v-col cols="12" lg="4" md="4" class="mb-3">
+  <v-row class="mb-0">
+    <v-col cols="12" lg="3" md="3">
       <v-text-field
           density="compact"
           v-model="search"
@@ -10,7 +10,7 @@
           clearable
       ></v-text-field>
     </v-col>
-    <v-col cols="12" lg="3" md="3" class="mb-3">
+    <v-col cols="12" lg="3" md="3">
       <v-select
           density="compact"
           v-model="filter.levels"
@@ -23,7 +23,7 @@
           variant="outlined"
       ></v-select>
     </v-col>
-    <v-col cols="12" lg="2" md="2" class="mb-3">
+    <v-col cols="12" lg="3" md="3">
       <v-btn-toggle v-model="filter.disabled" rounded style="height: 40px">
         <v-btn :value="false" color="success" class="py-1">
           Actif
@@ -34,7 +34,7 @@
         </v-btn>
       </v-btn-toggle>
     </v-col>
-    <v-col cols="12" lg="2" md="2" class="text-right">
+    <v-col cols="12" lg="3" md="3" class="text-right">
       <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
         <v-icon color="primary">mdi-reload</v-icon>
       </v-btn>
@@ -168,7 +168,7 @@
   <v-dialog v-model="dialogForm" max-width="75%">
     <user-form></user-form>
   </v-dialog>
-  <v-dialog  max-width="25%" v-model="dialogConfirmDelete">
+  <v-dialog max-width="25%" v-model="dialogConfirmDelete">
     <v-card>
       <v-card-text>
         Etes-vous sûr de vouloir supprimer cet utilisateur ?
@@ -266,19 +266,19 @@ export default {
       Object.assign(this.deletingItem, item);
       this.dialogConfirmDelete = true;
     },
-    deleteItem   : function (item) {
+    deleteItem: function (item) {
       this.$store.dispatch('usersStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
-        this.deletingItem        = {};
+        this.deletingItem = {};
         this.$root.showSnackbar('Utilisateur supprimé avec succès', 'success');
       });
     }
   },
   data() {
     return {
-      deletingItem       : {},
+      deletingItem: {},
       dialogConfirmDelete: false,
-      loadingDelete      : false,
+      loadingDelete: false,
       search: '',
       formTitle: 'Ajouter un utilisateur',
       dialog: false,

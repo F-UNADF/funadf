@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     delete '/associations/:id/members/:membership_id', to: 'associations#remove_members'
     post '/associations/:id/roles/edit', to: 'associations#edit_roles'
 
+    resources :campaigns
+
     get 'referentiels/:referentiel', to: 'referentiels#show'
   end
 

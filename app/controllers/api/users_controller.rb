@@ -96,6 +96,7 @@ class Api::UsersController < ApplicationController
     render json: { status: 'success', user: user }
   end
 
+
   private
 
   def user_params

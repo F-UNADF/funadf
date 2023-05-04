@@ -2,10 +2,11 @@
   <v-navigation-drawer
       left
       elevation="10"
-      rail-width="75"
       mobile-breakpoint="960"
       app
       class="leftSidebar"
+      :rail="rail"
+      rail-width="75"
   >
     <!-- ---------------------------------------------- -->
     <!---Logo part -->
@@ -29,7 +30,7 @@
           <!-- ---------------------------------------------- -->
           <!---Item Sub Header -->
           <!-- ---------------------------------------------- -->
-          <v-list-subheader v-if="item.header" style="border-bottom: solid 1px #e5e5e5">
+          <v-list-subheader v-if="!this.rail && item.header" style="border-bottom: solid 1px #e5e5e5">
             {{ item.header }}
           </v-list-subheader>
           <!-- ---------------------------------------------- -->
@@ -98,6 +99,12 @@
 <script>
 export default {
   name: "Sidebar",
+  props: {
+    rail: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       sidebarMenu: [
@@ -123,6 +130,11 @@ export default {
           title: "Associations",
           icon: "mdi-office-building",
           to: "/associations",
+        },
+        {
+          title: "Campagnes",
+          icon: "mdi-vote",
+          to: "/campaigns",
         },
       ],
     };

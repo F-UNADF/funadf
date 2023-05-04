@@ -3,6 +3,7 @@ import HomePage from '../components/Pages/Home.vue'
 import UsersIndex from '../components/Users/Index.vue'
 import ChurchesIndex from '../components/Churches/Index.vue'
 import AssociationsIndex from '../components/Associations/Index.vue'
+import CampaignsIndex from '../components/Campaigns/Index.vue'
 
 export default createRouter({
     history: createWebHistory(),
@@ -26,6 +27,11 @@ export default createRouter({
             path: '/associations',
             component: AssociationsIndex,
             name: 'associations',
+        },
+        {
+            path: '/campaigns',
+            component: CampaignsIndex,
+            name: 'campaigns',
         },
     ],
 })

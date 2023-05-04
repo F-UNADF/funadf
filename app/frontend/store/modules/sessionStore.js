@@ -22,6 +22,14 @@ const actions = {
             commit('setCurrentUser', null);
         }
     },
+    async logout({commit}) {
+        try {
+            await axios.delete(' /users/sign_out');
+            commit('setCurrentUser', null);
+        } catch (error) {
+            commit('setCurrentUser', null);
+        }
+    }
 };
 
 // mutations
