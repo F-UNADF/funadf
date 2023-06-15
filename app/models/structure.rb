@@ -7,9 +7,7 @@ class Structure < ActiveRecord::Base
 
   has_many :memberships, dependent: :destroy
 
-
   has_one_attached :logo
-
 
   validates :name, :type, presence: true
 
@@ -26,6 +24,35 @@ class Structure < ActiveRecord::Base
   end
   def members
     (users + structures)
+  end
+
+  def members_with_details
+    Membership.find_by_sql(
+      "SELECT m.id AS membership_id,
+              m.member_type AS member_type,
+              s.name AS name,
+              s.zipcode AS zipcode,
+              s.town AS town,
+              m.role_id AS role_id,
+              r.name AS role_name
+        FROM memberships m
+        LEFT JOIN structures s ON m.member_id = s.id
+        LEFT JOIN roles r ON r.id = m.role_id
+        WHERE m.structure_id = #{self.id}
+        AND m.member_type = 'Structure'
+        UNION
+        SELECT m.id AS membership_id,
+              m.member_type AS member_type,
+              CONCAT(u.lastname, ' ', u.firstname) AS name,
+              u.zipcode AS zipcode,
+              u.town AS town,
+              m.role_id AS role_id,
+              r.name AS role_name
+        FROM memberships m
+        LEFT JOIN users u ON m.member_id = u.id
+        LEFT JOIN roles r ON r.id = m.role_id
+        WHERE m.structure_id = #{self.id}
+        AND m.member_type = 'User'")
   end
 
   def full_address
@@ -105,7 +132,6 @@ class Structure < ActiveRecord::Base
   def is_member?(resource)
     !Membership.where(structure_id: self.id, member: resource).blank?
   end
-
 
   def member_can_vote?(resource)
     m = Membership.where(structure: self, member: resource).first

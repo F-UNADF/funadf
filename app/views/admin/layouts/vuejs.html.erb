@@ -1,0 +1,25 @@
+<head>
+  <title>
+    <% if Rails.env == 'recette' %>
+      RE7 - Administration - INTRANET FNADF/UNADF
+    <% elsif Rails.env == 'development' %>
+      MYLOCAL - Administration - INTRANET FNADF/UNADF
+    <% else %>
+      Administration - INTRANET FNADF/UNADF
+    <% end %>
+  </title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= vite_client_tag %>
+
+  <%= vite_stylesheet_tag 'typography.scss' %>
+</head>
+<body>
+
+<div id="app">
+  <%= yield %>
+</div>
+
+<%= vite_javascript_tag 'application' %>
+
+</body>

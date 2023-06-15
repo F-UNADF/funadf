@@ -7,6 +7,30 @@ Rails.application.routes.draw do
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
   get '/avatars/:user', to: 'avatars#show'
+  get '/avatars/:user', to: 'avatars#show'
+  get '/logos/:structure', to: 'logos#show'
+
+  namespace :api, defaults: {format: 'json'} do
+    get 'current_user', to: 'current_user#show'
+    resources :users
+    patch '/users/:id/enable', to: 'users#enable'
+    patch '/users/:id/disable', to: 'users#disable'
+
+    resources :churches
+    post '/churches/:id/members', to: 'churches#add_members'
+    delete '/churches/:id/members/:membership_id', to: 'churches#remove_members'
+    post '/churches/:id/roles/edit', to: 'churches#edit_roles'
+
+
+    resources :associations
+    post '/associations/:id/members', to: 'associations#add_members'
+    delete '/associations/:id/members/:membership_id', to: 'associations#remove_members'
+    post '/associations/:id/roles/edit', to: 'associations#edit_roles'
+
+    resources :campaigns
+
+    get 'referentiels/:referentiel', to: 'referentiels#show'
+  end
 
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: {format: 'json'} do
     devise_for :users, controllers: {
@@ -24,27 +48,18 @@ Rails.application.routes.draw do
     # ADMIN SUBDOMAIN
     namespace :admin, path: '' do
       constraints(:subdomain => /admin/) do
-        resources :users do
-          get '/admins/new', to: "admins#new", as: :new_admin
-          post '/admins/delete', to: "admins#destroy", as: :admin
+        resources :users, only: :index
+        resources :churches, only: :index
+        resources :associations, only: :index
 
-          get '/moderators/new', to: "moderators#new", as: :new_moderator
-          post '/moderators/delete', to: "moderators#destroy", as: :moderator
 
-          get '/stewards/new', to: "stewards#new", as: :new_steward
-          post '/stewards/delete', to: "stewards#destroy", as: :steward
-
-          get '/enable', to: "users#enable", as: :enable
-          get '/disable', to: "users#disable", as: :disable
-        end
         resources :campaigns do
           get '/open', to: 'campaigns#open', as: :open
           get '/close_definitly', to: 'campaigns#close_definitly', as: :close_definitly
           get '/close_temporarily', to: 'campaigns#close_temporarily', as: :close_temporarily
         end
         resources :intranets
-
-        root :to => redirect('/users'), as: :root
+        root to: 'pages#home', as: :root
       end
     end
 
@@ -63,7 +78,6 @@ Rails.application.routes.draw do
         get '/feed', to: 'feed#index'
 
         root to: redirect('/feed'), as: :me
-
       end
     end
 
