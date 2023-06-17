@@ -27,21 +27,12 @@ class Api::UsersController < ApplicationController
   def create
     if User.invite! user_params
       user = User.find_by(email: user_params[:email])
-      params[:gratitudes].each do |gratitude|
-        c = Career.new level: gratitude[:level],
-                       start_at: gratitude[:start_at],
-                       user_id: user.id
-        c.save
-      end
 
-      params[:phases].each do |phase|
-        p = Career.new function: phase[:function],
-                       church_id: phase[:church_id],
-                       start_at: phase[:start_at],
-                       end_at: phase[:end_at],
-                       user_id: user.id
-        p.save
-      end
+      update_gratitudes(user)
+      update_phases(user)
+      update_responsabilities(user)
+      update_fees(user)
+
       render json: { user: user }, status: 200
     else
       render json: { user: user, errors: user.errors.full_messages }, status: 422
@@ -52,26 +43,14 @@ class Api::UsersController < ApplicationController
     user = User.find(params[:user][:id])
     user.update(user_params)
 
-    params[:gratitudes].each do |gratitude|
-      if !gratitude[:id].blank?
-        c = Career.find(gratitude[:id])
-        c.update(gratitude.permit(:level, :start_at))
-      else
-        c = Career.new level: gratitude[:level], start_at: gratitude[:start_at], user_id: user.id
-        c.save
-      end
+    begin
+      update_gratitudes(user)
+      update_phases(user)
+      update_responsabilities(user)
+      update_fees(user)
+    rescue => e
+      render json: { status: 'error', error: e.message }
     end
-
-    params[:phases].each do |phase|
-      if phase[:id]
-        p = Career.find(phase[:id])
-        p.update phase.permit(:start_at, :end_at, :church_id, :function, :user_id)
-      else
-        p = Career.new phase.permit(:start_at, :end_at, :church_id, :function, :user_id)
-        p.save
-      end
-    end
-
     render json: { status: 'success', user: user }
   end
 
@@ -96,11 +75,82 @@ class Api::UsersController < ApplicationController
     render json: { status: 'success', user: user }
   end
 
-
   private
 
   def user_params
-    params.require(:user).permit(:firstname, :lastname, :email, :phone_1, :address_1, :address_2, :zipcode, :town, :birthdate)
+    User.allowed_params(params)
+  end
+
+  def update_gratitudes(user)
+    gratitudes_params = params[:gratitudes]
+    return unless gratitudes_params.present?
+
+    gratitudes_params.each do |gratitude_params|
+      gratitude_id = gratitude_params[:id]
+      if gratitude_id.present?
+        c = Career.find_by(id: gratitude_id, user_id: user.id)
+        c.update(gratitude_params.permit(:level, :start_at))
+      else
+        c = Career.new(level: gratitude_params[:level], start_at: gratitude_params[:start_at], user_id: user.id)
+        c.save
+      end
+    end
+  end
+
+  def update_fees(user)
+    fees_params = params[:fees]
+    return unless fees_params.present?
+
+    fees_params.each do |fee_params|
+      fee_id = fee_params[:id]
+      if fee_id.present?
+        c = Fee.find_by(id: fee_id, user_id: user.id)
+        c.update(fee_params.permit(:what, :amount, :paid_at))
+      else
+        c = Fee.new(what: fee_params[:what], amount: fee_params[:amount], paid_at: fee_params[:paid_at], user_id: user.id)
+        c.save
+      end
+    end
+  end
+
+  def update_responsabilities(user)
+    responsabilities_params = params[:responsabilities]
+    return unless responsabilities_params.present?
+
+    responsabilities_params.each do |responsability_params|
+      responsability_id = responsability_params[:id]
+      if responsability_id.present?
+        responsability = Career.find_by(id: responsability_id, user_id: user.id)
+        unless responsability&.update(responsability_params.permit(:start_at, :end_at, :association_id, :function, :user_id))
+          raise "Error saving responsibility: #{responsability&.errors&.full_messages&.join(', ')}"
+        end
+      else
+        responsibility = Career.new(responsability_params.permit(:function, :association_id, :start_at, :end_at).merge(user_id: user.id))
+        unless responsibility.save
+          raise "Error saving responsibility: #{responsibility.errors.full_messages.join(', ')}"
+        end
+      end
+    end
+  end
+
+  def update_phases(user)
+    phases_params = params[:phases]
+    return unless phases_params.present?
+
+    phases_params.each do |phase_params|
+      phase_id = phase_params[:id]
+      if phase_id.present?
+        p = Career.find_by(id: phase_id, user_id: user.id)
+        unless p.update(phase_params.permit(:start_at, :end_at, :church_id, :function, :user_id))
+          throw "Error saving phase #{p.errors.full_messages}"
+        end
+      else
+        p = Career.new(phase_params.permit(:function, :church_id, :start_at, :end_at).merge(user_id: user.id))
+        unless p.save
+          throw "Error saving phase #{p.errors.full_messages}"
+        end
+      end
+    end
   end
 
 end

@@ -34,9 +34,9 @@
                   :rules="[rules.required]"
               ></v-text-field>
               <v-text-field
-                type="date"
-                v-model="editedItem.user.birthdate"
-                label="Date de naissance"
+                  type="date"
+                  v-model="editedItem.user.birthdate"
+                  label="Date de naissance"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="4">
@@ -80,7 +80,8 @@
         <v-window-item key="reconnaissances" value="reconnaissances">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="career in editedItem.gratitudes" :key="career.id" justify="center">
+              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="career in editedItem.gratitudes"
+                     :key="career.id" justify="center">
                 <v-col cols="12" sm="4">
                   <v-select
                       v-model="career.level"
@@ -110,7 +111,8 @@
         <v-window-item key="cotisations" value="cotisations">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="fee in editedItem.fees" :key="fee.id" justify="center">
+              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="fee in editedItem.fees"
+                     :key="fee.id" justify="center">
                 <v-col cols="12" sm="4">
                   <v-combobox
                       v-model="fee.what"
@@ -131,7 +133,7 @@
                   <v-text-field
                       v-model="fee.amount"
                       type="number"
-                      label="Payée le"
+                      label="Montant"
                       hide-details
                   ></v-text-field>
                 </v-col>
@@ -148,7 +150,8 @@
         <v-window-item key="parcours" value="parcours">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-if="editedItem.phases.length > 0" v-for="phase in editedItem.phases" :key="phase.id" justify="center">
+              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-if="editedItem.phases.length > 0"
+                     v-for="phase in editedItem.phases" :key="phase.id" justify="center">
                 <v-col cols="12" sm="5">
                   <v-autocomplete
                       v-model="phase.church_id"
@@ -203,10 +206,12 @@
         <v-window-item key="responsabilites" value="responsabilites">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-if="editedItem.responsabilities.length > 0" v-for="phase in editedItem.responsabilities" :key="phase.id" justify="center">
+              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3"
+                     v-if="editedItem.responsabilities.length > 0" v-for="phase in editedItem.responsabilities"
+                     :key="phase.id" justify="center">
                 <v-col cols="12" sm="5">
                   <v-autocomplete
-                      v-model="phase.church_id"
+                      v-model="phase.association_id"
                       :items="referentiels.associations"
                       item-value="id"
                       item-title="name"
@@ -276,20 +281,20 @@
 import {mapGetters} from "vuex";
 
 export default {
-  name: "UserForm",
+  name    : "UserForm",
   computed: {
     ...mapGetters('usersStore', {
-      items: 'getItems',
-      item: 'getItem',
-      dialogForm: 'getDialogForm',
+      items       : 'getItems',
+      item        : 'getItem',
+      dialogForm  : 'getDialogForm',
       referentiels: 'getReferentiels',
-      formLoading: 'getFormLoading',
+      formLoading : 'getFormLoading',
     }),
     getTitle() {
       return (this.editedItem.id === null) ? "Ajouter un utilisateur" : "Modifier un utilisateur";
     }
   },
-  methods: {
+  methods : {
     close() {
       this.$store.commit('usersStore/setDialogForm', false);
       this.$store.commit('usersStore/setItem', {});
@@ -308,39 +313,39 @@ export default {
     },
     addGratitude() {
       this.editedItem.gratitudes.push({
-        level: null,
+        level   : null,
         start_at: null,
       });
     },
     addFee() {
       this.editedItem.fees.push({
-        what: null,
+        what   : null,
         paid_at: null,
-        amount: null,
+        amount : null,
       });
     },
     addPhase() {
       this.editedItem.phases.push({
         church_id: null,
-        function: null,
-        start_at: null,
-        end_at: null,
+        function : null,
+        start_at : null,
+        end_at   : null,
       });
     },
     addResponsabilite() {
       this.editedItem.responsabilities.push({
-        church_id: null,
-        function: null,
-        start_at: null,
-        end_at: null,
+        association_id: null,
+        function      : null,
+        start_at      : null,
+        end_at        : null,
       });
     },
   },
-  watch: {
+  watch   : {
     item: {
-      deep: true,
+      deep     : true,
       immediate: true,
-      handler: function () {
+      handler  : function () {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
       },
     },
@@ -349,8 +354,8 @@ export default {
   data() {
     return {
       editedItem: {},
-      tab: 'infos',
-      rules: {
+      tab       : 'infos',
+      rules     : {
         required: value => !!value || 'Champ obligatoire',
       },
     };
