@@ -59,8 +59,10 @@ class Api::ReferentielsController < ApplicationController
       result[:members] = members
     when 'campaigns'
       structures = Association.select('id AS id, name AS name').order(:name)
+      positions = User.get_levels + %w[Oeuvres Eglises]
 
       result[:structures] = structures
+      result[:positions]  = positions
     else
       result[:error] = "Invalid referentiel #{referentiel}"
     end
