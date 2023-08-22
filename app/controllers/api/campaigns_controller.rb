@@ -8,77 +8,92 @@ class Api::CampaignsController < ApplicationController
   end
 
   def show
-    motions = @campaign.motions.order(id: :asc)
-    voting_table = @campaign.voting_tables
-    render json: { campaign: @campaign, motions: motions, voting_table: voting_table }
+    motions       = @campaign.motions.order(id: :asc)
+    voting_tables = @campaign.voting_tables
+    render json: { campaign: @campaign, motions: motions, voting_tables: voting_tables }
   end
 
   def create
-    church = Church.new(church_params)
-    if church.save
-      render json: { status: 200, church: church }
+    campaign = Campaign.new(church_params)
+    if campaign.save
+      save_motions(@campaign, params[:campaign][:motions])
+      render json: { status: 200, campaign: campaign }
     else
-      render json: { status: 422, errors: church.errors }
+      render json: { status: 422, errors: campaign.errors }
     end
   end
 
   def update
-    if @church.update(church_params)
-      render json: { status: 200, church: @church }
+    if @campaign.update(campaign_params)
+      save_motions(@campaign, params[:campaign][:motions])
+      save_voting_tables(@campaign, params[:campaign][:voting_tables])
+      render json: { status: 200, campaign: @campaign }
     else
-      render json: { status: 422, errors: @church.errors }
+      render json: { status: 422, errors: @campaign.errors }
     end
   end
 
   def destroy
-    @church.destroy
-    render json: { status: 200 }
-  end
-
-  def add_members
-    role_id = Role.find_by(name: :member).id
-
-    params[:members].each do |member|
-      membership = Membership.new(
-        structure_id: @church.id,
-        member_id: member[:id],
-        member_type: member[:type],
-        role_id: role_id
-      )
-      membership.save
-    end
-
-    members = @church.members_with_details
-    render json: { status: 200, members: members }
-  end
-
-  def edit_roles
-    member_data = params[:member]
-
-    membership = Membership.find(member_data[:membership_id])
-    role = Role.find_or_create_by(name: params[:role])
-    membership.update(role_id: role.id)
-
-    member_data[:role_name] = role.name
-
-    render json: { status: 200, membership: member_data }
-  end
-
-  def remove_members
-    membership = Membership.find(params[:membership_id])
-    membership.destroy
-
+    @campaign.destroy
     render json: { status: 200 }
   end
 
   private
 
+  def save_motions(campaign, motions_params)
+    motion_ids = motions_params.map { |motion| motion[:id] }
+    Motion.where(campaign_id: @campaign.id).where.not(id: motion_ids).delete_all
+    motions_params.each do |motion_params|
+      motion = campaign.motions.find_by(id: motion_params[:id])
+
+      if motion.nil?
+        campaign.motions.build(
+          name:  motion_params[:name],
+          kind:  motion_params[:kind],
+          order: motion_params[:order]
+        )
+      else
+        motion.update(
+          name:  motion_params[:name],
+          kind:  motion_params[:kind],
+          order: motion_params[:order]
+        )
+      end
+    end
+
+    campaign.save
+  end
+
+  def save_voting_tables(campaign, voting_tables_params)
+    voting_table_ids = voting_tables_params.map { |voting_table| voting_table[:id] }
+    VotingTable.where(campaign_id: @campaign.id).where.not(id: voting_table_ids).delete_all
+    voting_tables_params.each do |voting_table_params|
+      voting_table = campaign.voting_tables.find_by(id: voting_table_params[:id])
+
+      if voting_table.nil?
+        campaign.voting_tables.build(
+          position:  voting_table_params[:position],
+          as_member: voting_table_params[:as_member],
+          voting:    voting_table_params[:voting],
+        )
+      else
+        voting_table.update(
+          position:  voting_table_params[:position],
+          as_member: voting_table_params[:as_member],
+          voting:    voting_table_params[:voting],
+        )
+      end
+    end
+
+    campaign.save
+  end
+
   def set_campaign
     @campaign = Campaign.find(params[:id])
   end
 
-  def church_params
-    params[:church].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :logo)
+  def campaign_params
+    params[:campaign].permit(:name, :structure_id)
   end
 
 end
