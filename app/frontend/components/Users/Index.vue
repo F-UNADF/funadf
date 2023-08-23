@@ -165,7 +165,7 @@
     </template>
   </v-data-table>
 
-  <v-dialog v-model="dialogForm" max-width="75%">
+  <v-dialog v-model="dialogForm" fullscreen>
     <user-form></user-form>
   </v-dialog>
   <v-dialog max-width="25%" v-model="dialogConfirmDelete">
@@ -272,7 +272,11 @@ export default {
         this.deletingItem = {};
         this.$root.showSnackbar('Utilisateur supprimé avec succès', 'success');
       });
-    }
+    },
+    connectAs: function (user) {
+      let nextPath = encodeURIComponent("/switch_user?scope_identifier=user_" + user.id);
+      window.location.href = "/switch_user/remember_user?remember=true&path="+nextPath;
+    },
   },
   data() {
     return {

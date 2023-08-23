@@ -3,7 +3,7 @@
       color="transparent"
       elevation="0">
     <template v-slot:prepend>
-      <v-app-bar-nav-icon @click="this.$emit('toggle-sidebar')"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="this.$emit('toggleSidebar')"></v-app-bar-nav-icon>
     </template>
     <template v-slot:append>
       <v-menu v-if="!!user" anchor="bottom end" min-width="300" origin="auto">
