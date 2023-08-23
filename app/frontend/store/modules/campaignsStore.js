@@ -2,29 +2,27 @@ import axios from "axios";
 
 // initial state
 const state = () => ({
-    items: [],
-    item: {},
-    members: [],
-    loading: false,
-    formLoading: false,
+    items       : [],
+    item        : {},
+    loading     : false,
+    formLoading : false,
     referentiels: [],
-    dialogForm: false,
+    dialogForm  : false,
 });
 
 // getters
 const getters = {
-    getItems: (state) => state.items,
-    getItem: (state) => state.item,
-    getMembers: (state) => state.members,
-    getLoading: (state) => state.loading,
-    getFormLoading: (state) => state.formLoading,
+    getItems       : (state) => state.items,
+    getItem        : (state) => state.item,
+    getLoading     : (state) => state.loading,
+    getFormLoading : (state) => state.formLoading,
     getReferentiels: (state) => state.referentiels,
-    getDialogForm: (state) => state.dialogForm,
+    getDialogForm  : (state) => state.dialogForm,
 };
 
 // actions
 const actions = {
-    items: function ({commit}) {
+    items       : function ({commit}) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
             axios.get('/api/campaigns', {}).then((res) => {
@@ -36,9 +34,12 @@ const actions = {
             });
         });
     },
-    item: function ({commit}, id) {
+    item        : function ({commit}, id) {
         return new Promise((resolve, reject) => {
             axios.get('/api/campaigns/' + id, {}).then((res) => {
+                let item = res.data.campaign;
+                item['motions'] = res.data.motions;
+                item['voting_tables'] = res.data.voting_tables;
                 commit('setItem', res.data.campaign);
                 resolve(res);
             }).catch((error) => {
@@ -46,10 +47,14 @@ const actions = {
             });
         });
     },
-    save: function ({dispatch, commit, state}, item) {
+    save        : function ({
+                                dispatch,
+                                commit,
+                                state
+                            }, item) {
         return new Promise((resolve, reject) => {
             if (item.id) {
-                axios.patch('/api/campaigns/' + item.id, {church: item}, {}).then((res) => {
+                axios.patch('/api/campaigns/' + item.id, {campaign: item}, {}).then((res) => {
                     commit('setItemInItemsById', res.data.campaign);
                     commit('setItem', res.data.campaign);
                     resolve(res.data.campaign);
@@ -67,7 +72,11 @@ const actions = {
             }
         });
     },
-    delete: function ({dispatch, commit, state}, id) {
+    delete      : function ({
+                                dispatch,
+                                commit,
+                                state
+                            }, id) {
         return new Promise((resolve, reject) => {
             axios.delete('/api/campaigns/' + id, {}).then((res) => {
                 commit('removeItemInItemsById', id);
@@ -92,14 +101,13 @@ const actions = {
 
 // mutations
 const mutations = {
-    setItems: (state, payload) => state.items = payload,
-    setItem: (state, payload) => state.item = payload,
-    setMembers: (state, payload) => state.members = payload,
-    setLoading: (state, payload) => state.loading = payload,
-    setReferentiels: (state, payload) => state.referentiels = payload,
-    setDialogForm: (state, payload) => state.dialogForm = payload,
-    setFormLoading: (state, payload) => state.formLoading = payload,
-    setItemInItemsById: function (state, item) {
+    setItems             : (state, payload) => state.items = payload,
+    setItem              : (state, payload) => state.item = payload,
+    setLoading           : (state, payload) => state.loading = payload,
+    setReferentiels      : (state, payload) => state.referentiels = payload,
+    setDialogForm        : (state, payload) => state.dialogForm = payload,
+    setFormLoading       : (state, payload) => state.formLoading = payload,
+    setItemInItemsById   : function (state, item) {
         if (typeof item !== 'object') {
             item = JSON.parse(item);
         }

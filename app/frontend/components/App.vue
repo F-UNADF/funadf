@@ -1,9 +1,9 @@
 <template>
   <v-app theme="light"
-      class="">
+         class="">
 
-    <Sidebar :rail="this.rail"></Sidebar>
-    <Header :user="currentUser" @logout="logout()" @toggle-sidebar="this.rail = !this.rail"></Header>
+    <Sidebar :menu="this.getMenu"  :showSidebar="showSidebar"></Sidebar>
+    <Header :user="currentUser" @logout="logout()" @toggle-sidebar="this.showSidebar = !this.showSidebar"></Header>
     <v-main scrollable>
       <v-container fluid class="page-wrapper">
         <router-view/>
@@ -31,18 +31,21 @@ import Sidebar from "../components/Layout/Sidebar.vue";
 import Header from "../components/Layout/Header.vue";
 
 export default ({
-  name: 'App',
+  name      : 'App',
   components: {
     Sidebar,
     Header,
   },
-  computed: {
+  computed  : {
     ...mapGetters('sessionStore', [
       'currentUser',
     ]),
+    ...mapGetters('menuStore', [
+      'getMenu',
+    ]),
   },
 
-  methods: {
+  methods    : {
     ...mapActions('sessionStore', [
       'logout',
     ]),
@@ -55,17 +58,18 @@ export default ({
       this.snackbar.color = color;
     },
   },
-  data: () => ({
+  data       : () => ({
     snackbar: {
-      show: false,
+      show   : false,
       message: '',
-      color: '',
+      color  : '',
       timeout: 3000,
     },
-    rail: false,
+    showSidebar: false,
   }),
   beforeMount: function () {
     this.$store.dispatch('sessionStore/fetchUser');
+    this.$store.dispatch('menuStore/getMenu');
   },
 });
 </script>

@@ -76,7 +76,6 @@
             </v-col>
           </v-row>
         </v-window-item>
-
         <v-window-item key="reconnaissances" value="reconnaissances">
           <v-row>
             <v-col cols="12" sm="11">
@@ -107,46 +106,6 @@
             </v-col>
           </v-row>
         </v-window-item>
-
-        <v-window-item key="cotisations" value="cotisations">
-          <v-row>
-            <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="fee in editedItem.fees"
-                     :key="fee.id" justify="center">
-                <v-col cols="12" sm="4">
-                  <v-combobox
-                      v-model="fee.what"
-                      :items="referentiels.whatFees"
-                      hide-details
-                      label="Année">
-                  </v-combobox>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                      v-model="fee.paid_at"
-                      type="date"
-                      label="Payée le"
-                      hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                      v-model="fee.amount"
-                      type="number"
-                      label="Montant"
-                      hide-details
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-col cols="12" sm="1">
-              <v-btn color="green" @click="addFee()" icon size="x-small">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-window-item>
-
         <v-window-item key="parcours" value="parcours">
           <v-row>
             <v-col cols="12" sm="11">
@@ -202,7 +161,6 @@
             </v-col>
           </v-row>
         </v-window-item>
-
         <v-window-item key="responsabilites" value="responsabilites">
           <v-row>
             <v-col cols="12" sm="11">
@@ -259,7 +217,44 @@
             </v-col>
           </v-row>
         </v-window-item>
-
+        <v-window-item key="cotisations" value="cotisations">
+          <v-row>
+            <v-col cols="12" sm="11">
+              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="fee in editedItem.fees"
+                     :key="fee.id" justify="center">
+                <v-col cols="12" sm="4">
+                  <v-combobox
+                      v-model="fee.what"
+                      :items="referentiels.whatFees"
+                      hide-details
+                      label="Année">
+                  </v-combobox>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field
+                      v-model="fee.paid_at"
+                      type="date"
+                      label="Payée le"
+                      hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field
+                      v-model="fee.amount"
+                      type="number"
+                      label="Montant"
+                      hide-details
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col cols="12" sm="1">
+              <v-btn color="green" @click="addFee()" icon size="x-small">
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-window-item>
         <v-window-item key="security" value="security">
           <v-text-field
               v-model="editedItem.password"

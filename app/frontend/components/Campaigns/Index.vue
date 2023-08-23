@@ -56,7 +56,7 @@
           </v-chip>
         </td>
         <td>
-          <v-tooltip location="top" text="Modifier l'église">
+          <v-tooltip location="top" text="Modifier la campagne">
             <template v-slot:activator="{ props }">
               <v-icon
                   small
@@ -69,7 +69,7 @@
             </template>
           </v-tooltip>
 
-          <v-tooltip location="top" text="Supprimer l'église">
+          <v-tooltip location="top" text="Supprimer la campagne">
             <template v-slot:activator="{ props }">
               <v-icon
                   v-bind="props"
@@ -86,10 +86,10 @@
     </template>
   </v-data-table>
 
-  <v-dialog v-model="dialogForm" max-width="75%">
+  <v-dialog v-model="dialogForm" fullscreen>
     <campaign-form></campaign-form>
   </v-dialog>
-  <v-dialog  max-width="25%" v-model="dialogConfirmDelete">
+  <v-dialog max-width="25%" v-model="dialogConfirmDelete">
     <v-card>
       <v-card-text>
         Etes-vous sûr de vouloir supprimer cette campagne ?
@@ -110,16 +110,16 @@ import CampaignForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
-  name: "CampaignsIndex",
+  name      : "CampaignsIndex",
   components: {
     VDataTable,
     CampaignForm,
     DialogConfirm,
   },
-  computed: {
+  computed  : {
     ...mapGetters('campaignsStore', {
-      items: 'getItems',
-      loading: 'getLoading',
+      items       : 'getItems',
+      loading     : 'getLoading',
       referentiels: 'getReferentiels',
     }),
     dialogForm: {
@@ -136,18 +136,21 @@ export default {
       });
     },
   },
-  methods: {
-    newItem: function () {
+  methods   : {
+    newItem      : function () {
       let newItem = {
+        name        : '',
+        structure_id: null,
+        motions     : [],
       };
       this.$store.commit('campaignsStore/setItem', newItem);
       this.$store.commit('campaignsStore/setDialogForm', true);
     },
-    editItem: function (item) {
+    editItem     : function (item) {
       this.$store.dispatch('campaignsStore/item', item.id);
       this.$store.commit('campaignsStore/setDialogForm', true);
     },
-    refresh: function () {
+    refresh      : function () {
       this.$store.dispatch('campaignsStore/items');
     },
     tryDeleteItem: function (item) {
@@ -157,11 +160,11 @@ export default {
     deleteItem   : function (item) {
       this.$store.dispatch('campaignsStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
-        this.deletingItem        = {};
+        this.deletingItem = {};
         this.$root.showSnackbar('Campagne supprimée avec succès', 'success');
       });
     },
-    getState: function (state) {
+    getState     : function (state) {
       switch (state) {
         case 'closed':
           return 'Fermée';
@@ -171,7 +174,7 @@ export default {
           return 'A venir';
       }
     },
-    getColor: function (state) {
+    getColor     : function (state) {
       switch (state) {
         case 'closed':
           return 'red';
@@ -187,19 +190,31 @@ export default {
       deletingItem       : {},
       dialogConfirmDelete: false,
       loadingDelete      : false,
-      search: '',
-      dialog: false,
-      editedItem: {},
-      valid: true,
-      filter: {
-        levels: [],
+      search             : '',
+      dialog             : false,
+      editedItem         : {},
+      valid              : true,
+      filter             : {
+        levels  : [],
         disabled: false,
       },
-      headers: [
-        {title: 'ID', key: 'id', sortable: true},
-        {title: 'Nom', key: 'name', sortable: true},
-        {title: 'Status', key: 'state', sortable: true},
-        {title: 'Actions', key: 'actions', sortable: false},
+      headers            : [
+        {title    : 'ID',
+          key     : 'id',
+          sortable: true
+        },
+        {title    : 'Nom',
+          key     : 'name',
+          sortable: true
+        },
+        {title    : 'Status',
+          key     : 'state',
+          sortable: true
+        },
+        {title    : 'Actions',
+          key     : 'actions',
+          sortable: false
+        },
       ],
     }
   },

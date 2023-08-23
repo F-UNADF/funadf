@@ -8,60 +8,129 @@
       {{ this.getTitle }}
     </v-card-title>
     <v-card-text>
-      <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
-        <v-tab value="infos">Informations générales</v-tab>
-        <v-tab value="motions">Motions</v-tab>
-        <v-tab value="voting-tables">Table des votes</v-tab>
-      </v-tabs>
 
-      <v-window v-model="tab">
-        <v-window-item key="infos" value="infos" class="py-3">
-          <h3>Informations générales</h3>
-
+      <v-row>
+        <v-col>
           <v-autocomplete
               v-model="editedItem.structure_id"
               :items="referentiels.structures"
               item-value="id"
               item-title="name"
-              hide-details
               label="Structure">
           </v-autocomplete>
-
+        </v-col>
+        <v-col>
           <v-text-field
               v-model="editedItem.name"
               label="Nom"
               :rules="[rules.required]"
               required>
           </v-text-field>
+        </v-col>
+      </v-row>
 
+      <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
+        <v-tab value="motions">Motions</v-tab>
+        <v-tab value="voting-tables">Table des votes</v-tab>
+      </v-tabs>
+
+      <v-window v-model="tab">
+        <v-window-item key="motions" value="motions" class="py-3">
           <v-row>
-            <v-col>
-              <v-text-field
-                  v-model="editedItem.start_at"
-                  type="datetime"
-                  label="Date de début"
-                  required>
-              </v-text-field>
+            <v-col cols="12" sm="11">
+              <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="motion in this.editedItem.motions"
+                     :key="motion.id" justify="left">
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                      v-model="motion.name"
+                      label="Motion"
+                      :rules="[rules.required, rules.max255]"
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-btn-toggle size="small" v-model="motion.kind" rounded>
+                    <v-btn value="binary" color="success" class="py-1">
+                      Oui/Non
+                    </v-btn>
+                    <v-btn value="neutral" color="primary" class="py-1">
+                      Oui/Non/Neutre
+                    </v-btn>
+                    <v-btn value="free" color="secondary" class="py-1">
+                      Text libre
+                    </v-btn>
+                  </v-btn-toggle>
+                </v-col>
+                <v-col cols="12" sm="1">
+                  <v-btn icon size="x-small" @click="moveMotionUp(motion)" v-if="motion.order > 0">
+                    <v-icon>mdi-chevron-up</v-icon>
+                  </v-btn>
+                  <v-btn icon size="x-small" @click="moveMotionDown(motion)"
+                         v-if="motion.order < this.editedItem.motions.length - 1">
+                    <v-icon>mdi-chevron-down</v-icon>
+                  </v-btn>
+                </v-col>
+                <v-col cols="12" sm="1">
+                  <v-btn icon color="red" size="x-small" @click="removeMotion(motion)">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-col>
-            <v-col>
-              <v-text-field
-                  v-model="editedItem.end_at"
-                  type="datetime"
-                  label="Date de fin"
-                  required>
-              </v-text-field>
-
+            <v-col cols="12" sm="1">
+              <v-btn color="success" icon @click="addMotion()">
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
             </v-col>
           </v-row>
         </v-window-item>
 
-        <v-window-item key="motions" value="motions" class="py-3">
-          <h3>Motions</h3>
-
-        </v-window-item>
-
         <v-window-item key="voting-tables" value="voting-tables" class="py-3">
-          <h3>Table des votes</h3>
+          <v-row>
+            <v-col cols="12" sm="11">
+              <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="voting_table in this.editedItem.voting_tables"
+                     :key="voting_table.id" justify="left">
+                <v-col cols="12" sm="3">
+                  <v-select
+                      v-model="voting_table.position"
+                      :items="referentiels.positions"
+                      label="Qualité"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col cols="12" sm="3">
+                  <v-btn-toggle size="small" v-model="voting_table.as_member" rounded>
+                    <v-btn :value="true" color="success" class="py-1">
+                      Membre
+                    </v-btn>
+                    <v-btn :value="false" color="primary" class="py-1">
+                      Non Membre
+                    </v-btn>
+                  </v-btn-toggle>
+                </v-col>
+                <v-col cols="12" sm="5">
+                  <v-btn-toggle size="small" v-model="voting_table.voting" rounded>
+                    <v-btn value="count" color="success" class="py-1">
+                      Comptabilisé
+                    </v-btn>
+                    <v-btn value="consultative" color="primary" class="py-1">
+                      Consultatif
+                    </v-btn>
+                  </v-btn-toggle>
+                </v-col>
+                <v-col cols="12" sm="1">
+                  <v-btn icon color="red" size="x-small" @click="removeVotingTable(voting_table)">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col cols="12" sm="1">
+              <v-btn color="success" icon @click="addVotingTable()">
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-window-item>
       </v-window>
     </v-card-text>
@@ -78,140 +147,116 @@ import {mapGetters} from "vuex";
 import {VDataTable} from 'vuetify/labs/VDataTable'
 
 export default {
-  name: "CampaignForm",
+  name      : "CampaignForm",
   components: {
     VDataTable
   },
-  computed: {
+  computed  : {
     ...mapGetters('campaignsStore', {
-      items: 'getItems',
-      item: 'getItem',
-      members: 'getMembers',
-      formLoading: 'getFormLoading',
-      dialogForm: 'getDialogForm',
+      items       : 'getItems',
+      item        : 'getItem',
+      formLoading : 'getFormLoading',
+      dialogForm  : 'getDialogForm',
       referentiels: 'getReferentiels',
     }),
     getTitle() {
-      return (this.editedItem.id === null) ? "Ajouter une église" : "Modifier une église";
+      return (this.editedItem.id === null) ? "Ajouter une campagne" : "Modifier une campagne";
     },
   },
-  methods: {
+  methods   : {
     close() {
       this.$store.commit('campaignsStore/setDialogForm', false);
       this.$store.commit('campaignsStore/setItem', {});
     },
     save() {
       this.$store.dispatch('campaignsStore/save', this.editedItem).then(response => {
-        this.$root.showSnackbar('Eglise enregistrée avec succès', 'success');
+        this.$root.showSnackbar('Campagne enregistrée avec succès', 'success');
         this.search = response.zipcode;
         this.close();
       }, error => {
-        this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de l\'eglise', 'error');
+        this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de la campagne', 'error');
         let errors = error.response.data.errors;
         this.$root.showSnackbar(errors.join('<br/>'), 'error');
       });
     },
-    prepareLogo(file) {
-      if (!file.length) {
-        this.$root.showSnackbar("Aucun fichier sélectionné", 'warning');
-        return;
+    moveMotionUp(motion) {
+      const currentIndex = this.editedItem.motions.findIndex(
+          (m) => m.id === motion.id
+      );
+      if (currentIndex > 0) {
+        const previousIndex = currentIndex - 1;
+        [this.editedItem.motions[previousIndex], this.editedItem.motions[currentIndex]] =
+            [motion, this.editedItem.motions[previousIndex]];
+        this.editedItem.motions[currentIndex].order = currentIndex;
+        this.editedItem.motions[previousIndex].order = previousIndex;
       }
+    },
+    moveMotionDown(motion) {
+      const currentIndex = this.editedItem.motions.findIndex(
+          (m) => m.id === motion.id
+      );
+      if (currentIndex < this.editedItem.motions.length - 1) {
+        const nextIndex = currentIndex + 1;
+        [this.editedItem.motions[currentIndex], this.editedItem.motions[nextIndex]] =
+            [this.editedItem.motions[nextIndex], motion];
+        this.editedItem.motions[currentIndex].order = currentIndex;
+        this.editedItem.motions[nextIndex].order = nextIndex;
+      }
+    },
+    addMotion() {
+      const newMotion = {
+        name : '',
+        kind : 'binary',
+        order: this.editedItem.motions.length, // Set the initial order as the length of the motions array
+      };
 
-      if (file.length > 1) {
-        this.$root.showSnackbar("Vous devez sélectionner un seul fichier", 'warning');
-        return;
+      this.editedItem.motions.push(newMotion);
+    },
+    addVotingTable() {
+      const newVotingTable = {
+        position  : '',
+        as_member : true,
+        voting    : 'count',
+      };
+      this.editedItem.voting_tables.push(newVotingTable);
+    },
+    removeMotion(motion) {
+      const index = this.editedItem.motions.findIndex((m) => m.id === motion.id);
+      if (index !== -1) {
+        this.editedItem.motions.splice(index, 1);
+        this.updateMotionOrder();
       }
-
-      this.editedItem.logo = file[0];
     },
-    getRoleName(role) {
-      let roles = this.referentiels.roles;
-      if (roles.hasOwnProperty(role)) {
-        return roles[role];
+    removeVotingTable(voting_table) {
+      const index = this.editedItem.voting_tables.findIndex((v) => v.id === voting_table.id);
+      if (index !== -1) {
+        this.editedItem.voting_tables.splice(index, 1);
       }
-      return role;
     },
-    updateMatchingMembers() {
-      let search = this.search.toLowerCase();
-      if (search.length < 3) {
-        this.matchMembers = [];
-        return;
+    updateMotionOrder() {
+      for (let i in this.editedItem.motions) {
+        this.editedItem.motions[i].order = parseInt(i);
       }
-
-      let members = this.referentiels.members;
-      let matchMembers = members.filter((member) =>
-          member.name.toLowerCase().includes(search)
-      ).map((member) => ({
-        id: member.member_id,
-        type: member.member_type,
-        name: member.name,
-        title: member.name,
-        icon: (member.member_type == 'Structure') ? 'mdi-account-group' : 'mdi-account',
-      }));
-      this.matchMembers = matchMembers;
-    },
-    addMember() {
-      console.log(this.addingMembers);
-      this.$store.dispatch('campaignsStore/addMembers', this.addingMembers).then(response => {
-        this.$root.showSnackbar('Membres ajoutés avec succés', 'success');
-        this.addingMembers = [];
-      }, error => {
-        this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement des membres', 'error');
-        let errors = error.response.data.errors;
-        this.$root.showSnackbar(errors.join('<br/>'), 'error');
-      });
-    },
-    setRole(member, role) {
-      this.$store.dispatch('campaignsStore/setRole', {member: member, role: role}).then(response => {
-        this.$root.showSnackbar('Role modifié avec succés', 'success');
-      }, error => {
-        this.$root.showSnackbar('Un probleme est survenu lors de la modification du role', 'error');
-        let errors = error.response.data.errors;
-        this.$root.showSnackbar(errors.join('<br/>'), 'error');
-      });
-    },
-    removeMember(membership_id) {
-      this.$store.dispatch('campaignsStore/removeMember', membership_id).then(response => {
-        this.$root.showSnackbar('Membre supprimé avec succés', 'success');
-      }, error => {
-        this.$root.showSnackbar('Un probleme est survenu lors de la suppression du membre', 'error');
-        let errors = error.response.data.errors;
-        this.$root.showSnackbar(errors.join('<br/>'), 'error');
-      });
     },
   },
-  watch: {
+  watch     : {
     item: {
-      deep: true,
+      deep     : true,
       immediate: true,
-      handler: function () {
+      handler  : function () {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
-        this.editedMembers = JSON.parse(JSON.stringify(this.members));
+        this.updateMotionOrder();
       },
-    },
-    search(val) {
-      val && this.updateMatchingMembers()
     },
   },
 
   data() {
     return {
       editedItem: {},
-      editedMembers: [],
-      addingMembers: [],
-      matchMembers: [],
-      search: '',
-      searchingMember: '',
-      imgCache: 0,
-      tab: 'infos',
-      roleDialog: false,
-      headers: [
-        {title: 'Nom', key: 'name', sortable: true},
-        {title: 'Role', key: 'role_name', sortable: true},
-        {title: 'Actions', key: 'actions', sortable: false},
-      ],
-      rules: {
+      tab       : 'motions',
+      rules     : {
         required: value => !!value || 'Champ obligatoire',
+        max255  : value => (value && value.length <= 255) || 'Maximum 255 caractères',
       },
     };
   },
