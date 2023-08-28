@@ -1,4 +1,4 @@
-class Api::ReferentielsController < ApplicationController
+class Api::ReferentielsController < ApiController
 
   def show
     referentiel = params[:referentiel]

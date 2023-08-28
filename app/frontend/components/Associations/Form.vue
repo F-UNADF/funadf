@@ -107,7 +107,7 @@
 
           <v-data-table
               :headers="headers"
-              :items="this.members"
+              :items="this.editedMembers"
               :search="searchingMember"
               density="compact"
               class="elevation-1"
@@ -142,6 +142,16 @@
                       </v-list-item>
                     </v-list>
                   </v-menu>
+                </td>
+                <td>
+                  <v-switch
+                      v-model="item.props.title.can_vote"
+                      inset
+                      color="secondary"
+                      size="small"
+                      label="Peut voter ?"
+                      @change="setCanVote(item.props.title)"
+                  ></v-switch>
                 </td>
                 <td>
                   <v-tooltip location="top" text="Supprimer le membre">
@@ -294,6 +304,8 @@ export default {
       this.$store.dispatch('associationsStore/addMembers', this.addingMembers).then(response => {
         this.$root.showSnackbar('Membres ajoutés avec succés', 'success');
         this.addingMembers = [];
+        //update EditedMembers
+        this.$store.dispatch('associationsStore/item', this.editedItem.id);
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement des membres', 'error');
         let errors = error.response.data.errors;
@@ -309,9 +321,20 @@ export default {
         this.$root.showSnackbar(errors.join('<br/>'), 'error');
       });
     },
+    setCanVote(member) {
+      this.$store.dispatch('associationsStore/updateMembership', member).then(response => {
+        this.$root.showSnackbar('Membre modifié avec succés', 'success');
+      }, error => {
+        this.$root.showSnackbar('Un probleme est survenu lors de la modification du role', 'error');
+        let errors = error.response.data.errors;
+        this.$root.showSnackbar(errors.join('<br/>'), 'error');
+      });
+    },
     removeMember(membership_id) {
       this.$store.dispatch('associationsStore/removeMember', membership_id).then(response => {
         this.$root.showSnackbar('Membre supprimé avec succés', 'success');
+        //remove members from editedMembers
+        this.editedMembers = this.editedMembers.filter((member) => member.membership_id !== membership_id);
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de la suppression du membre', 'error');
         let errors = error.response.data.errors;
@@ -347,6 +370,7 @@ export default {
       headers: [
         {title: 'Nom', key: 'name', sortable: true},
         {title: 'Role', key: 'role_name', sortable: true},
+        {title: 'Peut voter ?', key: 'can_vote', sortable: true},
         {title: 'Actions', key: 'actions', sortable: false},
       ],
       rules: {

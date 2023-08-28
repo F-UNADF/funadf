@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
 
-  before_action :user_is_admin?
+before_action :user_is_admin?
 
   private
     def user_is_admin?

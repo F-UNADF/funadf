@@ -1,5 +1,4 @@
-class Api::CampaignsController < ApplicationController
-  skip_before_action :verify_authenticity_token
+class Api::CampaignsController < ApiController
   before_action :set_campaign, only: [:show, :update, :destroy]
 
   def index
