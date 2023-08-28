@@ -47,7 +47,6 @@
   <v-data-table
       :headers="headers"
       :items="filteredItems"
-      :search="search"
       item-value="name"
       class="elevation-1"
       loading="loading"
@@ -189,16 +188,16 @@ import UserForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
-  name: "UsersIndex",
+  name      : "UsersIndex",
   components: {
     VDataTable,
     UserForm,
     DialogConfirm,
   },
-  computed: {
+  computed  : {
     ...mapGetters('usersStore', {
-      items: 'getItems',
-      loading: 'getLoading',
+      items       : 'getItems',
+      loading     : 'getLoading',
       referentiels: 'getReferentiels',
     }),
     dialogForm: {
@@ -219,85 +218,120 @@ export default {
           return false;
         }
 
+        console.log(item);
+
+        // Check if "search" is in the item lastname, firstname, town or zipcode
+        if (
+            this.search &&
+            (!item.lastname || !item.lastname.toLowerCase().includes(this.search.toLowerCase())) &&
+            (!item.firstname || !item.firstname.toLowerCase().includes(this.search.toLowerCase())) &&
+            (!item.town || !item.town.toLowerCase().includes(this.search.toLowerCase())) &&
+            (!item.zipcode || !item.zipcode.toLowerCase().includes(this.search.toLowerCase()))
+        ) {
+          return false;
+        }
+
         return true;
       });
     },
   },
-  methods: {
-    newItem: function () {
+  methods   : {
+    newItem      : function () {
       let newItem = {
-        user: {
-          id: null,
-          lastname: '',
-          firstname: '',
-          email: '',
-          password: '',
+        user           : {
+          id                   : null,
+          lastname             : '',
+          firstname            : '',
+          email                : '',
+          password             : '',
           password_confirmation: '',
-          zipcode: '',
-          town: '',
-          disabled: false,
+          zipcode              : '',
+          town                 : '',
+          disabled             : false,
         },
-        gratitudes: [],
-        fees: [],
-        phases: [],
+        gratitudes     : [],
+        fees           : [],
+        phases         : [],
         responsabilites: [],
       };
       this.$store.commit('usersStore/setItem', newItem);
       this.$store.commit('usersStore/setDialogForm', true);
     },
-    editItem: function (item) {
+    editItem     : function (item) {
       this.$store.dispatch('usersStore/getItem', item.value.id);
       this.$store.commit('usersStore/setDialogForm', true);
     },
-    enableItem: function (item) {
+    enableItem   : function (item) {
       this.$store.dispatch('usersStore/enable', item.id).then(response => {
         this.$root.showSnackbar('Utilisateur activé avec succès', 'success');
       });
     },
-    disableItem: function (item) {
+    disableItem  : function (item) {
       this.$store.dispatch('usersStore/disable', item.id).then(response => {
         this.$root.showSnackbar('Utilisateur désactivé avec succès', 'success');
       });
     },
-    refresh: function () {
+    refresh      : function () {
       this.$store.dispatch('usersStore/items');
     },
     tryDeleteItem: function (item) {
       Object.assign(this.deletingItem, item);
       this.dialogConfirmDelete = true;
     },
-    deleteItem: function (item) {
+    deleteItem   : function (item) {
       this.$store.dispatch('usersStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
         this.$root.showSnackbar('Utilisateur supprimé avec succès', 'success');
       });
     },
-    connectAs: function (user) {
+    connectAs    : function (user) {
       let nextPath = encodeURIComponent("/switch_user?scope_identifier=user_" + user.id);
-      window.location.href = "/switch_user/remember_user?remember=true&path="+nextPath;
+      window.location.href = "/switch_user/remember_user?remember=true&path=" + nextPath;
     },
   },
   data() {
     return {
-      deletingItem: {},
+      deletingItem       : {},
       dialogConfirmDelete: false,
-      loadingDelete: false,
-      search: '',
-      formTitle: 'Ajouter un utilisateur',
-      dialog: false,
-      editedItem: {},
-      valid: true,
-      filter: {
-        levels: [],
+      loadingDelete      : false,
+      search             : '',
+      formTitle          : 'Ajouter un utilisateur',
+      dialog             : false,
+      editedItem         : {},
+      valid              : true,
+      filter             : {
+        levels  : [],
         disabled: false,
       },
-      headers: [
-        {title: 'ID', key: 'id', sortable: true},
-        {title: 'Nom', key: 'lastname', sortable: true},
-        {title: 'Ville', align: 'start', key: 'town', sortable: true},
-        {title: 'Niveau', align: 'start', key: 'current_level', sortable: true},
-        {title: 'Actions', key: 'actions', sortable: false},
+      headers            : [
+        {
+          title   : 'ID',
+          key     : 'id',
+          sortable: true
+        },
+        {
+          title   : 'Nom',
+          key     : 'lastname',
+          sortable: true
+        },
+        {
+          title   : 'Ville',
+          align   : 'start',
+          key     : 'town',
+          sortable: true
+        },
+        {
+          title   : 'Niveau',
+          align   : 'start',
+          key     : 'current_level',
+          sortable: true
+        },
+        {
+          title   : 'Actions',
+          key     : 'actions',
+          sortable: false
+        },
       ],
     }
   },

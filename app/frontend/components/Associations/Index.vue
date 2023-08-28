@@ -94,7 +94,7 @@
     </template>
   </v-data-table>
 
-  <v-dialog v-model="dialogForm" max-width="75%">
+  <v-dialog v-model="dialogForm" fullscreen>
     <association-form></association-form>
   </v-dialog>
   <v-dialog  max-width="25%" v-model="dialogConfirmDelete">
@@ -166,7 +166,7 @@ export default {
       this.$store.dispatch('associationsStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem        = {};
-        this.$root.showSnackbar('Eglise supprimée avec succès', 'success');
+        this.$root.showSnackbar('Association supprimée avec succès', 'success');
       });
     }
   },

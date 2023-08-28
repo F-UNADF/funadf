@@ -1,5 +1,4 @@
-class Api::ChurchesController < ApplicationController
-  skip_before_action :verify_authenticity_token
+class Api::ChurchesController < ApiController
   before_action :set_church, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index

@@ -1,7 +1,6 @@
 class Structure < ActiveRecord::Base
 
   has_many :campaigns, dependent: :destroy
-  has_many :electors, dependent: :destroy
   has_many :events, dependent: :destroy
   has_many :categories, dependent: :destroy
   has_many :posts, dependent: :destroy
@@ -35,7 +34,8 @@ class Structure < ActiveRecord::Base
               s.zipcode AS zipcode,
               s.town AS town,
               m.role_id AS role_id,
-              r.name AS role_name
+              r.name AS role_name,
+              m.can_vote AS can_vote
         FROM memberships m
         LEFT JOIN structures s ON m.member_id = s.id
         LEFT JOIN roles r ON r.id = m.role_id
@@ -48,7 +48,8 @@ class Structure < ActiveRecord::Base
               u.zipcode AS zipcode,
               u.town AS town,
               m.role_id AS role_id,
-              r.name AS role_name
+              r.name AS role_name,
+              m.can_vote AS can_vote
         FROM memberships m
         LEFT JOIN users u ON m.member_id = u.id
         LEFT JOIN roles r ON r.id = m.role_id

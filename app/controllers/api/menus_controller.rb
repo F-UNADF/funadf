@@ -1,4 +1,4 @@
-class Api::MenusController < ApplicationController
+class Api::MenusController < ApiController
 
   def show
     menu   = params[:menu]

@@ -1,5 +1,4 @@
-class Api::AssociationsController < ApplicationController
-  skip_before_action :verify_authenticity_token
+class Api::AssociationsController < ApiController
   before_action :set_association, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index

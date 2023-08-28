@@ -22,8 +22,9 @@ Rails.application.routes.draw do
 
     resources :associations
     post '/associations/:id/members', to: 'associations#add_members'
-    delete '/associations/:id/members/:membership_id', to: 'associations#remove_members'
     post '/associations/:id/roles/edit', to: 'associations#edit_roles'
+
+    resources :memberships, only: [:update, :destroy]
 
     resources :campaigns
 

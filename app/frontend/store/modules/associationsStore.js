@@ -119,9 +119,19 @@ const actions = {
             });
         });
     },
+    updateMembership: function ({dispatch, commit, state}, membership) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/api/memberships/' + membership.membership_id, membership)
+            .then((res) => {
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    },
     removeMember: function ({dispatch, commit, state}, membership_id) {
         return new Promise((resolve, reject) => {
-            axios.delete('/api/associations/' + state.item.id + '/members/' + membership_id, {})
+            axios.delete('/api/memberships/' + membership_id, {})
             .then((res) => {
                 commit('removeMemberIdMembersById', membership_id)
                 resolve(res);
