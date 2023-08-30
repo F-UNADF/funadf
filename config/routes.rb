@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :memberships, only: [:update, :destroy]
 
     resources :campaigns
+    patch '/campaigns/:id/change_state', to: 'campaigns#change_state'
 
     get 'referentiels/:referentiel', to: 'referentiels#show'
     get 'menus/:menu', to: 'menus#show'

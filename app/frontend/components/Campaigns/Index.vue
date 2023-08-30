@@ -56,6 +56,44 @@
           </v-chip>
         </td>
         <td>
+          <v-tooltip location="top" text="Fermer la campagne">
+            <template v-slot:activator="{ props }">
+              <v-icon
+                  small
+                  v-bind="props"
+                  color="green"
+                  v-if="item.props.title.state === 'opened'"
+                  @click="changeCampaignState(item.props.title.id, 'close_temporarily')">
+                mdi-eye-off
+              </v-icon>
+            </template>
+          </v-tooltip>
+          <v-tooltip location="top" text="Ouvrir la campagne">
+            <template v-slot:activator="{ props }">
+              <v-icon
+                  small
+                  v-bind="props"
+                  color="success"
+                  v-if="item.props.title.state === 'coming'"
+                  @click="changeCampaignState(item.props.title.id, 'opening')">
+                mdi-check
+              </v-icon>
+            </template>
+          </v-tooltip>
+          <v-tooltip location="top" text="Cloturer la campagne - La campagne ne pourra pas être réouverte.">
+            <template v-slot:activator="{ props }">
+              <v-icon
+                  small
+                  v-bind="props"
+                  color="danger"
+                  v-if="item.props.title.state === 'opened'"
+                  @click="changeCampaignState(item.props.title.id, 'close_definitly')">
+                mdi-close
+              </v-icon>
+            </template>
+          </v-tooltip>
+        </td>
+        <td>
           <v-tooltip location="top" text="Modifier la campagne">
             <template v-slot:activator="{ props }">
               <v-icon
@@ -137,7 +175,7 @@ export default {
     },
   },
   methods   : {
-    newItem      : function () {
+    newItem            : function () {
       let newItem = {
         name        : '',
         structure_id: null,
@@ -146,43 +184,56 @@ export default {
       this.$store.commit('campaignsStore/setItem', newItem);
       this.$store.commit('campaignsStore/setDialogForm', true);
     },
-    editItem     : function (item) {
+    editItem           : function (item) {
       this.$store.dispatch('campaignsStore/item', item.id);
       this.$store.commit('campaignsStore/setDialogForm', true);
     },
-    refresh      : function () {
+    refresh            : function () {
       this.$store.dispatch('campaignsStore/items');
     },
-    tryDeleteItem: function (item) {
+    tryDeleteItem      : function (item) {
       Object.assign(this.deletingItem, item);
       this.dialogConfirmDelete = true;
     },
-    deleteItem   : function (item) {
+    deleteItem         : function (item) {
       this.$store.dispatch('campaignsStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
         this.$root.showSnackbar('Campagne supprimée avec succès', 'success');
       });
     },
-    getState     : function (state) {
+    getState           : function (state) {
       switch (state) {
         case 'closed':
           return 'Fermée';
         case 'opened':
           return 'Ouverte';
-        case 'comming':
+        case 'coming':
           return 'A venir';
       }
     },
-    getColor     : function (state) {
+    getColor           : function (state) {
       switch (state) {
         case 'closed':
           return 'red';
         case 'opened':
           return 'green';
-        case 'comming':
+        case 'coming':
           return 'orange';
       }
+    },
+    changeCampaignState: function (id, action) {
+      console.log(id, action);
+      this.$store.dispatch('campaignsStore/changeState', {
+        id   : id,
+        state: action
+      }).then(response => {
+        this.$root.showSnackbar('Le Statut de la campagne a bien été changé', 'success');
+      }, error => {
+        this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de la campagne', 'error');
+        let errors = error.response.data.errors;
+        this.$root.showSnackbar(errors.join('<br/>'), 'error');
+      });
     },
   },
   data() {
@@ -199,19 +250,28 @@ export default {
         disabled: false,
       },
       headers            : [
-        {title    : 'ID',
+        {
+          title   : 'ID',
           key     : 'id',
           sortable: true
         },
-        {title    : 'Nom',
+        {
+          title   : 'Nom',
           key     : 'name',
           sortable: true
         },
-        {title    : 'Status',
+        {
+          title   : 'Status',
           key     : 'state',
           sortable: true
         },
-        {title    : 'Actions',
+        {
+          title   : '',
+          key     : '',
+          sortable: false
+        },
+        {
+          title   : 'Actions',
           key     : 'actions',
           sortable: false
         },

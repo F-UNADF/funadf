@@ -8,7 +8,6 @@
       {{ this.getTitle }}
     </v-card-title>
     <v-card-text>
-
       <v-row>
         <v-col>
           <v-autocomplete
@@ -32,6 +31,7 @@
       <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
         <v-tab value="motions">Motions</v-tab>
         <v-tab value="voting-tables">Table des votes</v-tab>
+        <v-tab value="results" v-if="editedItem.state === 'closed'">Resultats</v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
@@ -132,6 +132,143 @@
             </v-col>
           </v-row>
         </v-window-item>
+
+        <v-window-item key="results" value="results" class="py-3">
+          <v-table border hover>
+            <thead>
+            <tr>
+              <th></th>
+              <th colspan="5">Votes comptabilisés</th>
+              <th colspan="5">Votes consultatifs</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th rowspan="2">Nb de votant</th>
+              <th colspan="3" class="bg-grey-lighten">Voix exprimées</th>
+              <th>Voix non exprimées</th>
+              <th rowspan="2">Nb de votant</th>
+              <th colspan="3" class="bg-grey-lighten">Voix exprimées</th>
+              <th>Voix non exprimées</th>
+            </tr>
+            <tr>
+              <th></th>
+              <th>Oui</th>
+              <th>Non</th>
+              <th>Total</th>
+              <th></th>
+              <th>Oui</th>
+              <th>Non</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="result in this.editedItem.results" :key="result.id">
+              <th>{{ result.motion_name }}</th>
+              <td>{{
+                  result.non_consultative_yes_count + result.non_consultative_no_count + result.non_consultative_neutre_count
+                }}
+              </td>
+              <td>
+                {{ result.non_consultative_yes_count }}
+
+                <span class="small" v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
+                  ({{
+                    ((result.non_consultative_yes_count / (result.non_consultative_yes_count + result.non_consultative_no_count)) * 100).toFixed(
+                        2)
+                  }}%)
+                </span>
+                <span class="small" v-else>
+                  (0%)
+                </span>
+              </td>
+              <td>
+                {{ result.non_consultative_no_count }}
+
+                <span class="small" v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
+                  ({{
+                    ((result.non_consultative_no_count / (result.non_consultative_yes_count + result.non_consultative_no_count)) * 100).toFixed(
+                        2)
+                  }}%)
+                </span>
+                <span class="small" v-else>
+                  (0%)
+                </span>
+              </td>
+              <td>{{ result.non_consultative_yes_count + result.non_consultative_no_count }}</td>
+              <td>{{ result.non_consultative_neutre_count }}</td>
+              <td>{{
+                  result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count
+                }}
+              </td>
+
+              <td>
+                {{ result.consultative_yes_count }}
+
+                <span class="small" v-if="result.consultative_yes_count + result.consultative_no_count !== 0">
+                  ({{
+                    ((result.consultative_yes_count / (result.consultative_yes_count + result.consultative_no_count)) * 100).toFixed(
+                        2)
+                  }}%)
+                </span>
+                <span class="small" v-else>
+                  (0%)
+                </span>
+              </td>
+              <td>
+                {{ result.consultative_no_count }}
+
+                <span class="small" v-if="result.consultative_yes_count + result.consultative_no_count !== 0">
+                  ({{
+                    ((result.consultative_no_count / (result.consultative_yes_count + result.consultative_no_count)) * 100).toFixed(
+                        2)
+                  }}%)
+                </span>
+                <span class="small" v-else>
+                  (0%)
+                </span>
+              </td>
+              <td>{{ result.consultative_yes_count + result.consultative_no_count }}</td>
+              <td>{{ result.consultative_neutre_count }}</td>
+            </tr>
+            </tbody>
+            <thead v-if="this.editedItem.free_results.length > 0">
+            <tr>
+              <th></th>
+              <th colspan="5">Votes comptabilisés</th>
+              <th colspan="5">Votes consultatifs</th>
+            </tr>
+            </thead>
+            <tbody v-if="this.editedItem.free_results.length > 0">
+            <tr v-for="result in this.editedItem.free_results" :key="result.id">
+              <th>{{ result.motion_name }}</th>
+              <td colspan="5">{{ result.non_consultative_free }}</td>
+              <td colspan="5">{{ result.consultative_free }}</td>
+            </tr>
+            </tbody>
+          </v-table>
+          <v-container class="d-flex justify-center">
+            <v-btn color="success" @click="downloadResults()">
+              <v-icon>mdi-download</v-icon>
+              Télécharger
+            </v-btn>
+          </v-container>
+          <h3>Votants</h3>
+          <v-table border hover>
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Ville</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr v-for="voter in this.editedItem.voters" :key="voter.id">
+              <th>{{ voter.name }}</th>
+              <td>{{ voter.town }}</td>
+            </tr>
+            </tbody>
+          </v-table>
+        </v-window-item>
       </v-window>
     </v-card-text>
     <v-card-actions class="bg-blue-lighten-5">
@@ -214,9 +351,9 @@ export default {
     },
     addVotingTable() {
       const newVotingTable = {
-        position  : '',
-        as_member : true,
-        voting    : 'count',
+        position : '',
+        as_member: true,
+        voting   : 'count',
       };
       this.editedItem.voting_tables.push(newVotingTable);
     },
@@ -237,6 +374,10 @@ export default {
       for (let i in this.editedItem.motions) {
         this.editedItem.motions[i].order = parseInt(i);
       }
+    },
+    downloadResults() {
+      // open a URL to Download the results
+      window.open('/structures/' + this.editedItem.structure_id + '/campaigns/' + this.editedItem.id + '.pdf', '_blank');
     },
   },
   watch     : {
@@ -264,5 +405,22 @@ export default {
 </script>
 
 <style scoped>
+.v-table thead th {
+  text-align: center !important;
+  border: solid 1px #ccc;
+  background-color: #f5f5f5;
+}
 
+.v-table tbody td, .v-table tbody th {
+  text-align: center !important;
+  border: solid 1px #ccc;
+}
+
+.v-table tbody th {
+  font-weight: bold !important;
+}
+
+.bg-grey-lighten {
+  background-color: #E1F5FE !important;
+}
 </style>

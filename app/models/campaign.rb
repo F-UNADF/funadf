@@ -53,7 +53,6 @@ class Campaign < ActiveRecord::Base
 
   validates :structure_id, :start_at, :end_at, presence: true
 
-
   def period
     "Du #{I18n.l self.start_at} au #{I18n.l self.end_at}"
   end
@@ -94,16 +93,18 @@ class Campaign < ActiveRecord::Base
     electors = user.electors
     Campaign.joins(:structure).where('structure_id IN (?)', electors.pluck(:structure_id)).order('structures.name')
   end
+
   def self.get_campaigns_for_structure structure
     electors = structure.self_electors
     Campaign.joins(:structure).where('structure_id IN (?)', electors.pluck(:structure_id)).order('structures.name')
   end
+
   def self.get_campaigns_for_president user
-    president_roles = Role.where(name: :president, rolizations:{resource_id: user.id, resource_type: user.get_class}).joins(:rolizations)
-    campaigns = []
+    president_roles = Role.where(name: :president, rolizations: { resource_id: user.id, resource_type: user.get_class }).joins(:rolizations)
+    campaigns       = []
     president_roles.each do |role|
       structure = role.resource
-      campaigns = campaigns+structure.campaigns
+      campaigns = campaigns + structure.campaigns
     end
     campaigns
   end
@@ -116,7 +117,7 @@ class Campaign < ActiveRecord::Base
     Campaign.with_states([:coming, :opened]).order(name: :asc)
   end
 
-  def get_voters opts=nil
+  def get_voters opts = nil
     motion_ids = Motion.where(campaign_id: self.id).pluck(:id)
     if opts[:only_electors] && opts[:only_electors] == true
       Voter.where('motion_id IN (?) AND elector_id IS NOT NULL', motion_ids).group(:elector_id).count.count
@@ -125,10 +126,9 @@ class Campaign < ActiveRecord::Base
     end
   end
 
-
   def user_can_vote?(user, as_member = true)
     user_level = user.level
-    structure = self.structure
+    structure  = self.structure
 
     vt = self.voting_tables.where(position: user_level, as_member: as_member).first
 
@@ -143,7 +143,7 @@ class Campaign < ActiveRecord::Base
 
   def user_vote_kind(user, as_member = true)
     user_level = user.level
-    structure = self.structure
+    structure  = self.structure
 
     vt = self.voting_tables.where(position: user_level, as_member: as_member).first
 
@@ -155,9 +155,9 @@ class Campaign < ActiveRecord::Base
   end
 
   def users_churches_can_vote(user)
-    structure = self.structure
+    structure          = self.structure
     church_presidences = user.church_presidences
-    can_vote = false
+    can_vote           = false
 
     church_presidences.each do |church|
 
@@ -214,7 +214,44 @@ class Campaign < ActiveRecord::Base
   end
 
   def voters
-    Voter.where(motion_id: self.motions.pluck(:id)).uniq
+    ActiveRecord::Base.connection.exec_query("
+        SELECT s.id, s.name, s.town
+        FROM voters v
+        JOIN structures s ON s.id = v.resource_id
+        WHERE v.resource_type = 'Structure'
+        UNION
+        SELECT u.id, CONCAT(u.lastname, ' ', u.firstname), u.town
+        FROM voters v
+        JOIN users u ON u.id = v.resource_id
+        WHERE v.resource_type = 'User'")
+  end
+
+  def results
+    Campaign.joins(motions: :votes)
+            .where(id: self.id)
+            .group('motions.id')
+            .where('motions.kind <> ?', 'free')
+            .select("
+                      motions.id,
+                      motions.name AS motion_name,
+                      SUM(CASE WHEN votes.result = 'Oui' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_yes_count,
+                      SUM(CASE WHEN votes.result = 'Non' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_no_count,
+                      SUM(CASE WHEN votes.result = 'Neutre' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_neutre_count,
+                      SUM(CASE WHEN votes.result = 'Oui' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_yes_count,
+                      SUM(CASE WHEN votes.result = 'Non' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_no_count,
+                      SUM(CASE WHEN votes.result = 'Neutre' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_neutre_count")
+  end
+
+  def free_results
+    Campaign.joins(motions: :votes)
+            .where(id: self.id)
+            .where('motions.kind = ?', 'free')
+            .group('motions.id')
+            .select("
+                      motions.id,
+                      motions.name AS motion_name,
+                      GROUP_CONCAT(CASE WHEN votes.is_consultative = FALSE THEN votes.result ELSE NULL END SEPARATOR ', ') AS non_consultative_free,
+                      GROUP_CONCAT(CASE WHEN votes.is_consultative = TRUE THEN votes.result ELSE NULL END SEPARATOR ', ') AS consultative_free")
   end
 
 end

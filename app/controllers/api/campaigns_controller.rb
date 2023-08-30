@@ -1,5 +1,5 @@
 class Api::CampaignsController < ApiController
-  before_action :set_campaign, only: [:show, :update, :destroy]
+  before_action :set_campaign, only: [:show, :update, :destroy, :change_state]
 
   def index
     campaigns = Campaign.order id: :desc
@@ -9,7 +9,10 @@ class Api::CampaignsController < ApiController
   def show
     motions       = @campaign.motions.order(id: :asc)
     voting_tables = @campaign.voting_tables
-    render json: { campaign: @campaign, motions: motions, voting_tables: voting_tables }
+    results       = @campaign.results
+    free_results  = @campaign.free_results
+    voters        = @campaign.voters
+    render json: { campaign: @campaign, motions: motions, voting_tables: voting_tables, results: results, free_results: free_results, voters: voters }
   end
 
   def create
@@ -35,6 +38,14 @@ class Api::CampaignsController < ApiController
   def destroy
     @campaign.destroy
     render json: { status: 200 }
+  end
+
+  def change_state
+    if @campaign.fire_state_event(params[:state_event])
+      render json: { status: 200, campaign: @campaign }
+    else
+      render json: { status: 422, errors: @campaign.errors }
+    end
   end
 
   private
