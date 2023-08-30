@@ -65,7 +65,7 @@ export default ({
       color  : '',
       timeout: 3000,
     },
-    showSidebar: false,
+    showSidebar: true,
   }),
   beforeMount: function () {
     this.$store.dispatch('sessionStore/fetchUser');

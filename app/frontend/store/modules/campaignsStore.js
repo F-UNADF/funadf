@@ -40,7 +40,24 @@ const actions = {
                 let item = res.data.campaign;
                 item['motions'] = res.data.motions;
                 item['voting_tables'] = res.data.voting_tables;
+                item['results'] = res.data.results;
+                item['free_results'] = res.data.free_results;
+                item['voters'] = res.data.voters;
                 commit('setItem', res.data.campaign);
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    },
+    changeState : function ({dispatch}, {
+        id,
+        state
+    }) {
+        console.log(state);
+        return new Promise((resolve, reject) => {
+            axios.patch('/api/campaigns/' + id + '/change_state', {state_event: state}).then((res) => {
+                dispatch('items');
                 resolve(res);
             }).catch((error) => {
                 reject(error, 2000);
@@ -97,6 +114,7 @@ const actions = {
             });
         });
     },
+
 };
 
 // mutations
