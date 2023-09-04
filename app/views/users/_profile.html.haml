@@ -3,8 +3,9 @@
     .client.card
       .card-body
         .mx-auto.d-block
-          .avatar.w-50.mb-3.mx-auto.text-center
-            = image_tag user.get_avatar_url([350,350]), class: "rounded-circle img-fluid"
+          .w-50.mb-3.mx-auto.text-center
+            .avatar
+              = image_tag user.get_avatar_url, class: "rounded-circle img-fluid"
 
           .text-center
             .client-title.mt-2.mb-1

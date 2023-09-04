@@ -1,0 +1,40 @@
+<script>
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    var isAndroid = /Android/i.test(navigator.userAgent);
+
+    var link = "https://apps.apple.com/app/pasteurs-add/id1671630765?platform=iphone";
+    if (isAndroid) {
+        link = "https://play.google.com/store/apps/details?id=funadf.app";
+    } else if (isMobile) {
+        link = "https://apps.apple.com/app/pasteurs-add/id1671630765?platform=iphone";
+    }
+
+    if (isMobile) {
+        // Show a banner or pop-up message suggesting the user to download your app.
+        var banner = document.createElement('div');
+        banner.innerHTML = '<a href="' + link +'" class="btn btn-sm btn-info">Telecharger notre application</a>';
+        banner.style.position = 'fixed';
+        banner.style.bottom = '0';
+        banner.style.width = '100%';
+        banner.style.padding = '15px 10px';
+        banner.style.backgroundColor = '#333';
+        banner.style.color = '#fff';
+        banner.style.textAlign = 'center';
+        banner.style.zIndex = '9999';
+
+        var closeButton = document.createElement('button');
+        closeButton.innerHTML = '<i class="fa fa-times"></i>';
+        closeButton.classList.add('btn');
+        closeButton.classList.add('btn-danger');
+        closeButton.classList.add('btn-sm');
+        closeButton.style.position = 'absolute';
+        closeButton.style.top = '15px';
+        closeButton.style.right = '10px';
+        closeButton.onclick = function() {
+            banner.style.display = 'none';
+        };
+
+        banner.appendChild(closeButton);
+        document.body.appendChild(banner);
+    }
+</script>

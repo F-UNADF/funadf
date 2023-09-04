@@ -66,11 +66,11 @@
                 %td
                   .btn-group
                     - if can? :update, structure
-                      = link_to structure_has_memberships_path(structure), class: "btn btn-sm btn-info" do
+                      = link_to structure_has_memberships_path(structure.id), class: "btn btn-sm btn-info" do
                         = icon 'fa', "eye"
                         Gérer la structure
                     - if can? :destroy, structure
-                      = link_to structure_path(structure), method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
+                      = link_to structure_path(structure.id), method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
                         = icon 'fa', "times"
 
         .float-right

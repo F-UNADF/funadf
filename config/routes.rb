@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { invitations: 'users/invitations' }
 
   get '/support', to: 'pages#support'
+  get '/app', to: 'pages#app'
+  get '/avatars/:user', to: 'avatars#show'
   get '/avatars/:user', to: 'avatars#show'
   get '/logos/:structure', to: 'logos#show'
 
