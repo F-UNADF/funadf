@@ -16,12 +16,17 @@ class Structure < ActiveRecord::Base
   end
 
   def users
-    User.where('id IN (?)', Membership.where(structure_id: self.id, member_type: 'User').pluck(:member_id)).order(lastname: :asc)
+    User.where('users.id IN (?)', Membership.where(structure_id: self.id, member_type: 'User').pluck(:member_id)).order(lastname: :asc)
   end
 
   def structures
-    Structure.where('id IN (?)', Membership.where(structure_id: self.id, member_type: 'Structure').pluck(:member_id)).order(town: :asc)
+    Structure.where('structures.id IN (?)', Membership.where(structure_id: self.id, member_type: 'Structure').pluck(:member_id)).order(town: :asc)
   end
+
+  def churches
+    Church.where('structures.id IN (?)', Membership.where(structure_id: self.id, member_type: 'Structure').pluck(:member_id)).order(town: :asc)
+  end
+
   def members
     (users + structures)
   end

@@ -2,7 +2,11 @@ class Api::ChurchesController < ApiController
   before_action :set_church, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index
-    churches = Church.all
+    if @structure.nil?
+      churches = Church.all
+    else
+      churches = @structure.churches
+    end
     render json: { churches: churches }
   end
 

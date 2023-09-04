@@ -18,9 +18,9 @@ class User < ActiveRecord::Base
   has_many :careers, class_name: "Career", foreign_key: :user_id
 
   has_many :interns, class_name: "Career", foreign_key: :referent_id
-  has_many :gratitudes, ->(career){where('level IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
-  has_many :phases, ->(career){where('church_id IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
-  has_many :responsabilities, ->(career){where('association_id IS NOT NULL')}, class_name: "Career", foreign_key: :user_id
+  has_many :gratitudes, ->(career) { where('level IS NOT NULL') }, class_name: "Career", foreign_key: :user_id
+  has_many :phases, ->(career) { where('church_id IS NOT NULL') }, class_name: "Career", foreign_key: :user_id
+  has_many :responsabilities, ->(career) { where('association_id IS NOT NULL') }, class_name: "Career", foreign_key: :user_id
 
   has_many :fees, dependent: :destroy
 
@@ -48,17 +48,17 @@ class User < ActiveRecord::Base
   after_create :track_create_activities
 
   def clean_name_attributes
-    self.lastname = lastname.to_s.strip.upcase
+    self.lastname  = lastname.to_s.strip.upcase
     self.firstname = firstname.to_s.strip.titlecase
   end
 
   def track_update_activities
-    c = self.changes.reject! { |k| k.match(/created_at|updated_at|reset_password_token/)}
-    self.create_activity key: 'user.update', owner: Proc.new{ |controller, model| (controller)? controller.current_user : nil }, parameters: c
+    c = self.changes.reject! { |k| k.match(/created_at|updated_at|reset_password_token/) }
+    self.create_activity key: 'user.update', owner: Proc.new { |controller, model| (controller) ? controller.current_user : nil }, parameters: c
   end
 
   def track_create_activities
-    self.create_activity key: 'user.create', owner: Proc.new{ |controller, model| (controller)? controller.current_user : nil }
+    self.create_activity key: 'user.create', owner: Proc.new { |controller, model| (controller) ? controller.current_user : nil }
   end
 
   def application_roles
@@ -68,6 +68,7 @@ class User < ActiveRecord::Base
   def fullname
     "#{firstname} #{lastname}"
   end
+
   alias name fullname
 
   def full_address
@@ -104,7 +105,6 @@ class User < ActiveRecord::Base
     result.html_safe
   end
 
-
   def friendly_id
     sprintf '%05d', id
   end
@@ -125,8 +125,7 @@ class User < ActiveRecord::Base
     return false
   end
 
-
-  def add_role role_name, structure = nil, can_vote=true, reason=nil
+  def add_role role_name, structure = nil, can_vote = true, reason = nil
     # Crée un rôle seul (Valable sur l'ensemble de l'APP)
     # OU Avec une Class (Valable uniquement sur cette Class)
     # OU Avec une resource (Valable que pour cette resource)
@@ -136,8 +135,9 @@ class User < ActiveRecord::Base
 
     role
   end
+
   def remove_role role_name, structure = nil
-    role = Role.find_or_create_by(name: role_name)
+    role       = Role.find_or_create_by(name: role_name)
     membership = self.memberships.where(role: role, structure: structure).first
 
     membership.destroy
@@ -159,7 +159,7 @@ class User < ActiveRecord::Base
 
   def church_presidences
     role = Role.where(name: :president).first
-    Structure.where(id: self.memberships.where(role_id: role.id,  resource_type: 'Church').pluck(:resource_id))
+    Structure.where(id: self.memberships.where(role_id: role.id, resource_type: 'Church').pluck(:resource_id))
   end
 
   def get_class
@@ -191,11 +191,11 @@ class User < ActiveRecord::Base
     CSV.foreach(File.open(upload.file.current_path), headers: false) do |row|
       if upload.has_heading
         row.each do |k|
-          keys<<k
+          keys << k
         end
       else
         row.each_with_index do |k, index|
-          keys<<"col-#{index}"
+          keys << "col-#{index}"
         end
       end
       break
@@ -222,24 +222,26 @@ class User < ActiveRecord::Base
   def self.get_levels
     ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre', 'Femme de pasteur', 'Hors ADD', 'Invité', 'Ministère P1', 'Ministère P2']
   end
+
   def self.get_functions
     ['Président', 'Vice président', 'Pasteur adjoint', 'Pasteur stagiaire', 'Pasteur probatoire', 'Prédicateur', 'Missionnaire']
   end
+
   def self.get_responsabilities
     ['Président',
-      'Vice président',
-      'Secrétaire',
-      'Secrétaire adjoint',
-      'Trésorier',
-      'Trésorier adjoint',
-      'Chargé de mission',
-      'Directeur',
-      'Directeur adjoint',
-      'Membre du CA',
-      'Délégué',
-      'Salarié',
-      'Rédacteur en chef',
-      'Enseignant']
+     'Vice président',
+     'Secrétaire',
+     'Secrétaire adjoint',
+     'Trésorier',
+     'Trésorier adjoint',
+     'Chargé de mission',
+     'Directeur',
+     'Directeur adjoint',
+     'Membre du CA',
+     'Délégué',
+     'Salarié',
+     'Rédacteur en chef',
+     'Enseignant']
   end
 
   def level
@@ -256,7 +258,7 @@ class User < ActiveRecord::Base
     true
   end
 
-  def self.accept_invitation!(attributes={})
+  def self.accept_invitation!(attributes = {})
     invitable = find_by(invitation_token: attributes[:invitation_token])
     if invitable.errors.empty?
       invitable.assign_attributes(attributes)
@@ -286,6 +288,7 @@ class User < ActiveRecord::Base
     end
     f
   end
+
   def husband_fullname
     f = nil
     if husband
@@ -294,7 +297,7 @@ class User < ActiveRecord::Base
     f
   end
 
-  def get_avatar_url size=[150,150]
+  def get_avatar_url size = [150, 150]
     "/avatars/#{self.id}.png"
   end
 
@@ -305,22 +308,22 @@ class User < ActiveRecord::Base
 
   def to_json(options = {})
     JSON.pretty_generate({
-      id: self.friendly_id,
-      fullname: self.fullname,
-      address: self.address_1,
-      zipcode: self.zipcode,
-      town: self.town,
-      email: self.email,
-      phone: self.phone_1,
-      avatar: self.get_avatar_url([350,350]),
-      level: self.level,
-      passphrase: self.passphrase
-    }, options)
+                           id:         self.friendly_id,
+                           fullname:   self.fullname,
+                           address:    self.address_1,
+                           zipcode:    self.zipcode,
+                           town:       self.town,
+                           email:      self.email,
+                           phone:      self.phone_1,
+                           avatar:     self.get_avatar_url([350, 350]),
+                           level:      self.level,
+                           passphrase: self.passphrase
+                         }, options)
   end
 
   def passphrase
     year = Date.today.year - 1
-    fee = self.fees.where(what: year).first
+    fee  = self.fees.where(what: year).first
 
     if fee
       return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' OK'
@@ -332,26 +335,25 @@ class User < ActiveRecord::Base
   def self.allowed_params params
     if params[:user][:password].blank?
       params[:user].permit(:firstname, :lastname, :avatar, :address_1,
-                        :address_2, :zipcode, :town, :phone_1, :phone_2,
-                        :email, :level, :birthdate, :avatar, :biography,
-                        husband_marriage_attributes: [:husband_id, :wife_id],
-                        wife_marriage_attributes: [:husband_id, :wife_id],
-                        fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
-                        gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
-                        phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
-                        responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
+                           :address_2, :zipcode, :town, :phone_1, :phone_2,
+                           :email, :level, :birthdate, :avatar, :biography,
+                           husband_marriage_attributes: [:husband_id, :wife_id],
+                           wife_marriage_attributes:    [:husband_id, :wife_id],
+                           fees_attributes:             [:id, :what, :paid_at, :amount, :_destroy],
+                           gratitudes_attributes:       [:id, :level, :referent_id, :start_at, :_destroy],
+                           phases_attributes:           [:id, :church_id, :function, :start_at, :end_at, :_destroy],
+                           responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
     else
       params[:user].permit(:firstname, :lastname, :avatar, :address_1,
-                        :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
-                        :email, :level, :birthdate, :password, :password_confirmation, :avatar,
-                        husband_marriage_attributes: [:husband_id, :wife_id],
-                        wife_marriage_attributes: [:husband_id, :wife_id],
-                        fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
-                        gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
-                        phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
-                        responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
+                           :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
+                           :email, :level, :birthdate, :password, :password_confirmation, :avatar,
+                           husband_marriage_attributes: [:husband_id, :wife_id],
+                           wife_marriage_attributes:    [:husband_id, :wife_id],
+                           fees_attributes:             [:id, :what, :paid_at, :amount, :_destroy],
+                           gratitudes_attributes:       [:id, :level, :referent_id, :start_at, :_destroy],
+                           phases_attributes:           [:id, :church_id, :function, :start_at, :end_at, :_destroy],
+                           responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
     end
   end
 
-
- end
+end

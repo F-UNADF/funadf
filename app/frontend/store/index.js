@@ -5,6 +5,7 @@ import churchesStore from "./modules/churchesStore";
 import associationsStore from "./modules/associationsStore";
 import campaignsStore from "./modules/campaignsStore";
 import menuStore from "./modules/menuStore";
+import eventsStore from "./modules/eventsStore";
 
 const debug = process.env.NODE_ENV !== 'production';
 
@@ -16,8 +17,9 @@ const store = createStore({
         associationsStore,
         campaignsStore,
         menuStore,
+        eventsStore,
     },
-    strict: debug,
+    strict : debug,
 });
 
 export default store;

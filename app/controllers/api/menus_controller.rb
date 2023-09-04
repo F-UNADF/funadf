@@ -10,11 +10,6 @@ class Api::MenusController < ApiController
           header: "ADMIN",
         },
         {
-          title: "Accueil",
-          icon:  "mdi-home",
-          to:    admin_root_path,
-        },
-        {
           title: "Utilisateurs",
           icon:  "mdi-account-group",
           to:    admin_users_path,
@@ -35,6 +30,11 @@ class Api::MenusController < ApiController
           to:    admin_campaigns_path,
         },
         {
+          title: "Agenda",
+          icon:  "mdi-calendar",
+          to:    admin_events_path,
+        },
+        {
           header: "NAVIGATION",
         },
         {
@@ -47,7 +47,66 @@ class Api::MenusController < ApiController
           icon:  "mdi-vote",
           href:  root_url(subdomain: ''),
         },
+        {
+          header: "INTRANET",
+        },
       ]
+      Intranet.order(:subdomain).each do |intranet|
+        result << {
+          title: intranet.structure_name,
+          icon:  "mdi-rss",
+          href:  root_url(subdomain: intranet.subdomain),
+        }
+      end
+    when 'uadpif'
+      result = [
+        {
+          header: "INTRANET",
+        },
+        {
+          title: "Agenda",
+          icon:  "mdi-calendar",
+          to:    intranet_events_path,
+        },
+        {
+          title: "Pasteurs",
+          icon:  "mdi-account-group",
+          to:    intranet_users_path,
+        },
+        {
+          title: "Eglises",
+          icon:  "mdi-church",
+          to:    intranet_churches_path,
+        },
+        {
+          title: "Campagnes",
+          icon:  "mdi-vote",
+          to:    intranet_campaigns_path,
+        },
+        {
+          header: "NAVIGATION",
+        },
+        {
+          title: "Mon espace",
+          icon:  "mdi-rss",
+          href:  me_me_url(subdomain: :me),
+        },
+        {
+          title: "Espace de votes",
+          icon:  "mdi-vote",
+          href:  root_url(subdomain: ''),
+        },
+        {
+          header: "INTRANET",
+        },
+      ]
+      Intranet.order(:subdomain).each do |intranet|
+        result << {
+          title: intranet.structure_name,
+          icon:  "mdi-rss",
+          href:  root_url(subdomain: intranet.subdomain),
+        }
+      end
     else
       result[:error] = "Menu #{menu} not found"
     end

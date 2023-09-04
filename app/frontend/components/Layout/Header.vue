@@ -6,7 +6,7 @@
       <v-app-bar-nav-icon @click="this.$emit('toggleSidebar')"></v-app-bar-nav-icon>
     </template>
     <template v-slot:append>
-      <v-menu v-if="!!user" anchor="bottom end" min-width="300" origin="auto">
+      <v-menu v-if="!!this.user" anchor="bottom end" min-width="300" origin="auto">
         <template v-slot:activator="{ props }">
           <v-btn
               :ripple="false"
@@ -17,7 +17,7 @@
               v-bind="props"
           >
             <v-img
-                :src="'/avatars/' + user.id + '.png'"
+                :src="'/avatars/' + this.user.id + '.png'"
                 class="rounded-circle img-fluid"
                 width="45px"
             ></v-img>
@@ -28,16 +28,16 @@
           <h4 class="font-weight-medium fs-18">Profil</h4>
           <div class="d-flex align-center my-4">
             <img
-                :alt="user.fullname"
-                :src="'/avatars/' + user.id + '.png'"
+                :alt="this.user.fullname"
+                :src="'/avatars/' + this.user.id + '.png'"
                 class="rounded-circle"
                 width="90"
             />
             <div class="ml-4">
-              <h4 class="font-weight-medium fs-18">{{ user.fullname }}</h4>
-              <span class="subtitle-2 font-weight-light">{{ user.level }}</span>
+              <h4 class="font-weight-medium fs-18">{{ this.user.fullname }}</h4>
+              <span class="subtitle-2 font-weight-light">{{ this.user.level }}</span>
               <div class="d-flex align-center">
-                <span class="subtitle-2 font-weight-light ml-1">{{ user.email }}</span>
+                <span class="subtitle-2 font-weight-light ml-1">{{ this.user.email }}</span>
               </div>
             </div>
           </div>

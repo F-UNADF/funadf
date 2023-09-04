@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/avatars/:user', to: 'avatars#show'
   get '/logos/:structure', to: 'logos#show'
 
-  namespace :api, defaults: {format: 'json'} do
+  namespace :api, defaults: { format: 'json' } do
     get 'current_user', to: 'current_user#show'
     resources :users
     patch '/users/:id/enable', to: 'users#enable'
@@ -27,16 +27,18 @@ Rails.application.routes.draw do
     resources :memberships, only: [:update, :destroy]
 
     resources :campaigns
+    resources :events
+    resources :files, only: [:destroy]
     patch '/campaigns/:id/change_state', to: 'campaigns#change_state'
 
     get 'referentiels/:referentiel', to: 'referentiels#show'
     get 'menus/:menu', to: 'menus#show'
   end
 
-  namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: {format: 'json'} do
+  namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: { format: 'json' } do
     devise_for :users, controllers: {
-        sessions: 'v1/custom_devise/sessions'
-    }, as: :api_devise
+      sessions: 'v1/custom_devise/sessions'
+    }, as:                          :api_devise
 
     get '/users/:token', to: 'users#show'
     get '/votes', to: 'votes#index'
@@ -52,7 +54,7 @@ Rails.application.routes.draw do
         resources :users, only: :index
         resources :churches, only: :index
         resources :associations, only: :index
-
+        resources :events, only: :index
 
         resources :campaigns do
           get '/open', to: 'campaigns#open', as: :open
@@ -85,13 +87,12 @@ Rails.application.routes.draw do
     # ITNTRANETS SUBDOMAIN
     namespace :intranet, path: '' do
       constraints(:subdomain => /[a-z]+/) do
-        resources :events
-        resources :users
-        resources :structures
-        resources :categories
-        resources :posts
-        resource :the_structure, controller: 'structure', only: [:show, :edit, :update]
-        root to: 'home#show', as: :intranet
+        get '/churches', to: 'churches#index', as: :churches
+        get '/events', to: 'events#index', as: :events
+        get '/users', to: 'users#index', as: :users
+        get '/campaigns', to: 'campaigns#index', as: :campaigns
+
+        get '/mon-compte', :to => redirect('/events')
       end
     end
 
@@ -131,7 +132,6 @@ Rails.application.routes.draw do
     get '/mon-compte/modifier', to: 'accounts#edit', as: :edit_me
 
     resources :accounts, only: :update
-
 
     get '/search', to: "search#index", as: :search
 
