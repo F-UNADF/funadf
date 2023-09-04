@@ -2,7 +2,11 @@ class Api::CampaignsController < ApiController
   before_action :set_campaign, only: [:show, :update, :destroy, :change_state]
 
   def index
-    campaigns = Campaign.order id: :desc
+    if @structure.nil?
+      campaigns = Campaign.order id: :desc
+    else
+      campaigns = @structure.campaigns.order id: :desc
+    end
     render json: { campaigns: campaigns }
   end
 
@@ -19,6 +23,7 @@ class Api::CampaignsController < ApiController
     campaign = Campaign.new(church_params)
     if campaign.save
       save_motions(@campaign, params[:campaign][:motions])
+      save_voting_tables(@campaign, params[:campaign][:voting_tables])
       render json: { status: 200, campaign: campaign }
     else
       render json: { status: 422, errors: campaign.errors }

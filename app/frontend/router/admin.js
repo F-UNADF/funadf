@@ -1,37 +1,43 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import HomePage from '../components/Pages/Home.vue'
 import UsersIndex from '../components/Users/Index.vue'
 import ChurchesIndex from '../components/Churches/Index.vue'
 import AssociationsIndex from '../components/Associations/Index.vue'
 import CampaignsIndex from '../components/Campaigns/Index.vue'
+import EventsIndex from "../components/Events/Index.vue";
 
 export default createRouter({
     history: createWebHistory(),
-    routes: [
+    routes : [
         {
-            path: '/',
+            path     : '/',
             component: HomePage,
-            name: 'home',
+            name     : 'home',
         },
         {
-            path: '/users',
+            path     : '/users',
             component: UsersIndex,
-            name: 'users',
+            name     : 'users',
         },
         {
-            path: '/churches',
+            path     : '/churches',
             component: ChurchesIndex,
-            name: 'churches',
+            name     : 'churches',
         },
         {
-            path: '/associations',
+            path     : '/associations',
             component: AssociationsIndex,
-            name: 'associations',
+            name     : 'associations',
         },
         {
-            path: '/campaigns',
+            path     : '/campaigns',
             component: CampaignsIndex,
-            name: 'campaigns',
+            name     : 'campaigns',
+        },
+        {
+            path     : '/events',
+            component: EventsIndex,
+            name     : 'events',
         },
     ],
 })

@@ -1,8 +1,6 @@
 <template>
-  <v-app theme="light"
-         class="">
-
-    <Sidebar :menu="this.getMenu"  :showSidebar="showSidebar"></Sidebar>
+  <v-app theme="light" class="">
+    <Sidebar :menu="this.getMenu" :showSidebar="showSidebar"></Sidebar>
     <Header :user="currentUser" @logout="logout()" @toggle-sidebar="this.showSidebar = !this.showSidebar"></Header>
     <v-main scrollable>
       <v-container fluid class="page-wrapper">
@@ -49,7 +47,7 @@ export default ({
     ...mapActions('sessionStore', [
       'logout',
     ]),
-    goTo: function (routeName) {
+    goTo        : function (routeName) {
       this.$router.push({name: routeName});
     },
     showSnackbar: function (message, color) {
@@ -59,7 +57,7 @@ export default ({
     },
   },
   data       : () => ({
-    snackbar: {
+    snackbar   : {
       show   : false,
       message: '',
       color  : '',
@@ -68,8 +66,13 @@ export default ({
     showSidebar: true,
   }),
   beforeMount: function () {
+    //get subdomain :
+    let subdomain = window.location.hostname.split('.')[0];
+    this.$store.commit('sessionStore/setSubdomain', subdomain);
+
     this.$store.dispatch('sessionStore/fetchUser');
-    this.$store.dispatch('menuStore/getMenu');
+    this.$store.dispatch('menuStore/getMenu', subdomain);
+
   },
 });
 </script>

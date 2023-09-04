@@ -1,4 +1,5 @@
 class IntranetController < ApplicationController
+  layout 'intranet/layouts/vuejs'
 
   before_action :set_intranet_structure, :user_can_access?
 
@@ -6,7 +7,7 @@ class IntranetController < ApplicationController
     if request.subdomain && request.subdomain != '' && !request.subdomain.match(/admin|me/)
       @intranet = Intranet.find_by subdomain: request.subdomain
       unless @intranet
-        redirect_to root_url
+        redirect_to root_url(subdomain: 'me')
       end
       @intranet_structure = @intranet.structure
     end

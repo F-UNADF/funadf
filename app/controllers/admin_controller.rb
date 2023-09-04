@@ -1,6 +1,7 @@
 class AdminController < ApplicationController
+  layout 'admin/layouts/vuejs'
 
-before_action :user_is_admin?
+  before_action :user_is_admin?
 
   private
     def user_is_admin?

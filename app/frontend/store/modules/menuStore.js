@@ -12,9 +12,9 @@ const getters = {
 
 // actions
 const actions = {
-    getMenu: function ({commit}) {
+    getMenu: function ({commit}, subdomain) {
         return new Promise((resolve, reject) => {
-            axios.get('/api/menus/admin', {}).then((res) => {
+            axios.get('/api/menus/' + subdomain, {}).then((res) => {
                 commit('setMenu', res.data);
                 resolve(res);
             }).catch((error) => {

@@ -3,13 +3,13 @@ import axios from "axios";
 // initial state
 const state = () => ({
     currentUser: null,
+    subdomain  : null
 });
 
 // getters
 const getters = {
-    currentUser(state) {
-        return state.currentUser;
-    }
+    currentUser: (state) => state.currentUser,
+    subdomain  : (state) => state.subdomain,
 };
 
 // actions
@@ -34,8 +34,11 @@ const actions = {
 
 // mutations
 const mutations = {
-    setCurrentUser(state, user) {
+    setCurrentUser: (state, user) => {
         state.currentUser = user;
+    },
+    setSubdomain  : (state, subdomain) => {
+        state.subdomain = subdomain;
     }
 };
 
