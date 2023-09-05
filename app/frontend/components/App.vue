@@ -67,11 +67,14 @@ export default ({
   }),
   beforeMount: function () {
     //get subdomain :
-    let subdomain = window.location.hostname.split('.')[0];
+    let uris =  window.location.hostname.split('.');
+    let subdomain = 'votes';
+    if(uris.length > 2){
+      subdomain = uris[0];
+    }
     this.$store.commit('sessionStore/setSubdomain', subdomain);
-
-    this.$store.dispatch('sessionStore/fetchUser');
     this.$store.dispatch('menuStore/getMenu', subdomain);
+    this.$store.dispatch('sessionStore/fetchUser');
 
   },
 });

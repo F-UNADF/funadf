@@ -117,6 +117,17 @@ class Api::MenusController < ApiController
           href:  root_url(subdomain: intranet.subdomain),
         }
       end
+    when 'votes'
+      result = [
+        {
+          header: "VOTES",
+        },
+        {
+          title: "Mes votes",
+          icon:  "mdi-vote",
+          to:    votes_campaigns_path,
+        }
+      ]
     else
       result[:error] = "Menu #{menu} not found"
     end
