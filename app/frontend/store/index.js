@@ -6,6 +6,7 @@ import associationsStore from "./modules/associationsStore";
 import campaignsStore from "./modules/campaignsStore";
 import menuStore from "./modules/menuStore";
 import eventsStore from "./modules/eventsStore";
+import postsStore from "./modules/postsStore";
 
 const debug = process.env.NODE_ENV !== 'production';
 
@@ -18,6 +19,7 @@ const store = createStore({
         campaignsStore,
         menuStore,
         eventsStore,
+        postsStore,
     },
     strict : debug,
 });

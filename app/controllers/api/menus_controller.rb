@@ -64,6 +64,11 @@ class Api::MenusController < ApiController
           header: "INTRANET",
         },
         {
+          title: "Actu",
+          icon:  "mdi-newspaper",
+          to:    intranet_posts_path,
+        },
+        {
           title: "Agenda",
           icon:  "mdi-calendar",
           to:    intranet_events_path,

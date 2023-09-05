@@ -21,7 +21,6 @@ Rails.application.routes.draw do
     delete '/churches/:id/members/:membership_id', to: 'churches#remove_members'
     post '/churches/:id/roles/edit', to: 'churches#edit_roles'
 
-
     resources :associations
     post '/associations/:id/members', to: 'associations#add_members'
     post '/associations/:id/roles/edit', to: 'associations#edit_roles'
@@ -30,6 +29,7 @@ Rails.application.routes.draw do
 
     resources :campaigns
     resources :events
+    resources :posts
     resources :files, only: [:destroy]
     patch '/campaigns/:id/change_state', to: 'campaigns#change_state'
 
@@ -89,10 +89,12 @@ Rails.application.routes.draw do
     # ITNTRANETS SUBDOMAIN
     namespace :intranet, path: '' do
       constraints(:subdomain => /[a-z]+/) do
-        get '/churches', to: 'churches#index', as: :churches
-        get '/events', to: 'events#index', as: :events
-        get '/users', to: 'users#index', as: :users
-        get '/campaigns', to: 'campaigns#index', as: :campaigns
+        resources :users, only: :index
+        resources :churches, only: :index
+        resources :associations, only: :index
+        resources :events, only: :index
+        resources :posts, only: :index
+        resources :campaigns, only: :index
 
         get '/mon-compte', :to => redirect('/events')
       end

@@ -74,6 +74,8 @@ class Api::ReferentielsController < ApiController
       end
       result[:categories] = categories
       result[:levels]     = levels
+    when 'posts'
+      result[:levels]     = levels
     else
       result[:error] = "Invalid referentiel #{referentiel}"
     end
