@@ -72,7 +72,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             if (item.id) {
                 axios.patch('/api/campaigns/' + item.id, {campaign: item}, {}).then((res) => {
-                    commit('setItemInItemsById', res.data.campaign);
+                    dispatch('items');
                     commit('setItem', res.data.campaign);
                     resolve(res.data.campaign);
                 }).catch((error) => {
@@ -81,7 +81,7 @@ const actions = {
             } else {
                 axios.post('/api/campaigns', {campaign: item}, {}).then((res) => {
                     commit('setItem', res.data.campaign);
-                    commit('setItemInItemsById', res.data.campaign);
+                    dispatch('items');
                     resolve(res.data.campaign);
                 }).catch((error) => {
                     reject(error, 2000);

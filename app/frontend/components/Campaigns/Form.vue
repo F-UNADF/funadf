@@ -308,7 +308,6 @@ export default {
     save() {
       this.$store.dispatch('campaignsStore/save', this.editedItem).then(response => {
         this.$root.showSnackbar('Campagne enregistrée avec succès', 'success');
-        this.search = response.zipcode;
         this.close();
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de la campagne', 'error');

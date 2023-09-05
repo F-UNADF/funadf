@@ -51,7 +51,7 @@ class Campaign < ActiveRecord::Base
 
   delegate :name, to: :structure, prefix: true
 
-  validates :structure_id, :start_at, :end_at, presence: true
+  validates :structure_id, presence: true
 
   def period
     "Du #{I18n.l self.start_at} au #{I18n.l self.end_at}"
