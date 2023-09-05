@@ -57,6 +57,7 @@ Rails.application.routes.draw do
         resources :churches, only: :index
         resources :associations, only: :index
         resources :events, only: :index
+        resources :posts, only: :index
 
         resources :campaigns do
           get '/open', to: 'campaigns#open', as: :open

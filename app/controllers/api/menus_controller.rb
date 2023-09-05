@@ -35,6 +35,11 @@ class Api::MenusController < ApiController
           to:    admin_events_path,
         },
         {
+          title: "Actu",
+          icon:  "mdi-newspaper",
+          to:    admin_posts_path,
+        },
+        {
           header: "NAVIGATION",
         },
         {
