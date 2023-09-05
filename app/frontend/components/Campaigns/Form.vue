@@ -355,6 +355,11 @@ export default {
         as_member: true,
         voting   : 'count',
       };
+      // Check if voting tables array is empty else init the voting_table
+      if (!this.editedItem.voting_tables) {
+        this.editedItem.voting_tables = [];
+      }
+
       this.editedItem.voting_tables.push(newVotingTable);
     },
     removeMotion(motion) {
