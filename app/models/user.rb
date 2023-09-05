@@ -44,21 +44,10 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :husband_marriage, reject_if: :all_blank, allow_destroy: true
 
   before_validation :clean_name_attributes
-  before_update :track_update_activities
-  after_create :track_create_activities
 
   def clean_name_attributes
     self.lastname  = lastname.to_s.strip.upcase
     self.firstname = firstname.to_s.strip.titlecase
-  end
-
-  def track_update_activities
-    c = self.changes.reject! { |k| k.match(/created_at|updated_at|reset_password_token/) }
-    self.create_activity key: 'user.update', owner: Proc.new { |controller, model| (controller) ? controller.current_user : nil }, parameters: c
-  end
-
-  def track_create_activities
-    self.create_activity key: 'user.create', owner: Proc.new { |controller, model| (controller) ? controller.current_user : nil }
   end
 
   def application_roles
