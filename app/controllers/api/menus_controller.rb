@@ -35,6 +35,11 @@ class Api::MenusController < ApiController
           to:    admin_events_path,
         },
         {
+          title: "Actu",
+          icon:  "mdi-newspaper",
+          to:    admin_posts_path,
+        },
+        {
           header: "NAVIGATION",
         },
         {
@@ -62,6 +67,11 @@ class Api::MenusController < ApiController
       result = [
         {
           header: "INTRANET",
+        },
+        {
+          title: "Actu",
+          icon:  "mdi-newspaper",
+          to:    intranet_posts_path,
         },
         {
           title: "Agenda",
