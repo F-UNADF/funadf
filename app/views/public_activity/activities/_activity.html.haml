@@ -20,7 +20,7 @@
       %br
       %small.text-muted
         Il y a
-        = time_ago_in_words activity.created_at
+        /= time_ago_in_words activity.created_at
 
     - unless activity.parameters.blank?
       %table.table.table.table-sm.border-bottom-success
