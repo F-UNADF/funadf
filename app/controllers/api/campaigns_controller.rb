@@ -20,10 +20,10 @@ class Api::CampaignsController < ApiController
   end
 
   def create
-    campaign = Campaign.new(church_params)
+    campaign = Campaign.new(campaign_params)
     if campaign.save
-      save_motions(@campaign, params[:campaign][:motions])
-      save_voting_tables(@campaign, params[:campaign][:voting_tables])
+      save_motions(campaign, params[:campaign][:motions])
+      save_voting_tables(campaign, params[:campaign][:voting_tables])
       render json: { status: 200, campaign: campaign }
     else
       render json: { status: 422, errors: campaign.errors }
@@ -57,7 +57,7 @@ class Api::CampaignsController < ApiController
 
   def save_motions(campaign, motions_params)
     motion_ids = motions_params.map { |motion| motion[:id] }
-    Motion.where(campaign_id: @campaign.id).where.not(id: motion_ids).delete_all
+    Motion.where(campaign_id: campaign.id).where.not(id: motion_ids).delete_all
     motions_params.each do |motion_params|
       motion = campaign.motions.find_by(id: motion_params[:id])
 
@@ -81,7 +81,7 @@ class Api::CampaignsController < ApiController
 
   def save_voting_tables(campaign, voting_tables_params)
     voting_table_ids = voting_tables_params.map { |voting_table| voting_table[:id] }
-    VotingTable.where(campaign_id: @campaign.id).where.not(id: voting_table_ids).delete_all
+    VotingTable.where(campaign_id: campaign.id).where.not(id: voting_table_ids).delete_all
     voting_tables_params.each do |voting_table_params|
       voting_table = campaign.voting_tables.find_by(id: voting_table_params[:id])
 
