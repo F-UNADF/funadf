@@ -308,7 +308,6 @@ export default {
     save() {
       this.$store.dispatch('campaignsStore/save', this.editedItem).then(response => {
         this.$root.showSnackbar('Campagne enregistrée avec succès', 'success');
-        this.search = response.zipcode;
         this.close();
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de la campagne', 'error');
@@ -355,6 +354,11 @@ export default {
         as_member: true,
         voting   : 'count',
       };
+      // Check if voting tables array is empty else init the voting_table
+      if (!this.editedItem.voting_tables) {
+        this.editedItem.voting_tables = [];
+      }
+
       this.editedItem.voting_tables.push(newVotingTable);
     },
     removeMotion(motion) {
