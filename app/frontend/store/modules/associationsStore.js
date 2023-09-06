@@ -80,7 +80,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.delete('/api/associations/' + id, {}).then((res) => {
                 commit('removeItemInItemsById', id);
-                dispatch('item', id);
+                dispatch('items');
                 resolve(res);
             }).catch((error) => {
                 reject(error, 2000);
