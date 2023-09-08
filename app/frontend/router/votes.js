@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import VotesIndex from '../components/votes/Index.vue'
-import VotesShow from '../components/votes/Show.vue'
+import VotesIndex from '../components/Votes/Index.vue'
+import VotesShow from '../components/Votes/Show.vue'
 
 export default createRouter({
     history: createWebHistory(),
