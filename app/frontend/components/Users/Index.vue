@@ -49,7 +49,7 @@
       :items="filteredItems"
       item-value="name"
       class="elevation-1"
-      loading="loading"
+      :loading="loading"
   >
     <template v-slot:no-data>
       <tr>
@@ -71,28 +71,28 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.value.id }}</td>
+        <td>{{ item.raw.id }}</td>
         <td>
           <div class="d-flex align-center py-4">
             <div>
               <v-img
-                  :src="'/avatars/' + item.value.id + '.png'"
+                  :src="'/avatars/' + item.raw.id + '.png'"
                   width="45px"
                   class="rounded-circle img-fluid"
               ></v-img>
             </div>
 
             <div class="ml-5">
-              <h4>{{ item.value.lastname }} {{ item.value.firstname }}</h4>
+              <h4>{{ item.raw.lastname }} {{ item.raw.firstname }}</h4>
               <span class="subtitle-2 d-block font-weight-regular">{{
-                  item.value.email
+                  item.raw.email
                 }}</span>
             </div>
           </div>
         </td>
-        <td>{{ item.value.zipcode }} {{ item.value.town }}</td>
+        <td>{{ item.raw.zipcode }} {{ item.raw.town }}</td>
         <td>
-          <v-chip color="info" label>{{ item.value.current_level }}</v-chip>
+          <v-chip color="info" label>{{ item.raw.current_level }}</v-chip>
         </td>
         <td>
           <v-tooltip location="top" text="Modifier l'utilisateur">
@@ -115,13 +115,13 @@
                   small
                   class="text-error"
                   title="Delete"
-                  @click="tryDeleteItem(item.value)">
+                  @click="tryDeleteItem(item.raw)">
                 mdi-delete
               </v-icon>
             </template>
           </v-tooltip>
 
-          <v-tooltip location="top" text="Désactiver l'utilisateur" v-if="!item.value.disabled">
+          <v-tooltip location="top" text="Désactiver l'utilisateur" v-if="!item.raw.disabled">
             <template v-slot:activator="{ props }">
               <v-icon
                   v-bind="props"
@@ -134,14 +134,14 @@
             </template>
           </v-tooltip>
 
-          <v-tooltip location="top" text="Activer l'utilisateur" v-if="item.value.disabled">
+          <v-tooltip location="top" text="Activer l'utilisateur" v-if="item.raw.disabled">
             <template v-slot:activator="{ props }">
               <v-icon
                   v-bind="props"
                   small
                   color="green"
                   title="Activer"
-                  @click="enableItem(item.value)">
+                  @click="enableItem(item.raw)">
                 mdi-account-off
               </v-icon>
             </template>
@@ -154,7 +154,7 @@
                   small
                   color="danger"
                   title="Activer"
-                  @click="connectAs(item.value)">
+                  @click="connectAs(item.raw)">
                 mdi-drama-masks
               </v-icon>
             </template>
@@ -218,20 +218,12 @@ export default {
           return false;
         }
 
-        console.log(item);
-
         // Check if "search" is in the item lastname, firstname, town or zipcode
-        if (
-            this.search &&
+        return !(this.search &&
             (!item.lastname || !item.lastname.toLowerCase().includes(this.search.toLowerCase())) &&
             (!item.firstname || !item.firstname.toLowerCase().includes(this.search.toLowerCase())) &&
             (!item.town || !item.town.toLowerCase().includes(this.search.toLowerCase())) &&
-            (!item.zipcode || !item.zipcode.toLowerCase().includes(this.search.toLowerCase()))
-        ) {
-          return false;
-        }
-
-        return true;
+            (!item.zipcode || !item.zipcode.toLowerCase().includes(this.search.toLowerCase())));
       });
     },
   },
@@ -241,7 +233,7 @@ export default {
         user           : {
           id                   : null,
           lastname             : '',
-          firstname            : '',
+          firstname             : '',
           email                : '',
           password             : '',
           password_confirmation: '',

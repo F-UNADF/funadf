@@ -26,7 +26,7 @@
       :items="filteredItems"
       :search="search"
       class="elevation-1"
-      loading="loading"
+      :loading="loading"
   >
     <template v-slot:no-data>
       <tr>
@@ -48,21 +48,21 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.props.title.id }}</td>
+        <td>{{ item.raw.id }}</td>
         <td>
           <div class="d-flex align-center py-4">
             <v-avatar
-                :image="'/logos/' + item.props.title.id + '.png'"
+                :image="'/logos/' + item.raw.id + '.png'"
             ></v-avatar>
             <div class="ml-5">
-              <h4>{{ item.props.title.name }}</h4>
+              <h4>{{ item.raw.name }}</h4>
               <span class="subtitle-2 d-block font-weight-regular">{{
-                  item.props.title.email
+                  item.raw.email
                 }}</span>
             </div>
           </div>
         </td>
-        <td>{{ item.props.title.zipcode }} {{ item.props.title.town }}</td>
+        <td>{{ item.raw.zipcode }} {{ item.raw.town }}</td>
         <td>
           <v-tooltip location="top" text="Modifier l'église">
             <template v-slot:activator="{ props }">
@@ -70,7 +70,7 @@
                   small
                   v-bind="props"
                   color="primary"
-                  @click="editItem(item.props.title)"
+                  @click="editItem(item.raw)"
                   title="Edit">
                 mdi-pencil
               </v-icon>
@@ -84,7 +84,7 @@
                   small
                   class="text-error"
                   title="Delete"
-                  @click="tryDeleteItem(item.props.title)">
+                  @click="tryDeleteItem(item.raw)">
                 mdi-delete
               </v-icon>
             </template>

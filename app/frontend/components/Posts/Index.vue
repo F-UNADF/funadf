@@ -26,7 +26,7 @@
       :items="filteredItems"
       :search="search"
       class="elevation-1"
-      loading="loading"
+      :loading="loading"
   >
     <template v-slot:no-data>
       <tr>
@@ -48,7 +48,7 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.columns.title }}</td>
+        <td>{{ item.raw.title }}</td>
         <td>
           <v-tooltip location="top" text="Modifier l'actu">
             <template v-slot:activator="{ props }">
