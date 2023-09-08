@@ -52,17 +52,7 @@ class Api::MenusController < ApiController
           icon:  "mdi-vote",
           href:  root_url(subdomain: ''),
         },
-        {
-          header: "INTRANET",
-        },
       ]
-      Intranet.order(:subdomain).each do |intranet|
-        result << {
-          title: intranet.structure_name,
-          icon:  "mdi-rss",
-          href:  root_url(subdomain: intranet.subdomain),
-        }
-      end
     when 'uadpif'
       result = [
         {
@@ -106,19 +96,51 @@ class Api::MenusController < ApiController
           icon:  "mdi-vote",
           href:  root_url(subdomain: ''),
         },
+      ]
+    when 'votes'
+      result = [
         {
-          header: "INTRANET",
+          header: "VOTES",
+        },
+        {
+          title: "Mes votes",
+          icon:  "mdi-vote",
+          to:    votes_campaigns_path,
+        },
+        {
+          header: "NAVIGATION",
+        },
+        {
+          title: "Mon espace",
+          icon:  "mdi-rss",
+          href:  me_me_url(subdomain: :me),
         },
       ]
-      Intranet.order(:subdomain).each do |intranet|
+    else
+      result[:error] = "Menu #{menu} not found"
+    end
+
+    Intranet.order(:subdomain).each do |intranet|
+      if can? :manage, intranet
+        # insert header INTRANET if not present
+        result << { header: "INTRANET" } unless result.any? { |h| h[:header] == "INTRANET" }
         result << {
           title: intranet.structure_name,
           icon:  "mdi-rss",
           href:  root_url(subdomain: intranet.subdomain),
         }
       end
-    else
-      result[:error] = "Menu #{menu} not found"
+    end
+
+    if current_user.is_admin?
+      result << {
+        header: "ADMIN",
+      }
+      result << {
+        title: "Admin",
+        icon:  "mdi-cog",
+        href:  admin_root_url(subdomain: :admin),
+      }
     end
 
     render json: result

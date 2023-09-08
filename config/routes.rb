@@ -30,6 +30,8 @@ Rails.application.routes.draw do
     resources :campaigns
     resources :events
     resources :posts
+    resources :votes, only: [:index, :show, :create]
+
     resources :files, only: [:destroy]
     patch '/campaigns/:id/change_state', to: 'campaigns#change_state'
 
@@ -104,10 +106,10 @@ Rails.application.routes.draw do
     # VOTES SPACES
     namespace :votes, path: '' do
       constraints(:subdomain => '') do
-        resources :campaigns
+        resources :campaigns, only: [:index, :show]
         resources :results, only: [:index, :show]
         post '/voting', to: 'votings#create', as: :voting
-        root :to => redirect('/mon-compte'), as: :authenticated_user
+        root :to => redirect('/campaigns')
       end
     end
 

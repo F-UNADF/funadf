@@ -5,6 +5,7 @@ import store from '../store/index';
 // Router
 import admin_router from '../router/admin';
 import intranet_router from '../router/intranet';
+import votes_router from '../router/votes';
 
 // Vuetify
 import '@mdi/font/css/materialdesignicons.css'
@@ -36,7 +37,7 @@ const router = () => {
         routes = intranet_router;
     } else {
         // If you want to do something else just comment the line below
-        routes = intranet_router;
+        routes = votes_router;
     }
     return routes;
 };
