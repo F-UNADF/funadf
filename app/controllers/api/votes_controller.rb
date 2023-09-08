@@ -61,47 +61,80 @@ class Api::VotesController < ApiController
 
     sql = "
       SELECT
-        s2.name as name,
-        s2.town,
-        m.member_id AS resource_id,
-        m.member_type AS resource_type,
-        (vt.voting <> 'count') AS is_consultative,
-        (SELECT COUNT(*) FROM voters v WHERE v.motion_id = mo.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
-      FROM structures s
-      INNER JOIN memberships m ON m.structure_id = s.id
-                AND m.member_type = 'Structure'
-                AND m.member_id IN (SELECT s.id
-                  FROM structures s
-                  INNER JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'User' AND m.member_id = ?
-                  INNER JOIN roles r ON r.id = m.role_id AND r.name IN ('president')
-                )
-      INNER JOIN voting_tables vt ON vt.`position` = 'Eglise' AND vt.as_member = 1
-      INNER JOIN campaigns c ON c.id = vt.campaign_id AND c.id = ?
-      INNER JOIN motions mo ON mo.campaign_id = c.id
-      INNER JOIN voters v ON v.motion_id = mo.id
-      INNER JOIN structures s2 ON s2.id = m.member_id
-      AND s.id = ?
+          s2.name as name,
+          s2.town,
+          m.member_id AS resource_id,
+          m.member_type AS resource_type,
+          (vt.voting <> 'count') AS is_consultative,
+          (SELECT COUNT(*) FROM voters v WHERE v.motion_id = m2.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
+      FROM campaigns c
+      JOIN structures s ON s.id = c.structure_id
+      JOIN memberships m ON m.structure_id = s.id
+      JOIN structures s2 ON s2.id = m.member_id
+      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Eglises'
+      JOIN motions m2 ON m2.campaign_id = c.id
+      LEFT JOIN voters v2 ON v2.motion_id = m2.id
+      WHERE c.id = :campaign_id
+      AND m.member_type = 'Structure'
+      AND m.member_id IN(
+          SELECT s.id
+          FROM users u
+          JOIN memberships m ON m.member_type = 'User' AND m.member_id = u.id
+          JOIN structures s ON s.id = m.structure_id
+          JOIN roles r ON r.id = m.role_id
+          WHERE u.id = :user_id
+          AND r.name = 'president'
+          AND s.`type` = 'Church'
+      )
       UNION
       SELECT
-        CONCAT(u.firstname, ' ', u.lastname) as name,
-        u.town,
-        m.member_id AS resource_id,
-        m.member_type AS resource_type,
-        (vt.voting <> 'count') AS is_consultative,
-        (SELECT COUNT(*) FROM voters v WHERE v.motion_id = mo.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
-      FROM memberships m
-      INNER JOIN voting_tables vt ON vt.voting <> 'not' AND vt.`position` = ?
-      INNER JOIN campaigns c ON c.id = vt.campaign_id
-      INNER JOIN motions mo ON mo.campaign_id = c.id
-      LEFT OUTER JOIN voters v ON v.motion_id = mo.id
-      INNER JOIN users u ON u.id = m.member_id
-      WHERE m.member_type = 'User' AND m.member_id = ?
-      AND c.id = ?"
+          s2.name as name,
+          s2.town,
+          m.member_id AS resource_id,
+          m.member_type AS resource_type,
+          (vt.voting <> 'count') AS is_consultative,
+          (SELECT COUNT(*) FROM voters v WHERE v.motion_id = m2.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
+      FROM campaigns c
+      JOIN structures s ON s.id = c.structure_id
+      JOIN memberships m ON m.structure_id = s.id
+      JOIN structures s2 ON s2.id = m.member_id
+      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Oeuvres'
+      JOIN motions m2 ON m2.campaign_id = c.id
+      LEFT JOIN voters v2 ON v2.motion_id = m2.id
+      WHERE c.id = :campaign_id
+      AND m.member_type = 'Structure'
+      AND m.member_id IN(
+          SELECT s.id
+          FROM users u
+          JOIN memberships m ON m.member_type = 'User' AND m.member_id = u.id
+          JOIN structures s ON s.id = m.structure_id
+          JOIN roles r ON r.id = m.role_id
+          WHERE u.id = :user_id
+          AND r.name = 'president'
+          AND s.`type` = 'Association'
+      )
+      UNION
+      SELECT
+          CONCAT(u.firstname, ' ', u.lastname) as name,
+          u.town,
+          m.member_id AS resource_id,
+          m.member_type AS resource_type,
+          (vt.voting <> 'count') AS is_consultative,
+          (SELECT COUNT(*) FROM voters v WHERE v.motion_id = mo.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
+      FROM campaigns c
+      JOIN structures s ON s.id = c.structure_id
+      JOIN memberships m ON m.structure_id = s.id
+      JOIN users u ON u.id = m.member_id AND m.member_type = 'User'
+      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = :user_level
+      JOIN motions mo ON mo.campaign_id = c.id
+      LEFT JOIN voters v2 ON v2.motion_id = mo.id
+      WHERE c.id = :campaign_id
+      AND u.id = :user_id"
 
-    values = [@user.id, @campaign.id, @structure.id, @user.level, @user.id, @campaign.id]
-    result = ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send(:sanitize_sql_array, [sql, *values]))
+    results = Campaign.find_by_sql([sql, campaign_id: @campaign.id, user_id: @user.id, user_level: @user.level])
 
-    render json: { campaign: @campaign.as_json, structure: @campaign.structure, motions: @campaign.motions.as_json, voters: result.as_json }
+
+    render json: { campaign: @campaign.as_json, structure: @campaign.structure, motions: @campaign.motions.as_json, voters: results.as_json }
   end
 
   def create
