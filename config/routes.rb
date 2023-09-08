@@ -30,6 +30,8 @@ Rails.application.routes.draw do
     resources :campaigns
     resources :events
     resources :posts
+    resources :votes, only: [:index, :show, :create]
+
     resources :files, only: [:destroy]
     patch '/campaigns/:id/change_state', to: 'campaigns#change_state'
 

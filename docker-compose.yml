@@ -5,18 +5,17 @@ services:
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
-    command: ${COMMAND}
+    entrypoint: ./docker-rails.sh
+    depends_on:
+      - db
+      - vite
     environment:
       RAILS_ENV: development
       VITE_RUBY_HOST: vite
     ports:
       - '3000:3000'
     volumes:
-      - /var/tmp
       - .:/app
-    depends_on:
-      - db
-      - vite
     extends:
       file: ./docker/mysql/password.yml
       service: password
