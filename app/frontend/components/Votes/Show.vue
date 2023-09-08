@@ -56,7 +56,7 @@
           <v-list-subheader>Mes bulletins</v-list-subheader>
 
           <v-list-item v-for="voter in this.editVoters">
-            <v-list-item-title v-if="voter.has_voted === false">
+            <v-list-item-title v-if="voter.has_voted === null">
               <v-checkbox v-model="voter.selected">
                 <template v-slot:label>
                   {{ voter.name }}&nbsp;

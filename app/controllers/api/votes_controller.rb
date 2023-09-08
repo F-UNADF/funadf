@@ -66,14 +66,16 @@ class Api::VotesController < ApiController
           m.member_id AS resource_id,
           m.member_type AS resource_type,
           (vt.voting <> 'count') AS is_consultative,
-          (SELECT COUNT(*) FROM voters v WHERE v.motion_id = m2.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
+          (SELECT COALESCE(COUNT(v.resource_id), 0)
+            FROM voters v
+            JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
+            WHERE v.resource_id = s2.id AND v.resource_type = 'Structure'
+            GROUP BY v.resource_id, v.resource_type) AS has_voted
       FROM campaigns c
       JOIN structures s ON s.id = c.structure_id
       JOIN memberships m ON m.structure_id = s.id
       JOIN structures s2 ON s2.id = m.member_id
       JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Eglises'
-      JOIN motions m2 ON m2.campaign_id = c.id
-      LEFT JOIN voters v2 ON v2.motion_id = m2.id
       WHERE c.id = :campaign_id
       AND m.member_type = 'Structure'
       AND m.member_id IN(
@@ -93,14 +95,16 @@ class Api::VotesController < ApiController
           m.member_id AS resource_id,
           m.member_type AS resource_type,
           (vt.voting <> 'count') AS is_consultative,
-          (SELECT COUNT(*) FROM voters v WHERE v.motion_id = m2.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
+          (SELECT COALESCE(COUNT(v.resource_id), 0)
+            FROM voters v
+            JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
+            WHERE v.resource_id = s2.id AND v.resource_type = 'Structure'
+            GROUP BY v.resource_id, v.resource_type) AS has_voted
       FROM campaigns c
       JOIN structures s ON s.id = c.structure_id
       JOIN memberships m ON m.structure_id = s.id
       JOIN structures s2 ON s2.id = m.member_id
       JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Oeuvres'
-      JOIN motions m2 ON m2.campaign_id = c.id
-      LEFT JOIN voters v2 ON v2.motion_id = m2.id
       WHERE c.id = :campaign_id
       AND m.member_type = 'Structure'
       AND m.member_id IN(
@@ -120,14 +124,16 @@ class Api::VotesController < ApiController
           m.member_id AS resource_id,
           m.member_type AS resource_type,
           (vt.voting <> 'count') AS is_consultative,
-          (SELECT COUNT(*) FROM voters v WHERE v.motion_id = mo.id AND v.resource_id = m.member_id AND v.resource_type = m.member_type) AS has_voted
+          (SELECT COALESCE(COUNT(v.resource_id), 0)
+            FROM voters v
+            JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
+            WHERE v.resource_id = u.id AND v.resource_type = 'User'
+            GROUP BY v.resource_id, v.resource_type) AS has_voted
       FROM campaigns c
       JOIN structures s ON s.id = c.structure_id
       JOIN memberships m ON m.structure_id = s.id
       JOIN users u ON u.id = m.member_id AND m.member_type = 'User'
       JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = :user_level
-      JOIN motions mo ON mo.campaign_id = c.id
-      LEFT JOIN voters v2 ON v2.motion_id = mo.id
       WHERE c.id = :campaign_id
       AND u.id = :user_id"
 
