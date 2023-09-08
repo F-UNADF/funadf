@@ -23,7 +23,7 @@ class Api::UsersController < ApiController
       ).select("users.*, COALESCE(careers.level, 'NR') AS current_level, '' AS avatar_url").uniq
     end
 
-    render json: users
+    render json: {users: users}
   end
 
   def show

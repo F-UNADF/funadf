@@ -218,20 +218,12 @@ export default {
           return false;
         }
 
-        console.log(item);
-
         // Check if "search" is in the item lastname, firstname, town or zipcode
-        if (
-            this.search &&
+        return !(this.search &&
             (!item.lastname || !item.lastname.toLowerCase().includes(this.search.toLowerCase())) &&
             (!item.firstname || !item.firstname.toLowerCase().includes(this.search.toLowerCase())) &&
             (!item.town || !item.town.toLowerCase().includes(this.search.toLowerCase())) &&
-            (!item.zipcode || !item.zipcode.toLowerCase().includes(this.search.toLowerCase()))
-        ) {
-          return false;
-        }
-
-        return true;
+            (!item.zipcode || !item.zipcode.toLowerCase().includes(this.search.toLowerCase())));
       });
     },
   },
@@ -241,7 +233,7 @@ export default {
         user           : {
           id                   : null,
           lastname             : '',
-          firstname            : '',
+          firstname             : '',
           email                : '',
           password             : '',
           password_confirmation: '',
