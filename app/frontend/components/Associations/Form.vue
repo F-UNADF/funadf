@@ -116,11 +116,11 @@
               <tr>
                 <td>
                   <div class="d-flex align-center py-4">
-                    <v-avatar :icon="(item.props.title.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
+                    <v-avatar :icon="(item.raw.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
                     <div class="ml-5">
-                      <h4>{{ item.props.title.name }}</h4>
+                      <h4>{{ item.raw.name }}</h4>
                       <span class="subtitle-2 d-block font-weight-regular">{{
-                          item.props.title.town
+                          item.raw.town
                         }}</span>
                     </div>
                   </div>
@@ -129,14 +129,14 @@
                   <v-menu>
                     <template v-slot:activator="{ props }">
                       <v-btn color="secondary" v-bind="props">
-                        {{ getRoleName(item.props.title.role_name) }}
+                        {{ getRoleName(item.raw.role_name) }}
                       </v-btn>
                     </template>
                     <v-list>
                       <v-list-item
                           v-for="(role, index) in this.referentiels.roles"
                           :key="index"
-                          @click="setRole(item.props.title, index)"
+                          @click="setRole(item.raw, index)"
                       >
                         <v-list-item-title>{{ role }}</v-list-item-title>
                       </v-list-item>
@@ -145,12 +145,12 @@
                 </td>
                 <td>
                   <v-switch
-                      v-model="item.props.title.can_vote"
+                      v-model="item.raw.can_vote"
                       inset
                       color="secondary"
                       size="small"
                       label="Peut voter ?"
-                      @change="setCanVote(item.props.title)"
+                      @change="setCanVote(item.raw)"
                   ></v-switch>
                 </td>
                 <td>
@@ -161,7 +161,7 @@
                           small
                           class="text-error"
                           title="Delete"
-                          @click="removeMember(item.props.title.membership_id)">
+                          @click="removeMember(item.raw.membership_id)">
                         mdi-delete
                       </v-icon>
                     </template>
