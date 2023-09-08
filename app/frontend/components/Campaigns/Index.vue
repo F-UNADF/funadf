@@ -26,7 +26,7 @@
       :items="filteredItems"
       :search="search"
       class="elevation-1"
-      loading="loading"
+      :loading="loading"
   >
     <template v-slot:no-data>
       <tr>
@@ -48,11 +48,11 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.props.title.id }}</td>
-        <td>{{ item.props.title.name }}</td>
+        <td>{{ item.raw.id }}</td>
+        <td>{{ item.raw.name }}</td>
         <td>
-          <v-chip :color="getColor(item.props.title.state)">
-            {{ getState(item.props.title.state) }}
+          <v-chip :color="getColor(item.raw.state)">
+            {{ getState(item.raw.state) }}
           </v-chip>
         </td>
         <td>
@@ -62,8 +62,8 @@
                   small
                   v-bind="props"
                   color="green"
-                  v-if="item.props.title.state === 'opened'"
-                  @click="changeCampaignState(item.props.title.id, 'close_temporarily')">
+                  v-if="item.raw.state === 'opened'"
+                  @click="changeCampaignState(item.raw.id, 'close_temporarily')">
                 mdi-eye-off
               </v-icon>
             </template>
@@ -74,8 +74,8 @@
                   small
                   v-bind="props"
                   color="success"
-                  v-if="item.props.title.state === 'coming'"
-                  @click="changeCampaignState(item.props.title.id, 'opening')">
+                  v-if="item.raw.state === 'coming'"
+                  @click="changeCampaignState(item.raw.id, 'opening')">
                 mdi-check
               </v-icon>
             </template>
@@ -86,8 +86,8 @@
                   small
                   v-bind="props"
                   color="danger"
-                  v-if="item.props.title.state === 'opened'"
-                  @click="changeCampaignState(item.props.title.id, 'close_definitly')">
+                  v-if="item.raw.state === 'opened'"
+                  @click="changeCampaignState(item.raw.id, 'close_definitly')">
                 mdi-close
               </v-icon>
             </template>
@@ -100,7 +100,7 @@
                   small
                   v-bind="props"
                   color="primary"
-                  @click="editItem(item.props.title)"
+                  @click="editItem(item.raw)"
                   title="Edit">
                 mdi-pencil
               </v-icon>
@@ -114,7 +114,7 @@
                   small
                   class="text-error"
                   title="Delete"
-                  @click="tryDeleteItem(item.props.title)">
+                  @click="tryDeleteItem(item.raw)">
                 mdi-delete
               </v-icon>
             </template>

@@ -26,7 +26,7 @@
       :items="filteredItems"
       :search="search"
       class="elevation-1"
-      loading="loading"
+      :loading="loading"
   >
     <template v-slot:no-data>
       <tr>
@@ -48,13 +48,13 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.columns.title }}</td>
+        <td>{{ item.raw.title }}</td>
         <td>
-          Du {{ getCleanDate(item.columns.start_at) }} au {{ getCleanDate(item.raw.end_at) }}
+          Du {{ getCleanDate(item.raw.start_at) }} au {{ getCleanDate(item.raw.end_at) }}
         </td>
         <td>
           <v-chip color="primary" text-color="white" small>
-            {{ item.columns['category.name'] }}
+            {{ item.raw['category.name'] }}
           </v-chip>
         </td>
         <td>
