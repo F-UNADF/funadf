@@ -10,7 +10,7 @@ class Api::UsersController < ApiController
        ) latest_career ON users.id = latest_career.user_id"
       ).joins(
         "LEFT JOIN careers ON latest_career.user_id = careers.user_id AND latest_career.max_start_at = careers.start_at"
-      ).select("users.*, COALESCE(careers.level, 'NR') AS current_level, '' AS avatar_url")
+      ).select("users.*, COALESCE(careers.level, 'NR') AS current_level, '' AS avatar_url").uniq
     else
       users = @structure.users.joins(
         "LEFT JOIN (SELECT user_id, MAX(start_at) AS max_start_at
@@ -20,7 +20,7 @@ class Api::UsersController < ApiController
        ) latest_career ON users.id = latest_career.user_id"
       ).joins(
         "LEFT JOIN careers ON latest_career.user_id = careers.user_id AND latest_career.max_start_at = careers.start_at"
-      ).select("users.*, COALESCE(careers.level, 'NR') AS current_level, '' AS avatar_url")
+      ).select("users.*, COALESCE(careers.level, 'NR') AS current_level, '' AS avatar_url").uniq
     end
 
     render json: users
