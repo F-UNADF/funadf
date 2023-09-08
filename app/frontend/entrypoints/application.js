@@ -28,16 +28,16 @@ const vuetify = createVuetify({
     },
 });
 const router = () => {
-    const host = window.location.host;
-    const subdomain = host.split('.')[0];
-    let routes;
-    if (subdomain === 'admin') {
-        routes = admin_router;
-    } else if (subdomain === 'uadpif') {
-        routes = intranet_router;
-    } else {
-        // If you want to do something else just comment the line below
-        routes = votes_router;
+
+    let uris = window.location.hostname.split('.');
+    let routes = votes_router;
+    if (uris.length > 2) {
+        let subdomain = uris[0];
+        if (subdomain === 'admin') {
+            routes = admin_router;
+        } else if (subdomain === 'uadpif') {
+            routes = intranet_router;
+        }
     }
     return routes;
 };
