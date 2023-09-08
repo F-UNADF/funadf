@@ -75,7 +75,7 @@ class Api::VotesController < ApiController
                   INNER JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'User' AND m.member_id = ?
                   INNER JOIN roles r ON r.id = m.role_id AND r.name IN ('president')
                 )
-      INNER JOIN voting_tables vt ON vt.voting <> 'not' AND vt.`position` IN ('eglises membres', 'eglises non membres')
+      INNER JOIN voting_tables vt ON vt.`position` = 'Eglise' AND vt.as_member = 1
       INNER JOIN campaigns c ON c.id = vt.campaign_id AND c.id = ?
       INNER JOIN motions mo ON mo.campaign_id = c.id
       INNER JOIN voters v ON v.motion_id = mo.id
