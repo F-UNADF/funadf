@@ -2,7 +2,7 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: { invitations: 'users/invitations' }
+  devise_for :users, controllers: { invitations: 'users/invitations', sessions: 'users/sessions' }
 
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'

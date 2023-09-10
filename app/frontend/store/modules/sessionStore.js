@@ -2,14 +2,16 @@ import axios from "axios";
 
 // initial state
 const state = () => ({
-    currentUser: null,
-    subdomain  : null
+    currentUser : {},
+    originalUser: {},
+    subdomain   : null
 });
 
 // getters
 const getters = {
-    currentUser: (state) => state.currentUser,
-    subdomain  : (state) => state.subdomain,
+    currentUser : (state) => state.currentUser,
+    getOriginalUser: (state) => state.originalUser,
+    subdomain   : (state) => state.subdomain,
 };
 
 // actions
@@ -17,7 +19,12 @@ const actions = {
     async fetchUser({commit}) {
         try {
             const response = await axios.get('/api/current_user');
-            commit('setCurrentUser', response.data);
+            commit('setCurrentUser', response.data.user);
+            // if response.dqtq.user is empty or null the rediredct to login page
+            if (response.data.user === null) {
+                window.location.href = '/users/sign_in';
+            }
+            commit('setOriginalUser', response.data.original_user);
         } catch (error) {
             commit('setCurrentUser', null);
         }
@@ -26,18 +33,29 @@ const actions = {
         try {
             await axios.delete(' /users/sign_out');
             commit('setCurrentUser', null);
+            commit('setOriginalUser', null);
+            window.location.href = '/users/sign_in';
         } catch (error) {
             commit('setCurrentUser', null);
+            commit('setOriginalUser', null);
         }
+    },
+    switch_back({commit, dispatch, state}) {
+        axios.get('/switch_user?scope_identifier=user_'+state.originalUser.id).then((response) => {
+            dispatch('fetchUser');
+        });
     }
 };
 
 // mutations
 const mutations = {
-    setCurrentUser: (state, user) => {
+    setCurrentUser : (state, user) => {
         state.currentUser = user;
     },
-    setSubdomain  : (state, subdomain) => {
+    setOriginalUser: (state, user) => {
+        state.originalUser = user;
+    },
+    setSubdomain   : (state, subdomain) => {
         state.subdomain = subdomain;
     }
 };

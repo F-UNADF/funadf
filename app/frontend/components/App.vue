@@ -1,7 +1,8 @@
 <template>
   <v-app theme="light" class="">
     <Sidebar :menu="this.getMenu" :showSidebar="showSidebar"></Sidebar>
-    <Header :user="currentUser" @logout="logout()" @toggle-sidebar="this.showSidebar = !this.showSidebar"></Header>
+    <Header :user="this.currentUser" :ouser="this.ouser" @logout="logout()"
+            @toggle-sidebar="this.showSidebar = !this.showSidebar"></Header>
     <v-main scrollable>
       <v-container fluid class="page-wrapper">
         <router-view/>
@@ -35,9 +36,10 @@ export default ({
     Header,
   },
   computed  : {
-    ...mapGetters('sessionStore', [
-      'currentUser',
-    ]),
+    ...mapGetters('sessionStore', {
+      currentUser : 'currentUser',
+      ouser: 'getOriginalUser',
+    }),
     ...mapGetters('menuStore', [
       'getMenu',
     ]),
@@ -67,15 +69,14 @@ export default ({
   }),
   beforeMount: function () {
     //get subdomain :
-    let uris =  window.location.hostname.split('.');
+    let uris = window.location.hostname.split('.');
     let subdomain = 'votes';
-    if(uris.length > 2){
+    if (uris.length > 2) {
       subdomain = uris[0];
     }
     this.$store.commit('sessionStore/setSubdomain', subdomain);
     this.$store.dispatch('menuStore/getMenu', subdomain);
     this.$store.dispatch('sessionStore/fetchUser');
-
   },
 });
 </script>

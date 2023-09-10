@@ -1,12 +1,16 @@
 <template>
   <v-app-bar
-      color="transparent"
-      elevation="0">
+      color="white"
+      elevation="2">
     <template v-slot:prepend>
       <v-app-bar-nav-icon @click="this.$emit('toggleSidebar')"></v-app-bar-nav-icon>
     </template>
     <template v-slot:append>
-      <v-menu v-if="!!this.user" anchor="bottom end" min-width="300" origin="auto">
+      <v-btn @click="switch_back()" color="green" variant="flat" v-if="ouser !== null">
+        <v-icon>mdi-account-switch</v-icon>
+        Revenir à {{ this.ouser?.firstname }}
+      </v-btn>
+      <v-menu anchor="bottom end" min-width="300" origin="auto" v-if="user !== null">
         <template v-slot:activator="{ props }">
           <v-btn
               :ripple="false"
@@ -17,7 +21,7 @@
               v-bind="props"
           >
             <v-img
-                :src="'/avatars/' + this.user.id + '.png'"
+                :src="getAvatar(user)"
                 class="rounded-circle img-fluid"
                 width="45px"
             ></v-img>
@@ -59,11 +63,24 @@
 
 <script>
 export default {
-  name: "Header",
-  props: {
-    user: {
-      type: Object,
+  name   : "Header",
+  props  : {
+    user        : {
+      type    : Object,
       required: true,
+    },
+    ouser: {
+      type    : Object,
+      required: false,
+    },
+  },
+  methods: {
+    getAvatar  : function (user) {
+      console.log(this.ouser);
+      return "/avatars/" + user.id + ".png";
+    },
+    switch_back: function () {
+      this.$store.dispatch('sessionStore/switch_back');
     },
   },
 };

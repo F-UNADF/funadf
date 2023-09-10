@@ -2,6 +2,7 @@
 
 class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
+  skip_before_action :verify_authenticity_token
 
   layout :set_layout
 
@@ -29,16 +30,6 @@ class Users::SessionsController < Devise::SessionsController
 
   private
     def set_layout
-
-      if request.subdomain
-        case request.subdomain
-        when 'admin'
-          layout 'layouts/devise'
-        else
-          layout 'intranet/layouts/devise'
-        end
-      else
-        layout 'layouts/devise'
-      end
+      'layouts/devise'
     end
 end
