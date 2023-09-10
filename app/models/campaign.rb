@@ -214,17 +214,26 @@ class Campaign < ActiveRecord::Base
   end
 
   def voters
-    ActiveRecord::Base.connection.exec_query("
+    sql = "
         SELECT s.id, s.name, s.town
         FROM voters v
         JOIN structures s ON s.id = v.resource_id
+        LEFT JOIN motions m ON m.id = v.motion_id
+        JOIN campaigns c ON c.id = m.campaign_id
         WHERE v.resource_type = 'Structure'
+        AND c.id = :campaign_id
         UNION
         SELECT u.id, CONCAT(u.lastname, ' ', u.firstname), u.town
         FROM voters v
         JOIN users u ON u.id = v.resource_id
-        WHERE v.resource_type = 'User'")
+        LEFT JOIN motions m ON m.id = v.motion_id
+        JOIN campaigns c ON c.id = m.campaign_id
+        WHERE v.resource_type = 'User'
+        AND c.id = :campaign_id"
+
+    Campaign.find_by_sql([sql, campaign_id: self.id])
   end
+
 
   def results
     Campaign.joins(motions: :votes)
@@ -236,10 +245,10 @@ class Campaign < ActiveRecord::Base
                       motions.name AS motion_name,
                       SUM(CASE WHEN votes.result = 'Oui' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_yes_count,
                       SUM(CASE WHEN votes.result = 'Non' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_no_count,
-                      SUM(CASE WHEN votes.result = 'Neutre' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_neutre_count,
+                      SUM(CASE WHEN (votes.result = 'Neutre' OR votes.result IS NULL) AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_neutre_count,
                       SUM(CASE WHEN votes.result = 'Oui' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_yes_count,
                       SUM(CASE WHEN votes.result = 'Non' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_no_count,
-                      SUM(CASE WHEN votes.result = 'Neutre' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_neutre_count")
+                      SUM(CASE WHEN (votes.result = 'Neutre' OR votes.result IS NULL) AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_neutre_count")
   end
 
   def free_results
