@@ -75,7 +75,7 @@ class Api::VotesController < ApiController
       JOIN structures s ON s.id = c.structure_id
       JOIN memberships m ON m.structure_id = s.id
       JOIN structures s2 ON s2.id = m.member_id
-      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Eglises'
+      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Eglises' AND vt.as_member = 1
       WHERE c.id = :campaign_id
       AND m.member_type = 'Structure'
       AND m.member_id IN(
@@ -104,7 +104,7 @@ class Api::VotesController < ApiController
       JOIN structures s ON s.id = c.structure_id
       JOIN memberships m ON m.structure_id = s.id
       JOIN structures s2 ON s2.id = m.member_id
-      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Oeuvres'
+      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Oeuvres' AND vt.as_member = 1
       WHERE c.id = :campaign_id
       AND m.member_type = 'Structure'
       AND m.member_id IN(
