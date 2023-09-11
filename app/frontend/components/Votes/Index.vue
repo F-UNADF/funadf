@@ -5,7 +5,7 @@
     </v-layout>
     <v-row v-else>
       <v-col v-if="filteredItems.length > 0" v-for="campaign in filteredItems" cols="12" md="4" sm="12" lg="3">
-        <v-card rounded="rounded" @click="this.$router.push('/campaigns/'+campaign.id)">
+        <v-card rounded="rounded" @click="goCampaign(campaign)">
           <template v-slot:title>
             {{ campaign.structure.name }}
           </template>
@@ -15,7 +15,7 @@
           </template>
 
           <template v-slot:actions>
-            <v-btn color="primary" variant="tonal" block rounded-xl
+            <v-btn color="primary" variant="tonal" block rounded-xl v-if="campaign.state === 'opened'"
                    @click="this.$router.push('/campaigns/'+campaign.id)">
               <template v-slot:prepend>
                 <v-icon>mdi-vote</v-icon>
@@ -65,6 +65,14 @@ export default {
       return this.items.filter(item => {
         return true;
       });
+    },
+  },
+  methods : {
+    goCampaign(campaign) {
+      if (campaign.state === 'opened'){
+        this.$router.push('/campaigns/' + campaign.id);
+      }
+      return false;
     },
   },
   data() {
