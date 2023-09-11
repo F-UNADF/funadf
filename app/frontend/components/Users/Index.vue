@@ -250,7 +250,7 @@ export default {
       this.$store.commit('usersStore/setDialogForm', true);
     },
     editItem     : function (item) {
-      this.$store.dispatch('usersStore/getItem', item.value.id);
+      this.$store.dispatch('usersStore/getItem', item.raw.id);
       this.$store.commit('usersStore/setDialogForm', true);
     },
     enableItem   : function (item) {

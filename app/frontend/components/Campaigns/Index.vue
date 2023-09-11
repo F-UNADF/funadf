@@ -223,7 +223,6 @@ export default {
       }
     },
     changeCampaignState: function (id, action) {
-      console.log(id, action);
       this.$store.dispatch('campaignsStore/changeState', {
         id   : id,
         state: action

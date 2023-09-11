@@ -300,7 +300,6 @@ export default {
       this.matchMembers = matchMembers;
     },
     addMember() {
-      console.log(this.addingMembers);
       this.$store.dispatch('associationsStore/addMembers', this.addingMembers).then(response => {
         this.$root.showSnackbar('Membres ajoutés avec succés', 'success');
         this.addingMembers = [];
