@@ -76,7 +76,6 @@ export default {
   },
   methods: {
     getAvatar  : function (user) {
-      console.log(this.ouser);
       return "/avatars/" + user.id + ".png";
     },
     switch_back: function () {

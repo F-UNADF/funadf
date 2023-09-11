@@ -9,9 +9,9 @@ const state = () => ({
 
 // getters
 const getters = {
-    currentUser : (state) => state.currentUser,
+    currentUser    : (state) => state.currentUser,
     getOriginalUser: (state) => state.originalUser,
-    subdomain   : (state) => state.subdomain,
+    subdomain      : (state) => state.subdomain,
 };
 
 // actions
@@ -40,8 +40,12 @@ const actions = {
             commit('setOriginalUser', null);
         }
     },
-    switch_back({commit, dispatch, state}) {
-        axios.get('/switch_user?scope_identifier=user_'+state.originalUser.id).then((response) => {
+    switch_back({
+                    commit,
+                    dispatch,
+                    state
+                }) {
+        axios.get('/switch_user?scope_identifier=user_' + state.originalUser.id).then((response) => {
             dispatch('fetchUser');
         });
     }
