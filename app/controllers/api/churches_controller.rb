@@ -2,24 +2,18 @@ class Api::ChurchesController < ApiController
   before_action :set_church, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index
-    churches = Church.select("structures.*, MAX(roles.name) AS roleName, MAX(users.lastname) AS lastname, MAX(users.firstname) AS firstname")
-                        .joins("LEFT JOIN memberships ON memberships.structure_id = structures.id")
-                        .joins("LEFT JOIN roles ON roles.id = memberships.role_id AND roles.name = 'president'")
-                        .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
-                        .group("structures.id")
+    churches = Church.select("structures.*, users.lastname, users.firstname")
+                     .joins("LEFT JOIN memberships ON memberships.structure_id = structures.id AND memberships.role_ID IN (SELECT id FROM roles WHERE name IN ('president'))")
+                      .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
 
     # Add the condition if @structure is present
     if @structure.present?
-      churches = @structure.churches.select("structures.*, MAX(roles.name) AS roleName, MAX(users.lastname) AS lastname, MAX(users.firstname) AS firstname")
-                           .joins("LEFT JOIN memberships ON memberships.structure_id = structures.id")
-                           .joins("LEFT JOIN roles ON roles.id = memberships.role_id AND roles.name = 'president'")
+      churches = @structure.churches.select("structures.*, users.lastname, users.firstname")
+                           .joins("LEFT JOIN memberships ON memberships.structure_id = structures.id AND memberships.role_ID IN (SELECT id FROM roles WHERE name IN ('president'))")
                            .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
-                           .group("structures.id")
     end
 
     render json: { churches: churches.all }
-
-
   end
 
   def show
