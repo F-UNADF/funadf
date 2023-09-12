@@ -56,9 +56,8 @@
             ></v-avatar>
             <div class="ml-5">
               <h4>{{ item.raw.name }}</h4>
-              <span class="subtitle-2 d-block font-weight-regular">{{
-                  item.raw.email
-                }}</span>
+              <span v-if="item.raw.lastname !== null" class="subtitle-2 d-block font-weight-regular">{{ item.raw.lastname }} {{ item.raw.firstname }}</span>
+              <em v-else class="subtitle-2 d-block font-weight-regular">Pas de président</em>
             </div>
           </div>
         </td>
