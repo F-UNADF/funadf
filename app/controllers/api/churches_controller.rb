@@ -2,12 +2,21 @@ class Api::ChurchesController < ApiController
   before_action :set_church, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index
-    if @structure.nil?
-      churches = Church.all
-    else
-      churches = @structure.churches
+    churches = Structure.select("structures.*, MAX(roles.name) AS roleName, MAX(users.lastname) AS lastname, MAX(users.firstname) AS firstname")
+                        .joins("LEFT JOIN memberships ON memberships.structure_id = structures.id")
+                        .joins("LEFT JOIN roles ON roles.id = memberships.role_id AND roles.name = 'president'")
+                        .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
+                        .where(type: 'Church')
+                        .group("structures.id")
+
+    # Add the condition if @structure is present
+    if @structure.present?
+      churches = churches.where("memberships.structure_id = ?", @structure.id)
     end
-    render json: { churches: churches }
+
+    render json: { churches: churches.all }
+
+
   end
 
   def show

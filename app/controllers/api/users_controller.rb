@@ -66,9 +66,14 @@ class Api::UsersController < ApiController
   end
 
   def destroy
+    # if @structure is set, remove user from memberships of this structure
+    if @structure.present?
+      @structure.memberships.where(member_id: params[:id], member_type: 'User').destroy_all
+      render json: { status: 'success' }
+      return
+    end
     user = User.find(params[:id])
     user.destroy
-
     render json: { status: 'success' }
   end
 
