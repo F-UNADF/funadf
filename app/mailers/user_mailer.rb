@@ -2,7 +2,6 @@ class UserMailer < ApplicationMailer
 
 
   def send_direct_access user
-
     @user = user
 
     @to = "p.gruson@gmail.com" if Rails.env == "development"

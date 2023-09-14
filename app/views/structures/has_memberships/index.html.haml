@@ -52,7 +52,7 @@
 
                     %td
                       = @structure.get_resource_role(member)
-                      
+
                     %td
                       .d-flex
                         = check_box_tag 'can_vote', true, @structure.member_can_vote?(member), class: 'switch', data:{'resource-id' => member.id, 'resource-type' => member.get_class, 'structure' => @structure.id}
@@ -69,7 +69,6 @@
 
                           = link_to structure_delete_memberships_path(@structure, member.id, member.class.to_s) , method: :delete, data:{confirm: 'Êtes vous sûr ?'}, class: "btn btn-danger btn-sm" do
                             = icon 'fa', "times"
-
 
 
             .mb-3

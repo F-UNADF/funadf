@@ -10,11 +10,5 @@ class CreateElectors < ActiveRecord::Migration
 
       t.timestamps
     end
-
-    Structure.find_each do |structure|
-      structure.members.each do |member|
-        Elector.create(structure: structure, resource: member)
-      end
-    end
   end
 end

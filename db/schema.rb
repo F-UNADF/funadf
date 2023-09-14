@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_23_094522) do
+ActiveRecord::Schema.define(version: 2023_09_14_065611) do
 
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "resource_type"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 2023_03_23_094522) do
     t.integer "meeting_id"
     t.boolean "manual"
     t.string "state", default: "coming"
+    t.index ["meeting_id"], name: "index_campaigns_on_meeting_id"
     t.index ["structure_id"], name: "index_campaigns_on_structure_id"
   end
 
@@ -104,6 +105,7 @@ ActiveRecord::Schema.define(version: 2023_03_23_094522) do
     t.integer "church_id"
     t.integer "association_id"
     t.string "function"
+    t.index ["referent_id"], name: "index_careers_on_referent_id"
     t.index ["user_id"], name: "index_careers_on_user_id"
   end
 
@@ -114,6 +116,7 @@ ActiveRecord::Schema.define(version: 2023_03_23_094522) do
     t.integer "structure_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["structure_id"], name: "index_categories_on_structure_id"
   end
 
   create_table "events", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -159,6 +162,8 @@ ActiveRecord::Schema.define(version: 2023_03_23_094522) do
     t.integer "wife_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["husband_id"], name: "index_marriages_on_husband_id"
+    t.index ["wife_id"], name: "index_marriages_on_wife_id"
   end
 
   create_table "meetings", id: :integer, charset: "utf8mb3", force: :cascade do |t|

@@ -3,7 +3,6 @@ namespace :campaigns do
   desc "Add Meeting to Campaign"
 
   task :add_meeting_to_campaign => :environment do |t, args|
-    
     campaigns = Campaign.all
 
     campaigns.each do |campaign|
