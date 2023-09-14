@@ -56,11 +56,10 @@
             ></v-avatar>
             <div class="ml-5">
               <h4>{{ item.raw.name }}</h4>
-              <span v-if="item.raw.lastname !== null" class="subtitle-2 d-block font-weight-regular">{{ item.raw.lastname }} {{ item.raw.firstname }}</span>
-              <em v-else class="subtitle-2 d-block font-weight-regular">Pas de président</em>
             </div>
           </div>
         </td>
+        <th>{{ item.raw.lastname }} {{ item.raw.firstname }}</th>
         <td>{{ item.raw.zipcode }} {{ item.raw.town }}</td>
         <td>
           <v-tooltip location="top" text="Modifier l'église">
@@ -185,7 +184,8 @@ export default {
       headers: [
         {title: 'ID', key: 'id', sortable: true},
         {title: 'Nom', key: 'name', sortable: true},
-        {title: 'Ville', align: 'start', key: 'town', sortable: true},
+        {title: 'President', key: 'lastname', sortable: true},
+        {title: 'Ville', align: 'start', key: 'zipcode', sortable: true},
         {title: 'Actions', key: 'actions', sortable: false},
       ],
     }
