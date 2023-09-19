@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
   get '/avatars/:user', to: 'avatars#show'
-  get '/avatars/:user', to: 'avatars#show'
   get '/logos/:structure', to: 'logos#show'
 
   namespace :api, defaults: { format: 'json' } do
@@ -146,8 +145,8 @@ Rails.application.routes.draw do
   end
 
   post 'uploader/image', to: 'uploader#image'
-
-  get '/mon-compte', to: redirect('/users/sign_in')
   root to: redirect('/users/sign_in')
+  get '*path', to: redirect('/users/sign_in')
+
 
 end
