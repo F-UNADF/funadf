@@ -116,6 +116,17 @@ class Api::MenusController < ApiController
           href:  me_me_url(subdomain: :me),
         },
       ]
+    when 'me'
+      result = [
+        {
+          header: "MON ESPACE",
+        },
+        {
+          title: "Feed",
+          icon:  "mdi-newspaper",
+          to:    me_feed_path,
+        },
+      ]
     else
       result[:error] = "Menu #{menu} not found"
     end

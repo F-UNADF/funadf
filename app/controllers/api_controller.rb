@@ -4,7 +4,7 @@ class ApiController < ApplicationController
 
   def check_subdomain
     subdomain = request.subdomain
-    if subdomain.present? && subdomain != 'admin'
+    if subdomain.present? && subdomain != 'admin' && subdomain != 'me'
       @intranet = Intranet.find_by(subdomain: subdomain)
       @structure = @intranet.structure
       if @intranet.nil?

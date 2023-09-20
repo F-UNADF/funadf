@@ -1,5 +1,5 @@
 class MeController < ApplicationController
-
+  layout 'me/layouts/vuejs'
   before_action :get_events
 
   def get_events

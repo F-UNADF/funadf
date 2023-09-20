@@ -72,17 +72,7 @@ Rails.application.routes.draw do
 
     namespace :me, path: '' do
       constraints(:subdomain => 'me') do
-
-        get '/mon-profil', to: 'profile#show', as: :profile
-
-        resources :structures, only: :show
-        resources :users, only: :show
-        resources :events, only: :show
-
-        get '/rechercher', to: 'search#show', as: :search
-        get '/searching', to: 'search#index'
-
-        get '/feed', to: 'feed#index'
+        get '/feed', to: 'feed#show', as: :feed
 
         root to: redirect('/feed'), as: :me
       end
