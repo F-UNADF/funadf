@@ -6,8 +6,6 @@ class ApplicationController < ActionController::Base
 
   before_action :set_subdomain
 
-  layout :set_layout
-
   include PublicActivity::StoreController
 
   def set_subdomain
@@ -39,28 +37,6 @@ class ApplicationController < ActionController::Base
 
 
   private
-    def set_layout
-      folder = 'votes/'
-      module_name = self.class.to_s.split("::").first
-
-      if module_name.eql?("Devise")
-        return "devise/layouts"
-      else
-        if request.subdomain && request.subdomain != ''
-          case request.subdomain
-          when 'admin'
-            folder = 'admin/'
-          when 'me'
-            folder = 'me/'
-          else
-            folder = 'intranet/'
-          end
-        end
-
-        return "#{folder}layouts/application"
-      end
-
-    end
 
     def after_sign_in_path_for(resource)
       uadpif = Structure.where(name: 'UADPIF').first
