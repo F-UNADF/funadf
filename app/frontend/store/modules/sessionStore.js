@@ -40,6 +40,18 @@ const actions = {
             commit('setOriginalUser', null);
         }
     },
+    switch_to({
+                  commit,
+                  dispatch,
+                  state
+              }, user_id) {
+
+        let uri = encodeURIComponent("/switch_user?scope_identifier=user_" + user_id);
+
+        axios.get('/switch_user/remember_user?remember=true&path=' + uri).then((response) => {
+            dispatch('fetchUser');
+        });
+    },
     switch_back({
                     commit,
                     dispatch,

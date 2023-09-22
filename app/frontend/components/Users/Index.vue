@@ -278,8 +278,11 @@ export default {
       });
     },
     connectAs    : function (user) {
-      let nextPath = encodeURIComponent("/switch_user?scope_identifier=user_" + user.id);
-      window.location.href = "/switch_user/remember_user?remember=true&path=" + nextPath;
+      console.log(user);
+      this.$store.dispatch('sessionStore/switch_to', user.id).then(response => {
+        this.$root.showSnackbar('Vous êtes maintenant connecté en tant que ' + user.lastname, 'success');
+        this.$router.push({name: 'Dashboard'});
+      })
     },
   },
   data() {
