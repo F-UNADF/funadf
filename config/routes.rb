@@ -6,11 +6,8 @@ Rails.application.routes.draw do
 
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
-
-  resources :logos, only: :show
-
-  get '/logos/:structure', to: 'logos#show', constraints: { structure: /.*\.png/ }
-
+  get '/avatars/:user', to: 'avatars#show'
+  get '/logos/:structure', to: 'logos#show'
 
   namespace :api, defaults: { format: 'json' } do
     get 'current_user', to: 'current_user#show'
@@ -78,12 +75,6 @@ Rails.application.routes.draw do
         end
         resources :intranets
         root to: 'pages#home', as: :root
-      end
-    end
-
-    namespace :structure, path: '' do
-      constraints(:subdomain => /structure/) do
-        resources :structures, only: :index
       end
     end
 
