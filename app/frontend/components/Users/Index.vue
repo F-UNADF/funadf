@@ -23,7 +23,7 @@
           variant="outlined"
       ></v-select>
     </v-col>
-    <v-col cols="12" lg="3" md="3">
+    <v-col cols="12" lg="2" md="3">
       <v-btn-toggle v-model="filter.disabled" rounded style="height: 40px">
         <v-btn :value="false" color="success" class="py-1">
           Actif
@@ -34,7 +34,8 @@
         </v-btn>
       </v-btn-toggle>
     </v-col>
-    <v-col cols="12" lg="3" md="3" class="text-right">
+    <v-col cols="12" lg="4" md="3" class="text-right">
+      <download :headers="downloadHeaders" :data="this.filteredItems" :name="downloadName"></download>
       <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
         <v-icon color="primary">mdi-reload</v-icon>
       </v-btn>
@@ -186,10 +187,12 @@ import {mapGetters} from "vuex";
 import {VDataTable} from 'vuetify/labs/VDataTable'
 import UserForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
+import Download from "@/components/Tools/Download.vue";
 
 export default {
   name      : "UsersIndex",
   components: {
+    Download,
     VDataTable,
     UserForm,
     DialogConfirm,
@@ -328,6 +331,17 @@ export default {
           sortable: false
         },
       ],
+      downloadHeaders: [
+        { title: 'ID', field: 'id' },
+        { title: 'NOM', field: 'lastname' },
+        { title: 'PRENOM', field: 'firstname' },
+        { title: 'EMAIL', field: 'email' },
+        { title: 'VILLE', field: 'town' },
+        { title: 'CODE POSTAL', field: 'zipcode' },
+        { title: 'NIVEAU', field: 'current_level' },
+      ],
+      // Nom au format YYYY-MM-DD_pasteurs.csv
+      downloadName : 'utilisateurs_' + new Date().toISOString().slice(0, 10) + '.csv',
     }
   },
   beforeMount: function () {
