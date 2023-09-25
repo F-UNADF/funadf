@@ -58,7 +58,6 @@
       </v-btn>
     </v-col>
   </v-row>
-
   <v-data-table
       :headers="headers"
       :items="filteredItems"
@@ -306,6 +305,7 @@ export default {
       });
     },
     connectAs    : function (user) {
+      console.log(user);
       this.$store.dispatch('sessionStore/switch_to', user.id).then(response => {
             this.$root.showSnackbar('Vous êtes maintenant connecté en tant que ' + user.lastname, 'success');
           },

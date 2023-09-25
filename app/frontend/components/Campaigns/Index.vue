@@ -75,8 +75,8 @@
                   small
                   v-bind="props"
                   color="success"
-                  v-if="item.state === 'coming'"
-                  @click="changeCampaignState(item.id, 'opening')">
+                  v-if="item.raw.state === 'coming'"
+                  @click="changeCampaignState(item.raw.id, 'opening')">
                 mdi-check
               </v-icon>
             </template>
@@ -87,8 +87,8 @@
                   small
                   v-bind="props"
                   color="danger"
-                  v-if="item.state === 'opened'"
-                  @click="changeCampaignState(item.id, 'close_definitly')">
+                  v-if="item.raw.state === 'opened'"
+                  @click="changeCampaignState(item.raw.id, 'close_definitly')">
                 mdi-close
               </v-icon>
             </template>
@@ -101,7 +101,7 @@
                   small
                   v-bind="props"
                   color="primary"
-                  @click="editItem(item)"
+                  @click="editItem(item.raw)"
                   title="Edit">
                 mdi-pencil
               </v-icon>

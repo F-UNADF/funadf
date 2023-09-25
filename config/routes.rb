@@ -100,8 +100,6 @@ Rails.application.routes.draw do
         resources :campaigns, only: :index
 
         get '/mon-compte', :to => redirect('/events')
-
-        root to: redirect('/users'), as: :root
       end
     end
 
@@ -150,6 +148,11 @@ Rails.application.routes.draw do
   post 'uploader/image', to: 'uploader#image'
   root to: redirect('/users/sign_in')
 
-  #get '*path', to: redirect('/users/sign_in')
+  get 'switch_user', to: 'switch_user#set_current_user'
+  get 'switch_user/remember_user', to: 'switch_user#remember_user'
+
+
+  get '*path', to: redirect('/users/sign_in')
+
 
 end

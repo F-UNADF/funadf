@@ -1,5 +1,5 @@
 class Api::CampaignsController < ApiController
-  before_action :set_campaign, only: [:show, :update, :destroy, :change_state, :voters_count]
+  before_action :set_campaign, only: [:show, :update, :destroy, :change_state]
 
   def index
     campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
@@ -64,12 +64,6 @@ class Api::CampaignsController < ApiController
     end
   end
 
-  def voters_count
-
-    voters_count = @campaign.voters.count
-    render json: { voters_count: voters_count }
-  end
-
   private
 
   def save_motions(campaign, motions_params)
@@ -80,17 +74,15 @@ class Api::CampaignsController < ApiController
 
       if motion.nil?
         campaign.motions.build(
-          name:    motion_params[:name],
-          kind:    motion_params[:kind],
-          order:   motion_params[:order],
-          choices: motion_params[:choices]
+          name:  motion_params[:name],
+          kind:  motion_params[:kind],
+          order: motion_params[:order]
         )
       else
         motion.update(
-          name:    motion_params[:name],
-          kind:    motion_params[:kind],
-          order:   motion_params[:order],
-          choices: motion_params[:choices]
+          name:  motion_params[:name],
+          kind:  motion_params[:kind],
+          order: motion_params[:order]
         )
       end
     end
