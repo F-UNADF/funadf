@@ -35,16 +35,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   private
 
-    def after_sign_in_path_for(resource)
-      uadpif = Structure.where(name: 'UADPIF').first
-      if(resource.structures.include?(uadpif))
-        root_url(subdomain: 'me')
-      else
-        root_url
-      end
+  def after_sign_in_path_for(resource)
+    uadpif = Structure.where(name: 'UADPIF').first
+    if(resource.structures.include?(uadpif))
+      root_url(subdomain: 'me')
+    else
+      root_url
     end
+  end
 
 end
