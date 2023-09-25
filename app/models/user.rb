@@ -114,6 +114,10 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def has_any_role?(*roles_name)
+    self.memberships.joins(:role).where('roles.name IN (?)', roles_name).count > 0
+  end
+
   def add_role role_name, structure = nil, can_vote = true, reason = nil
     # Crée un rôle seul (Valable sur l'ensemble de l'APP)
     # OU Avec une Class (Valable uniquement sur cette Class)
@@ -149,6 +153,13 @@ class User < ActiveRecord::Base
   def church_presidences
     role = Role.where(name: :president).first
     Structure.where(id: self.memberships.where(role_id: role.id, resource_type: 'Church').pluck(:resource_id))
+  end
+
+  def associations_responsabilities
+    Structure.joins(memberships: :role)
+             .where(type: 'Association')
+             .where(roles: { name: %w[president secretary treasurer director] })
+             .where(memberships: { member_type: 'User', member_id: self.id })
   end
 
   def get_class

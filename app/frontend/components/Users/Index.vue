@@ -236,7 +236,7 @@ export default {
         user           : {
           id                   : null,
           lastname             : '',
-          firstname             : '',
+          firstname            : '',
           email                : '',
           password             : '',
           password_confirmation: '',
@@ -281,11 +281,12 @@ export default {
       });
     },
     connectAs    : function (user) {
-      console.log(user);
       this.$store.dispatch('sessionStore/switch_to', user.id).then(response => {
         this.$root.showSnackbar('Vous êtes maintenant connecté en tant que ' + user.lastname, 'success');
-        this.$router.push({name: 'Dashboard'});
-      })
+      },
+      error => {
+        this.$root.showSnackbar('Une erreur est survenue', 'error');
+      });
     },
   },
   data() {
@@ -331,17 +332,38 @@ export default {
           sortable: false
         },
       ],
-      downloadHeaders: [
-        { title: 'ID', field: 'id' },
-        { title: 'NOM', field: 'lastname' },
-        { title: 'PRENOM', field: 'firstname' },
-        { title: 'EMAIL', field: 'email' },
-        { title: 'VILLE', field: 'town' },
-        { title: 'CODE POSTAL', field: 'zipcode' },
-        { title: 'NIVEAU', field: 'current_level' },
+      downloadHeaders    : [
+        {
+          title: 'ID',
+          field: 'id'
+        },
+        {
+          title: 'NOM',
+          field: 'lastname'
+        },
+        {
+          title: 'PRENOM',
+          field: 'firstname'
+        },
+        {
+          title: 'EMAIL',
+          field: 'email'
+        },
+        {
+          title: 'VILLE',
+          field: 'town'
+        },
+        {
+          title: 'CODE POSTAL',
+          field: 'zipcode'
+        },
+        {
+          title: 'NIVEAU',
+          field: 'current_level'
+        },
       ],
       // Nom au format YYYY-MM-DD_pasteurs.csv
-      downloadName : 'utilisateurs_' + new Date().toISOString().slice(0, 10) + '.csv',
+      downloadName: 'utilisateurs_' + new Date().toISOString().slice(0, 10) + '.csv',
     }
   },
   beforeMount: function () {

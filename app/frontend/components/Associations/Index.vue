@@ -64,7 +64,7 @@
         </td>
         <td>{{ item.raw.zipcode }} {{ item.raw.town }}</td>
         <td>
-          <v-tooltip location="top" text="Modifier l'église">
+          <v-tooltip location="top" text="Modifier l'association">
             <template v-slot:activator="{ props }">
               <v-icon
                   small

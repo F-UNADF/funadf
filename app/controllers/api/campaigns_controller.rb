@@ -2,10 +2,12 @@ class Api::CampaignsController < ApiController
   before_action :set_campaign, only: [:show, :update, :destroy, :change_state]
 
   def index
-    if @structure.nil?
-      campaigns = Campaign.order id: :desc
-    else
-      campaigns = @structure.campaigns.order id: :desc
+    campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name').order id: :desc
+    if !@structure.nil?
+      campaigns = @structure.campaigns.select('campaigns.*, structures.name').order id: :desc
+    end
+    if current_user.has_any_role?(:president, :treasurer, :secretary) && !current_user.is_admin?
+      campaigns = Campaign.joins(:structure).where(structure_id: current_user.associations_responsabilities.pluck(:id)).select('campaigns.*, structures.name AS structure_name').order id: :desc
     end
     render json: { campaigns: campaigns }
   end

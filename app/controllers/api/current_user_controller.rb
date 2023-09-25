@@ -1,16 +1,32 @@
 class Api::CurrentUserController < ApiController
   def show
-    @user = current_user
-    @original_user = SwitchUser::Provider.init(self).original_user
-
-    # if @user is equal to @original_user, then set original_user to nil
-    # this is to prevent the frontend from displaying the switch user button
-    if @user == @original_user
-      @original_user = nil
+    @user          = current_user
+    @original_user = nil
+    unless session[:original_user].nil?
+      @original_user= User.find(session[:original_user])
     end
-
     respond_to do |format|
-      format.json { render json: {user: @user, original_user: @original_user} }
+      format.json { render json: { user: current_user, original_user: @original_user } }
     end
+  end
+
+  def switch
+    if session[:connect_as].nil? && session[:original_user].nil?
+      session[:original_user] = current_user.id
+      original_user           = current_user
+      session[:connect_as]    = params[:id]
+      user                    = User.find(params[:id])
+
+      render json: { status: 200, current_user: current_user, original_user: original_user, redirect_to: root_url(subdomain: nil) }
+    else
+      render json: { status: 403, message: 'Already switched' }
+    end
+  end
+
+  def switch_back
+    session[:connect_as]    = nil
+    session[:original_user] = nil
+
+    render json: { status: 200, current_user: current_user, redirect_to: admin_users_url(subdomain: :admin) }
   end
 end

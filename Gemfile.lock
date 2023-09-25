@@ -399,7 +399,6 @@ GEM
     state_machines-activerecord (0.8.0)
       activerecord (>= 5.1)
       state_machines-activemodel (>= 0.8.0)
-    switch_user (1.5.4)
     sys-uname (1.2.3)
       ffi (~> 1.1)
     temple (0.10.2)
@@ -508,7 +507,6 @@ DEPENDENCIES
   spring-commands-rspec
   sprockets-rails
   state_machines-activerecord
-  switch_user
   test-unit
   tinymce-rails
   toastr-rails
