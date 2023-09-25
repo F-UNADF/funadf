@@ -2,7 +2,10 @@ class Api::AssociationsController < ApiController
   before_action :set_association, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index
-    associations = Association.all
+    if current_user.is_admin?
+      associations = Association.all
+    end
+    associations = current_user.associations_responsabilities if current_user.has_any_role? :president, :treasurer, :secretary
     render json: { associations: associations }
   end
 

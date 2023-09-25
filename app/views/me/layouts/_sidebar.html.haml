@@ -17,7 +17,7 @@
         = icon 'fa', 'search', class: 'me-3'
       %span Annuaire
 
-  - if current_user.has_role?([:admin, :moderator]) && @subdomain != "admin"
+  - if (current_user.has_role?([:admin, :moderator]) || current_user.has_any_role?(:president, :treasurer, :secretarye)) && @subdomain != "admin"
     %li.nav-item
       = link_to root_url(subdomain: :admin), class: 'nav-link' do
         %span

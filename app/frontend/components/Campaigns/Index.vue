@@ -50,6 +50,7 @@
       <tr>
         <td>{{ item.raw.id }}</td>
         <td>{{ item.raw.name }}</td>
+        <td>{{ item.raw.structure_name }}</td>
         <td>
           <v-chip :color="getColor(item.raw.state)">
             {{ getState(item.raw.state) }}
@@ -257,6 +258,11 @@ export default {
         {
           title   : 'Nom',
           key     : 'name',
+          sortable: true
+        },
+        {
+          title   : 'Association',
+          key     : 'structure_name',
           sortable: true
         },
         {

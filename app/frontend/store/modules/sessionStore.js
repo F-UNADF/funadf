@@ -34,31 +34,24 @@ const actions = {
             await axios.delete(' /users/sign_out');
             commit('setCurrentUser', null);
             commit('setOriginalUser', null);
-            window.location.href = '/users/sign_in';
         } catch (error) {
             commit('setCurrentUser', null);
             commit('setOriginalUser', null);
         }
+        window.location.href = '/';
     },
-    switch_to({
-                  commit,
-                  dispatch,
-                  state
-              }, user_id) {
-
-        let uri = encodeURIComponent("/switch_user?scope_identifier=user_" + user_id);
-
-        axios.get('/switch_user/remember_user?remember=true&path=' + uri).then((response) => {
-            dispatch('fetchUser');
+    switch_to({ commit, dispatch, state }, user_id) {
+        axios.get('/api/switch/' + user_id).then((response) => {
+            commit('setCurrentUser', response.data.current_user);
+            commit('setOriginalUser', response.data.original_user);
+            window.location.href = response.data.redirect_to;
         });
     },
-    switch_back({
-                    commit,
-                    dispatch,
-                    state
-                }) {
-        axios.get('/switch_user?scope_identifier=user_' + state.originalUser.id).then((response) => {
-            dispatch('fetchUser');
+    switch_back({ commit, dispatch,  state }) {
+        axios.get('/api/switch_back').then((response) => {
+            commit('setCurrentUser', response.data.current_user);
+            commit('setOriginalUser', null);
+            window.location.href = response.data.redirect_to;
         });
     }
 };

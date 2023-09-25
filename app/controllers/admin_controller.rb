@@ -4,10 +4,14 @@ class AdminController < ApplicationController
   before_action :user_is_admin?
 
   private
-    def user_is_admin?
-      unless current_user.has_role? [:admin, :moderator]
-        redirect_to root_url(subdomain: 'me'), alert: 'Vous n\'êtes pas autorisé à consulter cette page'
-      end
-    end
 
+  def user_is_admin?
+    if current_user.has_role? [:admin, :moderator]
+      return true
+    end
+    if current_user.has_any_role? :president, :treasurer, :secretary
+      return true
+    end
+    redirect_to root_url(subdomain: 'me'), alert: 'Vous n\'êtes pas autorisé à consulter cette page'
+  end
 end

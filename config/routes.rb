@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     get 'current_user', to: 'current_user#show'
+    get 'switch/:id', to: 'current_user#switch', as: :switch_user
+    get 'switch_back', to: 'current_user#switch_back', as: :switch_back
+
     resources :users
     patch '/users/:id/enable', to: 'users#enable'
     patch '/users/:id/disable', to: 'users#disable'
@@ -67,6 +70,12 @@ Rails.application.routes.draw do
         end
         resources :intranets
         root to: 'pages#home', as: :root
+      end
+    end
+
+    namespace :structure, path: '' do
+      constraints(:subdomain => /structure/) do
+        resources :structures, only: :index
       end
     end
 
@@ -147,11 +156,6 @@ Rails.application.routes.draw do
   post 'uploader/image', to: 'uploader#image'
   root to: redirect('/users/sign_in')
 
-  get 'switch_user', to: 'switch_user#set_current_user'
-  get 'switch_user/remember_user', to: 'switch_user#remember_user'
-
-
   get '*path', to: redirect('/users/sign_in')
-
 
 end

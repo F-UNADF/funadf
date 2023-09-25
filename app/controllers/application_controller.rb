@@ -4,15 +4,11 @@ class ApplicationController < ActionController::Base
   # skip_before_action :verify_authenticity_token
   protect_from_forgery prepend: true, with: :exception
 
-  before_action :get_original_user, :set_subdomain
+  before_action :set_subdomain
 
   layout :set_layout
 
   include PublicActivity::StoreController
-
-  def get_original_user
-    @original_user_scope_identifier = session[:original_user_scope_identifier]
-  end
 
   def set_subdomain
     @subdomain = ""
@@ -20,6 +16,27 @@ class ApplicationController < ActionController::Base
       @subdomain = request.subdomain
     end
   end
+
+  def devise_current_user
+    @devise_current_user ||= warden.authenticate(scope: :user)
+  end
+
+  def current_user
+    if !session[:connect_as].nil?
+      User.find(session[:connect_as])
+    else
+      devise_current_user
+    end
+  end
+
+  def original_user
+    if session[:connect_as].nil?
+      nil
+    else
+      devise_current_user
+    end
+  end
+
 
   private
     def set_layout
