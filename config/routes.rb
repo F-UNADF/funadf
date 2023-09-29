@@ -156,6 +156,6 @@ Rails.application.routes.draw do
   post 'uploader/image', to: 'uploader#image'
   root to: redirect('/users/sign_in')
 
-  get '*path', to: redirect('/users/sign_in')
+  #get '*path', to: redirect('/users/sign_in')
 
 end
