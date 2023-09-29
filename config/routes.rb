@@ -6,8 +6,11 @@ Rails.application.routes.draw do
 
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
-  get '/avatars/:user', to: 'avatars#show'
-  get '/logos/:structure', to: 'logos#show'
+
+  resources :logos, only: :show
+
+  get '/logos/:structure', to: 'logos#show', constraints: { structure: /.*\.png/ }
+
 
   namespace :api, defaults: { format: 'json' } do
     get 'current_user', to: 'current_user#show'
