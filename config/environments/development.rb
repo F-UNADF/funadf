@@ -62,6 +62,6 @@ Rails.application.configure do
   config.hosts << "uadpif.myloc.me"
   config.hosts << "myloc.me"
 
-
+  BetterErrors::Middleware.allow_ip! "0.0.0.0/0"
   config.active_storage.service = :amazon
 end
