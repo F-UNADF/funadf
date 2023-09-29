@@ -10,7 +10,7 @@ class Api::FeedController < ApiController
       {
         post: post,
         structure: post.structure,
-        structure_logo_url: Rails.application.routes.url_helpers.rails_blob_url(post.structure.logo, only_path: true)
+        structure_logo_url: post.structure.logo.service_url
       }
     end
 
