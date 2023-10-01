@@ -48,13 +48,13 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.raw.title }}</td>
+        <td>{{ item.title }}</td>
         <td>
-          Du {{ getCleanDate(item.raw.start_at) }} au {{ getCleanDate(item.raw.end_at) }}
+          Du {{ getCleanDate(item.start_at) }} au {{ getCleanDate(item.end_at) }}
         </td>
         <td>
           <v-chip color="primary" text-color="white" small>
-            {{ item.raw['category.name'] }}
+            {{ item.category.name }}
           </v-chip>
         </td>
         <td>
@@ -64,7 +64,7 @@
                   small
                   v-bind="props"
                   color="primary"
-                  @click="editItem(item.raw.id)"
+                  @click="editItem(item.id)"
                   title="Edit">
                 mdi-pencil
               </v-icon>

@@ -72,28 +72,28 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.raw.id }}</td>
+        <td>{{ item.id }}</td>
         <td>
           <div class="d-flex align-center py-4">
             <div>
               <v-img
-                  :src="'/avatars/' + item.raw.id + '.png'"
+                  :src="'/avatars/' + item.id + '.png'"
                   width="45px"
                   class="rounded-circle img-fluid"
               ></v-img>
             </div>
 
             <div class="ml-5">
-              <h4>{{ item.raw.lastname }} {{ item.raw.firstname }}</h4>
+              <h4>{{ item.lastname }} {{ item.firstname }}</h4>
               <span class="subtitle-2 d-block font-weight-regular">{{
-                  item.raw.email
+                  item.email
                 }}</span>
             </div>
           </div>
         </td>
-        <td>{{ item.raw.zipcode }} {{ item.raw.town }}</td>
+        <td>{{ item.zipcode }} {{ item.town }}</td>
         <td>
-          <v-chip color="info" label>{{ item.raw.current_level }}</v-chip>
+          <v-chip color="info" label>{{ item.current_level }}</v-chip>
         </td>
         <td>
           <v-tooltip location="top" text="Modifier l'utilisateur">
@@ -116,33 +116,33 @@
                   small
                   class="text-error"
                   title="Delete"
-                  @click="tryDeleteItem(item.raw)">
+                  @click="tryDeleteItem(item)">
                 mdi-delete
               </v-icon>
             </template>
           </v-tooltip>
 
-          <v-tooltip location="top" text="Désactiver l'utilisateur" v-if="!item.raw.disabled">
+          <v-tooltip location="top" text="Désactiver l'utilisateur" v-if="!item.disabled">
             <template v-slot:activator="{ props }">
               <v-icon
                   v-bind="props"
                   small
                   color="orange"
                   title="Désactiver"
-                  @click="disableItem(item.value)">
+                  @click="disableItem(item)">
                 mdi-account-off
               </v-icon>
             </template>
           </v-tooltip>
 
-          <v-tooltip location="top" text="Activer l'utilisateur" v-if="item.raw.disabled">
+          <v-tooltip location="top" text="Activer l'utilisateur" v-if="item.disabled">
             <template v-slot:activator="{ props }">
               <v-icon
                   v-bind="props"
                   small
                   color="green"
                   title="Activer"
-                  @click="enableItem(item.raw)">
+                  @click="enableItem(item)">
                 mdi-account-off
               </v-icon>
             </template>
@@ -155,7 +155,7 @@
                   small
                   color="danger"
                   title="Activer"
-                  @click="connectAs(item.raw)">
+                  @click="connectAs(item)">
                 mdi-drama-masks
               </v-icon>
             </template>
@@ -253,7 +253,7 @@ export default {
       this.$store.commit('usersStore/setDialogForm', true);
     },
     editItem     : function (item) {
-      this.$store.dispatch('usersStore/getItem', item.raw.id);
+      this.$store.dispatch('usersStore/getItem', item.id);
       this.$store.commit('usersStore/setDialogForm', true);
     },
     enableItem   : function (item) {

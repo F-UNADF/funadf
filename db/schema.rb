@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_14_065611) do
+ActiveRecord::Schema.define(version: 2023_10_01_150505) do
 
-  create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
     t.bigint "resource_id"
     t.string "level"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["resource_type", "resource_id"], name: "index_accesses_on_resource"
   end
 
-  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -44,13 +44,13 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "activities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "activities", charset: "utf8", force: :cascade do |t|
     t.string "trackable_type"
     t.bigint "trackable_id"
     t.string "owner_type"
@@ -69,14 +69,14 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable"
   end
 
-  create_table "attachments", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "attachments", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_attachments_on_post_id"
   end
 
-  create_table "campaigns", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "campaigns", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "structure_id"
     t.string "name"
     t.text "description"
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["structure_id"], name: "index_campaigns_on_structure_id"
   end
 
-  create_table "careers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "careers", charset: "utf8", force: :cascade do |t|
     t.string "level"
     t.integer "referent_id"
     t.date "start_at"
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["user_id"], name: "index_careers_on_user_id"
   end
 
-  create_table "categories", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "categories", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.string "color"
     t.string "kind"
@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["structure_id"], name: "index_categories_on_structure_id"
   end
 
-  create_table "events", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "events", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.string "description"
     t.datetime "start_at"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["structure_id"], name: "index_events_on_structure_id"
   end
 
-  create_table "fees", charset: "utf8mb3", force: :cascade do |t|
+  create_table "fees", charset: "latin1", force: :cascade do |t|
     t.integer "user_id"
     t.string "what"
     t.date "paid_at"
@@ -143,7 +143,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["user_id"], name: "index_fees_on_user_id"
   end
 
-  create_table "intranets", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "intranets", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "subdomain"
     t.integer "structure_id"
     t.datetime "created_at", null: false
@@ -151,13 +151,13 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["structure_id"], name: "index_intranets_on_structure_id"
   end
 
-  create_table "jwt_denylist", charset: "utf8mb3", force: :cascade do |t|
+  create_table "jwt_denylist", charset: "utf8", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
-  create_table "marriages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "marriages", charset: "utf8", force: :cascade do |t|
     t.integer "husband_id"
     t.integer "wife_id"
     t.datetime "created_at", precision: 6, null: false
@@ -166,7 +166,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["wife_id"], name: "index_marriages_on_wife_id"
   end
 
-  create_table "meetings", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "meetings", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.date "begin_at"
     t.date "end_at"
@@ -175,7 +175,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "memberships", charset: "utf8mb3", force: :cascade do |t|
+  create_table "memberships", charset: "utf8", force: :cascade do |t|
     t.integer "role_id"
     t.string "member_type"
     t.bigint "member_id"
@@ -189,24 +189,25 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["structure_id"], name: "index_memberships_on_structure_id"
   end
 
-  create_table "motions", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "motions", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "campaign_id"
     t.integer "order"
     t.string "name"
     t.string "kind"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "choices"
     t.index ["campaign_id"], name: "index_motions_on_campaign_id"
   end
 
-  create_table "notifications", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "notifications", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "posts", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "posts", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.text "content"
     t.integer "structure_id"
@@ -215,7 +216,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["structure_id"], name: "index_posts_on_structure_id"
   end
 
-  create_table "roles", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "roles", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.integer "resource_id"
     t.string "resource_type"
@@ -224,7 +225,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["resource_id", "resource_type"], name: "index_roles_on_resource_id_and_resource_type"
   end
 
-  create_table "rolizations", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "rolizations", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "role_id"
     t.integer "resource_id"
     t.string "resource_type"
@@ -236,7 +237,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["role_id"], name: "index_rolizations_on_role_id"
   end
 
-  create_table "structures", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "structures", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.string "address_1"
     t.string "address_2"
@@ -250,14 +251,14 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.string "email"
   end
 
-  create_table "uploads", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "uploads", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "file"
     t.boolean "has_heading"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "firstname"
     t.string "lastname"
     t.string "address_1"
@@ -304,7 +305,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "voters", id: false, charset: "utf8mb3", force: :cascade do |t|
+  create_table "voters", id: false, charset: "utf8", force: :cascade do |t|
     t.integer "motion_id"
     t.datetime "voted_at"
     t.string "ip"
@@ -314,14 +315,14 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.index ["resource_id", "resource_type"], name: "index_voters_on_resource_id_and_resource_type"
   end
 
-  create_table "votes", id: false, charset: "utf8mb3", force: :cascade do |t|
+  create_table "votes", id: false, charset: "utf8", force: :cascade do |t|
     t.integer "motion_id"
     t.string "result"
     t.boolean "is_consultative"
     t.index ["motion_id"], name: "index_votes_on_motion_id"
   end
 
-  create_table "voting_tables", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "voting_tables", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "campaign_id"
     t.string "position"
     t.string "voting"

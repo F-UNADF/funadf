@@ -54,7 +54,11 @@ class Campaign < ActiveRecord::Base
   validates :structure_id, presence: true
 
   def period
-    "Du #{I18n.l self.start_at} au #{I18n.l self.end_at}"
+    if self.start_at && self.end_at
+      "Du #{I18n.l self.start_at} au #{I18n.l self.end_at}"
+    else
+      ""
+    end
   end
 
   def motions_count
@@ -239,7 +243,7 @@ class Campaign < ActiveRecord::Base
     Campaign.joins(motions: :votes)
             .where(id: self.id)
             .group('motions.id')
-            .where('motions.kind <> ?', 'free')
+            .where("motions.kind NOT IN ('free', 'choices')")
             .select("
                       motions.id,
                       motions.name AS motion_name,
@@ -249,6 +253,20 @@ class Campaign < ActiveRecord::Base
                       SUM(CASE WHEN votes.result = 'Oui' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_yes_count,
                       SUM(CASE WHEN votes.result = 'Non' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_no_count,
                       SUM(CASE WHEN (votes.result = 'Neutre' OR votes.result IS NULL) AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_neutre_count")
+  end
+
+  def choices_results
+    Campaign.joins(motions: :votes)
+            .where(id: self.id)
+            .group('motions.id, motions.name, votes.result, votes.is_consultative')
+            .where("motions.kind = ?", 'choices')
+            .order('count DESC')
+            .select("
+                      motions.id,
+                      motions.name AS motion_name,
+                      votes.result AS choice,
+                      votes.is_consultative AS consultative,
+                      COUNT(votes.motion_id) AS count")
   end
 
   def free_results
