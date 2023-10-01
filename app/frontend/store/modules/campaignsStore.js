@@ -42,6 +42,7 @@ const actions = {
                 item['voting_tables'] = res.data.voting_tables;
                 item['results'] = res.data.results;
                 item['free_results'] = res.data.free_results;
+                item['choices_results'] = res.data.choices_results;
                 item['voters'] = res.data.voters;
                 commit('setItem', res.data.campaign);
                 resolve(res);

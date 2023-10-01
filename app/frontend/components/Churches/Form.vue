@@ -116,11 +116,11 @@
               <tr>
                 <td>
                   <div class="d-flex align-center py-4">
-                    <v-avatar :icon="(item.raw.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
+                    <v-avatar :icon="(item.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
                     <div class="ml-5">
-                      <h4>{{ item.raw.name }}</h4>
+                      <h4>{{ item.name }}</h4>
                       <span class="subtitle-2 d-block font-weight-regular">{{
-                          item.raw.town
+                          item.town
                         }}</span>
                     </div>
                   </div>
@@ -129,14 +129,14 @@
                   <v-menu>
                     <template v-slot:activator="{ props }">
                       <v-btn color="secondary" v-bind="props">
-                        {{ getRoleName(item.raw.role_name) }}
+                        {{ getRoleName(item.role_name) }}
                       </v-btn>
                     </template>
                     <v-list>
                       <v-list-item
                           v-for="(role, index) in this.referentiels.roles"
                           :key="index"
-                          @click="setRole(item.raw, index)"
+                          @click="setRole(item, index)"
                       >
                         <v-list-item-title>{{ role }}</v-list-item-title>
                       </v-list-item>
@@ -151,7 +151,7 @@
                           small
                           class="text-error"
                           title="Delete"
-                          @click="removeMember(item.raw.membership_id)">
+                          @click="removeMember(item.membership_id)">
                         mdi-delete
                       </v-icon>
                     </template>
@@ -180,15 +180,15 @@
               <template v-slot:chip="{ props, item }">
                 <v-chip
                     v-bind="props"
-                    :prepend-icon="item?.raw?.icon"
-                    :text="item?.raw?.name"
+                    :prepend-icon="item?.icon"
+                    :text="item?.name"
                 ></v-chip>
               </template>
 
               <template v-slot:item="{ props, item }">
                 <v-list-item
                     v-bind="props"
-                    :prepend-icon="item?.raw?.icon"
+                    :prepend-icon="item?.icon"
                     :title="item.title"
                 ></v-list-item>
               </template>

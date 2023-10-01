@@ -5,34 +5,11 @@
   Nom de la campagne :
   = @campaign.name
 
-%h2.mb-5
-  Dates :
-  = @campaign.period
-
-%table.table.table-bordered{border: 1, width: '100%'}
-  %tr
-    %td
-    %th{colspan: 6} Resultats retenus
-    - if @campaign.has_consultative_votes?
-      %th{colspan: 6} Resultats consultatifs
-
-  %tr
-    %th Electorats
-    %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.officials.count }.first
-    - if @campaign.has_consultative_votes?
-      %th{colspan: 6}= @campaign.motions.map{ |m| m.votes.consultatives.count }.first
-      
-  - unless @campaign.motions.where(kind: [:binary, :neutral]).blank?
-    %tr
-      %th{rowspan: 2}
-      %th{rowspan: 2} Nb de votants
-      %th{colspan: 3} Voix exprimés
-      %th{rowspan: 2, colspan: 2}
-        Voix non exprimés
-        %br
-        (Blanc ou neutre)
-
-      - if @campaign.has_consultative_votes?
+- unless @campaign.motions.where(kind: [:binary, :neutral, :free]).blank?
+  %table{border: 1, width: '100%', style: 'margin-bottom: 20px'}
+    - unless @campaign.motions.where(kind: [:binary, :neutral]).blank?
+      %tr
+        %th{rowspan: 2}
         %th{rowspan: 2} Nb de votants
         %th{colspan: 3} Voix exprimés
         %th{rowspan: 2, colspan: 2}
@@ -40,75 +17,118 @@
           %br
           (Blanc ou neutre)
 
-    %tr
-      %th Oui
-      %th Non
-      %th Total
+        - if @campaign.has_consultative_votes?
+          %th{rowspan: 2} Nb de votants
+          %th{colspan: 3} Voix exprimés
+          %th{rowspan: 2, colspan: 2}
+            Voix non exprimés
+            %br
+            (Blanc ou neutre)
 
-      - if @campaign.has_consultative_votes?
+      %tr
         %th Oui
         %th Non
         %th Total
 
-    - @campaign.motions.where(kind: [:neutral, :binary]).each do |motion|
-      - oui_count = motion.votes.officials.where(result: "oui").count
-      - non_count = motion.votes.officials.where(result: "non").count
-      - neutral_count = motion.votes.officials.where(result: ["neutre", nil]).count
-
-      %tr
-        %td= motion.name
-        %td= motion.votes.officials.count
-        %td
-          = oui_count
-          %small= "(#{number_to_percentage (oui_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
-        %td
-          = non_count
-          %small= "(#{number_to_percentage (non_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
-        %td= non_count + oui_count
-
-        %td{colspan: 2}= neutral_count
-
-
         - if @campaign.has_consultative_votes?
-          - oui_count = motion.votes.consultatives.where(result: "oui").count
-          - non_count = motion.votes.consultatives.where(result: "non").count
-          - neutral_count = motion.votes.consultatives.where(result: ["neutre", nil]).count
+          %th Oui
+          %th Non
+          %th Total
 
-          %td= motion.votes.consultatives.count
+      - @campaign.motions.where(kind: [:neutral, :binary]).each do |motion|
+        - oui_count = motion.votes.officials.where(result: "oui").count
+        - non_count = motion.votes.officials.where(result: "non").count
+        - neutral_count = motion.votes.officials.where(result: ["neutre", nil]).count
+
+        %tr
+          %td= motion.name
+          %td= motion.votes.officials.count
           %td
             = oui_count
             %small= "(#{number_to_percentage (oui_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
           %td
             = non_count
             %small= "(#{number_to_percentage (non_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
-
           %td= non_count + oui_count
 
-          %td= neutral_count
+          %td{colspan: 2}= neutral_count
 
-  - unless @campaign.motions.where(kind: :free).blank?
-    %tr
-      %th
-      %th{colspan: 3} Répartition des propositions
-      %th Votants
-      %th Exprimés
-      %th Blancs
-    - @campaign.motions.where(kind: :free).each do |motion|
+
+          - if @campaign.has_consultative_votes?
+            - oui_count = motion.votes.consultatives.where(result: "oui").count
+            - non_count = motion.votes.consultatives.where(result: "non").count
+            - neutral_count = motion.votes.consultatives.where(result: ["neutre", nil]).count
+
+            %td= motion.votes.consultatives.count
+            %td
+              = oui_count
+              %small= "(#{number_to_percentage (oui_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
+            %td
+              = non_count
+              %small= "(#{number_to_percentage (non_count.to_f/(oui_count+non_count).to_f)*100, precision: 2})"
+
+            %td= non_count + oui_count
+
+            %td= neutral_count
+
+    - unless @campaign.motions.where(kind: :free).blank?
       %tr
-        %td= motion.name
-        %td{colspan: 3}
-          %ul.list-unstyled
-            - motion.votes.officials.select(:result, 'COUNT(*) as count').group(:result).each do |r|
-              %li.list-unstyled-item= "#{r.result} (#{r.count})"
+        %th
+        %th{colspan: 3} Répartition des propositions
+        %th Votants
+        %th Exprimés
+        %th Blancs
+      - @campaign.motions.where(kind: :free).each do |motion|
+        %tr
+          %td= motion.name
+          %td{colspan: 3}
+            %ul.list-unstyled
+              - motion.votes.officials.select(:result, 'COUNT(*) as count').group(:result).each do |r|
+                %li.list-unstyled-item= "#{r.result} (#{r.count})"
+          %td= motion.votes.officials.count
+          %td= motion.votes.officials.where("result IS NOT NULL").count
+          %td= motion.votes.officials.where(result: nil).count
+
+          - if @campaign.has_consultative_votes?
+            %td{colspan: 3}
+              %ul.list-unstyled
+                - motion.votes.consultatives.select(:result, 'COUNT(*) as count').group(:result).each do |r|
+                  %li.list-unstyled-item= "#{r.result} (#{r.count})"
+            %td= motion.votes.consultatives.count
+            %td= motion.votes.consultatives.where("result IS NOT NULL").count
+            %td= motion.votes.consultatives.where(result: nil).count
+
+- unless @campaign.motions.where(kind: :choices).blank?
+  - @campaign.motions.where(kind: :choices).each do |motion|
+    %table{border: 1, width: '100%', style: 'margin-bottom: 20px'}
+      %tr
+        %th{colspan: (motion.choices.split(',').count + 3)*2 }= motion.name
+      %tr
+        - motion.choices.split(',').each do |choice|
+          %th= choice
+        %th Votants
+        %th Exprimés
+        %th Blancs
+        - motion.choices.split(',').each do |choice|
+          %th= choice
+        %th Votants
+        %th Exprimés
+        %th Blancs
+
+      %tr
+        - motion.choices.split(',').each do |choice|
+          %td
+            = motion.votes.officials.where(result: choice.strip).count
+            %small= "(#{number_to_percentage (motion.votes.officials.where(result: choice.strip).count.to_f/motion.votes.officials.count.to_f)*100, precision: 2})"
         %td= motion.votes.officials.count
         %td= motion.votes.officials.where("result IS NOT NULL").count
         %td= motion.votes.officials.where(result: nil).count
 
         - if @campaign.has_consultative_votes?
-          %td{colspan: 3}
-            %ul.list-unstyled
-              - motion.votes.consultatives.select(:result, 'COUNT(*) as count').group(:result).each do |r|
-                %li.list-unstyled-item= "#{r.result} (#{r.count})"
+          - motion.choices.split(',').each do |choice|
+            %td
+              = motion.votes.consultatives.where(result: choice.strip).count
+              %small= "(#{number_to_percentage (motion.votes.consultatives.where(result: choice.strip).count.to_f/motion.votes.consultatives.count.to_f)*100, precision: 2})"
           %td= motion.votes.consultatives.count
           %td= motion.votes.consultatives.where("result IS NOT NULL").count
           %td= motion.votes.consultatives.where(result: nil).count

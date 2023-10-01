@@ -45,6 +45,13 @@
             </v-btn>
           </v-btn-toggle>
 
+          <v-btn-toggle justify-center divided elevation="2" border v-model="motion.vote" mandatory
+                        v-else-if="motion.kind === 'choices'">
+            <v-btn v-for="choice in motion.choices.split(',')" color="primary" :value="choice">
+              {{ choice }}
+            </v-btn>
+          </v-btn-toggle>
+
           <v-text-field v-model="motion.vote" placeholder="Réponse libre" v-else-if="motion.kind === 'free'">
           </v-text-field>
         </v-card-text>

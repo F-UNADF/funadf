@@ -81,6 +81,7 @@ const mutations = {
                 motion_id: element.id,
                 name     : element.name,
                 kind     : element.kind,
+                choices  : element.choices,
                 vote     : null,
             });
         });

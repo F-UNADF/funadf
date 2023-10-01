@@ -48,21 +48,21 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.raw.id }}</td>
+        <td>{{ item.id }}</td>
         <td>
           <div class="d-flex align-center py-4">
             <v-avatar
-                :image="'/logos/' + item.raw.id + '.png'"
+                :image="'/logos/' + item.id + '.png'"
             ></v-avatar>
             <div class="ml-5">
-              <h4>{{ item.raw.name }}</h4>
+              <h4>{{ item.name }}</h4>
               <span class="subtitle-2 d-block font-weight-regular">{{
-                  item.raw.email
+                  itememail
                 }}</span>
             </div>
           </div>
         </td>
-        <td>{{ item.raw.zipcode }} {{ item.raw.town }}</td>
+        <td>{{ item.zipcode }} {{ item.town }}</td>
         <td>
           <v-tooltip location="top" text="Modifier l'association">
             <template v-slot:activator="{ props }">
@@ -70,7 +70,7 @@
                   small
                   v-bind="props"
                   color="primary"
-                  @click="editItem(item.raw)"
+                  @click="editItem(item)"
                   title="Edit">
                 mdi-pencil
               </v-icon>
@@ -84,7 +84,7 @@
                   small
                   class="text-error"
                   title="Delete"
-                  @click="tryDeleteItem(item.raw)">
+                  @click="tryDeleteItem(item)">
                 mdi-delete
               </v-icon>
             </template>

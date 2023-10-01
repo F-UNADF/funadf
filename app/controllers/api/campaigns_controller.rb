@@ -2,9 +2,9 @@ class Api::CampaignsController < ApiController
   before_action :set_campaign, only: [:show, :update, :destroy, :change_state]
 
   def index
-    campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name').order id: :desc
+    campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
     if !@structure.nil?
-      campaigns = @structure.campaigns.select('campaigns.*, structures.name').order id: :desc
+      campaigns = @structure.campaigns.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
     end
     if current_user.has_any_role?(:president, :treasurer, :secretary) && !current_user.is_admin?
       campaigns = Campaign.joins(:structure).where(structure_id: current_user.associations_responsabilities.pluck(:id)).select('campaigns.*, structures.name AS structure_name').order id: :desc
@@ -13,12 +13,21 @@ class Api::CampaignsController < ApiController
   end
 
   def show
-    motions       = @campaign.motions.order(id: :asc)
-    voting_tables = @campaign.voting_tables
-    results       = @campaign.results
-    free_results  = @campaign.free_results
-    voters        = @campaign.voters
-    render json: { campaign: @campaign, motions: motions, voting_tables: voting_tables, results: results, free_results: free_results, voters: voters }
+    motions         = @campaign.motions.order(id: :asc)
+    voting_tables   = @campaign.voting_tables
+    results         = @campaign.results
+    choices_results = @campaign.choices_results
+    free_results    = @campaign.free_results
+    voters          = @campaign.voters
+    render json: {
+      campaign:        @campaign,
+      motions:         motions,
+      voting_tables:   voting_tables,
+      results:         results,
+      free_results:    free_results,
+      choices_results: choices_results,
+      voters:          voters
+    }
   end
 
   def create
@@ -65,15 +74,17 @@ class Api::CampaignsController < ApiController
 
       if motion.nil?
         campaign.motions.build(
-          name:  motion_params[:name],
-          kind:  motion_params[:kind],
-          order: motion_params[:order]
+          name:    motion_params[:name],
+          kind:    motion_params[:kind],
+          order:   motion_params[:order],
+          choices: motion_params[:choices]
         )
       else
         motion.update(
-          name:  motion_params[:name],
-          kind:  motion_params[:kind],
-          order: motion_params[:order]
+          name:    motion_params[:name],
+          kind:    motion_params[:kind],
+          order:   motion_params[:order],
+          choices: motion_params[:choices]
         )
       end
     end
