@@ -8,9 +8,10 @@ class Api::FeedController < ApiController
 
     post_with_urls = posts.map do |post|
       {
-        post: post,
-        structure: post.structure,
-        structure_logo_url: post.structure.logo.service_url
+        post:               post,
+        images:             post.images.map { |image| url_for image },
+        attachments:        post.attachments.map { |file| url_for file },
+        structure:          post.structure,
       }
     end
 
