@@ -48,7 +48,7 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.raw.title }}</td>
+        <td>{{ item.title }}</td>
         <td>
           <v-tooltip location="top" text="Modifier l'actu">
             <template v-slot:activator="{ props }">
@@ -56,7 +56,7 @@
                   small
                   v-bind="props"
                   color="primary"
-                  @click="editItem(item.raw.id)"
+                  @click="editItem(item.id)"
                   title="Edit">
                 mdi-pencil
               </v-icon>

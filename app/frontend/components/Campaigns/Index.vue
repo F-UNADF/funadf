@@ -48,12 +48,12 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.raw.id }}</td>
-        <td>{{ item.raw.name }}</td>
-        <td>{{ item.raw.structure_name }}</td>
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.structure_name }}</td>
         <td>
-          <v-chip :color="getColor(item.raw.state)">
-            {{ getState(item.raw.state) }}
+          <v-chip :color="getColor(item.state)">
+            {{ getState(item.state) }}
           </v-chip>
         </td>
         <td>
@@ -63,8 +63,8 @@
                   small
                   v-bind="props"
                   color="green"
-                  v-if="item.raw.state === 'opened'"
-                  @click="changeCampaignState(item.raw.id, 'close_temporarily')">
+                  v-if="item.state === 'opened'"
+                  @click="changeCampaignState(item.id, 'close_temporarily')">
                 mdi-eye-off
               </v-icon>
             </template>
@@ -75,8 +75,8 @@
                   small
                   v-bind="props"
                   color="success"
-                  v-if="item.raw.state === 'coming'"
-                  @click="changeCampaignState(item.raw.id, 'opening')">
+                  v-if="item.state === 'coming'"
+                  @click="changeCampaignState(item.id, 'opening')">
                 mdi-check
               </v-icon>
             </template>
@@ -87,8 +87,8 @@
                   small
                   v-bind="props"
                   color="danger"
-                  v-if="item.raw.state === 'opened'"
-                  @click="changeCampaignState(item.raw.id, 'close_definitly')">
+                  v-if="item.state === 'opened'"
+                  @click="changeCampaignState(item.id, 'close_definitly')">
                 mdi-close
               </v-icon>
             </template>
@@ -101,7 +101,7 @@
                   small
                   v-bind="props"
                   color="primary"
-                  @click="editItem(item.raw)"
+                  @click="editItem(item)"
                   title="Edit">
                 mdi-pencil
               </v-icon>
@@ -115,7 +115,7 @@
                   small
                   class="text-error"
                   title="Delete"
-                  @click="tryDeleteItem(item.raw)">
+                  @click="tryDeleteItem(item)">
                 mdi-delete
               </v-icon>
             </template>

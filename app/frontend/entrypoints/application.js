@@ -11,6 +11,11 @@ import me_router from '../router/me';
 // Vuetify
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import {
+    VDataTable,
+    VDataTableServer,
+    VDataTableVirtual,
+} from "vuetify/labs/VDataTable";
 import {createVuetify} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'

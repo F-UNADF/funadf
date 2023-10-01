@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_14_065611) do
+ActiveRecord::Schema.define(version: 2023_10_01_150505) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -196,6 +196,7 @@ ActiveRecord::Schema.define(version: 2023_09_14_065611) do
     t.string "kind"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "choices"
     t.index ["campaign_id"], name: "index_motions_on_campaign_id"
   end
 
