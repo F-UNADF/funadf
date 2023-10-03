@@ -71,13 +71,7 @@ Rails.application.routes.draw do
           get '/close_temporarily', to: 'campaigns#close_temporarily', as: :close_temporarily
         end
         resources :intranets
-        root to: 'pages#home', as: :root
-      end
-    end
-
-    namespace :structure, path: '' do
-      constraints(:subdomain => /structure/) do
-        resources :structures, only: :index
+        root to: redirect('/users'), as: :root
       end
     end
 
@@ -110,6 +104,8 @@ Rails.application.routes.draw do
         resources :campaigns, only: :index
 
         get '/mon-compte', :to => redirect('/events')
+
+        root to: redirect('/users'), as: :root
       end
     end
 

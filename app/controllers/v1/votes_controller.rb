@@ -36,7 +36,7 @@ module V1
         FROM structures s
         JOIN memberships m ON s.id = m.structure_id AND m.member_type = 'User' AND m.member_id = ?
         JOIN roles r ON r.id = m.role_id AND r.name = 'president')
-      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'eglises membres' AND vt.voting <> 'not'
+      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'eglises' AND vt.voting <> 'not'
       WHERE c.state IN ('opened', 'coming')"
 
       values = [@user.id, @user.level, @user.id]
@@ -67,7 +67,7 @@ module V1
                     INNER JOIN memberships m ON m.structure_id = s.id AND m.member_type = 'User' AND m.member_id = ?
                     INNER JOIN roles r ON r.id = m.role_id AND r.name IN ('president')
                   )
-        INNER JOIN voting_tables vt ON vt.voting <> 'not' AND vt.`position` IN ('eglises membres', 'eglises non membres')
+        INNER JOIN voting_tables vt ON vt.voting <> 'not' AND vt.`position` = 'eglises'
         INNER JOIN campaigns c ON c.id = vt.campaign_id AND c.id = ?
         INNER JOIN motions mo ON mo.campaign_id = c.id
         INNER JOIN voters v ON v.motion_id = mo.id
