@@ -273,12 +273,14 @@
         </v-window-item>
         <v-window-item key="security" value="security">
           <v-text-field
-              v-model="editedItem.password"
+              v-model="editedItem.user.password"
+              type="password"
               label="Mot de passe"
               required
           ></v-text-field>
           <v-text-field
-              v-model="editedItem.password_confirmation"
+              v-model="editedItem.user.password_confirmation"
+              type="password"
               label="Confirmer le mot de passe"
               required
           ></v-text-field>
@@ -391,6 +393,10 @@ export default {
       immediate: true,
       handler  : function () {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
+        if (this.editedItem.user){
+          this.editedItem.user.password = null;
+          this.editedItem.user.password_confirmation = null;
+        }
       },
     },
   },
