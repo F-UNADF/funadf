@@ -23,7 +23,7 @@
           </v-card-title>
           <v-card-text class="justify-content-center pa-3">
 
-            <v-btn-toggle flat divided elevation="2" border v-model="motion.vote" mandatory
+            <v-btn-toggle class="btn-toggle-vote" flat divided elevation="2" border v-model="motion.vote" mandatory
                           v-if="motion.kind === 'binary'">
               <v-btn color="primary" value="oui">
                 OUI
@@ -33,7 +33,7 @@
               </v-btn>
             </v-btn-toggle>
 
-            <v-btn-toggle flat justify-center divided elevation="2" border v-model="motion.vote" mandatory
+            <v-btn-toggle class="btn-toggle-vote" flat justify-center divided elevation="2" border v-model="motion.vote" mandatory
                           v-else-if="motion.kind === 'neutral'">
               <v-btn color="primary" value="oui">
                 OUI
@@ -46,7 +46,7 @@
               </v-btn>
             </v-btn-toggle>
 
-            <v-btn-toggle flat justify-center divided elevation="2" border v-model="motion.vote" mandatory
+            <v-btn-toggle class="btn-toggle-vote" flat justify-center divided elevation="2" border v-model="motion.vote" mandatory
                           v-else-if="motion.kind === 'choices'">
               <v-btn v-for="choice in motion.choices.split(',')" color="primary" :value="choice">
                 {{ choice }}
@@ -174,7 +174,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .v-btn-toggle{
   height: auto !important;
   display: flex;

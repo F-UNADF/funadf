@@ -14,12 +14,14 @@ class Api::ReferentielsController < ApiController
       associations              = Association.select('id AS id, name AS name').order(:name)
       functions                 = User.get_functions
       responsabilities          = User.get_responsabilities
+      roles                     = [:admin, :moderator]
       result[:levels]           = levels
       result[:whatFees]         = whatfees
       result[:churches]         = churches
       result[:functions]        = functions
       result[:responsabilities] = responsabilities
       result[:associations]     = associations
+      result[:roles]            = roles
     when 'churches'
       roles = I18n.t('activerecord.attributes.roles.names')
 
@@ -78,7 +80,7 @@ class Api::ReferentielsController < ApiController
       result[:categories] = categories
       result[:levels]     = levels
     when 'posts'
-      result[:levels]     = levels
+      result[:levels] = levels
     else
       result[:error] = "Invalid referentiel #{referentiel}"
     end
