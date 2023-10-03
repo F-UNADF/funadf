@@ -11,8 +11,7 @@ export default createRouter({
     routes : [
         {
             path     : '/',
-            component: HomePage,
-            name     : 'home',
+            redirect: { name: 'users' },
         },
         {
             path     : '/users',

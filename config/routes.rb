@@ -99,6 +99,8 @@ Rails.application.routes.draw do
         resources :campaigns, only: :index
 
         get '/mon-compte', :to => redirect('/events')
+
+        root to: redirect('/users'), as: :root
       end
     end
 
