@@ -53,6 +53,27 @@ const actions = {
             }
         });
     },
+    addRole: function ({dispatch, commit, state}, payload) {
+        return new Promise((resolve, reject) => {
+            console.log(payload);
+            axios.patch('/api/users/' + payload.id + '/add_role', payload).then((res) => {
+                commit('setItemInItemsById', res.data.user);
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    },
+    removeRole: function ({dispatch, commit, state}, payload) {
+        return new Promise((resolve, reject) => {
+            axios.patch('/api/users/' + payload.id + '/remove_role', payload).then((res) => {
+                commit('setItemInItemsById', res.data.user);
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    },
     delete: function ({dispatch, commit, state}, id) {
         return new Promise((resolve, reject) => {
             axios.delete('/api/users/' + id, {}).then((res) => {

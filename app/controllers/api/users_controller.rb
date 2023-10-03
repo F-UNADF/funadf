@@ -2,28 +2,16 @@ class Api::UsersController < ApiController
 
   def index
     if @structure.nil?
-      users = User.joins(
-        "LEFT JOIN (SELECT user_id, MAX(start_at) AS max_start_at
-        FROM careers
-        WHERE level IS NOT NULL
-        GROUP BY user_id
-       ) latest_career ON users.id = latest_career.user_id"
-      ).joins(
-        "LEFT JOIN careers ON latest_career.user_id = careers.user_id AND latest_career.max_start_at = careers.start_at"
-      ).select("users.*, COALESCE(careers.level, 'NR') AS current_level, '' AS avatar_url").uniq
+      users = User.left_joins(:roles)
+                  .select("users.*, GROUP_CONCAT(roles.name) as roles")
+                  .group('users.id')
     else
-      users = @structure.users.joins(
-        "LEFT JOIN (SELECT user_id, MAX(start_at) AS max_start_at
-        FROM careers
-        WHERE level IS NOT NULL
-        GROUP BY user_id
-       ) latest_career ON users.id = latest_career.user_id"
-      ).joins(
-        "LEFT JOIN careers ON latest_career.user_id = careers.user_id AND latest_career.max_start_at = careers.start_at"
-      ).select("users.*, COALESCE(careers.level, 'NR') AS current_level, '' AS avatar_url").uniq
+      users = @structure.users.left_joins(:roles)
+                        .select("users.*, GROUP_CONCAT(roles.name) as roles")
+                        .group('users.id')
     end
 
-    render json: {users: users}
+    render json: {users: users.map { |user| user.attributes.merge('current_level' => user.level)  }}
   end
 
   def show
@@ -32,7 +20,15 @@ class Api::UsersController < ApiController
     phases           = @user.phases.joins('JOIN structures AS church ON church.id = careers.church_id').select('careers.id, careers.start_at, careers.end_at, careers.church_id, CONCAT(church.name, "(", church.town, ")") AS church_name, careers.function').order(:start_at)
     responsabilities = @user.responsabilities.joins('JOIN structures AS association ON association.id = careers.association_id').select('careers.id, careers.start_at, careers.end_at, careers.association_id, association.name, careers.function').order(:start_at)
 
-    render json: { user: @user, gratitudes: @user.gratitudes, fees: @user.fees.order(what: :desc), interns: @user.interns, phases: phases, responsabilities: responsabilities }
+    render json: {
+      user: @user,
+      gratitudes: @user.gratitudes,
+      fees: @user.fees.order(what: :desc),
+      interns: @user.interns,
+      phases: phases,
+      responsabilities: responsabilities,
+      roles: @user.roles.pluck(:name)
+    }
   end
 
   def create
@@ -87,6 +83,20 @@ class Api::UsersController < ApiController
   def disable
     user = User.find(params[:id])
     user.update_attribute(:disabled, true)
+
+    render json: { status: 'success', user: user }
+  end
+
+  def add_role
+    user = User.find(params[:id])
+    user.add_role params[:role]
+
+    render json: { status: 'success', user: user }
+  end
+
+  def remove_role
+    user = User.find(params[:id])
+    user.remove_role params[:role]
 
     render json: { status: 'success', user: user }
   end
