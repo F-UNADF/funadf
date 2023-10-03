@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :churches, through: :memberships, source: :structure
   has_many :roles, through: :memberships
 
+
   has_one_attached :avatar
 
   has_many :careers, class_name: "Career", foreign_key: :user_id

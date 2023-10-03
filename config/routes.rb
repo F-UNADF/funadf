@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     resources :users
     patch '/users/:id/enable', to: 'users#enable'
     patch '/users/:id/disable', to: 'users#disable'
+    patch '/users/:id/add_role', to: 'users#add_role'
+    patch '/users/:id/remove_role', to: 'users#remove_role'
 
     resources :churches
     post '/churches/:id/members', to: 'churches#add_members'

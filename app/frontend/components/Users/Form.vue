@@ -14,6 +14,7 @@
         <v-tab value="parcours">Parcours</v-tab>
         <v-tab value="responsabilites">Responsabilités nationales</v-tab>
         <v-tab value="cotisations">Cotisations</v-tab>
+        <v-tab value="roles">Roles globals</v-tab>
         <v-tab value="security">Securité</v-tab>
       </v-tabs>
 
@@ -255,10 +256,30 @@
             </v-col>
           </v-row>
         </v-window-item>
+        <v-window-item key="roles" value="roles">
+          <v-row>
+            <v-col>
+              <v-card>
+                <v-card-text>
+                  <v-btn v-if="!editedItem.roles.includes('admin')" @click="addRole('admin')" color="primary" class="mr-3">Promouvoir administrateur</v-btn>
+                  <v-btn v-else @click="removeRole('admin')" color="secondary" class="mr-3">Destituer administrateur</v-btn>
+
+                  <v-btn v-if="!editedItem.roles.includes('moderator')" @click="addRole('moderator')" color="primary" class="mr-3">Promouvoir modérateur</v-btn>
+                  <v-btn v-else @click="removeRole('moderator')" color="secondary" class="mr-3">Destituer modérateur</v-btn>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-window-item>
         <v-window-item key="security" value="security">
           <v-text-field
               v-model="editedItem.password"
               label="Mot de passe"
+              required
+          ></v-text-field>
+          <v-text-field
+              v-model="editedItem.password_confirmation"
+              label="Confirmer le mot de passe"
               required
           ></v-text-field>
         </v-window-item>
@@ -301,6 +322,34 @@ export default {
         this.close();
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de l\'utilisateur', 'error');
+        let errors = error.response.data.errors;
+
+        this.$root.showSnackbar(errors.join('<br/>'), 'error');
+      });
+    },
+    addRole(role) {
+      this.$store.dispatch('usersStore/addRole', {
+        id  : this.editedItem.user.id,
+        role: role,
+      }).then(response => {
+        this.editedItem.roles.push(role);
+        this.$root.showSnackbar('Utilisateur promu', 'success');
+      }, error => {
+        this.$root.showSnackbar('Un probleme est survenu', 'error');
+        let errors = error.response.data.errors;
+
+        this.$root.showSnackbar(errors.join('<br/>'), 'error');
+      });
+    },
+    removeRole(role) {
+      this.$store.dispatch('usersStore/removeRole', {
+        id  : this.editedItem.user.id,
+        role: role,
+      }).then(response => {
+        this.editedItem.roles.splice(this.editedItem.roles.indexOf(role), 1);
+        this.$root.showSnackbar('Utilisateur destitué', 'success');
+      }, error => {
+        this.$root.showSnackbar('Un probleme est survenu', 'error');
         let errors = error.response.data.errors;
 
         this.$root.showSnackbar(errors.join('<br/>'), 'error');

@@ -1,6 +1,6 @@
 <template>
   <v-row class="mb-0">
-    <v-col cols="12" lg="3" md="3">
+    <v-col cols="12" lg="2" md="2">
       <v-text-field
           density="compact"
           v-model="search"
@@ -10,12 +10,25 @@
           clearable
       ></v-text-field>
     </v-col>
-    <v-col cols="12" lg="3" md="3">
+    <v-col cols="12" lg="2" md="2">
       <v-select
           density="compact"
           v-model="filter.levels"
           :items="referentiels.levels"
           label="Reconnaissance"
+          hide-details
+          multiple
+          clearable
+          chips
+          variant="outlined"
+      ></v-select>
+    </v-col>
+    <v-col cols="12" lg="2" md="2">
+      <v-select
+          density="compact"
+          v-model="filter.roles"
+          :items="referentiels.roles"
+          label="Rôle global"
           hide-details
           multiple
           clearable
@@ -45,6 +58,7 @@
       </v-btn>
     </v-col>
   </v-row>
+
   <v-data-table
       :headers="headers"
       :items="filteredItems"
@@ -221,6 +235,17 @@ export default {
           return false;
         }
 
+        if (this.filter.roles.length > 0) {
+          if (item.roles) {
+            let found = item.roles.split(',').some(role => this.filter.roles.includes(role));
+            if (!found) {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        }
+
         // Check if "search" is in the item lastname, firstname, town or zipcode
         return !(this.search &&
             (!item.lastname || !item.lastname.toLowerCase().includes(this.search.toLowerCase())) &&
@@ -282,11 +307,11 @@ export default {
     },
     connectAs    : function (user) {
       this.$store.dispatch('sessionStore/switch_to', user.id).then(response => {
-        this.$root.showSnackbar('Vous êtes maintenant connecté en tant que ' + user.lastname, 'success');
-      },
-      error => {
-        this.$root.showSnackbar('Une erreur est survenue', 'error');
-      });
+            this.$root.showSnackbar('Vous êtes maintenant connecté en tant que ' + user.lastname, 'success');
+          },
+          error => {
+            this.$root.showSnackbar('Une erreur est survenue', 'error');
+          });
     },
   },
   data() {
@@ -302,28 +327,29 @@ export default {
       filter             : {
         levels  : [],
         disabled: false,
+        roles   : [],
       },
       headers            : [
         {
           title   : 'ID',
-          key     : 'id',
+          key     : 'user.id',
           sortable: true
         },
         {
           title   : 'Nom',
-          key     : 'lastname',
+          key     : 'user.lastname',
           sortable: true
         },
         {
           title   : 'Ville',
           align   : 'start',
-          key     : 'town',
+          key     : 'user.town',
           sortable: true
         },
         {
           title   : 'Niveau',
           align   : 'start',
-          key     : 'current_level',
+          key     : 'user.current_level',
           sortable: true
         },
         {
