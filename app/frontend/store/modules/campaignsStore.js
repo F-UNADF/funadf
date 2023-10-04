@@ -8,6 +8,7 @@ const state = () => ({
     formLoading : false,
     referentiels: [],
     dialogForm  : false,
+    votersCount : 0,
 });
 
 // getters
@@ -18,6 +19,7 @@ const getters = {
     getFormLoading : (state) => state.formLoading,
     getReferentiels: (state) => state.referentiels,
     getDialogForm  : (state) => state.dialogForm,
+    getVotersCount : (state) => state.votersCount,
 };
 
 // actions
@@ -115,7 +117,16 @@ const actions = {
             });
         });
     },
-
+    votersCount : function ({commit}, id) {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/campaigns/' + id + '/voters_count', {}).then((res) => {
+                commit('setVotersCount', res.data.voters_count);
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    }
 };
 
 // mutations
@@ -126,6 +137,7 @@ const mutations = {
     setReferentiels      : (state, payload) => state.referentiels = payload,
     setDialogForm        : (state, payload) => state.dialogForm = payload,
     setFormLoading       : (state, payload) => state.formLoading = payload,
+    setVotersCount       : (state, payload) => state.votersCount = payload,
     setItemInItemsById   : function (state, item) {
         if (typeof item !== 'object') {
             item = JSON.parse(item);
