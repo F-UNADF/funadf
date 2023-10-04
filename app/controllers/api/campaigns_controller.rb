@@ -1,5 +1,5 @@
 class Api::CampaignsController < ApiController
-  before_action :set_campaign, only: [:show, :update, :destroy, :change_state]
+  before_action :set_campaign, only: [:show, :update, :destroy, :change_state, :voters_count]
 
   def index
     campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
@@ -62,6 +62,12 @@ class Api::CampaignsController < ApiController
     else
       render json: { status: 422, errors: @campaign.errors }
     end
+  end
+
+  def voters_count
+
+    voters_count = @campaign.voters.count
+    render json: { voters_count: voters_count }
   end
 
   private
