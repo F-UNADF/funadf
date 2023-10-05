@@ -249,10 +249,13 @@ class Campaign < ActiveRecord::Base
                       motions.name AS motion_name,
                       SUM(CASE WHEN votes.result = 'Oui' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_yes_count,
                       SUM(CASE WHEN votes.result = 'Non' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_no_count,
-                      SUM(CASE WHEN (votes.result = 'Neutre' OR votes.result IS NULL) AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_neutre_count,
+                      SUM(CASE WHEN votes.result = 'Neutre' AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_neutre_count,
+                      SUM(CASE WHEN votes.result IS NULL AND votes.is_consultative = FALSE THEN 1 ELSE 0 END) AS non_consultative_null_count,
+
                       SUM(CASE WHEN votes.result = 'Oui' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_yes_count,
                       SUM(CASE WHEN votes.result = 'Non' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_no_count,
-                      SUM(CASE WHEN (votes.result = 'Neutre' OR votes.result IS NULL) AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_neutre_count")
+                      SUM(CASE WHEN votes.result = 'Neutre' AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_neutre_count,
+                      SUM(CASE WHEN votes.result IS NULL AND votes.is_consultative = TRUE THEN 1 ELSE 0 END) AS consultative_null_count")
   end
 
   def choices_results
