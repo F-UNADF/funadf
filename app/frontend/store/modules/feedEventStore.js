@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// initial state
 const state = () => ({
     items  : [],
     offset : 0,
@@ -22,9 +21,9 @@ const actions = {
                         }) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
-            axios.get('/api/feed?offset=' + state.offset, {}).then((res) => {
-                commit('setItems', res.data.posts);
-                commit('setOffset', state.offset + 10)
+            axios.get('/api/me/events?offset=' + state.offset, {}).then((res) => {
+                commit('setItems', res.data.events);
+                commit('setOffset', state.offset + 5)
                 commit('setLoading', false);
                 resolve(res);
             }).catch((error) => {
@@ -38,9 +37,9 @@ const actions = {
                         }) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
-            axios.get('/api/feed?offset=' + state.offset, {}).then((res) => {
-                commit('pushItems', res.data.posts);
-                commit('setOffset', state.offset + 10);
+            axios.get('/api/me/events?offset=' + state.offset, {}).then((res) => {
+                commit('pushItems', res.data.events);
+                commit('setOffset', state.offset + 5);
                 commit('setLoading', false);
                 resolve(res);
             }).catch((error) => {
@@ -54,8 +53,8 @@ const actions = {
                         }, payload) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
-            axios.get('/api/feed?search=' + payload, {}).then((res) => {
-                commit('setItems', res.data.posts);
+            axios.get('/api/me/events?search=' + payload, {}).then((res) => {
+                commit('setItems', res.data.events);
                 commit('setOffset', 0)
                 commit('setLoading', false);
                 resolve(res);

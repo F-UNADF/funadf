@@ -22,7 +22,7 @@ class Api::PostsController < ApiController
   end
 
   def create
-    post             = Post.new(post_params)
+    post = Post.new(post_params)
 
     if @structure.present?
       post.structure_id = @structure.id

@@ -13,5 +13,16 @@ class Event < ActiveRecord::Base
 
   validates :category_id, :start_at, :end_at, :title, presence: true
 
+  def images
+    files.select do |file|
+      file.content_type.start_with?('image/')
+    end
+  end
+
+  def attachments
+    files.reject do |file|
+      file.content_type.start_with?('image/')
+    end
+  end 
 
 end
