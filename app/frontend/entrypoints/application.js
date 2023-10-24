@@ -6,6 +6,7 @@ import store from '../store/index';
 import admin_router from '../router/admin';
 import intranet_router from '../router/intranet';
 import votes_router from '../router/votes';
+import me_router from '../router/me';
 
 // Vuetify
 import '@mdi/font/css/materialdesignicons.css'
@@ -42,6 +43,8 @@ const router = () => {
             routes = admin_router;
         } else if (subdomain === 'uadpif') {
             routes = intranet_router;
+        } else if (subdomain === 'me') {
+            routes = me_router;
         }
     }
     return routes;

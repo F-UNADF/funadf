@@ -9,4 +9,16 @@ class Post < ActiveRecord::Base
 
   delegate :name, to: :structure, prefix: true
 
+  def images
+    files.select do |file|
+      file.content_type.start_with?('image/')
+    end
+  end
+
+  def attachments
+    files.reject do |file|
+      file.content_type.start_with?('image/')
+    end
+  end
+
 end

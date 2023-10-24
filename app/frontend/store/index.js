@@ -8,6 +8,8 @@ import menuStore from "./modules/menuStore";
 import eventsStore from "./modules/eventsStore";
 import postsStore from "./modules/postsStore";
 import votesStore from "./modules/votesStore";
+import feedStore from "./modules/feedStore";
+import feedEventStore from "@/store/modules/feedEventStore";
 
 const debug = process.env.NODE_ENV !== 'production';
 
@@ -22,6 +24,8 @@ const store = createStore({
         eventsStore,
         postsStore,
         votesStore,
+        feedStore,
+        feedEventStore,
     },
     strict : debug,
 });

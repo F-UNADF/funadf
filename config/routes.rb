@@ -6,8 +6,11 @@ Rails.application.routes.draw do
 
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
-  get '/avatars/:user', to: 'avatars#show'
-  get '/logos/:structure', to: 'logos#show'
+
+  resources :logos, only: :show
+
+  get '/logos/:structure', to: 'logos#show', constraints: { structure: /.*\.png/ }
+
 
   namespace :api, defaults: { format: 'json' } do
     get 'current_user', to: 'current_user#show'
@@ -29,6 +32,10 @@ Rails.application.routes.draw do
     post '/associations/:id/members', to: 'associations#add_members'
     post '/associations/:id/roles/edit', to: 'associations#edit_roles'
 
+    namespace :me do
+      resources :events, only: [:index]
+    end
+
     resources :memberships, only: [:update, :destroy]
 
     resources :campaigns
@@ -37,6 +44,7 @@ Rails.application.routes.draw do
     resources :events
     resources :posts
     resources :votes, only: [:index, :show, :create]
+    resources :feed, only: [:index]
 
     resources :files, only: [:destroy]
 
@@ -78,17 +86,7 @@ Rails.application.routes.draw do
 
     namespace :me, path: '' do
       constraints(:subdomain => 'me') do
-
-        get '/mon-profil', to: 'profile#show', as: :profile
-
-        resources :structures, only: :show
-        resources :users, only: :show
-        resources :events, only: :show
-
-        get '/rechercher', to: 'search#show', as: :search
-        get '/searching', to: 'search#index'
-
-        get '/feed', to: 'feed#index'
+        get '/feed', to: 'feed#show', as: :feed
 
         root to: redirect('/feed'), as: :me
       end
