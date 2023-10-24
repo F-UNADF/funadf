@@ -154,8 +154,6 @@ export default {
         this.close();
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de l\'événement', 'error');
-        let errors = error.response.data.errors;
-        this.$root.showSnackbar(errors.join('<br/>'), 'error');
       });
     },
     getIsoDate: function (value) {

@@ -21,13 +21,10 @@
           Du {{ dateFormat(event.event.start_at) }} au {{ dateFormat(event.event.end_at) }}
         </span>
       </div>
-      <!---If Images -->
-
-      <!---If Attachments -->
     </v-card-item>
 
     <v-dialog v-model="detail" max-width="40%" min-height="30vh">
-      <v-card variant="outlined" class="bg-white" :color="event.event?.category?.color" >
+      <v-card variant="outlined" class="bg-white" :color="event.event?.category?.color">
         <v-card-title>
           <v-avatar size="50" class="me-3">
             <img :src="'/logos/'+event.structure.id+'.png'" width="50" alt="avatar"/>
@@ -52,9 +49,8 @@
               <v-img
                   :src="photo"
                   :lazy-src="photo"
-                  aspect-ratio="1"
-                  cover
                   class="bg-grey-lighten-2"
+                  @click="window.open(photo, '_blank', 'noreferrer');"
               >
                 <template v-slot:placeholder>
                   <v-row
@@ -82,10 +78,14 @@
               <v-btn
                   :href="attachment"
                   target="_blank"
+                  color="primary"
+                  variant="tonal"
                   elevation="1"
                   block>
                 <v-icon>mdi-download</v-icon>
-                {{ attachment.split('/').pop() }}
+                <span style="white-space: normal;">
+                  {{ attachment.split('/').pop().substring(0,15)+"..." }}
+                </span>
               </v-btn>
 
             </v-col>
