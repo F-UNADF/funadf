@@ -21,7 +21,7 @@ class Api::UsersController < ApiController
     responsabilities = @user.responsabilities.joins('JOIN structures AS association ON association.id = careers.association_id').select('careers.id, careers.start_at, careers.end_at, careers.association_id, association.name, careers.function').order(:start_at)
 
     render json: {
-      user: @user,
+      user: @user.attributes,
       gratitudes: @user.gratitudes,
       fees: @user.fees.order(what: :desc),
       interns: @user.interns,
@@ -97,6 +97,13 @@ class Api::UsersController < ApiController
   def remove_role
     user = User.find(params[:id])
     user.remove_role params[:role]
+
+    render json: { status: 'success', user: user }
+  end
+
+  def send_invitation
+    user = User.find(params[:id])
+    user.invite!
 
     render json: { status: 'success', user: user }
   end

@@ -6,3 +6,7 @@
 @import "./layout/horizontal";
 @import "./layout/dark";
 @import "./pages/dashboards";
+
+* {
+  white-space: nowrap;
+}

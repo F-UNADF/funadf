@@ -98,10 +98,9 @@
             </div>
 
             <div class="ml-5">
-              <h4>{{ item.lastname }} {{ item.firstname }}</h4>
-              <span class="subtitle-2 d-block font-weight-regular">{{
-                  item.email
-                }}</span>
+              <h4 class="d-block">{{ item.lastname }} {{ item.firstname }}</h4>
+              <span class="subtitle-2 font-weight-regular">{{ item.email }}</span>
+              <v-btn variant="plain" color="primary" small class="mt-2" @click="editItem(item)" v-if="item.invitation_accepted_at === null">Invitation non validée</v-btn>
             </div>
           </div>
         </td>
@@ -112,66 +111,29 @@
         <td>
           <v-tooltip location="top" text="Modifier l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  small
+              <v-btn
                   v-bind="props"
                   color="primary"
+                  class="rounded-e-0"
+                  variant="flat"
                   @click="editItem(item)"
                   title="Edit">
-                mdi-pencil
-              </v-icon>
-            </template>
-          </v-tooltip>
-
-          <v-tooltip location="top" text="Supprimer l'utilisateur">
-            <template v-slot:activator="{ props }">
-              <v-icon
-                  v-bind="props"
-                  small
-                  class="text-error"
-                  title="Delete"
-                  @click="tryDeleteItem(item)">
-                mdi-delete
-              </v-icon>
-            </template>
-          </v-tooltip>
-
-          <v-tooltip location="top" text="Désactiver l'utilisateur" v-if="!item.disabled">
-            <template v-slot:activator="{ props }">
-              <v-icon
-                  v-bind="props"
-                  small
-                  color="orange"
-                  title="Désactiver"
-                  @click="disableItem(item)">
-                mdi-account-off
-              </v-icon>
-            </template>
-          </v-tooltip>
-
-          <v-tooltip location="top" text="Activer l'utilisateur" v-if="item.disabled">
-            <template v-slot:activator="{ props }">
-              <v-icon
-                  v-bind="props"
-                  small
-                  color="green"
-                  title="Activer"
-                  @click="enableItem(item)">
-                mdi-account-off
-              </v-icon>
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
             </template>
           </v-tooltip>
 
           <v-tooltip location="top" text="Se connecter en tant que l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-icon
+              <v-btn
                   v-bind="props"
-                  small
-                  color="danger"
-                  title="Activer"
-                  @click="connectAs(item)">
-                mdi-drama-masks
-              </v-icon>
+                  color="green"
+                  class="rounded-s-0"
+                  variant="flat"
+                  @click="connectAs(item)"
+                  title="Activer">
+                <v-icon>mdi-drama-masks</v-icon>
+              </v-btn>
             </template>
           </v-tooltip>
         </td>
@@ -181,18 +143,6 @@
 
   <v-dialog v-model="dialogForm" fullscreen>
     <user-form></user-form>
-  </v-dialog>
-  <v-dialog max-width="25%" v-model="dialogConfirmDelete">
-    <v-card>
-      <v-card-text>
-        Etes-vous sûr de vouloir supprimer cet utilisateur ?
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="dialogConfirmDelete = false">Annuler</v-btn>
-        <v-btn color="error" @click="deleteItem(deletingItem)">Supprimer</v-btn>
-      </v-card-actions>
-    </v-card>
   </v-dialog>
 </template>
 
@@ -281,29 +231,8 @@ export default {
       this.$store.dispatch('usersStore/getItem', item.id);
       this.$store.commit('usersStore/setDialogForm', true);
     },
-    enableItem   : function (item) {
-      this.$store.dispatch('usersStore/enable', item.id).then(response => {
-        this.$root.showSnackbar('Utilisateur activé avec succès', 'success');
-      });
-    },
-    disableItem  : function (item) {
-      this.$store.dispatch('usersStore/disable', item.id).then(response => {
-        this.$root.showSnackbar('Utilisateur désactivé avec succès', 'success');
-      });
-    },
     refresh      : function () {
       this.$store.dispatch('usersStore/items');
-    },
-    tryDeleteItem: function (item) {
-      Object.assign(this.deletingItem, item);
-      this.dialogConfirmDelete = true;
-    },
-    deleteItem   : function (item) {
-      this.$store.dispatch('usersStore/delete', item.id).then(response => {
-        this.dialogConfirmDelete = false;
-        this.deletingItem = {};
-        this.$root.showSnackbar('Utilisateur supprimé avec succès', 'success');
-      });
     },
     connectAs    : function (user) {
       this.$store.dispatch('sessionStore/switch_to', user.id).then(response => {
@@ -316,9 +245,6 @@ export default {
   },
   data() {
     return {
-      deletingItem       : {},
-      dialogConfirmDelete: false,
-      loadingDelete      : false,
       search             : '',
       formTitle          : 'Ajouter un utilisateur',
       dialog             : false,

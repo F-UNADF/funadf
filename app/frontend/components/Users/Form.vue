@@ -16,6 +16,9 @@
         <v-tab value="cotisations">Cotisations</v-tab>
         <v-tab value="roles">Roles globals</v-tab>
         <v-tab value="security">Securité</v-tab>
+        <v-tab value="danger-zone" variant="flat" color="red" prepend-icon="mdi-alert">
+          Danger zone
+        </v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
@@ -76,6 +79,11 @@
               ></v-text-field>
             </v-col>
           </v-row>
+          <v-spacer></v-spacer>
+          <v-btn color="info" @click="sendInvitation()" class="mr-3" v-if="editedItem.user.invitation_accepted_at === null">
+            <v-icon class="mr-2">mdi-send</v-icon>
+            Envoyer l'invitation à nouveau
+          </v-btn>
         </v-window-item>
         <v-window-item key="reconnaissances" value="reconnaissances">
           <v-row>
@@ -261,11 +269,17 @@
             <v-col>
               <v-card>
                 <v-card-text>
-                  <v-btn v-if="!editedItem.roles.includes('admin')" @click="addRole('admin')" color="primary" class="mr-3">Promouvoir administrateur</v-btn>
-                  <v-btn v-else @click="removeRole('admin')" color="secondary" class="mr-3">Destituer administrateur</v-btn>
+                  <v-btn v-if="!editedItem.roles.includes('admin')" @click="addRole('admin')" color="primary"
+                         class="mr-3">Promouvoir administrateur
+                  </v-btn>
+                  <v-btn v-else @click="removeRole('admin')" color="secondary" class="mr-3">Destituer administrateur
+                  </v-btn>
 
-                  <v-btn v-if="!editedItem.roles.includes('moderator')" @click="addRole('moderator')" color="primary" class="mr-3">Promouvoir modérateur</v-btn>
-                  <v-btn v-else @click="removeRole('moderator')" color="secondary" class="mr-3">Destituer modérateur</v-btn>
+                  <v-btn v-if="!editedItem.roles.includes('moderator')" @click="addRole('moderator')" color="primary"
+                         class="mr-3">Promouvoir modérateur
+                  </v-btn>
+                  <v-btn v-else @click="removeRole('moderator')" color="secondary" class="mr-3">Destituer modérateur
+                  </v-btn>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -285,6 +299,19 @@
               required
           ></v-text-field>
         </v-window-item>
+        <v-window-item key="danger-zone" value="danger-zone">
+          <v-alert type="error" icon="mdi-alert-circle-outline" class="mb-3">
+            Vous êtes dans la zone de danger, les actions ci-dessous doivent-etres effectuées avec précaution !
+          </v-alert>
+          <v-btn color="red" @click="tryDeleteItem()" class="mr-3">Supprimer l'utilisateur</v-btn>
+
+          <v-btn color="yellow" @click="disableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-off" v-if="!editedItem.user.disabled">
+            Désactiver l'utilisateur
+          </v-btn>
+          <v-btn color="green" @click="enableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-check" v-else>
+            Activer l'utilisateur
+          </v-btn>
+        </v-window-item>
       </v-window>
     </v-card-text>
     <v-card-actions class="bg-blue-lighten-5">
@@ -292,6 +319,20 @@
       <v-btn color="red" @click="close()">Annuler</v-btn>
       <v-btn color="blue" @click="save()">Enregistrer</v-btn>
     </v-card-actions>
+
+
+    <v-dialog v-model="dialogConfirmDelete">
+      <v-card color="red"  variant="flat">
+        <v-card-text>
+          Etes-vous sûr de vouloir supprimer cet utilisateur ?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="white" variant="outlined" @click="dialogConfirmDelete = false">Annuler</v-btn>
+          <v-btn color="white" variant="outlined" @click="deleteItem(this.deletingItem)">Supprimer</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -316,6 +357,34 @@ export default {
     close() {
       this.$store.commit('usersStore/setDialogForm', false);
       this.$store.commit('usersStore/setItem', {});
+    },
+    enableItem   : function (item) {
+      this.$store.dispatch('usersStore/enable', item.id).then(response => {
+        item.disabled = false;
+        this.$root.showSnackbar('Utilisateur activé avec succès', 'success');
+      });
+    },
+    disableItem  : function (item) {
+      this.$store.dispatch('usersStore/disable', item.id).then(response => {
+        item.disabled = true;
+        this.$root.showSnackbar('Utilisateur désactivé avec succès', 'success');
+      });
+    },
+    tryDeleteItem: function (item) {
+      this.deletingItem = JSON.parse(JSON.stringify(this.editedItem));
+      this.dialogConfirmDelete = true;
+    },
+    deleteItem   : function (item) {
+      this.$store.dispatch('usersStore/delete', this.deletingItem.user.id).then(response => {
+        this.dialogConfirmDelete = false;
+        this.deletingItem = {};
+        this.$root.showSnackbar('Utilisateur supprimé avec succès', 'success');
+      });
+    },
+    sendInvitation : function(item){
+      this.$store.dispatch('usersStore/sendInvitation', this.editedItem.user).then(response => {
+        this.$root.showSnackbar('Invitation envoyée', 'success');
+      });
     },
     save() {
       this.$store.dispatch('usersStore/save', this.editedItem).then(response => {
@@ -393,7 +462,7 @@ export default {
       immediate: true,
       handler  : function () {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
-        if (this.editedItem.user){
+        if (this.editedItem.user) {
           this.editedItem.user.password = null;
           this.editedItem.user.password_confirmation = null;
         }
@@ -403,9 +472,12 @@ export default {
 
   data() {
     return {
-      editedItem: {},
-      tab       : 'infos',
-      rules     : {
+      editedItem         : {},
+      deletingItem       : {},
+      dialogConfirmDelete: false,
+      loadingDelete      : false,
+      tab                : 'infos',
+      rules              : {
         required: value => !!value || 'Champ obligatoire',
       },
     };
