@@ -74,10 +74,23 @@ const actions = {
             });
         });
     },
+    sendInvitation: function ({dispatch, commit, state}, payload) {
+        return new Promise((resolve, reject) => {
+            axios.post('/api/users/' + payload.id + '/send_invitation', payload).then((res) => {
+                resolve(res);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
+        });
+    },
     delete: function ({dispatch, commit, state}, id) {
+        commit('setFormLoading', true);
         return new Promise((resolve, reject) => {
             axios.delete('/api/users/' + id, {}).then((res) => {
                 commit('removeItemInItemsById', id);
+                commit('setDialogForm', false);
+                commit('setFormLoading', false);
+                commit('setItem', {});
                 resolve(res);
             }).catch((error) => {
                 reject(error, 2000);

@@ -8,9 +8,7 @@ Rails.application.routes.draw do
   get '/app', to: 'pages#app'
 
   resources :logos, only: :show
-
-  get '/logos/:structure', to: 'logos#show', constraints: { structure: /.*\.png/ }
-
+  resources :avatars, only: :show
 
   namespace :api, defaults: { format: 'json' } do
     get 'current_user', to: 'current_user#show'
@@ -22,6 +20,7 @@ Rails.application.routes.draw do
     patch '/users/:id/disable', to: 'users#disable'
     patch '/users/:id/add_role', to: 'users#add_role'
     patch '/users/:id/remove_role', to: 'users#remove_role'
+    post '/users/:id/send_invitation', to: 'users#send_invitation'
 
     resources :churches
     post '/churches/:id/members', to: 'churches#add_members'
@@ -153,6 +152,6 @@ Rails.application.routes.draw do
   post 'uploader/image', to: 'uploader#image'
   root to: redirect('/users/sign_in')
 
-  #get '*path', to: redirect('/users/sign_in')
+  # get '*path', to: redirect('/users/sign_in')
 
 end
