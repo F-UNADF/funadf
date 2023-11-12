@@ -49,12 +49,22 @@
           <v-btn
               block
               class="mt-4 py-4"
+              color="primary"
+              @click="editProfile()"
+              variant="flat"
+              prepend-icon="mdi-account-edit">
+            Modifier mon profil
+          </v-btn>
+
+          <v-btn
+              block
+              class="mt-4 py-4"
               color="secondary"
               @click="$emit('logout')"
               variant="flat"
-          >Se déconnecter
-          </v-btn
-          >
+              prepend-icon="mdi-logout">
+            Se déconnecter
+          </v-btn>
         </v-list>
       </v-menu>
     </template>
@@ -62,10 +72,11 @@
 </template>
 
 <script>
+
 export default {
   name   : "Header",
   props  : {
-    user        : {
+    user : {
       type    : Object,
       required: true,
     },
@@ -80,6 +91,10 @@ export default {
     },
     switch_back: function () {
       this.$store.dispatch('sessionStore/switch_back');
+    },
+    editProfile: function () {
+      this.$store.dispatch('usersStore/getItem', this.user.id);
+      this.$store.commit('sessionStore/setEditProfilDialog', true);
     },
   },
 };

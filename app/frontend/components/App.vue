@@ -9,6 +9,11 @@
       </v-container>
     </v-main>
 
+
+    <v-dialog v-model="dialogForm" fullscreen>
+      <user-form></user-form>
+    </v-dialog>
+
     <v-snackbar v-model="this.snackbar.show" :timeout="this.snackbar.timeout" :color="this.snackbar.color">
       <div v-html="snackbar.message"></div>
       <template v-slot:actions>
@@ -28,21 +33,31 @@
 import {mapGetters, mapActions} from "vuex";
 import Sidebar from "../components/Layout/Sidebar.vue";
 import Header from "../components/Layout/Header.vue";
+import UserForm from "@/components/Users/Form.vue";
 
 export default ({
   name      : 'App',
   components: {
     Sidebar,
     Header,
+    UserForm,
   },
   computed  : {
     ...mapGetters('sessionStore', {
-      currentUser : 'currentUser',
-      ouser: 'getOriginalUser',
+      currentUser: 'currentUser',
+      ouser      : 'getOriginalUser',
     }),
     ...mapGetters('menuStore', [
       'getMenu',
     ]),
+    dialogForm: {
+      get() {
+        return this.$store.state.sessionStore.editProfilDialog;
+      },
+      set(value) {
+        this.$store.commit('sessionStore/setEditProfilDialog', value);
+      },
+    },
   },
 
   methods    : {

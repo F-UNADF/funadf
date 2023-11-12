@@ -10,13 +10,13 @@
     <v-card-text>
       <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
         <v-tab value="infos">Informations générales</v-tab>
-        <v-tab value="reconnaissances">Reconnaissances</v-tab>
+        <v-tab value="reconnaissances" v-if="canEditProfil()">Reconnaissances</v-tab>
         <v-tab value="parcours">Parcours</v-tab>
-        <v-tab value="responsabilites">Responsabilités nationales</v-tab>
-        <v-tab value="cotisations">Cotisations</v-tab>
-        <v-tab value="roles">Roles globals</v-tab>
+        <v-tab value="responsabilites" v-if="canEditProfil()">Responsabilités nationales</v-tab>
+        <v-tab value="cotisations" v-if="canEditProfil()">Cotisations</v-tab>
+        <v-tab value="roles" v-if="canEditProfil()">Roles globals</v-tab>
         <v-tab value="security">Securité</v-tab>
-        <v-tab value="danger-zone" variant="flat" color="red" prepend-icon="mdi-alert">
+        <v-tab value="danger-zone" variant="flat" color="red" prepend-icon="mdi-alert" v-if="canEditProfil()">
           Danger zone
         </v-tab>
       </v-tabs>
@@ -24,7 +24,35 @@
       <v-window v-model="tab">
         <v-window-item key="infos" value="infos">
           <v-row>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="3">
+              <div class="logo w-50 mx-auto">
+                <v-img
+                    v-if="this.editedItem.id !== null"
+                    style="border-radius: 100%;"
+                    :src="'/avatars/'+this.editedItem.id+'.png'"
+                    :lazy-src="'/avatars/'+this.editedItem.id+'.png'"
+                    cover
+                    aspect-ratio="1">
+                </v-img>
+                <v-img
+                    v-else
+                    style="border-radius: 100%;"
+                    src="https://fakeimg.pl/500x500"
+                    cover
+                    aspect-ratio="1">
+                </v-img>
+              </div>
+
+              <v-file-input
+                  label="Logo"
+                  prepend-icon="mdi-camera"
+                  @change="prepareAvatar($event.target.files)"
+                  accept="image/*"
+                  show-size
+                  class="mt-5">
+              </v-file-input>
+            </v-col>
+            <v-col cols="12" sm="3">
               <v-text-field
                   v-model="editedItem.user.firstname"
                   label="Prénom"
@@ -43,7 +71,7 @@
                   label="Date de naissance"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="3">
               <v-text-field
                   v-model="editedItem.user.email"
                   type="email"
@@ -56,7 +84,7 @@
                   label="Téléphone"
               ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" sm="3">
               <v-text-field
                   v-model="editedItem.user.address_1"
                   label="Adresse"
@@ -80,7 +108,8 @@
             </v-col>
           </v-row>
           <v-spacer></v-spacer>
-          <v-btn color="info" @click="sendInvitation()" class="mr-3" v-if="editedItem.user.invitation_accepted_at === null">
+          <v-btn color="info" @click="sendInvitation()" class="mr-3"
+                 v-if="editedItem.user.invitation_accepted_at === null">
             <v-icon class="mr-2">mdi-send</v-icon>
             Envoyer l'invitation à nouveau
           </v-btn>
@@ -305,10 +334,12 @@
           </v-alert>
           <v-btn color="red" @click="tryDeleteItem()" class="mr-3">Supprimer l'utilisateur</v-btn>
 
-          <v-btn color="yellow" @click="disableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-off" v-if="!editedItem.user.disabled">
+          <v-btn color="yellow" @click="disableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-off"
+                 v-if="!editedItem.user.disabled">
             Désactiver l'utilisateur
           </v-btn>
-          <v-btn color="green" @click="enableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-check" v-else>
+          <v-btn color="green" @click="enableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-check"
+                 v-else>
             Activer l'utilisateur
           </v-btn>
         </v-window-item>
@@ -322,7 +353,7 @@
 
 
     <v-dialog v-model="dialogConfirmDelete">
-      <v-card color="red"  variant="flat">
+      <v-card color="red" variant="flat">
         <v-card-text>
           Etes-vous sûr de vouloir supprimer cet utilisateur ?
         </v-card-text>
@@ -349,6 +380,10 @@ export default {
       referentiels: 'getReferentiels',
       formLoading : 'getFormLoading',
     }),
+    ...mapGetters('sessionStore', {
+      currentUser: 'currentUser',
+      roles      : 'roles',
+    }),
     getTitle() {
       return (this.editedItem.id === null) ? "Ajouter un utilisateur" : "Modifier un utilisateur";
     }
@@ -358,33 +393,46 @@ export default {
       this.$store.commit('usersStore/setDialogForm', false);
       this.$store.commit('usersStore/setItem', {});
     },
-    enableItem   : function (item) {
+    enableItem    : function (item) {
       this.$store.dispatch('usersStore/enable', item.id).then(response => {
         item.disabled = false;
         this.$root.showSnackbar('Utilisateur activé avec succès', 'success');
       });
     },
-    disableItem  : function (item) {
+    disableItem   : function (item) {
       this.$store.dispatch('usersStore/disable', item.id).then(response => {
         item.disabled = true;
         this.$root.showSnackbar('Utilisateur désactivé avec succès', 'success');
       });
     },
-    tryDeleteItem: function (item) {
+    tryDeleteItem : function (item) {
       this.deletingItem = JSON.parse(JSON.stringify(this.editedItem));
       this.dialogConfirmDelete = true;
     },
-    deleteItem   : function (item) {
+    deleteItem    : function (item) {
       this.$store.dispatch('usersStore/delete', this.deletingItem.user.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
         this.$root.showSnackbar('Utilisateur supprimé avec succès', 'success');
       });
     },
-    sendInvitation : function(item){
+    sendInvitation: function (item) {
       this.$store.dispatch('usersStore/sendInvitation', this.editedItem.user).then(response => {
         this.$root.showSnackbar('Invitation envoyée', 'success');
       });
+    },
+    prepareAvatar(file) {
+      if (!file.length) {
+        this.$root.showSnackbar("Aucun fichier sélectionné", 'warning');
+        return;
+      }
+
+      if (file.length > 1) {
+        this.$root.showSnackbar("Vous devez sélectionner un seul fichier", 'warning');
+        return;
+      }
+
+      this.editedItem.avatar = file[0];
     },
     save() {
       this.$store.dispatch('usersStore/save', this.editedItem).then(response => {
@@ -455,6 +503,10 @@ export default {
         end_at        : null,
       });
     },
+    canEditProfil() {
+      // current_user can edit all profil if he is admin OR if he is not the user he want to edit
+      return this.roles.includes('admin') || this.currentUser.id !== this.editedItem.user.id;
+    }
   },
   watch   : {
     item: {

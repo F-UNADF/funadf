@@ -13,7 +13,6 @@ class User < ActiveRecord::Base
   has_many :churches, through: :memberships, source: :structure
   has_many :roles, through: :memberships
 
-
   has_one_attached :avatar
 
   has_many :careers, class_name: "Career", foreign_key: :user_id
@@ -52,7 +51,7 @@ class User < ActiveRecord::Base
   end
 
   def application_roles
-    roles.where(resource_id: nil, resource_type: nil)
+    memberships.where(structure_id: nil).map(&:role).map(&:name)
   end
 
   def fullname

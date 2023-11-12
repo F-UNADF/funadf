@@ -50,14 +50,11 @@ class Api::UsersController < ApiController
     user = User.find(params[:user][:id])
     user.update(user_params)
 
-    begin
-      update_gratitudes(user)
-      update_phases(user)
-      update_responsabilities(user)
-      update_fees(user)
-    rescue => e
-      render json: { status: 'error', error: e.message }
-    end
+    update_gratitudes(user)
+    update_phases(user)
+    update_responsabilities(user)
+    update_fees(user)
+
     render json: { status: 'success', user: user }
   end
 

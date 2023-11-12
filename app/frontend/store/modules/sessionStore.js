@@ -2,16 +2,20 @@ import axios from "axios";
 
 // initial state
 const state = () => ({
-    currentUser : {},
-    originalUser: {},
-    subdomain   : null
+    currentUser     : {},
+    roles           : [],
+    originalUser    : {},
+    editProfilDialog: false,
+    subdomain       : null
 });
 
 // getters
 const getters = {
-    currentUser    : (state) => state.currentUser,
-    getOriginalUser: (state) => state.originalUser,
-    subdomain      : (state) => state.subdomain,
+    currentUser     : (state) => state.currentUser,
+    roles           : (state) => state.roles,
+    getOriginalUser : (state) => state.originalUser,
+    subdomain       : (state) => state.subdomain,
+    editProfilDialog: (state) => state.editProfilDialog
 };
 
 // actions
@@ -20,6 +24,8 @@ const actions = {
         try {
             const response = await axios.get('/api/current_user');
             commit('setCurrentUser', response.data.user);
+            commit('setRoles', response.data.roles);
+
             // if response.dqtq.user is empty or null the rediredct to login page
             if (response.data.user === null) {
                 window.location.href = '/users/sign_in';
@@ -40,14 +46,22 @@ const actions = {
         }
         window.location.href = '/';
     },
-    switch_to({ commit, dispatch, state }, user_id) {
+    switch_to({
+                  commit,
+                  dispatch,
+                  state
+              }, user_id) {
         axios.get('/api/switch/' + user_id).then((response) => {
             commit('setCurrentUser', response.data.current_user);
             commit('setOriginalUser', response.data.original_user);
             window.location.href = response.data.redirect_to;
         });
     },
-    switch_back({ commit, dispatch,  state }) {
+    switch_back({
+                    commit,
+                    dispatch,
+                    state
+                }) {
         axios.get('/api/switch_back').then((response) => {
             commit('setCurrentUser', response.data.current_user);
             commit('setOriginalUser', null);
@@ -58,14 +72,20 @@ const actions = {
 
 // mutations
 const mutations = {
-    setCurrentUser : (state, user) => {
+    setCurrentUser     : (state, user) => {
         state.currentUser = user;
     },
-    setOriginalUser: (state, user) => {
+    setOriginalUser    : (state, user) => {
         state.originalUser = user;
     },
-    setSubdomain   : (state, subdomain) => {
+    setSubdomain       : (state, subdomain) => {
         state.subdomain = subdomain;
+    },
+    setRoles           : (state, roles) => {
+        state.roles = roles;
+    },
+    setEditProfilDialog: (state, value) => {
+        state.editProfilDialog = value;
     }
 };
 
