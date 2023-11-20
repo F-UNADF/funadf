@@ -20,7 +20,7 @@ ADD Gemfile.lock /app/Gemfile.lock
 RUN gem install bundler -v "$BUNDLER_VERSION" && bundle install -j4
 
 ADD package.json /app/package.json
-RUN npm install
+RUN npm install --force
 RUN npm install --global yarn
 
 ADD . /app
