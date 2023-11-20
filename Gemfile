@@ -69,6 +69,7 @@ group :development do
   gem 'rubocop', require: false
   gem 'spring-commands-rspec'
   gem 'test-unit'
+  gem 'faker'
 end
 
 group :production do
