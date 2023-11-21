@@ -92,7 +92,7 @@
               elevation="1"
               block>
             <v-icon>mdi-download</v-icon>
-            {{ attachment.split('/').pop() }}
+            {{ attachment.split('/').pop().substring(0,15)+"..." }}
           </v-btn>
 
         </v-col>
