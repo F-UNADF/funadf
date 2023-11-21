@@ -3,9 +3,9 @@ class Api::EventsController < ApiController
 
   def index
     if @structure.nil?
-      events = Event.where("end_at > ?", Time.current).order(id: :desc)
+      events = Event.where("end_at > ?", Time.current).order(start_at: :asc)
     else
-      events = @structure.events.where("end_at > ?", Time.current).order(id: :desc)
+      events = @structure.events.where("end_at > ?", Time.current).order(start_at: :asc)
     end
     render json: { events: events }
   end
