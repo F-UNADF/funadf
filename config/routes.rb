@@ -45,6 +45,8 @@ Rails.application.routes.draw do
     resources :votes, only: [:index, :show, :create]
     resources :feed, only: [:index]
 
+    resources :roles
+
     resources :files, only: [:destroy]
 
     get 'referentiels/:referentiel', to: 'referentiels#show'
@@ -72,6 +74,7 @@ Rails.application.routes.draw do
         resources :associations, only: :index
         resources :events, only: :index
         resources :posts, only: :index
+        resources :roles, only: :index
 
         resources :campaigns do
           get '/open', to: 'campaigns#open', as: :open
