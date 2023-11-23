@@ -5,6 +5,7 @@ class Api::MenusController < ApiController
     result = {}
     case menu
     when 'admin'
+      ## ADMINISTRATION ADD ##
       result = [
         {
           header: "ADMIN",
@@ -55,6 +56,23 @@ class Api::MenusController < ApiController
             to:    admin_posts_path,
           }
       end
+
+
+      ## PARAMETTRAGE APPLICATION ##
+      result <<
+        {
+          header: "PARAMETRAGE",
+        }
+      result <<
+        {
+          title: 'Roles',
+          icon:  'mdi-account-key',
+          to:    admin_roles_path,
+        }
+
+
+
+      ## NAVIGATION ##
       result <<
         {
           header: "NAVIGATION",
