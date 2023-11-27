@@ -6,7 +6,8 @@ class Api::Me::EventsController < ApiController
     events = Event.joins(:accesses, :structure)
                   .where(structure_id: current_user.memberships.pluck(:structure_id))
                   .where('accesses.level = ? AND accesses.can_access = TRUE', current_user.level)
-                  .order(start_at: :desc)
+                  .where('end_at > ?', Time.now)
+                  .order(start_at: :asc)
                   .limit(5)
                   .offset(offset)
 
