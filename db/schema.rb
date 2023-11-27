@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_23_071907) do
+ActiveRecord::Schema.define(version: 2023_11_27_070921) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -222,18 +222,6 @@ ActiveRecord::Schema.define(version: 2023_11_23_071907) do
     t.string "short_descriptions"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "rolizations", id: :integer, charset: "utf8", force: :cascade do |t|
-    t.integer "role_id"
-    t.integer "resource_id"
-    t.string "resource_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean "can_vote", default: true
-    t.string "reason"
-    t.index ["resource_id", "resource_type"], name: "index_rolizations_on_resource_id_and_resource_type"
-    t.index ["role_id"], name: "index_rolizations_on_role_id"
   end
 
   create_table "structures", id: :integer, charset: "utf8", force: :cascade do |t|

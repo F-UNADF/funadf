@@ -62,7 +62,7 @@ export default {
   },
   methods:  {
     close: function () {
-      this.$store.commit('rolesStore/setFormLoading', false);
+      this.$store.commit('rolesStore/setDialogForm', false);
       this.$store.commit('postsStore/setItem', {});
     },
     save:  function () {
