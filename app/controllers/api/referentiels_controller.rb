@@ -10,7 +10,7 @@ class Api::ReferentielsController < ApiController
     case referentiel
     when 'users'
       whatfees                  = Fee.pluck(:what).uniq
-      churches                  = Church.select('id AS id, CONCAT(name, "(", town, ")") AS name').order(:name)
+      churches                  = Church.select('id AS id, CONCAT(name, "(", COALESCE(town, ''), ")") AS name').order(:name)
       associations              = Association.select('id AS id, name AS name').order(:name)
       functions                 = User.get_functions
       responsabilities          = User.get_responsabilities
@@ -29,7 +29,7 @@ class Api::ReferentielsController < ApiController
             SELECT
               s.id AS member_id,
               'Structure' AS member_type,
-              CONCAT(s.name, ' (', s.town, ')') AS name
+              CONCAT(s.name, ' (', COALESC(s.town, ''), ')') AS name
             FROM structures s
             UNION
             SELECT
@@ -49,7 +49,7 @@ class Api::ReferentielsController < ApiController
             SELECT
               s.id AS member_id,
               'Structure' AS member_type,
-              CONCAT(s.name, ' (', s.town, ')') AS name
+              CONCAT(s.name, ' (', COALESCE(s.town, ''), ')') AS name
             FROM structures s
             UNION
             SELECT
