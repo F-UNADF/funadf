@@ -46,7 +46,6 @@ gem 'handlebars_assets'
 gem 'public_activity'
 gem 'simple_token_authentication'
 gem 'rack-cors', '~> 0.3.1'
-# gem 'mini_racer'
 
 gem 'aws-sdk-s3', require: false
 gem 'exception_notification'
@@ -54,6 +53,11 @@ gem 'slack-notifier'
 
 gem 'foreman'
 gem 'vite_rails'
+
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem "omniauth-rails_csrf_protection"
+
 
 group :development do
   gem 'better_errors'
