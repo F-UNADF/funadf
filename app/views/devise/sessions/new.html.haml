@@ -21,3 +21,9 @@
   - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
     = link_to new_password_path(resource_name), class: "btn btn-success" do
       J'ai oublié mon mot de passe
+
+  %hr
+
+  = link_to user_google_oauth2_omniauth_authorize_path, method: :post, class: 'btn btn-lg btn-block btn-outline-dark' do
+    %i.fab.fa-google.mx-3
+    Se connecter avec Google
