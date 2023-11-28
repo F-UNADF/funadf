@@ -2,7 +2,9 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: { invitations: 'users/invitations', sessions: 'users/sessions' }
+  devise_for :users, controllers: { invitations: 'users/invitations',
+                                    sessions: 'users/sessions',
+                                    omniauth_callbacks: 'users/omniauth_callbacks' }
 
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
