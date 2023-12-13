@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import FeedIndex from '../components/Feed/Index.vue'
+import SessionIndex from "../components/Session/Index.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -7,6 +8,11 @@ export default createRouter({
         {
             path     : '/',
             redirect : '/feed',
+        },
+        {
+            path:      '/connexion',
+            component: SessionIndex,
+            name:      'connexion',
         },
         {
             path     : '/feed',

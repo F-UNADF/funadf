@@ -31,6 +31,7 @@
               aspect-ratio="1"
               cover
               class="bg-grey-lighten-2"
+              @click="carouselDialog = true"
           >
             <template v-slot:placeholder>
               <v-row
@@ -44,6 +45,11 @@
                 ></v-progress-circular>
               </v-row>
             </template>
+            <div class="d-flex align-center justify-center fill-height bg-grey-lighten-3 opacity-50 cursor-pointer">
+              <span class="text-h6 font-weight-bold">
+                <v-icon>image-search</v-icon>
+              </span>
+            </div>
           </v-img>
         </v-col>
         <v-col

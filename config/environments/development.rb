@@ -59,7 +59,7 @@ Rails.application.configure do
 
   config.hosts << "admin.myloc.me"
   config.hosts << "me.myloc.me"
-  config.hosts << "uadpif.myloc.me"
+  config.hosts << "test.myloc.me"
   config.hosts << "myloc.me"
 
   BetterErrors::Middleware.allow_ip! "0.0.0.0/0"

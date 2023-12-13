@@ -1,42 +1,47 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomePage from '../components/Pages/Home.vue'
 import EventsIndex from '../components/Events/Index.vue'
-import UsersIndex from "../components/Users/Index.vue";
+import IntranetUsersIndex from "@/pages/Intranet/Users/Index.vue";
 import ChurchesIndex from "../components/Churches/Index.vue";
 import CampaignsIndex from "../components/Campaigns/Index.vue";
 import PostsIndex from "../components/Posts/Index.vue";
+import SessionIndex from "../components/Session/Index.vue";
 
 export default createRouter({
     history: createWebHistory(),
-    routes : [
+    routes:  [
         {
-            path     : '/',
-            redirect: { name: 'users' },
+            path:     '/',
+            redirect: {name: 'users'},
         },
         {
-            path     : '/users',
-            component: UsersIndex,
-            name     : 'users',
+            path:      '/connexion',
+            component: SessionIndex,
+            name:      'connexion',
         },
         {
-            path     : '/churches',
+            path:      '/users',
+            component: IntranetUsersIndex,
+            name:      'users',
+        },
+        {
+            path:      '/churches',
             component: ChurchesIndex,
-            name     : 'churches',
+            name:      'churches',
         },
         {
-            path     : '/events',
+            path:      '/events',
             component: EventsIndex,
-            name     : 'events',
+            name:      'events',
         },
         {
-            path     : '/campaigns',
+            path:      '/campaigns',
             component: CampaignsIndex,
-            name     : 'campaigns',
+            name:      'campaigns',
         },
         {
-            path     : '/posts',
+            path:      '/posts',
             component: PostsIndex,
-            name     : 'posts',
+            name:      'posts',
         },
     ],
 })

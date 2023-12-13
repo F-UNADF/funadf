@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
           when 'me'
             folder = 'me/'
           else
-            folder = 'intranet/'
+            folder = 'Intranet/'
           end
         end
 
