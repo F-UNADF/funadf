@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
 
+  get '/connexion', to: 'pages#connexion'
+
   resources :logos, only: :show
   resources :avatars, only: :show
 
@@ -155,8 +157,6 @@ Rails.application.routes.draw do
   end
 
   post 'uploader/image', to: 'uploader#image'
-  root to: redirect('/users/sign_in')
-
-  # get '*path', to: redirect('/users/sign_in')
+  root to: redirect('/connexion')
 
 end

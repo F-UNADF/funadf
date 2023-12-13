@@ -7,6 +7,7 @@ import CampaignsIndex from '../components/Campaigns/Index.vue'
 import EventsIndex from "../components/Events/Index.vue";
 import PostsIndex from "../components/Posts/Index.vue";
 import RolesIndex from "../components/Roles/Index.vue";
+import SessionIndex from "../components/Session/Index.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -15,6 +16,11 @@ export default createRouter({
             path:      '/',
             component: HomePage,
             name:      'home',
+        },
+        {
+            path:      '/connexion',
+            component: SessionIndex,
+            name:      'connexion',
         },
         {
             path:      '/users',

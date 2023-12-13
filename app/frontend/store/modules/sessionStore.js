@@ -21,8 +21,8 @@ const actions = {
             const response = await axios.get('/api/current_user');
             commit('setCurrentUser', response.data.user);
             // if response.dqtq.user is empty or null the rediredct to login page
-            if (response.data.user === null) {
-                window.location.href = '/users/sign_in';
+            if (response.data.user === null && window.location.pathname !== '/connexion') {
+                window.location.href = '/connexion';
             }
             commit('setOriginalUser', response.data.original_user);
         } catch (error) {
@@ -39,6 +39,20 @@ const actions = {
             commit('setOriginalUser', null);
         }
         window.location.href = '/';
+    },
+    login({ commit }, user) {
+        // Return a Promise
+        return new Promise((resolve, reject) => {
+            axios.post('/users/sign_in', user)
+                .then((response) => {
+                    commit('setCurrentUser', response.data.user);
+                    commit('setOriginalUser', null);
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error); // Reject with the error if request fails
+                });
+        });
     },
     switch_to({ commit, dispatch, state }, user_id) {
         axios.get('/api/switch/' + user_id).then((response) => {

@@ -10,7 +10,7 @@ class Api::ReferentielsController < ApiController
     case referentiel
     when 'users'
       whatfees                  = Fee.pluck(:what).uniq
-      churches                  = Church.select('id AS id, CONCAT(name, "(", COALESCE(town, ''), ")") AS name').order(:name)
+      churches                  = Church.select("id AS id, CONCAT(name, '(', COALESCE(town, ''), ')') AS name").order(:name)
       associations              = Association.select('id AS id, name AS name').order(:name)
       functions                 = User.get_functions
       responsabilities          = User.get_responsabilities
