@@ -67,6 +67,16 @@ export default ({
     },
     showSidebar: true,
   }),
+  watch      : {
+    'currentUser': function (val) {
+      let uris = window.location.hostname.split('.');
+      let subdomain = 'votes';
+      if (uris.length > 2) {
+        subdomain = uris[0];
+      }
+      this.$store.dispatch('menuStore/getMenu', subdomain);
+    },
+  },
   beforeMount: function () {
     //get subdomain :
     let uris = window.location.hostname.split('.');

@@ -12,7 +12,6 @@ import feedStore from "./modules/feedStore";
 import feedEventStore from "./modules/feedEventStore";
 import rolesStore from "./modules/rolesStore";
 
-
 const debug = process.env.NODE_ENV !== 'production';
 
 const store = createStore({

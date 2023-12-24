@@ -65,7 +65,7 @@ class Users::InvitationsController < Devise::InvitationsController
 
     def set_layout
       if request.subdomain && request.subdomain != '' && request.subdomain != 'admin'
-        "intranet/layouts/application"
+        "Intranet/layouts/application"
       elsif request.subdomain && request.subdomain != '' && request.subdomain == 'admin'
         "admin/layouts/application"
       else

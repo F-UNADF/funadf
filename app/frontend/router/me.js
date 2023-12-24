@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import FeedIndex from '../components/Feed/Index.vue'
+import SessionIndex from "../components/Session/Index.vue";
 
 export default createRouter({
     history: createWebHistory(),

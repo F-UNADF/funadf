@@ -1,25 +1,34 @@
 # frozen_string_literal: true
 
 class Users::PasswordsController < Devise::PasswordsController
+
+  skip_before_action :verify_authenticity_token
+
   # GET /resource/password/new
-  # def new
-  #   super
-  # end
+  def edit
+    render layout: 'layouts/vuejs'
+  end
 
   # POST /resource/password
-  # def create
-  #   super
-  # end
-
-  # GET /resource/password/edit?reset_password_token=abcdef
-  # def edit
-  #   super
-  # end
+  def create
+      user = User.find_by_email(params[:email])
+      if user
+        user.send_reset_password_instructions
+        render json: { message: 'Email sent' }, status: :ok
+      else
+        render json: { error: 'Email not found' }, status: :not_found
+      end
+  end
 
   # PUT /resource/password
-  # def update
-  #   super
-  # end
+  def update
+    user = User.reset_password_by_token(params)
+    if user.errors.empty?
+      render json: { message: 'Password updated' }, status: :ok
+    else
+      render json: { error: user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
   # protected
 

@@ -22,7 +22,7 @@ module Funadf
     config.quiet_assets = true
 
     # config.active_record.raise_in_transactional_callbacks = true
-    config.assets.precompile += %w( intranet.js me/application.css )
+    config.assets.precompile += %w( Intranet.js me/application.css )
 
     config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
       allow do
