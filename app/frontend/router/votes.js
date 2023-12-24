@@ -11,11 +11,6 @@ export default createRouter({
             redirect : '/campaigns',
         },
         {
-            path:      '/connexion',
-            component: SessionIndex,
-            name:      'connexion',
-        },
-        {
             path     : '/campaigns',
             component: VotesIndex,
             name     : 'votes.index',

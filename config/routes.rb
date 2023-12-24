@@ -2,14 +2,17 @@ require 'api_constraints'
 
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: { invitations: 'users/invitations',
-                                    sessions: 'users/sessions',
-                                    omniauth_callbacks: 'users/omniauth_callbacks' }
+  devise_for :users, controllers: {
+    invitations: 'users/invitations',
+    sessions: 'users/sessions',
+    passwords: 'users/passwords'
+  }
 
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
 
   get '/connexion', to: 'pages#connexion'
+  get '/mot-de-passe-oublie', to: 'pages#forgot_password'
 
   resources :logos, only: :show
   resources :avatars, only: :show
@@ -18,6 +21,7 @@ Rails.application.routes.draw do
     get 'current_user', to: 'current_user#show'
     get 'switch/:id', to: 'current_user#switch', as: :switch_user
     get 'switch_back', to: 'current_user#switch_back', as: :switch_back
+    post 'connect_with_google', to: 'sessions#connect_with_google', as: :connect_with_google
 
     resources :users
     patch '/users/:id/enable', to: 'users#enable'
@@ -60,7 +64,7 @@ Rails.application.routes.draw do
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: { format: 'json' } do
     devise_for :users, controllers: {
       sessions: 'v1/custom_devise/sessions'
-    }, as:                          :api_devise
+    }, as: :api_devise
 
     get '/users/:token', to: 'users#show'
     get '/votes', to: 'votes#index'
@@ -124,36 +128,7 @@ Rails.application.routes.draw do
       end
     end
 
-    # EACH SPACES
-    resources :structures do
-      resources :has_memberships, controller: 'structures/has_memberships', except: :create
-      resources :campaigns, controller: 'structures/campaigns' do
-        get '/open', to: 'structures/campaigns#open', as: :open
-        get '/close_definitly', to: 'structures/campaigns#close_definitly', as: :close_definitly
-        get '/close_temporarily', to: 'structures/campaigns#close_temporarily', as: :close_temporarily
-      end
-
-      get '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#create', as: :add_memberships
-      delete '/has_memberships/:member_id/:member_type', to: 'structures/has_memberships#destroy', as: :delete_memberships
-
-      post '/resource/:resource_id/:resource_type', to: 'structures/has_memberships#update'
-      post '/reason/:resource_id/:resource_type', to: 'structures/has_memberships#reason'
-
-      resources :is_memberships, controller: 'structures/is_memberships'
-      get '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#edit', as: :edit_structure_resource_roles
-      post '/roles/:resource_id/:resource_type/edit', to: 'structures/roles#update', as: :structure_resource_roles
-    end
-
     resources :users, only: [:show, :index]
-
-    get '/mon-compte', to: "accounts#show", as: :me
-    get '/mon-compte/modifier', to: 'accounts#edit', as: :edit_me
-
-    resources :accounts, only: :update
-
-    get '/search', to: "search#index", as: :search
-
-    root :to => redirect('/mon-compte'), as: :authenticated_user
   end
 
   post 'uploader/image', to: 'uploader#image'

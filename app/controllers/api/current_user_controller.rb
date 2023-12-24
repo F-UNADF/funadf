@@ -29,4 +29,8 @@ class Api::CurrentUserController < ApiController
 
     render json: { status: 200, current_user: current_user, redirect_to: admin_users_url(subdomain: :admin) }
   end
+
+  def get_google_link
+    render json: { google_link: user_google_oauth2_omniauth_authorize_path }
+  end
 end

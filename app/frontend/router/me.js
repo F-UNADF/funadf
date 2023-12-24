@@ -10,11 +10,6 @@ export default createRouter({
             redirect : '/feed',
         },
         {
-            path:      '/connexion',
-            component: SessionIndex,
-            name:      'connexion',
-        },
-        {
             path     : '/feed',
             component: FeedIndex,
             name     : 'feed.index',

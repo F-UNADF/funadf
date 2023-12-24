@@ -18,11 +18,6 @@ export default createRouter({
             name:      'home',
         },
         {
-            path:      '/connexion',
-            component: SessionIndex,
-            name:      'connexion',
-        },
-        {
             path:      '/users',
             component: UsersIndex,
             name:      'users',
