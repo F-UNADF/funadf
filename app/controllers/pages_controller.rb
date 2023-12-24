@@ -10,4 +10,7 @@ class PagesController < ApplicationController
   def connexion
   end
 
+  def forgot_password
+  end
+
 end

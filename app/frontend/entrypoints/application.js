@@ -7,6 +7,9 @@ import admin_router from '../router/admin';
 import intranet_router from '../router/intranet';
 import votes_router from '../router/votes';
 import me_router from '../router/me';
+import PasswordIndex from "../components/Password/Index.vue";
+import SessionIndex from "../components/Session/Index.vue";
+import PasswordCreate from "../components/Password/Create.vue";
 
 // Vuetify
 import '@mdi/font/css/materialdesignicons.css'
@@ -34,7 +37,6 @@ const vuetify = createVuetify({
     },
 });
 const router = () => {
-
     let uris = window.location.hostname.split('.');
     let routes = votes_router;
     if (uris.length > 2) {
@@ -47,6 +49,28 @@ const router = () => {
             routes = me_router;
         }
     }
+    routes.addRoute(
+        {
+            path:      '/connexion',
+            component: SessionIndex,
+            name:      'connexion',
+        }
+    );
+    routes.addRoute(
+        {
+            path:      '/mot-de-passe-oublie',
+            component: PasswordIndex,
+            name:      'forgotPassword',
+        },
+    );
+    routes.addRoute(
+        {
+            path:      '/users/password/edit',
+            component: PasswordCreate,
+            name:      'createPassword',
+        },
+    );
+
     return routes;
 };
 

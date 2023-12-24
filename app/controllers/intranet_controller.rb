@@ -1,5 +1,5 @@
 class IntranetController < ApplicationController
-  layout 'Intranet/layouts/vuejs'
+  layout 'intranet/layouts/vuejs'
 
   before_action :set_intranet_structure, :user_can_access?
 
