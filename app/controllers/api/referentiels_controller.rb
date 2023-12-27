@@ -29,7 +29,7 @@ class Api::ReferentielsController < ApiController
             SELECT
               s.id AS member_id,
               'Structure' AS member_type,
-              CONCAT(s.name, ' (', COALESC(s.town, ''), ')') AS name
+              CONCAT(s.name, ' (', COALESCE(s.town, ''), ')') AS name
             FROM structures s
             UNION
             SELECT

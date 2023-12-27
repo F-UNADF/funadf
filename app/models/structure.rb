@@ -34,6 +34,7 @@ class Structure < ActiveRecord::Base
   def members_with_details
     Membership.find_by_sql(
       "SELECT m.id AS membership_id,
+              m.member_id AS member_id,
               m.member_type AS member_type,
               s.name AS name,
               s.zipcode AS zipcode,
@@ -48,6 +49,7 @@ class Structure < ActiveRecord::Base
         AND m.member_type = 'Structure'
         UNION
         SELECT m.id AS membership_id,
+              m.member_id AS member_id,
               m.member_type AS member_type,
               CONCAT(u.lastname, ' ', u.firstname) AS name,
               u.zipcode AS zipcode,
