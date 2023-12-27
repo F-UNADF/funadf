@@ -92,7 +92,7 @@
     </template>
   </v-data-table>
 
-  <v-dialog v-model="dialogForm" max-width="75%">
+  <v-dialog v-model="dialogForm" :fullscreen="true">
     <church-form></church-form>
   </v-dialog>
   <v-dialog  max-width="25%" v-model="dialogConfirmDelete">

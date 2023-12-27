@@ -47,10 +47,11 @@ class Api::ChurchesController < ApiController
     role_id = Role.find_by(name: :member).id
 
     params[:members].each do |member|
+      m = member.split('#')
       membership = Membership.new(
         structure_id: @church.id,
-        member_id: member[:id],
-        member_type: member[:type],
+        member_id: m[0],
+        member_type: m[1],
         role_id: role_id
       )
       membership.save

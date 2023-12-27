@@ -18,72 +18,38 @@
           <v-row>
             <v-col cols="12" md="3">
               <div class="logo w-50 mx-auto">
-                <v-img
-                    v-if="this.editedItem.id !== null"
-                    style="border-radius: 100%;"
-                    :src="'/logos/'+this.editedItem.id+'.png?cache='+imgCache"
-                    :lazy-src="'/logos/'+this.editedItem.id+'.png'"
-                    cover
-                    aspect-ratio="1">
+                <v-img v-if="this.editedItem.id !== null" style="border-radius: 100%;"
+                  :src="'/logos/' + this.editedItem.id + '.png?cache=' + imgCache"
+                  :lazy-src="'/logos/' + this.editedItem.id + '.png'" cover aspect-ratio="1">
                 </v-img>
-                <v-img
-                    v-else
-                    style="border-radius: 100%;"
-                    src="https://fakeimg.pl/500x500"
-                    cover
-                    aspect-ratio="1">
+                <v-img v-else style="border-radius: 100%;" src="https://fakeimg.pl/500x500" cover aspect-ratio="1">
                 </v-img>
               </div>
 
-              <v-file-input
-                  label="Logo"
-                  prepend-icon="mdi-camera"
-                  @change="prepareLogo($event.target.files)"
-                  accept="image/*"
-                  show-size
-                  class="mt-5">
+              <v-file-input label="Logo" prepend-icon="mdi-camera" @change="prepareLogo($event.target.files)"
+                accept="image/*" show-size class="mt-5">
               </v-file-input>
             </v-col>
             <v-col cols="12" md="9">
-              <v-text-field
-                  v-model="editedItem.name"
-                  label="Nom"
-                  :rules="[rules.required]"
-                  required>
+              <v-text-field v-model="editedItem.name" label="Nom" :rules="[rules.required]" required>
               </v-text-field>
-              <v-text-field
-                  v-model="editedItem.address_1"
-                  label="Adresse">
+              <v-text-field v-model="editedItem.address_1" label="Adresse">
               </v-text-field>
-              <v-text-field
-                  v-model="editedItem.address_2"
-                  label="Complément d'adresse">
+              <v-text-field v-model="editedItem.address_2" label="Complément d'adresse">
               </v-text-field>
               <v-row>
                 <v-col cols="12" lg="6" md="6">
-                  <v-text-field
-                      v-model="editedItem.zipcode"
-                      label="Code postal"
-                      :rules="[rules.required]"
-                      required>
+                  <v-text-field v-model="editedItem.zipcode" label="Code postal" :rules="[rules.required]" required>
                   </v-text-field>
                 </v-col>
                 <v-col cols="12" lg="6" md="6">
-                  <v-text-field
-                      v-model="editedItem.town"
-                      label="Ville"
-                      :rules="[rules.required]"
-                      required>
+                  <v-text-field v-model="editedItem.town" label="Ville" :rules="[rules.required]" required>
                   </v-text-field>
                 </v-col>
               </v-row>
-              <v-text-field
-                  v-model="editedItem.email"
-                  label="Email">
+              <v-text-field v-model="editedItem.email" label="Email">
               </v-text-field>
-              <v-text-field
-                  v-model="editedItem.phone_1"
-                  label="Téléphone">
+              <v-text-field v-model="editedItem.phone_1" label="Téléphone">
               </v-text-field>
             </v-col>
 
@@ -91,37 +57,26 @@
         </v-window-item>
 
         <v-window-item key="membres" value="membres" class="py-3">
-
           <v-row justify="space-between">
             <v-col cols="12" lg="4" md="4" class="mb-3">
-              <v-text-field
-                  density="compact"
-                  v-model="searchingMember"
-                  label="Chercher un membre par Nom"
-                  hide-details
-                  variant="outlined"
-                  clearable
-              ></v-text-field>
+              <v-text-field density="compact" v-model.lazy="searchingMember" label="Chercher un membre par Nom"
+                hide-details variant="outlined" clearable></v-text-field>
             </v-col>
           </v-row>
 
-          <v-data-table
-              :headers="headers"
-              :items="this.members"
-              :search="searchingMember"
-              density="compact"
-              class="elevation-1"
-          >
+          <!-- MEMBRES DE L'EGLISE -->
+          <v-data-table :headers="headers" :items="this.members" density="compact" class="elevation-1">
             <template v-slot:item="{ item }">
               <tr>
                 <td>
                   <div class="d-flex align-center py-4">
-                    <v-avatar :icon="(item.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
+                    <v-avatar
+                      :icon="(item.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
                     <div class="ml-5">
                       <h4>{{ item.name }}</h4>
                       <span class="subtitle-2 d-block font-weight-regular">{{
-                          item.town
-                        }}</span>
+                        item.town
+                      }}</span>
                     </div>
                   </div>
                 </td>
@@ -133,11 +88,8 @@
                       </v-btn>
                     </template>
                     <v-list>
-                      <v-list-item
-                          v-for="(role, index) in this.referentiels.roles"
-                          :key="index"
-                          @click="setRole(item, index)"
-                      >
+                      <v-list-item v-for="(role, index) in this.referentiels.roles" :key="index"
+                        @click="setRole(item, index)">
                         <v-list-item-title>{{ role }}</v-list-item-title>
                       </v-list-item>
                     </v-list>
@@ -146,12 +98,8 @@
                 <td>
                   <v-tooltip location="top" text="Supprimer le membre">
                     <template v-slot:activator="{ props }">
-                      <v-icon
-                          v-bind="props"
-                          small
-                          class="text-error"
-                          title="Delete"
-                          @click="removeMember(item.membership_id)">
+                      <v-icon v-bind="props" small class="text-error" title="Delete"
+                        @click="removeMember(item.membership_id)">
                         mdi-delete
                       </v-icon>
                     </template>
@@ -161,45 +109,38 @@
             </template>
           </v-data-table>
 
+
+
+          <!-- AJOUTER UN MEMBRE -->
           <div class="pa-6 bg-grey-lighten bg-grey-lighten-4">
             <h3 class="mb-3 pb-3">Ajouter des membres :</h3>
-            <v-autocomplete
-                v-model="addingMembers"
-                v-model:search="search"
-                :items="this.matchMembers"
-                :item-value="item => item"
-                hide-no-data
-                hide-details
-                required
-                @change="addMember"
-                multiple
-                closable-chips
-                chips
-                label="Ajouter un membre"
-            >
-              <template v-slot:chip="{ props, item }">
-                <v-chip
-                    v-bind="props"
-                    :prepend-icon="item?.icon"
-                    :text="item?.name"
-                ></v-chip>
-              </template>
 
-              <template v-slot:item="{ props, item }">
-                <v-list-item
-                    v-bind="props"
-                    :prepend-icon="item?.icon"
-                    :title="item.title"
-                ></v-list-item>
-              </template>
-            </v-autocomplete>
+            <v-chip-group v-model="addingMembers" active-class="primary--text" mandatory class="mb-3">
+              <v-chip v-for="(member, index) in addingMembers" :key="index" :value="member">
+                {{ member.split('#')[2] }}
+              </v-chip>
+              <v-btn v-if="addingMembers.length > 0" color="primary" rounded="pill" @click="addMember()" variant="flat">
+                Ajouter
+              </v-btn>
+            </v-chip-group>
 
-            <v-btn
-                color="primary"
-                class="mt-5"
-                @click="addMember">
-              Ajouter les membres
-            </v-btn>
+
+            <v-text-field v-model="search" label="Chercher un membre : Nom, Ville, Code postal" hide-details class="mb-3"
+              variant="outlined" aria-autocomplete="none">
+            </v-text-field>
+
+            <v-data-table v-model="addingMembers" :headers="headersMatching" :items="matchMembers"
+              :item-value="item => `${item.id}#${item.type}#${item.name}`" show-select class="elevation-1">
+              <template v-slot:no-data>
+                <v-alert type="info" class="m-5">
+                  <p>Aucun membre ne correspond a votre recherche :</p>
+                  <ul>
+                    <li>Soit les membres ont déjà été ajoutés</li>
+                    <li>Soit les utilisateurs n'existent pas encore</li>
+                  </ul>
+                </v-alert>
+              </template>
+            </v-data-table>
           </div>
 
         </v-window-item>
@@ -214,13 +155,27 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {VDataTable} from 'vuetify/labs/VDataTable'
+import { mapGetters } from "vuex";
+import { VDataTable } from 'vuetify/labs/VDataTable'
+import { VAlert } from "vuetify/lib/components/index.mjs";
+
+function debounce(fn, delay) {
+  var timeoutID = null
+  return function () {
+    clearTimeout(timeoutID)
+    var args = arguments
+    var that = this
+    timeoutID = setTimeout(function () {
+      fn.apply(that, args)
+    }, delay)
+  }
+}
 
 export default {
   name: "ChurchForm",
   components: {
-    VDataTable
+    VDataTable,
+    VAlert
   },
   computed: {
     ...mapGetters('churchesStore', {
@@ -243,7 +198,6 @@ export default {
     save() {
       this.$store.dispatch('churchesStore/save', this.editedItem).then(response => {
         this.$root.showSnackbar('Eglise enregistrée avec succès', 'success');
-        this.search = response.zipcode;
         this.close();
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de l\'eglise', 'error');
@@ -279,8 +233,17 @@ export default {
       }
 
       let members = this.referentiels.members;
+
+      //remove from members the members already in the church
+      // let membersInChurch = this.members.map((member) => [member.member_id, member.member_type].join('#'));
+      // console.log(membersInChurch);
+      // members = members.filter((member) => !membersInChurch.includes([member.member_id, member.member_type].join('#')));
+
+      // console.log(members);
+
+
       let matchMembers = members.filter((member) =>
-          member.name.toLowerCase().includes(search)
+        member.name.toLowerCase().includes(search)
       ).map((member) => ({
         id: member.member_id,
         type: member.member_type,
@@ -294,6 +257,7 @@ export default {
       this.$store.dispatch('churchesStore/addMembers', this.addingMembers).then(response => {
         this.$root.showSnackbar('Membres ajoutés avec succés', 'success');
         this.addingMembers = [];
+        this.search = '';
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement des membres', 'error');
         let errors = error.response.data.errors;
@@ -301,7 +265,7 @@ export default {
       });
     },
     setRole(member, role) {
-      this.$store.dispatch('churchesStore/setRole', {member: member, role: role}).then(response => {
+      this.$store.dispatch('churchesStore/setRole', { member: member, role: role }).then(response => {
         this.$root.showSnackbar('Role modifié avec succés', 'success');
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de la modification du role', 'error');
@@ -328,9 +292,9 @@ export default {
         this.editedMembers = JSON.parse(JSON.stringify(this.members));
       },
     },
-    search(val) {
-      val && this.updateMatchingMembers()
-    },
+    search: function () {
+      this.updateMatchingMembers();
+    }
   },
 
   data() {
@@ -345,9 +309,13 @@ export default {
       tab: 'infos',
       roleDialog: false,
       headers: [
-        {title: 'Nom', key: 'name', sortable: true},
-        {title: 'Role', key: 'role_name', sortable: true},
-        {title: 'Actions', key: 'actions', sortable: false},
+        { title: 'Nom', key: 'name', sortable: true },
+        { title: 'Role', key: 'role_name', sortable: true },
+        { title: 'Actions', key: 'actions', sortable: false },
+      ],
+      headersMatching: [
+        { title: 'Nom', key: 'name', sortable: true },
+        { title: 'Actions', key: 'actions', sortable: false },
       ],
       rules: {
         required: value => !!value || 'Champ obligatoire',
@@ -357,6 +325,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
