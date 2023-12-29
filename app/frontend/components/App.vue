@@ -2,21 +2,22 @@
   <v-app theme="light" class="">
     <Sidebar :menu="this.getMenu" :showSidebar="showSidebar"></Sidebar>
     <Header :user="this.currentUser" :ouser="this.ouser" @logout="logout()"
-            @toggle-sidebar="this.showSidebar = !this.showSidebar"></Header>
+      @toggle-sidebar="this.showSidebar = !this.showSidebar"></Header>
     <v-main scrollable>
       <v-container fluid class="page-wrapper">
-        <router-view/>
+        <router-view />
       </v-container>
     </v-main>
+
+
+    <v-dialog v-model="dialogForm" fullscreen>
+      <user-form></user-form>
+    </v-dialog>
 
     <v-snackbar v-model="this.snackbar.show" :timeout="this.snackbar.timeout" :color="this.snackbar.color">
       <div v-html="snackbar.message"></div>
       <template v-slot:actions>
-        <v-btn
-            color="white"
-            variant="text"
-            @click="this.snackbar.show = false"
-        >
+        <v-btn color="white" variant="text" @click="this.snackbar.show = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </template>
@@ -25,32 +26,42 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Sidebar from "../components/Layout/Sidebar.vue";
 import Header from "../components/Layout/Header.vue";
+import UserForm from "@/components/Users/Form.vue";
 
 export default ({
-  name      : 'App',
+  name: 'App',
   components: {
     Sidebar,
     Header,
+    UserForm,
   },
-  computed  : {
+  computed: {
     ...mapGetters('sessionStore', {
-      currentUser : 'currentUser',
+      currentUser: 'currentUser',
       ouser: 'getOriginalUser',
     }),
     ...mapGetters('menuStore', [
       'getMenu',
     ]),
+    dialogForm: {
+      get() {
+        return this.$store.state.usersStore.dialogForm;
+      },
+      set(value) {
+        this.$store.commit('usersStore/setDialogForm', value);
+      },
+    },
   },
 
-  methods    : {
+  methods: {
     ...mapActions('sessionStore', [
       'logout',
     ]),
-    goTo        : function (routeName) {
-      this.$router.push({name: routeName});
+    goTo: function (routeName) {
+      this.$router.push({ name: routeName });
     },
     showSnackbar: function (message, color) {
       this.snackbar.show = true;
@@ -58,16 +69,16 @@ export default ({
       this.snackbar.color = color;
     },
   },
-  data       : () => ({
-    snackbar   : {
-      show   : false,
+  data: () => ({
+    snackbar: {
+      show: false,
       message: '',
-      color  : '',
+      color: '',
       timeout: 3000,
     },
     showSidebar: true,
   }),
-  watch      : {
+  watch: {
     'currentUser': function (val) {
       let uris = window.location.hostname.split('.');
       let subdomain = 'votes';

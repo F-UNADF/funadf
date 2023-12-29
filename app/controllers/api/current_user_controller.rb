@@ -6,7 +6,7 @@ class Api::CurrentUserController < ApiController
       @original_user= User.find(session[:original_user])
     end
     respond_to do |format|
-      format.json { render json: { user: current_user, original_user: @original_user } }
+      format.json { render json: { user: current_user, original_user: @original_user, roles: current_user.application_roles } }
     end
   end
 
