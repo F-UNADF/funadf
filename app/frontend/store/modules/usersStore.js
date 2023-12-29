@@ -2,27 +2,27 @@ import axios from "axios";
 
 // initial state
 const state = () => ({
-    items       : [],
-    item        : {},
-    loading     : false,
-    formLoading : false,
+    items: [],
+    item: {},
+    loading: false,
+    formLoading: false,
     referentiels: [],
-    dialogForm  : false,
+    dialogForm: false,
 });
 
 // getters
 const getters = {
-    getItems       : (state) => state.items,
-    getItem        : (state) => state.item,
-    getLoading     : (state) => state.loading,
-    getFormLoading : (state) => state.formLoading,
+    getItems: (state) => state.items,
+    getItem: (state) => state.item,
+    getLoading: (state) => state.loading,
+    getFormLoading: (state) => state.formLoading,
     getReferentiels: (state) => state.referentiels,
-    getDialogForm  : (state) => state.dialogForm,
+    getDialogForm: (state) => state.dialogForm,
 };
 
 // actions
 const actions = {
-    items         : function ({commit}) {
+    fetchItems: function ({ commit }) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
             axios.get('/api/users', {}).then((res) => {
@@ -34,14 +34,10 @@ const actions = {
             });
         });
     },
-    save          : function ({
-                                  dispatch,
-                                  commit,
-                                  state
-                              }, item) {
+    save: function ({ dispatch, commit, state }, item) {
         return new Promise((resolve, reject) => {
             if (item.user.id) {
-                axios.patch('/api/users/' + item.user.id, {user: item}, {
+                axios.patch('/api/users/' + item.user.id, { user: item }, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -52,7 +48,7 @@ const actions = {
                     reject(error, 2000);
                 });
             } else {
-                axios.post('/api/users', {user: item}, {
+                axios.post('/api/users', { user: item }, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     }
@@ -65,11 +61,11 @@ const actions = {
             }
         });
     },
-    addRole       : function ({
-                                  dispatch,
-                                  commit,
-                                  state
-                              }, payload) {
+    addRole: function ({
+        dispatch,
+        commit,
+        state
+    }, payload) {
         return new Promise((resolve, reject) => {
             console.log(payload);
             axios.patch('/api/users/' + payload.id + '/add_role', payload).then((res) => {
@@ -80,11 +76,11 @@ const actions = {
             });
         });
     },
-    removeRole    : function ({
-                                  dispatch,
-                                  commit,
-                                  state
-                              }, payload) {
+    removeRole: function ({
+        dispatch,
+        commit,
+        state
+    }, payload) {
         return new Promise((resolve, reject) => {
             axios.patch('/api/users/' + payload.id + '/remove_role', payload).then((res) => {
                 commit('setItemInItemsById', res.data.user);
@@ -95,10 +91,10 @@ const actions = {
         });
     },
     sendInvitation: function ({
-                                  dispatch,
-                                  commit,
-                                  state
-                              }, payload) {
+        dispatch,
+        commit,
+        state
+    }, payload) {
         return new Promise((resolve, reject) => {
             axios.post('/api/users/' + payload.id + '/send_invitation', payload).then((res) => {
                 resolve(res);
@@ -107,17 +103,16 @@ const actions = {
             });
         });
     },
-    delete        : function ({
-                                  dispatch,
-                                  commit,
-                                  state
-                              }, id) {
+    delete: function ({
+        dispatch,
+        commit,
+        state
+    }, id) {
         commit('setFormLoading', true);
         return new Promise((resolve, reject) => {
             axios.delete('/api/users/' + id, {}).then((res) => {
                 commit('removeItemInItemsById', id);
                 commit('setDialogForm', false);
-                commit('setFormLoading', false);
                 commit('setItem', {});
                 resolve(res);
             }).catch((error) => {
@@ -125,11 +120,11 @@ const actions = {
             });
         });
     },
-    enable        : function ({
-                                  dispatch,
-                                  commit,
-                                  state
-                              }, id) {
+    enable: function ({
+        dispatch,
+        commit,
+        state
+    }, id) {
         return new Promise((resolve, reject) => {
             axios.patch('/api/users/' + id + '/enable', {}).then((res) => {
                 commit('setItemInItemsById', res.data.user);
@@ -139,11 +134,11 @@ const actions = {
             });
         });
     },
-    disable       : function ({
-                                  dispatch,
-                                  commit,
-                                  state
-                              }, id) {
+    disable: function ({
+        dispatch,
+        commit,
+        state
+    }, id) {
         return new Promise((resolve, reject) => {
             axios.patch('/api/users/' + id + '/disable', {}).then((res) => {
                 commit('setItemInItemsById', res.data.user);
@@ -153,7 +148,7 @@ const actions = {
             });
         });
     },
-    referentiels  : function ({commit}) {
+    referentiels: function ({ commit }) {
         return new Promise((resolve, reject) => {
             axios.get('/api/referentiels/users', {}).then((res) => {
                 commit('setReferentiels', res.data);
@@ -163,11 +158,12 @@ const actions = {
             });
         });
     },
-    getItem       : function ({commit}, id) {
+    getItem: function ({ commit }, id) {
         commit('setFormLoading', true);
         return new Promise((resolve, reject) => {
             axios.get('/api/users/' + id, {}).then((res) => {
                 commit('setItem', res.data);
+                commit('setDialogForm', true);
                 commit('setFormLoading', false);
                 resolve(res);
             }).catch((error) => {
@@ -179,13 +175,13 @@ const actions = {
 
 // mutations
 const mutations = {
-    setItems             : (state, payload) => state.items = payload,
-    setItem              : (state, payload) => state.item = payload,
-    setLoading           : (state, payload) => state.loading = payload,
-    setReferentiels      : (state, payload) => state.referentiels = payload,
-    setDialogForm        : (state, payload) => state.dialogForm = payload,
-    setFormLoading       : (state, payload) => state.formLoading = payload,
-    setItemInItemsById   : function (state, item) {
+    setItems: (state, payload) => state.items = payload,
+    setItem: (state, payload) => state.item = payload,
+    setLoading: (state, payload) => state.loading = payload,
+    setReferentiels: (state, payload) => state.referentiels = payload,
+    setDialogForm: (state, payload) => state.dialogForm = payload,
+    setFormLoading: (state, payload) => state.formLoading = payload,
+    setItemInItemsById: function (state, item) {
         if (typeof item !== 'object') {
             item = JSON.parse(item);
         }

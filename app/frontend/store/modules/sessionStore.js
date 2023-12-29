@@ -2,20 +2,19 @@ import axios from "axios";
 
 // initial state
 const state = () => ({
-    currentUser     : {},
-    roles           : [],
-    originalUser    : {},
+    currentUser: {},
+    roles: [],
+    originalUser: {},
     editProfilDialog: false,
-    subdomain       : null
+    subdomain: null
 });
 
 // getters
 const getters = {
-    currentUser     : (state) => state.currentUser,
-    roles           : (state) => state.roles,
-    getOriginalUser : (state) => state.originalUser,
-    subdomain       : (state) => state.subdomain,
-    editProfilDialog: (state) => state.editProfilDialog
+    currentUser: (state) => state.currentUser,
+    roles: (state) => state.roles,
+    getOriginalUser: (state) => state.originalUser,
+    subdomain: (state) => state.subdomain,
 };
 
 // actions
@@ -124,7 +123,7 @@ const mutations = {
     setCurrentUser: (state, user) => {
         state.currentUser = user;
     },
-    setOriginalUser    : (state, user) => {
+    setOriginalUser: (state, user) => {
         state.originalUser = user;
     },
     setSubdomain: (state, subdomain) => {
@@ -133,9 +132,6 @@ const mutations = {
     setRoles: (state, roles) => {
         state.roles = roles;
     },
-    setEditProfilDialog: (state, value) => {
-        state.editProfilDialog = value;
-    }
 };
 
 export default {

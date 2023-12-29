@@ -1,7 +1,5 @@
 <template>
-  <v-app-bar
-      color="white"
-      elevation="2">
+  <v-app-bar color="white" elevation="2">
     <template v-slot:prepend>
       <v-app-bar-nav-icon @click="this.$emit('toggleSidebar')"></v-app-bar-nav-icon>
     </template>
@@ -12,31 +10,15 @@
       </v-btn>
       <v-menu anchor="bottom end" min-width="300" origin="auto" v-if="user !== null">
         <template v-slot:activator="{ props }">
-          <v-btn
-              :ripple="false"
-              class="pa-0 px-1"
-              color="transparent"
-              elevation="0"
-              plain
-              v-bind="props"
-          >
-            <v-img
-                :src="getAvatar(user)"
-                class="rounded-circle img-fluid"
-                width="45px"
-            ></v-img>
+          <v-btn :ripple="false" class="pa-0 px-1" color="transparent" elevation="0" plain v-bind="props">
+            <v-img :src="getAvatar(user)" class="rounded-circle img-fluid" width="45px"></v-img>
           </v-btn>
         </template>
 
         <v-list class="pa-6" elevation="10" rounded="lg">
           <h4 class="font-weight-medium fs-18">Profil</h4>
           <div class="d-flex align-center my-4">
-            <img
-                :alt="this.user.fullname"
-                :src="'/avatars/' + this.user.id + '.png'"
-                class="rounded-circle"
-                width="90"
-            />
+            <img :alt="this.user.fullname" :src="'/avatars/' + this.user.id + '.png'" class="rounded-circle" width="90" />
             <div class="ml-4">
               <h4 class="font-weight-medium fs-18">{{ this.user.fullname }}</h4>
               <span class="subtitle-2 font-weight-light">{{ this.user.level }}</span>
@@ -46,23 +28,13 @@
             </div>
           </div>
 
-          <v-btn
-              block
-              class="mt-4 py-4"
-              color="primary"
-              @click="editProfile()"
-              variant="flat"
-              prepend-icon="mdi-account-edit">
+          <v-btn block class="mt-4 py-4" color="primary" @click="editProfile()" variant="flat"
+            prepend-icon="mdi-account-edit">
             Modifier mon profil
           </v-btn>
 
-          <v-btn
-              block
-              class="mt-4 py-4"
-              color="secondary"
-              @click="$emit('logout')"
-              variant="flat"
-              prepend-icon="mdi-logout">
+          <v-btn block class="mt-4 py-4" color="secondary" @click="$emit('logout')" variant="flat"
+            prepend-icon="mdi-logout">
             Se déconnecter
           </v-btn>
         </v-list>
@@ -74,19 +46,19 @@
 <script>
 
 export default {
-  name   : "Header",
-  props  : {
-    user : {
-      type    : Object,
+  name: "Header",
+  props: {
+    user: {
+      type: Object,
       required: true,
     },
     ouser: {
-      type    : Object,
+      type: Object,
       required: false,
     },
   },
   methods: {
-    getAvatar  : function (user) {
+    getAvatar: function (user) {
       return "/avatars/" + user.id + ".png";
     },
     switch_back: function () {
@@ -94,7 +66,6 @@ export default {
     },
     editProfile: function () {
       this.$store.dispatch('usersStore/getItem', this.user.id);
-      this.$store.commit('sessionStore/setEditProfilDialog', true);
     },
   },
 };

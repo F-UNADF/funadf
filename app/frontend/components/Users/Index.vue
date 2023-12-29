@@ -1,40 +1,16 @@
 <template>
   <v-row class="mb-0">
     <v-col cols="12" lg="2" md="2">
-      <v-text-field
-          density="compact"
-          v-model="search"
-          label="Chercher un utilisateur (Nom, Ville...)"
-          hide-details
-          variant="outlined"
-          clearable
-      ></v-text-field>
+      <v-text-field density="compact" v-model="search" label="Chercher un utilisateur (Nom, Ville...)" hide-details
+        variant="outlined" clearable></v-text-field>
     </v-col>
     <v-col cols="12" lg="2" md="2">
-      <v-select
-          density="compact"
-          v-model="filter.levels"
-          :items="referentiels.levels"
-          label="Reconnaissance"
-          hide-details
-          multiple
-          clearable
-          chips
-          variant="outlined"
-      ></v-select>
+      <v-select density="compact" v-model="filter.levels" :items="referentiels.levels" label="Reconnaissance" hide-details
+        multiple clearable chips variant="outlined"></v-select>
     </v-col>
     <v-col cols="12" lg="2" md="2">
-      <v-select
-          density="compact"
-          v-model="filter.roles"
-          :items="referentiels.roles"
-          label="Rôle global"
-          hide-details
-          multiple
-          clearable
-          chips
-          variant="outlined"
-      ></v-select>
+      <v-select density="compact" v-model="filter.roles" :items="referentiels.roles" label="Rôle global" hide-details
+        multiple clearable chips variant="outlined"></v-select>
     </v-col>
     <v-col cols="12" lg="2" md="3">
       <v-btn-toggle v-model="filter.disabled" rounded style="height: 40px">
@@ -59,28 +35,13 @@
     </v-col>
   </v-row>
 
-  <v-data-table
-      :headers="headers"
-      :items="filteredItems"
-      item-value="name"
-      class="elevation-1"
-      :loading="loading"
-  >
+  <v-data-table :headers="headers" :items="filteredItems" item-value="name" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <tr>
         <td colspan="5">
-          <v-progress-linear
-              indeterminate
-              color="cyan"
-              v-if="loading"
-          ></v-progress-linear>
-          <v-alert
-              v-else
-              color="danger"
-              icon="danger"
-              title="Aucun utilisateur trouvé"
-              text="Aucun utilisateur ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."
-          ></v-alert>
+          <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
+          <v-alert v-else color="danger" icon="danger" title="Aucun utilisateur trouvé"
+            text="Aucun utilisateur ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
         </td>
       </tr>
     </template>
@@ -90,17 +51,14 @@
         <td>
           <div class="d-flex align-center py-4">
             <div>
-              <v-img
-                  :src="'/avatars/' + item.id + '.png'"
-                  width="45px"
-                  class="rounded-circle img-fluid"
-              ></v-img>
+              <v-img :src="'/avatars/' + item.id + '.png'" width="45px" class="rounded-circle img-fluid"></v-img>
             </div>
 
             <div class="ml-5">
               <h4 class="d-block">{{ item.lastname }} {{ item.firstname }}</h4>
               <span class="subtitle-2 font-weight-regular">{{ item.email }}</span>
-              <v-btn variant="plain" color="primary" small class="mt-2" @click="editItem(item)" v-if="item.invitation_accepted_at === null">Invitation non validée</v-btn>
+              <v-btn variant="plain" color="primary" small class="mt-2" @click="editItem(item)"
+                v-if="item.invitation_accepted_at === null">Invitation non validée</v-btn>
             </div>
           </div>
         </td>
@@ -111,13 +69,8 @@
         <td>
           <v-tooltip location="top" text="Modifier l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-btn
-                  v-bind="props"
-                  color="primary"
-                  class="rounded-e-0"
-                  variant="flat"
-                  @click="editItem(item)"
-                  title="Edit">
+              <v-btn v-bind="props" color="primary" class="rounded-e-0" variant="flat" @click="editItem(item)"
+                title="Edit">
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </template>
@@ -125,13 +78,8 @@
 
           <v-tooltip location="top" text="Se connecter en tant que l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-btn
-                  v-bind="props"
-                  color="green"
-                  class="rounded-s-0"
-                  variant="flat"
-                  @click="connectAs(item)"
-                  title="Activer">
+              <v-btn v-bind="props" color="green" class="rounded-s-0" variant="flat" @click="connectAs(item)"
+                title="Activer">
                 <v-icon>mdi-drama-masks</v-icon>
               </v-btn>
             </template>
@@ -147,24 +95,24 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {VDataTable} from 'vuetify/labs/VDataTable'
+import { mapGetters } from "vuex";
+import { VDataTable } from 'vuetify/labs/VDataTable'
 import UserForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import Download from "@/components/Tools/Download.vue";
 
 export default {
-  name      : "UsersIndex",
+  name: "UsersIndex",
   components: {
     Download,
     VDataTable,
     UserForm,
     DialogConfirm,
   },
-  computed  : {
+  computed: {
     ...mapGetters('usersStore', {
-      items       : 'getItems',
-      loading     : 'getLoading',
+      items: 'getItems',
+      loading: 'getLoading',
       referentiels: 'getReferentiels',
     }),
     dialogForm: {
@@ -198,93 +146,93 @@ export default {
 
         // Check if "search" is in the item lastname, firstname, town or zipcode
         return !(this.search &&
-            (!item.lastname || !item.lastname.toLowerCase().includes(this.search.toLowerCase())) &&
-            (!item.firstname || !item.firstname.toLowerCase().includes(this.search.toLowerCase())) &&
-            (!item.town || !item.town.toLowerCase().includes(this.search.toLowerCase())) &&
-            (!item.zipcode || !item.zipcode.toLowerCase().includes(this.search.toLowerCase())));
+          (!item.lastname || !item.lastname.toLowerCase().includes(this.search.toLowerCase())) &&
+          (!item.firstname || !item.firstname.toLowerCase().includes(this.search.toLowerCase())) &&
+          (!item.town || !item.town.toLowerCase().includes(this.search.toLowerCase())) &&
+          (!item.zipcode || !item.zipcode.toLowerCase().includes(this.search.toLowerCase())));
       });
     },
   },
-  methods   : {
-    newItem      : function () {
+  methods: {
+    newItem: function () {
       let newItem = {
-        user           : {
-          id                   : null,
-          lastname             : '',
-          firstname            : '',
-          email                : '',
-          password             : '',
+        user: {
+          id: null,
+          lastname: '',
+          firstname: '',
+          email: '',
+          password: '',
           password_confirmation: '',
-          zipcode              : '',
-          town                 : '',
-          disabled             : false,
+          zipcode: '',
+          town: '',
+          disabled: false,
         },
-        gratitudes     : [],
-        fees           : [],
-        phases         : [],
+        gratitudes: [],
+        fees: [],
+        phases: [],
         responsabilites: [],
       };
       this.$store.commit('usersStore/setItem', newItem);
       this.$store.commit('usersStore/setDialogForm', true);
     },
-    editItem     : function (item) {
+    editItem: function (item) {
       this.$store.dispatch('usersStore/getItem', item.id);
       this.$store.commit('usersStore/setDialogForm', true);
     },
-    refresh      : function () {
-      this.$store.dispatch('usersStore/items');
+    refresh: function () {
+      this.$store.dispatch('usersStore/fetchItems');
     },
-    connectAs    : function (user) {
+    connectAs: function (user) {
       this.$store.dispatch('sessionStore/switch_to', user.id).then(response => {
-            this.$root.showSnackbar('Vous êtes maintenant connecté en tant que ' + user.lastname, 'success');
-          },
-          error => {
-            this.$root.showSnackbar('Une erreur est survenue', 'error');
-          });
+        this.$root.showSnackbar('Vous êtes maintenant connecté en tant que ' + user.lastname, 'success');
+      },
+        error => {
+          this.$root.showSnackbar('Une erreur est survenue', 'error');
+        });
     },
   },
   data() {
     return {
-      search             : '',
-      formTitle          : 'Ajouter un utilisateur',
-      dialog             : false,
-      editedItem         : {},
-      valid              : true,
-      filter             : {
-        levels  : [],
+      search: '',
+      formTitle: 'Ajouter un utilisateur',
+      dialog: false,
+      editedItem: {},
+      valid: true,
+      filter: {
+        levels: [],
         disabled: false,
-        roles   : [],
+        roles: [],
       },
-      headers            : [
+      headers: [
         {
-          title   : 'ID',
-          key     : 'user.id',
+          title: 'ID',
+          key: 'user.id',
           sortable: true
         },
         {
-          title   : 'Nom',
-          key     : 'user.lastname',
+          title: 'Nom',
+          key: 'user.lastname',
           sortable: true
         },
         {
-          title   : 'Ville',
-          align   : 'start',
-          key     : 'user.town',
+          title: 'Ville',
+          align: 'start',
+          key: 'user.town',
           sortable: true
         },
         {
-          title   : 'Niveau',
-          align   : 'start',
-          key     : 'user.current_level',
+          title: 'Niveau',
+          align: 'start',
+          key: 'user.current_level',
           sortable: true
         },
         {
-          title   : 'Actions',
-          key     : 'actions',
+          title: 'Actions',
+          key: 'actions',
           sortable: false
         },
       ],
-      downloadHeaders    : [
+      downloadHeaders: [
         {
           title: 'ID',
           field: 'id'
@@ -319,12 +267,10 @@ export default {
     }
   },
   beforeMount: function () {
-    this.$store.dispatch('usersStore/items');
+    this.$store.dispatch('usersStore/fetchItems');
     this.$store.dispatch('usersStore/referentiels');
   },
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
