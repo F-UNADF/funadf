@@ -24,8 +24,6 @@ const actions = {
             const response = await axios.get('/api/current_user');
             commit('setCurrentUser', response.data.user);
             commit('setRoles', response.data.roles);
-
-
             // if response.data.user is empty or null the rediredct to login page
             if (response.data.user === null &&
                 window.location.pathname !== '/connexion' &&
