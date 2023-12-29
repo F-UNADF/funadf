@@ -37,14 +37,22 @@ const actions = {
     save: function ({dispatch, commit, state}, item) {
         return new Promise((resolve, reject) => {
             if (item.user.id) {
-                axios.patch('/api/users/' + item.user.id, item).then((res) => {
+                axios.patch('/api/users/' + item.user.id, item, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                }).then((res) => {
                     commit('setItemInItemsById', res.data.user);
                     resolve(res);
                 }).catch((error) => {
                     reject(error, 2000);
                 });
             } else {
-                axios.post('/api/users', item).then((res) => {
+                axios.post('/api/users', item, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                }).then((res) => {
                     commit('setItemInItemsById', res.data.user);
                     resolve(res);
                 }).catch((error) => {
