@@ -26,7 +26,7 @@
           <v-row>
             <v-col cols="12" sm="3">
               <div class="logo w-50 mx-auto">
-                <v-img v-if="this.editedItem && this.editedItem.id" style="border-radius: 100%;"
+                <v-img v-if="this.editedItem.id" style="border-radius: 100%;"
                   :src="'/avatars/' + this.editedItem.user.id + '.png'"
                   :lazy-src="'/avatars/' + this.editedItem.user.id + '.png'" cover aspect-ratio="1">
                 </v-img>
@@ -34,7 +34,7 @@
                 </v-img>
               </div>
 
-              <v-file-input label="Logo" prepend-icon="mdi-camera" @change="prepareAvatar($event.target.files)"
+              <v-file-input label="Avatar" prepend-icon="mdi-camera" @change="prepareAvatar($event.target.files)"
                 accept="image/*" show-size class="mt-5">
               </v-file-input>
             </v-col>
