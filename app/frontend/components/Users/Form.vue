@@ -26,7 +26,7 @@
           <v-row>
             <v-col cols="12" sm="3">
               <div class="logo w-50 mx-auto">
-                <v-img v-if="this.editedItem.id" style="border-radius: 100%;"
+                <v-img v-if="this.editedItem.user.id" style="border-radius: 100%;"
                   :src="'/avatars/' + this.editedItem.user.id + '.png'"
                   :lazy-src="'/avatars/' + this.editedItem.user.id + '.png'" cover aspect-ratio="1">
                 </v-img>
