@@ -40,6 +40,10 @@ class Api::UsersController < ApiController
       update_responsabilities(user)
       update_fees(user)
 
+      unless @structure.nil?
+        user.add_role :member, @structure
+      end
+
       render json: { user: user }, status: 200
     else
       render json: { user: user, errors: user.errors.full_messages }, status: 422
