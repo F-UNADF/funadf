@@ -43,7 +43,7 @@ const router = () => {
         let subdomain = uris[0];
         if (subdomain === 'admin') {
             routes = admin_router;
-        } else if (subdomain.match(/uadpif|test/)) {
+        } else if (subdomain.match(/uadpif|test|urb/)) {
             routes = intranet_router;
         } else if (subdomain === 'me') {
             routes = me_router;

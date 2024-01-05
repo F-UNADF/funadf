@@ -121,7 +121,7 @@ class Api::MenusController < ApiController
           to: me_feed_path,
         },
       ]
-    when /test|uadpif/
+    when /test|uadpif|urb/
       result = [
         {
           header: "INTRANET",
