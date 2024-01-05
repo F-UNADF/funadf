@@ -108,7 +108,7 @@ class Api::UsersController < ApiController
   private
 
   def user_params
-    User.allowed_params(params)
+    User.allowed_params(params[:user])
   end
 
   def update_gratitudes(user)
