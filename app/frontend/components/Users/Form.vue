@@ -314,7 +314,7 @@ export default {
       this.$store.dispatch('usersStore/save', this.editedItem).then(response => {
         if (this.currentUser.id !== this.editedItem.user.id) {
           this.$root.showSnackbar('Utilisateur enregistré avec succès', 'success');
-          this.$store.dispatch('usersStore/items');
+          this.$store.dispatch('usersStore/fetchItems');
         } else {
           this.$root.showSnackbar('Profil enregistré avec succès', 'success');
           this.$store.dispatch('sessionStore/fetchUser');
