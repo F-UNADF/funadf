@@ -23,7 +23,7 @@
       <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
         <v-tab value="motions">Motions</v-tab>
         <v-tab value="voting-tables">Table des votes</v-tab>
-        <v-tab value="results" v-if="editedItem.id === null && editedItem.state !== 'coming'">Resultats</v-tab>
+        <v-tab value="results" v-if="editedItem.state !== 'coming'">Resultats</v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
