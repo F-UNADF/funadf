@@ -1,14 +1,8 @@
 <template>
   <v-row justify="space-between">
     <v-col cols="12" lg="6" md="6" class="mb-3">
-      <v-text-field
-          density="compact"
-          v-model="search"
-          label="Chercher une campagne (Nom...)"
-          hide-details
-          variant="outlined"
-          clearable
-      ></v-text-field>
+      <v-text-field density="compact" v-model="search" label="Chercher une campagne (Nom...)" hide-details
+        variant="outlined" clearable></v-text-field>
     </v-col>
     <v-col cols="12" lg="6" md="6" class="text-right">
       <v-spacer></v-spacer>
@@ -21,28 +15,13 @@
       </v-btn>
     </v-col>
   </v-row>
-  <v-data-table
-      :headers="headers"
-      :items="filteredItems"
-      :search="search"
-      class="elevation-1"
-      :loading="loading"
-  >
+  <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <tr>
         <td colspan="5">
-          <v-progress-linear
-              indeterminate
-              color="cyan"
-              v-if="loading"
-          ></v-progress-linear>
-          <v-alert
-              v-else
-              color="danger"
-              icon="danger"
-              title="Aucune église trouvée"
-              text="Aucune campagne ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."
-          ></v-alert>
+          <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
+          <v-alert v-else color="danger" icon="danger" title="Aucune église trouvée"
+            text="Aucune campagne ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
         </td>
       </tr>
     </template>
@@ -59,36 +38,24 @@
         <td>
           <v-tooltip location="top" text="Fermer la campagne">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  small
-                  v-bind="props"
-                  color="green"
-                  v-if="item.state === 'opened'"
-                  @click="changeCampaignState(item.id, 'close_temporarily')">
+              <v-icon small v-bind="props" color="green" v-if="item.state === 'opened'"
+                @click="changeCampaignState(item.id, 'close_temporarily')">
                 mdi-eye-off
               </v-icon>
             </template>
           </v-tooltip>
           <v-tooltip location="top" text="Ouvrir la campagne">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  small
-                  v-bind="props"
-                  color="success"
-                  v-if="item.state === 'coming'"
-                  @click="changeCampaignState(item.id, 'opening')">
+              <v-icon small v-bind="props" color="success" v-if="item.state === 'coming'"
+                @click="changeCampaignState(item.id, 'opening')">
                 mdi-check
               </v-icon>
             </template>
           </v-tooltip>
           <v-tooltip location="top" text="Cloturer la campagne - La campagne ne pourra pas être réouverte.">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  small
-                  v-bind="props"
-                  color="danger"
-                  v-if="item.state === 'opened'"
-                  @click="changeCampaignState(item.id, 'close_definitly')">
+              <v-icon small v-bind="props" color="danger" v-if="item.state === 'opened'"
+                @click="changeCampaignState(item.id, 'close_definitly')">
                 mdi-close
               </v-icon>
             </template>
@@ -97,12 +64,7 @@
         <td>
           <v-tooltip location="top" text="Modifier la campagne">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  small
-                  v-bind="props"
-                  color="primary"
-                  @click="editItem(item)"
-                  title="Edit">
+              <v-icon small v-bind="props" color="primary" @click="editItem(item)" title="Edit">
                 mdi-pencil
               </v-icon>
             </template>
@@ -110,12 +72,7 @@
 
           <v-tooltip location="top" text="Supprimer la campagne">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  v-bind="props"
-                  small
-                  class="text-error"
-                  title="Delete"
-                  @click="tryDeleteItem(item)">
+              <v-icon v-bind="props" small class="text-error" title="Delete" @click="tryDeleteItem(item)">
                 mdi-delete
               </v-icon>
             </template>
@@ -143,22 +100,22 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {VDataTable} from 'vuetify/labs/VDataTable'
+import { mapGetters } from "vuex";
+import { VDataTable } from 'vuetify/labs/VDataTable'
 import CampaignForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
-  name      : "CampaignsIndex",
+  name: "CampaignsIndex",
   components: {
     VDataTable,
     CampaignForm,
     DialogConfirm,
   },
-  computed  : {
+  computed: {
     ...mapGetters('campaignsStore', {
-      items       : 'getItems',
-      loading     : 'getLoading',
+      items: 'getItems',
+      loading: 'getLoading',
       referentiels: 'getReferentiels',
     }),
     dialogForm: {
@@ -175,35 +132,36 @@ export default {
       });
     },
   },
-  methods   : {
-    newItem            : function () {
+  methods: {
+    newItem: function () {
       let newItem = {
-        name        : '',
+        name: '',
         structure_id: null,
-        motions     : [],
+        motions: [],
+        state: 'coming',
       };
       this.$store.commit('campaignsStore/setItem', newItem);
       this.$store.commit('campaignsStore/setDialogForm', true);
     },
-    editItem           : function (item) {
+    editItem: function (item) {
       this.$store.dispatch('campaignsStore/item', item.id);
       this.$store.commit('campaignsStore/setDialogForm', true);
     },
-    refresh            : function () {
+    refresh: function () {
       this.$store.dispatch('campaignsStore/items');
     },
-    tryDeleteItem      : function (item) {
+    tryDeleteItem: function (item) {
       Object.assign(this.deletingItem, item);
       this.dialogConfirmDelete = true;
     },
-    deleteItem         : function (item) {
+    deleteItem: function (item) {
       this.$store.dispatch('campaignsStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
         this.$root.showSnackbar('Campagne supprimée avec succès', 'success');
       });
     },
-    getState           : function (state) {
+    getState: function (state) {
       switch (state) {
         case 'closed':
           return 'Fermée';
@@ -213,7 +171,7 @@ export default {
           return 'A venir';
       }
     },
-    getColor           : function (state) {
+    getColor: function (state) {
       switch (state) {
         case 'closed':
           return 'red';
@@ -225,7 +183,7 @@ export default {
     },
     changeCampaignState: function (id, action) {
       this.$store.dispatch('campaignsStore/changeState', {
-        id   : id,
+        id: id,
         state: action
       }).then(response => {
         this.$root.showSnackbar('Le Statut de la campagne a bien été changé', 'success');
@@ -238,46 +196,46 @@ export default {
   },
   data() {
     return {
-      deletingItem       : {},
+      deletingItem: {},
       dialogConfirmDelete: false,
-      loadingDelete      : false,
-      search             : '',
-      dialog             : false,
-      editedItem         : {},
-      valid              : true,
-      filter             : {
-        levels  : [],
+      loadingDelete: false,
+      search: '',
+      dialog: false,
+      editedItem: {},
+      valid: true,
+      filter: {
+        levels: [],
         disabled: false,
       },
-      headers            : [
+      headers: [
         {
-          title   : 'ID',
-          key     : 'id',
+          title: 'ID',
+          key: 'id',
           sortable: true
         },
         {
-          title   : 'Nom',
-          key     : 'name',
+          title: 'Nom',
+          key: 'name',
           sortable: true
         },
         {
-          title   : 'Association',
-          key     : 'structure_name',
+          title: 'Association',
+          key: 'structure_name',
           sortable: true
         },
         {
-          title   : 'Status',
-          key     : 'state',
+          title: 'Status',
+          key: 'state',
           sortable: true
         },
         {
-          title   : '',
-          key     : '',
+          title: '',
+          key: '',
           sortable: false
         },
         {
-          title   : 'Actions',
-          key     : 'actions',
+          title: 'Actions',
+          key: 'actions',
           sortable: false
         },
       ],
@@ -290,6 +248,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

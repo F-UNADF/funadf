@@ -10,20 +10,12 @@
     <v-card-text>
       <v-row>
         <v-col>
-          <v-autocomplete
-              v-model="editedItem.structure_id"
-              :items="referentiels.structures"
-              item-value="id"
-              item-title="name"
-              label="Structure">
+          <v-autocomplete v-model="editedItem.structure_id" :items="referentiels.structures" item-value="id"
+            item-title="name" label="Structure">
           </v-autocomplete>
         </v-col>
         <v-col>
-          <v-text-field
-              v-model="editedItem.name"
-              label="Nom"
-              :rules="[rules.required]"
-              required>
+          <v-text-field v-model="editedItem.name" label="Nom" :rules="[rules.required]" required>
           </v-text-field>
         </v-col>
       </v-row>
@@ -31,28 +23,23 @@
       <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
         <v-tab value="motions">Motions</v-tab>
         <v-tab value="voting-tables">Table des votes</v-tab>
-        <v-tab value="results" v-if="editedItem.state !== 'coming'">Resultats</v-tab>
+        <v-tab value="results" v-if="editedItem.id === null && editedItem.state !== 'coming'">Resultats</v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
         <v-window-item key="motions" value="motions" class="py-3">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="motion in this.editedItem.motions"
-                     :key="motion.id" justify="left">
+              <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="motion in this.editedItem.motions" :key="motion.id"
+                justify="left">
                 <v-col cols="12" sm="6">
-                  <v-text-field
-                      v-model="motion.name"
-                      label="Motion"
-                      :rules="[rules.required, rules.max255]"
-                      :disabled="editedItem.state !== 'coming'"
-                  >
+                  <v-text-field v-model="motion.name" label="Motion" :rules="[rules.required, rules.max255]"
+                    :disabled="editedItem.state !== 'coming'">
                   </v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4">
-                  <v-btn-toggle
-                      class="mb-3" size="small" v-model="motion.kind" rounded
-                      :disabled="editedItem.state !== 'coming'">
+                  <v-btn-toggle class="mb-3" size="small" v-model="motion.kind" rounded
+                    :disabled="editedItem.state !== 'coming'">
                     <v-btn value="binary" color="success" class="py-1">
                       Oui/Non
                     </v-btn>
@@ -66,37 +53,30 @@
                       Choix Multiple
                     </v-btn>
                   </v-btn-toggle>
-                  <v-text-field
-                      v-if="motion.kind === 'choices'"
-                      :disabled="editedItem.state !== 'coming'"
-                      v-model="motion.choices"
-                      label="Choix"
-                      variant="solo-filled"
-                      persistent-hint
-                      hint="Séparer les choix par des virgules (Ex: 'Choix 1,Choix 2,Choix 3')"></v-text-field>
+                  <v-text-field v-if="motion.kind === 'choices'" :disabled="editedItem.state !== 'coming'"
+                    v-model="motion.choices" label="Choix" variant="solo-filled" persistent-hint
+                    hint="Séparer les choix par des virgules (Ex: 'Choix 1,Choix 2,Choix 3')"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="1">
                   <v-btn icon size="x-small" @click="moveMotionUp(motion)" v-if="motion.order > 0"
-                         :disabled="editedItem.state !== 'coming'">
+                    :disabled="editedItem.state !== 'coming'">
                     <v-icon>mdi-chevron-up</v-icon>
                   </v-btn>
                   <v-btn icon size="x-small" @click="moveMotionDown(motion)"
-                         v-if="motion.order < this.editedItem.motions.length - 1"
-                         :disabled="editedItem.state !== 'coming'">
+                    v-if="motion.order < this.editedItem.motions.length - 1" :disabled="editedItem.state !== 'coming'">
                     <v-icon>mdi-chevron-down</v-icon>
                   </v-btn>
                 </v-col>
                 <v-col cols="12" sm="1">
                   <v-btn icon color="red" size="x-small" @click="removeMotion(motion)"
-                         :disabled="editedItem.state !== 'coming'">
+                    :disabled="editedItem.state !== 'coming'">
                     <v-icon>mdi-close</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
             </v-col>
             <v-col cols="12" sm="1">
-              <v-btn color="success" icon @click="addMotion()"
-                     :disabled="editedItem.state !== 'coming'">
+              <v-btn color="success" icon @click="addMotion()" :disabled="editedItem.state !== 'coming'">
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-col>
@@ -107,19 +87,15 @@
           <v-row>
             <v-col cols="12" sm="11">
               <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="voting_table in this.editedItem.voting_tables"
-                     :key="voting_table.id" justify="left">
+                :key="voting_table.id" justify="left">
                 <v-col cols="12" sm="3">
-                  <v-select
-                      v-model="voting_table.position"
-                      :items="referentiels.positions"
-                      label="Qualité"
-                      :disabled="editedItem.state !== 'coming'"
-                  >
+                  <v-select v-model="voting_table.position" :items="referentiels.positions" label="Qualité"
+                    :disabled="editedItem.state !== 'coming'">
                   </v-select>
                 </v-col>
                 <v-col cols="12" sm="3">
                   <v-btn-toggle size="small" v-model="voting_table.as_member" rounded
-                                :disabled="editedItem.state !== 'coming'">
+                    :disabled="editedItem.state !== 'coming'">
                     <v-btn :value="true" color="success" class="py-1">
                       Membre
                     </v-btn>
@@ -130,7 +106,7 @@
                 </v-col>
                 <v-col cols="12" sm="5">
                   <v-btn-toggle size="small" v-model="voting_table.voting" rounded
-                                :disabled="editedItem.state !== 'coming'">
+                    :disabled="editedItem.state !== 'coming'">
                     <v-btn value="count" color="success" class="py-1">
                       Comptabilisé
                     </v-btn>
@@ -141,15 +117,14 @@
                 </v-col>
                 <v-col cols="12" sm="1">
                   <v-btn icon color="red" size="x-small" @click="removeVotingTable(voting_table)"
-                         :disabled="editedItem.state !== 'coming'">
+                    :disabled="editedItem.state !== 'coming'">
                     <v-icon>mdi-close</v-icon>
                   </v-btn>
                 </v-col>
               </v-row>
             </v-col>
             <v-col cols="12" sm="1">
-              <v-btn color="success" icon @click="addVotingTable()"
-                     :disabled="editedItem.state !== 'coming'">
+              <v-btn color="success" icon @click="addVotingTable()" :disabled="editedItem.state !== 'coming'">
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-col>
@@ -160,101 +135,54 @@
           <v-container v-if="editedItem.state === 'closed'">
             <v-table density="compact" border hover>
               <!-- VOTE BINAIRE / NEUTRE -->
-              <thead v-if="this.editedItem.results.length>0">
-              <tr>
-                <th></th>
-                <th colspan="6">Votes comptabilisés</th>
-                <th v-if="this.hasConsultative()" colspan="6">Votes consultatifs</th>
-              </tr>
-              <tr>
-                <th></th>
-                <th rowspan="2">Nb de votant</th>
-                <th colspan="4" class="bg-blue-lighten-1">Voix exprimées</th>
-                <th>Voix non exprimées</th>
-                <template  v-if="this.hasConsultative()">
+              <thead v-if="this.editedItem.results.length > 0">
+                <tr>
+                  <th></th>
+                  <th colspan="6">Votes comptabilisés</th>
+                  <th v-if="this.hasConsultative()" colspan="6">Votes consultatifs</th>
+                </tr>
+                <tr>
+                  <th></th>
                   <th rowspan="2">Nb de votant</th>
                   <th colspan="4" class="bg-blue-lighten-1">Voix exprimées</th>
                   <th>Voix non exprimées</th>
-                </template>
-              </tr>
-              <tr>
-                <th></th>
-                <th>Oui</th>
-                <th>Non</th>
-                <th>Neutre</th>
-                <th>Total</th>
-                <th></th>
-                <template  v-if="this.hasConsultative()">
+                  <template v-if="this.hasConsultative()">
+                    <th rowspan="2">Nb de votant</th>
+                    <th colspan="4" class="bg-blue-lighten-1">Voix exprimées</th>
+                    <th>Voix non exprimées</th>
+                  </template>
+                </tr>
+                <tr>
+                  <th></th>
                   <th>Oui</th>
                   <th>Non</th>
                   <th>Neutre</th>
                   <th>Total</th>
                   <th></th>
-                </template>
-              </tr>
+                  <template v-if="this.hasConsultative()">
+                    <th>Oui</th>
+                    <th>Non</th>
+                    <th>Neutre</th>
+                    <th>Total</th>
+                    <th></th>
+                  </template>
+                </tr>
               </thead>
               <tbody>
-              <tr v-for="result in this.editedItem.results" :key="result.id">
-                <th>{{ result.motion_name }}</th>
-                <td>{{
-                    result.non_consultative_yes_count + result.non_consultative_no_count + result.non_consultative_neutre_count + result.non_consultative_null_count
-                  }}
-                </td>
-                <td>
-                  {{ result.non_consultative_yes_count }}
-
-                  <span class="small" v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
-                    ({{
-                      ((result.non_consultative_yes_count / (result.non_consultative_yes_count + result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
-                          2)
-                    }}%)
-                  </span>
-                  <span class="small" v-else>
-                    (0%)
-                  </span>
-                </td>
-                <td>
-                  {{ result.non_consultative_no_count }}
-
-                  <span class="small" v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
-                    ({{
-                      ((result.non_consultative_no_count / (result.non_consultative_yes_count + result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
-                          2)
-                    }}%)
-                  </span>
-                  <span class="small" v-else>
-                    (0%)
-                  </span>
-                </td>
-                <td>
-                  {{ result.non_consultative_neutre_count }}
-
-                  <span class="small"
-                        v-if="result.non_consultative_neutre_count + result.non_consultative_no_count !== 0">
-                    ({{
-                      ((result.non_consultative_neutre_count / (result.non_consultative_yes_count + result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
-                          2)
-                    }}%)
-                  </span>
-                  <span class="small" v-else>
-                    (0%)
-                  </span>
-                </td>
-                <td>{{ result.non_consultative_yes_count + result.non_consultative_no_count + result.non_consultative_neutre_count }}</td>
-                <td>{{ result.non_consultative_null_count }}</td>
-
-                <!-- CONSULTATIVE -->
-                <template  v-if="this.hasConsultative()">
+                <tr v-for="result in this.editedItem.results" :key="result.id">
+                  <th>{{ result.motion_name }}</th>
                   <td>{{
-                      result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count + result.consultative_null_count
-                    }}
+                    result.non_consultative_yes_count + result.non_consultative_no_count +
+                    result.non_consultative_neutre_count + result.non_consultative_null_count
+                  }}
                   </td>
                   <td>
-                    {{ result.consultative_yes_count }}
+                    {{ result.non_consultative_yes_count }}
 
-                    <span class="small" v-if="result.consultative_yes_count + result.consultative_no_count !== 0">
+                    <span class="small" v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
                       ({{
-                        ((result.consultative_yes_count / (result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count)) * 100).toFixed(
+                        ((result.non_consultative_yes_count / (result.non_consultative_yes_count +
+                          result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
                             2)
                       }}%)
                     </span>
@@ -263,11 +191,12 @@
                     </span>
                   </td>
                   <td>
-                    {{ result.consultative_no_count }}
+                    {{ result.non_consultative_no_count }}
 
-                    <span class="small" v-if="result.consultative_yes_count + result.consultative_no_count !== 0">
+                    <span class="small" v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
                       ({{
-                        ((result.consultative_no_count / (result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count)) * 100).toFixed(
+                        ((result.non_consultative_no_count / (result.non_consultative_yes_count +
+                          result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
                             2)
                       }}%)
                     </span>
@@ -276,12 +205,13 @@
                     </span>
                   </td>
                   <td>
-                    {{ result.consultative_neutre_count }}
+                    {{ result.non_consultative_neutre_count }}
 
                     <span class="small"
-                          v-if="result.consultative_neutre_count + result.consultative_no_count !== 0">
+                      v-if="result.non_consultative_neutre_count + result.non_consultative_no_count !== 0">
                       ({{
-                        ((result.consultative_neutre_count / (result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count)) * 100).toFixed(
+                        ((result.non_consultative_neutre_count / (result.non_consultative_yes_count +
+                          result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
                             2)
                       }}%)
                     </span>
@@ -289,147 +219,211 @@
                       (0%)
                     </span>
                   </td>
-                  <td>{{ result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count }}</td>
-                  <td>{{ result.consultative_null_count }}</td>
-                </template>
-              </tr>
+                  <td>{{ result.non_consultative_yes_count + result.non_consultative_no_count +
+                    result.non_consultative_neutre_count }}</td>
+                  <td>{{ result.non_consultative_null_count }}</td>
+
+                  <!-- CONSULTATIVE -->
+                  <template v-if="this.hasConsultative()">
+                    <td>{{
+                      result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count +
+                      result.consultative_null_count
+                    }}
+                    </td>
+                    <td>
+                      {{ result.consultative_yes_count }}
+
+                      <span class="small" v-if="result.consultative_yes_count + result.consultative_no_count !== 0">
+                        ({{
+                          ((result.consultative_yes_count / (result.consultative_yes_count + result.consultative_no_count +
+                            result.consultative_neutre_count)) * 100).toFixed(
+                              2)
+                        }}%)
+                      </span>
+                      <span class="small" v-else>
+                        (0%)
+                      </span>
+                    </td>
+                    <td>
+                      {{ result.consultative_no_count }}
+
+                      <span class="small" v-if="result.consultative_yes_count + result.consultative_no_count !== 0">
+                        ({{
+                          ((result.consultative_no_count / (result.consultative_yes_count + result.consultative_no_count +
+                            result.consultative_neutre_count)) * 100).toFixed(
+                              2)
+                        }}%)
+                      </span>
+                      <span class="small" v-else>
+                        (0%)
+                      </span>
+                    </td>
+                    <td>
+                      {{ result.consultative_neutre_count }}
+
+                      <span class="small" v-if="result.consultative_neutre_count + result.consultative_no_count !== 0">
+                        ({{
+                          ((result.consultative_neutre_count / (result.consultative_yes_count + result.consultative_no_count
+                            + result.consultative_neutre_count)) * 100).toFixed(
+                              2)
+                        }}%)
+                      </span>
+                      <span class="small" v-else>
+                        (0%)
+                      </span>
+                    </td>
+                    <td>{{ result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count
+                    }}</td>
+                    <td>{{ result.consultative_null_count }}</td>
+                  </template>
+                </tr>
               </tbody>
             </v-table>
 
             <v-table density="compact" border hover class="text-center">
               <!-- VOTE FREE -->
               <thead v-if="this.editedItem.free_results.length > 0">
-              <tr>
-                <th></th>
-                <th colspan="5">Votes comptabilisés</th>
-                <th colspan="5">Votes consultatifs</th>
-              </tr>
+                <tr>
+                  <th></th>
+                  <th colspan="5">Votes comptabilisés</th>
+                  <th colspan="5">Votes consultatifs</th>
+                </tr>
               </thead>
               <tbody v-if="this.editedItem.free_results.length > 0">
-              <tr v-for="result in this.editedItem.free_results" :key="result.id">
-                <th>{{ result.motion_name }}</th>
-                <td colspan="5">{{ result.non_consultative_free }}</td>
-                <td colspan="5">{{ result.consultative_free }}</td>
-              </tr>
+                <tr v-for="result in this.editedItem.free_results" :key="result.id">
+                  <th>{{ result.motion_name }}</th>
+                  <td colspan="5">{{ result.non_consultative_free }}</td>
+                  <td colspan="5">{{ result.consultative_free }}</td>
+                </tr>
               </tbody>
             </v-table>
 
-            <v-table v-for="motion in this.editedItem.motions.filter(m => m.kind === 'choices')"
-                     density="compact"
-                     class="mb-3 text-center"
-                     hover>
+            <v-table v-for="motion in this.editedItem.motions.filter(m => m.kind === 'choices')" density="compact"
+              class="mb-3 text-center" hover>
               <!-- VOTE CHOICES -->
               <thead>
-              <tr>
-                <td :colspan="this.editedItem.choices_results.filter(c => c.id === motion.id).length+2"
+                <tr>
+                  <td :colspan="this.editedItem.choices_results.filter(c => c.id === motion.id).length + 2"
                     class="text-center bg-blue-lighten-5">
-                  {{ motion.name }}
-                </td>
-              </tr>
-              <tr>
-                <th v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length>0"
-                    :colspan="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length+1"
-                    class="bg-blue-lighten-1"
-                >Votes comptabilisés
-                </th>
-                <th v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length>0"
-                    :colspan="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length+1"
-                    class="bg-purple-lighten-1"
-                >Votes consultatifs
-                </th>
-              </tr>
+                    {{ motion.name }}
+                  </td>
+                </tr>
+                <tr>
+                  <th
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length > 0"
+                    :colspan="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length + 1"
+                    class="bg-blue-lighten-1">Votes comptabilisés
+                  </th>
+                  <th
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length > 0"
+                    :colspan="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length + 1"
+                    class="bg-purple-lighten-1">Votes consultatifs
+                  </th>
+                </tr>
 
-              <tr>
-                <!-- NOT CONSULTATIVE -->
-                <th v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length>0"
+                <tr>
+                  <!-- NOT CONSULTATIVE -->
+                  <th
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length > 0"
                     class="bg-blue-lighten-2">
-                  Voix exprimées
-                </th>
-                <th v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0 && c.choice !== null)"
+                    Voix exprimées
+                  </th>
+                  <th
+                    v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0 && c.choice !== null)"
                     class="bg-blue-lighten-3">
-                  {{ choice.choice }}
-                </th>
-                <th v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length>0">
-                  Voix non exprimées
-                </th>
+                    {{ choice.choice }}
+                  </th>
+                  <th
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length > 0">
+                    Voix non exprimées
+                  </th>
 
-                <!-- CONSULTATIVE -->
-                <th v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length>0"
+                  <!-- CONSULTATIVE -->
+                  <th
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length > 0"
                     class="bg-purple-lighten-2">
-                  Voix exprimées
-                </th>
-                <th v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1 && c.choice !== null)"
+                    Voix exprimées
+                  </th>
+                  <th
+                    v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1 && c.choice !== null)"
                     class="bg-purple-lighten-3">
-                  {{ choice.choice }}
-                </th>
-                <th v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length>0">
-                  Voix non exprimées
-                </th>
-              </tr>
+                    {{ choice.choice }}
+                  </th>
+                  <th
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length > 0">
+                    Voix non exprimées
+                  </th>
+                </tr>
               </thead>
               <tbody v-if="this.editedItem.choices_results.length > 0">
-              <tr>
-                <!-- NOT CONSULTATIVE -->
-                <!-- DISPLAY SUM OF COUNT IN choices_results if choice is not null -->
-                <td v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length>0">
-                  {{
-                    this.editedItem.choices_results.filter(
+                <tr>
+                  <!-- NOT CONSULTATIVE -->
+                  <!-- DISPLAY SUM OF COUNT IN choices_results if choice is not null -->
+                  <td
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length > 0">
+                    {{
+                      this.editedItem.choices_results.filter(
                         c => c.id === motion.id && c.consultative === 0 && c.choice !== null).reduce(
-                        (a, b) => a + (b['count'] || 0), 0)
-                  }}
-                </td>
-                <td v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0 && c.choice !== null)">
-                  {{ choice.count }}
-                  <!-- Display the percentage of the result in all choices_results with choice different of null -->
-                  <span class="small"
-                        v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0 && c.choice !== null).length > 0">
-                        ({{
-                      ((choice.count / this.editedItem.choices_results.filter(
+                          (a, b) => a + (b['count'] || 0), 0)
+                    }}
+                  </td>
+                  <td
+                    v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0 && c.choice !== null)">
+                    {{ choice.count }}
+                    <!-- Display the percentage of the result in all choices_results with choice different of null -->
+                    <span class="small"
+                      v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0 && c.choice !== null).length > 0">
+                      ({{
+                        ((choice.count / this.editedItem.choices_results.filter(
                           c => c.id === motion.id && c.consultative === 0 && c.choice !== null).reduce(
-                          (a, b) => a + (b['count'] || 0),
-                          0)) * 100).toFixed(
-                          2)
-                    }}%)
-                      </span>
-                </td>
-                <td v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length>0">
-                  <!-- Check if value exist -->
-                  {{
-                    (this.editedItem.choices_results.find(
+                            (a, b) => a + (b['count'] || 0),
+                            0)) * 100).toFixed(
+                              2)
+                      }}%)
+                    </span>
+                  </td>
+                  <td
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length > 0">
+                    <!-- Check if value exist -->
+                    {{
+                      (this.editedItem.choices_results.find(
                         c => c.id === motion.id && c.consultative === 0 && c.choice === null) || {}).count || 0
-                  }}
-                </td>
+                    }}
+                  </td>
 
-                <!-- CONSULTATIVE -->
-                <td v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length>0">
-                  {{
-                    this.editedItem.choices_results.filter(
+                  <!-- CONSULTATIVE -->
+                  <td
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length > 0">
+                    {{
+                      this.editedItem.choices_results.filter(
                         c => c.id === motion.id && c.consultative === 1 && c.choice !== null).reduce(
-                        (a, b) => a + (b['count'] || 0), 0)
-                  }}
-                </td>
-                <td v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1 && c.choice !== null)">
-                  {{ choice.count }}
-                  <!-- Display the percentage of the result in all choices_results with choice different of null -->
-                  <span class="small"
-                        v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1 && c.choice !== null).length > 0">
-                        ({{
-                      ((choice.count / this.editedItem.choices_results.filter(
+                          (a, b) => a + (b['count'] || 0), 0)
+                    }}
+                  </td>
+                  <td
+                    v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1 && c.choice !== null)">
+                    {{ choice.count }}
+                    <!-- Display the percentage of the result in all choices_results with choice different of null -->
+                    <span class="small"
+                      v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1 && c.choice !== null).length > 0">
+                      ({{
+                        ((choice.count / this.editedItem.choices_results.filter(
                           c => c.id === motion.id && c.consultative === 1 && c.choice !== null).reduce(
-                          (a, b) => a + (b['count'] || 0),
-                          0)) * 100).toFixed(
-                          2)
-                    }}%)
-                      </span>
-                </td>
-                <td v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length>0">
-                  <!-- Check if value exist -->
-                  {{
-                    (this.editedItem.choices_results.find(
+                            (a, b) => a + (b['count'] || 0),
+                            0)) * 100).toFixed(
+                              2)
+                      }}%)
+                    </span>
+                  </td>
+                  <td
+                    v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length > 0">
+                    <!-- Check if value exist -->
+                    {{
+                      (this.editedItem.choices_results.find(
                         c => c.id === motion.id && c.consultative === 1 && c.choice === null) || {}).count || 0
-                  }}
-                </td>
-              </tr>
+                    }}
+                  </td>
+                </tr>
               </tbody>
 
             </v-table>
@@ -443,16 +437,16 @@
             <h3>Votants</h3>
             <v-table border hover>
               <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Ville</th>
-              </tr>
+                <tr>
+                  <th>Nom</th>
+                  <th>Ville</th>
+                </tr>
               </thead>
               <tbody>
-              <tr v-for="voter in this.editedItem.voters" :key="voter.id">
-                <th>{{ voter.name }}</th>
-                <td>{{ voter.town }}</td>
-              </tr>
+                <tr v-for="voter in this.editedItem.voters" :key="voter.id">
+                  <th>{{ voter.name }}</th>
+                  <td>{{ voter.town }}</td>
+                </tr>
               </tbody>
             </v-table>
           </v-container>
@@ -481,28 +475,28 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {VDataTable} from 'vuetify/labs/VDataTable'
+import { mapGetters } from "vuex";
+import { VDataTable } from 'vuetify/labs/VDataTable'
 
 export default {
-  name      : "CampaignForm",
+  name: "CampaignForm",
   components: {
     VDataTable
   },
-  computed  : {
+  computed: {
     ...mapGetters('campaignsStore', {
-      items       : 'getItems',
-      item        : 'getItem',
-      formLoading : 'getFormLoading',
-      dialogForm  : 'getDialogForm',
+      items: 'getItems',
+      item: 'getItem',
+      formLoading: 'getFormLoading',
+      dialogForm: 'getDialogForm',
       referentiels: 'getReferentiels',
-      voterCount  : 'getVotersCount',
+      voterCount: 'getVotersCount',
     }),
     getTitle() {
       return (this.editedItem.id === null) ? "Ajouter une campagne" : "Modifier une campagne";
     },
   },
-  methods   : {
+  methods: {
     close() {
       this.$store.commit('campaignsStore/setDialogForm', false);
       this.$store.commit('campaignsStore/setItem', {});
@@ -519,32 +513,32 @@ export default {
     },
     moveMotionUp(motion) {
       const currentIndex = this.editedItem.motions.findIndex(
-          (m) => m.id === motion.id
+        (m) => m.id === motion.id
       );
       if (currentIndex > 0) {
         const previousIndex = currentIndex - 1;
         [this.editedItem.motions[previousIndex], this.editedItem.motions[currentIndex]] =
-            [motion, this.editedItem.motions[previousIndex]];
+          [motion, this.editedItem.motions[previousIndex]];
         this.editedItem.motions[currentIndex].order = currentIndex;
         this.editedItem.motions[previousIndex].order = previousIndex;
       }
     },
     moveMotionDown(motion) {
       const currentIndex = this.editedItem.motions.findIndex(
-          (m) => m.id === motion.id
+        (m) => m.id === motion.id
       );
       if (currentIndex < this.editedItem.motions.length - 1) {
         const nextIndex = currentIndex + 1;
         [this.editedItem.motions[currentIndex], this.editedItem.motions[nextIndex]] =
-            [this.editedItem.motions[nextIndex], motion];
+          [this.editedItem.motions[nextIndex], motion];
         this.editedItem.motions[currentIndex].order = currentIndex;
         this.editedItem.motions[nextIndex].order = nextIndex;
       }
     },
     addMotion() {
       const newMotion = {
-        name : '',
-        kind : 'binary',
+        name: '',
+        kind: 'binary',
         order: this.editedItem.motions.length, // Set the initial order as the length of the motions array
       };
 
@@ -552,9 +546,9 @@ export default {
     },
     addVotingTable() {
       const newVotingTable = {
-        position : '',
+        position: '',
         as_member: true,
-        voting   : 'count',
+        voting: 'count',
       };
       // Check if voting tables array is empty else init the voting_table
       if (!this.editedItem.voting_tables) {
@@ -584,9 +578,12 @@ export default {
     downloadResults() {
       // open a URL to Download the results
       window.open('/structures/' + this.editedItem.structure_id + '/campaigns/' + this.editedItem.id + '.pdf',
-          '_blank');
+        '_blank');
     },
     async updateVotersCount() {
+      if (this.editedItem.id === null || this.editedItem.state !== 'closed') {
+        return;
+      }
       try {
         this.$store.dispatch('campaignsStore/votersCount', this.editedItem.id);
       } catch (error) {
@@ -604,27 +601,29 @@ export default {
     },
     hasConsultative() {
       return this.editedItem.results.some(result =>
-          result.consultative_yes_count +
-          result.consultative_no_count +
-          result.consultative_neutre_count +
-          result.consultative_null_count > 0
+        result.consultative_yes_count +
+        result.consultative_no_count +
+        result.consultative_neutre_count +
+        result.consultative_null_count > 0
       );
     },
   },
-  watch     : {
+  watch: {
     item: {
-      deep     : true,
+      deep: true,
       immediate: true,
-      handler  : function () {
+      handler: function () {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
         this.updateMotionOrder();
-        this.$store.dispatch('campaignsStore/votersCount', this.editedItem.id);
-        this.updateVotersCount();  // Initial value update
-        this.startCountdown();
-        this.intervalId = setInterval(() => {
-          this.updateVotersCount();
+        if (this.editedItem.id !== null && this.editedItem.state === 'closed') {
+          this.$store.dispatch('campaignsStore/votersCount', this.editedItem.id);
+          this.updateVotersCount();  // Initial value update
           this.startCountdown();
-        }, 15000);
+          this.intervalId = setInterval(() => {
+            this.updateVotersCount();
+            this.startCountdown();
+          }, 15000);
+        }
       },
     },
   },
@@ -632,11 +631,11 @@ export default {
   data() {
     return {
       editedItem: {},
-      tab       : 'motions',
-      countdown : 15,
-      rules     : {
+      tab: 'motions',
+      countdown: 15,
+      rules: {
         required: value => !!value || 'Champ obligatoire',
-        max255  : value => (value && value.length <= 255) || 'Maximum 255 caractères',
+        max255: value => (value && value.length <= 255) || 'Maximum 255 caractères',
       },
     };
   },
@@ -644,7 +643,8 @@ export default {
 </script>
 
 <style scoped>
-.v-table th, .v-table td {
+.v-table th,
+.v-table td {
   text-align: center;
 }
 </style>
