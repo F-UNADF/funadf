@@ -116,73 +116,67 @@ class Api::UsersController < ApiController
   end
 
   def update_gratitudes(user)
-    gratitudes_params = params[:gratitudes]
+    gratitudes_params = params[:user][:gratitudes]
     return unless gratitudes_params.present?
 
     gratitudes_params.each do |gratitude_params|
-      gratitude_id = gratitude_params[:id]
+      
+      gratitude_id = gratitude_params.last[:id]
       if gratitude_id.present?
         c = Career.find_by(id: gratitude_id, user_id: user.id)
-        c.update(gratitude_params.permit(:level, :start_at))
+        c.update(gratitude_params.last.permit(:level, :start_at))
       else
-        c = Career.new(level: gratitude_params[:level], start_at: gratitude_params[:start_at], user_id: user.id)
+        c = Career.new(level: gratitude_params.last[:level], start_at: gratitude_params.last[:start_at], user_id: user.id)
         c.save
       end
     end
   end
 
   def update_fees(user)
-    fees_params = params[:fees]
+    fees_params = params[:user][:fees]
     return unless fees_params.present?
 
     fees_params.each do |fee_params|
-      fee_id = fee_params[:id]
+      fee_id = fee_params.last[:id]
       if fee_id.present?
         c = Fee.find_by(id: fee_id, user_id: user.id)
-        c.update(fee_params.permit(:what, :amount, :paid_at))
+        c.update(fee_params.last.permit(:what, :amount, :paid_at))
       else
-        c = Fee.new(what: fee_params[:what], amount: fee_params[:amount], paid_at: fee_params[:paid_at], user_id: user.id)
+        c = Fee.new(what: fee_params.last[:what], amount: fee_params.last[:amount], paid_at: fee_params.last[:paid_at], user_id: user.id)
         c.save
       end
     end
   end
 
   def update_responsabilities(user)
-    responsabilities_params = params[:responsabilities]
+    responsabilities_params = params[:user][:responsabilities]
     return unless responsabilities_params.present?
 
     responsabilities_params.each do |responsability_params|
-      responsability_id = responsability_params[:id]
+      responsability_id = responsability_params.last[:id]
       if responsability_id.present?
         responsability = Career.find_by(id: responsability_id, user_id: user.id)
-        unless responsability&.update(responsability_params.permit(:start_at, :end_at, :association_id, :function, :user_id))
-          raise "Error saving responsibility: #{responsability&.errors&.full_messages&.join(', ')}"
-        end
+        responsability.update(responsability_params.last.permit(:start_at, :end_at, :association_id, :function, :user_id))
       else
-        responsibility = Career.new(responsability_params.permit(:function, :association_id, :start_at, :end_at).merge(user_id: user.id))
-        unless responsibility.save
-          raise "Error saving responsibility: #{responsibility.errors.full_messages.join(', ')}"
-        end
+        responsibility = Career.new(responsability_params.last.permit(:function, :association_id, :start_at, :end_at).merge(user_id: user.id))
+      
+        responsibility.save
       end
     end
   end
 
   def update_phases(user)
-    phases_params = params[:phases]
+    phases_params = params[:user][:phases]
     return unless phases_params.present?
 
     phases_params.each do |phase_params|
-      phase_id = phase_params[:id]
+      phase_id = phase_params.last[:id]
       if phase_id.present?
         p = Career.find_by(id: phase_id, user_id: user.id)
-        unless p.update(phase_params.permit(:start_at, :end_at, :church_id, :function, :user_id))
-          throw "Error saving phase #{p.errors.full_messages}"
-        end
+        p.update(phase_params.last.permit(:start_at, :end_at, :church_id, :function, :user_id))
       else
-        p = Career.new(phase_params.permit(:function, :church_id, :start_at, :end_at).merge(user_id: user.id))
-        unless p.save
-          throw "Error saving phase #{p.errors.full_messages}"
-        end
+        p = Career.new(phase_params.last.permit(:function, :church_id, :start_at, :end_at).merge(user_id: user.id))
+        p.save
       end
     end
   end
