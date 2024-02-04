@@ -12,55 +12,56 @@ module V1
         render json: { status: 'ko', message: 'Token is not valid' }
       end
 
-      @campaigns = Campaign.currents
-      @presidences = @user.get_presidences
+      campaing_ids = @user.eligible_campaign_ids
 
-      campaing_ids = []
+      # @campaigns = Campaign.currents
+      # @presidences = @user.get_presidences
 
-      @campaigns.each do |campaign|
-        @presidences.each_with_index do |s, index|
-          if campaign.structure.is_member?(s)
-            if campaign.structure.member_can_vote?(s) && !campaign.has_already_vote?(s)
-              # MEMBRE DE L'ASSOC, CAN_VOTE
-              campaing_ids << campaign.id
+      # campaing_ids = []
 
-              break
-            elsif !campaign.structure.member_can_vote?(s)
-              # MEMBRE DE L'ASSOC, MAIS CANT_VOTE
-              campaing_ids << campaign.id
+      # @campaigns.each do |campaign|
+      #   @presidences.each_with_index do |s, index|
+      #     if campaign.structure.is_member?(s)
+      #       if campaign.structure.member_can_vote?(s) && !campaign.has_already_vote?(s)
+      #         # MEMBRE DE L'ASSOC, CAN_VOTE
+      #         campaing_ids << campaign.id
 
-              break
-            end
+      #         break
+      #       elsif !campaign.structure.member_can_vote?(s)
+      #         # MEMBRE DE L'ASSOC, MAIS CANT_VOTE
+      #         campaing_ids << campaign.id
 
-
-          elsif campaign.structure_can_vote?(s, false) && !campaign.has_already_vote?(s)
-            # NON MEMBRE, CAN VOTE
-            campaing_ids << campaign.id
-            break
-          end
-        end
-
-        if campaign.structure.is_member?(@user)
-          if campaign.structure.member_can_vote?(@user) && campaign.user_can_vote?(@user) && !campaign.has_already_vote?(@user)
-            # MEMBRE DE L'ASSOC, CAN_VOTE
-            campaing_ids << campaign.id
+      #         break
+      #       end
 
 
-          elsif !campaign.structure.member_can_vote?(@user)
+      #     elsif campaign.structure_can_vote?(s, false) && !campaign.has_already_vote?(s)
+      #       # NON MEMBRE, CAN VOTE
+      #       campaing_ids << campaign.id
+      #       break
+      #     end
+      #   end
 
-            # MEMBRE DE L'ASSOC, MAIS CANT_VOTE
-            campaing_ids << campaign.id
-          end
-
-        elsif campaign.user_can_vote?(@user, false) && !campaign.has_already_vote?(@user)
-          # NON MEMBRE, CAN VOTE
-          campaing_ids << campaign.id
-        end
-
-      end
+      #   if campaign.structure.is_member?(@user)
+      #     if campaign.structure.member_can_vote?(@user) && campaign.user_can_vote?(@user) && !campaign.has_already_vote?(@user)
+      #       # MEMBRE DE L'ASSOC, CAN_VOTE
+      #       campaing_ids << campaign.id
 
 
-      render json: { campaigns: Campaign.where(id: campaing_ids), token: params[:token] }
+      #     elsif !campaign.structure.member_can_vote?(@user)
+
+      #       # MEMBRE DE L'ASSOC, MAIS CANT_VOTE
+      #       campaing_ids << campaign.id
+      #     end
+
+      #   elsif campaign.user_can_vote?(@user, false) && !campaign.has_already_vote?(@user)
+      #     # NON MEMBRE, CAN VOTE
+      #     campaing_ids << campaign.id
+      #   end
+
+      # end
+
+      render json: { campaigns: Campaign.where(id: campaing_ids) }, include: [:structure => { only: :name }]
     end
 
     def show
