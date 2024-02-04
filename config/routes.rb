@@ -39,6 +39,8 @@ Rails.application.routes.draw do
     post '/associations/:id/members', to: 'associations#add_members'
     post '/associations/:id/roles/edit', to: 'associations#edit_roles'
 
+    get '/search', to: 'search#index'
+
     namespace :me do
       resources :events, only: [:index]
     end

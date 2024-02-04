@@ -204,6 +204,41 @@ class User < ActiveRecord::Base
     keys
   end
 
+  def eligible_campaign_ids
+    campaigns = Campaign.currents
+    presidences = get_presidences
+    campaign_ids = []
+
+    campaigns.each do |campaign|
+      presidences.each_with_index do |s, index|
+        if campaign.structure.is_member?(s)
+          if campaign.structure.member_can_vote?(s) && !campaign.has_already_vote?(s)
+            campaign_ids << campaign.id
+            break
+          elsif !campaign.structure.member_can_vote?(s)
+            campaign_ids << campaign.id
+            break
+          end
+        elsif campaign.structure_can_vote?(s, false) && !campaign.has_already_vote?(s)
+          campaign_ids << campaign.id
+          break
+        end
+      end
+
+      if campaign.structure.is_member?(self)
+        if campaign.structure.member_can_vote?(self) && campaign.user_can_vote?(self) && !campaign.has_already_vote?(self)
+          campaign_ids << campaign.id
+        elsif !campaign.structure.member_can_vote?(self)
+          campaign_ids << campaign.id
+        end
+      elsif campaign.user_can_vote?(self, false) && !campaign.has_already_vote?(self)
+        campaign_ids << campaign.id
+      end
+    end
+
+    campaign_ids
+  end
+
   def self.get_import_fields
     [
       ['ID', :id],
