@@ -308,7 +308,7 @@ export default {
         return;
       }
 
-      this.editedItem.avatar = file[0];
+      this.editedItem.user.avatar = file[0];
     },
     save() {
       this.$store.dispatch('usersStore/save', this.editedItem).then(response => {
