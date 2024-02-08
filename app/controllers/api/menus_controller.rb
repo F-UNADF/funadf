@@ -181,7 +181,7 @@ class Api::MenusController < ApiController
       end
     end
 
-    if current_user.is_admin? || current_user.has_any_role?(:president, :treasurer, :secretary)
+    if current_user.is_admin?
       result << {
         header: "ADMIN",
       }
