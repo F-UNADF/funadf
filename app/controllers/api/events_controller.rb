@@ -2,12 +2,25 @@ class Api::EventsController < ApiController
   before_action :set_event, only: [:show, :update, :destroy]
 
   def index
-    if @structure.nil?
-      events = Event.where("end_at > ?", Time.current).order(start_at: :asc)
-    else
-      events = @structure.events.where("end_at > ?", Time.current).order(start_at: :asc)
+    events = []
+    if @subdomain == 'admin'
+      events = Event.joins(:structure).where("end_at > ?", Time.current).order(start_at: :asc)
+    elsif @subdomain == 'association'
+      # get campaigns of the association of the current user
+      # Vérifier si l'utilisateur actuel a des responsabilités d'association
+      responsibilities_ids = current_user.associations_responsabilities.pluck(:id)
+
+      # Si l'utilisateur a des responsabilités d'association, récupérer les événements à venir associés à ces responsabilités
+      if responsibilities_ids.present?
+        events = Event.joins(:structure).where("end_at > ?", Time.current)
+                              .where(structure_id: responsibilities_ids)
+                              .order(id: :desc)
+      end
+    elsif @subdomain.present? && !@structure.nil?
+      events = @structure.events.joins(:structure).where("end_at > ?", Time.current).order(start_at: :asc)
     end
-    render json: { events: events }
+
+    render json: { events: events }, include: ['category', 'structure']
   end
 
   def show
@@ -22,14 +35,9 @@ class Api::EventsController < ApiController
   end
 
   def create
-    event             = Event.new(event_params)
-    category          = Category.find_or_create_by(name: params[:event][:category], kind: 'event')
-    event.category_id = category.id
-
-    if @structure.present?
-      event.structure_id = @structure.id
-    end
-
+    event = Event.new(event_params)
+    category = Category.find_or_create_by(name: params[:event][:category], kind: 'event')
+    event.category_id = category.id 
     if event.save
       params[:files]&.each do |file|
         event.files.attach(file)
@@ -38,7 +46,7 @@ class Api::EventsController < ApiController
       params[:event][:accesses].each do |level|
         event.accesses.find_or_create_by(level: level[1], can_access: true)
       end
-      render json: { status: 200, event: event }
+      render json: { status: 200, event: event }, include: ['category', 'structure']
     else
       render json: { status: 422, errors: event.errors }
     end
@@ -62,7 +70,7 @@ class Api::EventsController < ApiController
     @event.accesses.where.not(level: params[:event][:accesses].values).destroy_all
 
     if @event.update(event_params)
-      render json: { status: 200, event: @event }
+      render json: { status: 200, event: @event }, include: ['category', 'structure']
     else
       render json: { status: 422, errors: @event.errors }
     end

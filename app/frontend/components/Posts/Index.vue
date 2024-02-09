@@ -1,14 +1,8 @@
 <template>
   <v-row justify="space-between">
     <v-col cols="12" lg="4" md="4" class="mb-3">
-      <v-text-field
-          density="compact"
-          v-model="search"
-          label="Chercher une actu..."
-          hide-details
-          variant="outlined"
-          clearable
-      ></v-text-field>
+      <v-text-field density="compact" v-model="search" label="Chercher une actu..." hide-details variant="outlined"
+        clearable></v-text-field>
     </v-col>
     <v-col cols="12" lg="3" md="3" class="text-right">
       <v-spacer></v-spacer>
@@ -21,28 +15,13 @@
       </v-btn>
     </v-col>
   </v-row>
-  <v-data-table
-      :headers="headers"
-      :items="filteredItems"
-      :search="search"
-      class="elevation-1"
-      :loading="loading"
-  >
+  <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <tr>
         <td colspan="5">
-          <v-progress-linear
-              indeterminate
-              color="cyan"
-              v-if="loading"
-          ></v-progress-linear>
-          <v-alert
-              v-else
-              color="danger"
-              icon="danger"
-              title="Aucune actu trouvée"
-              text="Aucune actu ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."
-          ></v-alert>
+          <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
+          <v-alert v-else color="danger" icon="danger" title="Aucune actu trouvée"
+            text="Aucune actu ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
         </td>
       </tr>
     </template>
@@ -50,14 +29,14 @@
       <tr>
         <td>{{ item.title }}</td>
         <td>
+          <template v-if="item.structure">
+            {{ item.structure.name }}
+          </template>
+        </td>
+        <td>
           <v-tooltip location="top" text="Modifier l'actu">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  small
-                  v-bind="props"
-                  color="primary"
-                  @click="editItem(item.id)"
-                  title="Edit">
+              <v-icon small v-bind="props" color="primary" @click="editItem(item.id)" title="Edit">
                 mdi-pencil
               </v-icon>
             </template>
@@ -65,12 +44,7 @@
 
           <v-tooltip location="top" text="Supprimer l'actu">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  v-bind="props"
-                  small
-                  class="text-error"
-                  title="Delete"
-                  @click="tryDeleteItem(item)">
+              <v-icon v-bind="props" small class="text-error" title="Delete" @click="tryDeleteItem(item)">
                 mdi-delete
               </v-icon>
             </template>
@@ -98,22 +72,22 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {VDataTable} from 'vuetify/labs/VDataTable'
+import { mapGetters } from "vuex";
+import { VDataTable } from 'vuetify/labs/VDataTable'
 import PostForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
-  name      : "PostsIndex",
+  name: "PostsIndex",
   components: {
     VDataTable,
     PostForm,
     DialogConfirm,
   },
-  computed  : {
+  computed: {
     ...mapGetters('postsStore', {
-      items       : 'getItems',
-      loading     : 'getLoading',
+      items: 'getItems',
+      loading: 'getLoading',
       referentiels: 'getReferentiels',
     }),
     dialogForm: {
@@ -130,29 +104,29 @@ export default {
       });
     },
   },
-  methods   : {
-    newItem      : function () {
+  methods: {
+    newItem: function () {
       let newItem = {
-        id      : null,
-        title   : '',
-        content : '',
+        id: null,
+        title: '',
+        content: '',
         accesses: [],
       };
       this.$store.commit('postsStore/setItem', newItem);
       this.$store.commit('postsStore/setDialogForm', true);
     },
-    editItem     : function (item) {
+    editItem: function (item) {
       this.$store.dispatch('postsStore/item', item);
       this.$store.commit('postsStore/setDialogForm', true);
     },
-    refresh      : function () {
+    refresh: function () {
       this.$store.dispatch('postsStore/items');
     },
     tryDeleteItem: function (item) {
       Object.assign(this.deletingItem, item);
       this.dialogConfirmDelete = true;
     },
-    deleteItem   : function (item) {
+    deleteItem: function (item) {
       this.$store.dispatch('postsStore/delete', item.value).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
@@ -162,26 +136,31 @@ export default {
   },
   data() {
     return {
-      deletingItem       : {},
+      deletingItem: {},
       dialogConfirmDelete: false,
-      loadingDelete      : false,
-      search             : '',
-      dialog             : false,
-      editedItem         : {},
-      valid              : true,
-      filter             : {
-        levels  : [],
+      loadingDelete: false,
+      search: '',
+      dialog: false,
+      editedItem: {},
+      valid: true,
+      filter: {
+        levels: [],
         disabled: false,
       },
-      headers            : [
+      headers: [
         {
-          title   : 'Titre',
-          key     : 'title',
+          title: 'Titre',
+          key: 'title',
           sortable: true
         },
         {
-          title   : 'Actions',
-          key     : 'actions',
+          title: 'Structure',
+          key: 'structure.name',
+          sortable: true
+        },
+        {
+          title: 'Actions',
+          key: 'actions',
           sortable: false
         },
       ],
@@ -194,6 +173,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,14 +1,6 @@
 <template>
-  <v-navigation-drawer
-      left
-      elevation="10"
-      mobile-breakpoint="960"
-      app
-      class="leftSidebar"
-      :rail="false"
-      v-model="showSidebar"
-      rail-width="75"
-  >
+  <v-navigation-drawer left elevation="10" mobile-breakpoint="960" app class="leftSidebar" :rail="false"
+    v-model="showSidebar" rail-width="75">
     <!-- ---------------------------------------------- -->
     <!---Logo part -->
     <!-- ---------------------------------------------- -->
@@ -42,12 +34,7 @@
             <!---Dropdown  -->
             <!-- ---------------------------------------------- -->
             <template v-slot:activator="{ props }">
-              <v-list-item
-                  v-bind="props"
-                  :value="item.title"
-                  rounded="lg"
-                  class="mb-1"
-              >
+              <v-list-item v-bind="props" :value="item.title" rounded="lg" class="mb-1">
                 <!---Icon  -->
                 <template v-slot:prepend>
                   <v-icon>
@@ -55,22 +42,14 @@
                   </v-icon>
                 </template>
                 <!---Title  -->
-                <v-list-item-title
-                    v-text="item.title"
-                ></v-list-item-title>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
               </v-list-item>
             </template>
             <!-- ---------------------------------------------- -->
             <!---Sub Item-->
             <!-- ---------------------------------------------- -->
-            <v-list-item
-                v-for="(subitem, i) in item.children"
-                :key="i"
-                :value="subitem.to"
-                :to="subitem.to"
-                rounded="lg"
-                class="first-level-item mb-1"
-            >
+            <v-list-item v-for="(subitem, i) in item.children" :key="i" :value="subitem.to" :to="subitem.to" rounded="lg"
+              class="first-level-item mb-1">
               <template v-slot:prepend>
                 <v-icon>disc</v-icon>
               </template>
@@ -82,7 +61,12 @@
           <!-- ---------------------------------------------- -->
           <v-list-item v-else-if="!!item.to" :to="item.to" rounded="lg" class="mb-1">
             <template v-slot:prepend>
-              <v-icon>
+              <v-badge dot color="red" v-if="item.new_tab">
+                <v-icon>
+                  {{ item.icon }}
+                </v-icon>
+              </v-badge>
+              <v-icon v-else>
                 {{ item.icon }}
               </v-icon>
             </template>
@@ -91,7 +75,12 @@
 
           <v-list-item v-else :href="item.href" rounded="lg" class="mb-1">
             <template v-slot:prepend>
-              <v-icon>
+              <v-badge dot color="red" v-if="item.new_tab">
+                <v-icon>
+                  {{ item.icon }}
+                </v-icon>
+              </v-badge>
+              <v-icon v-else>
                 {{ item.icon }}
               </v-icon>
             </template>
@@ -124,7 +113,7 @@ export default {
       if (this.isURL(url)) return window.location.href === url;
       else return this.$route.path === url;
     },
-    isURL: function(string) {
+    isURL: function (string) {
       // Regular expression pattern for URL validation
       let urlPattern = /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/;
       return urlPattern.test(string);
@@ -134,5 +123,12 @@ export default {
 </script>
 
 <style scoped>
+.v-list-item {
+  display: flex;
+}
 
+.scrollnavbar .v-list--one-line .v-list-group__items .v-list-item .v-list-item__prepend>.v-icon,
+.scrollnavbar .v-list--one-line .v-list-item .v-list-item__prepend>.v-icon {
+  margin-inline-end: 0;
+}
 </style>

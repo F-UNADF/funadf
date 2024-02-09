@@ -99,8 +99,20 @@ Rails.application.routes.draw do
     namespace :me, path: '' do
       constraints(:subdomain => 'me') do
         get '/feed', to: 'feed#show', as: :feed
+        get '/annuaire', to: 'annuaire#show', as: :annuaire
 
         root to: redirect('/feed'), as: :me
+      end
+    end
+
+    namespace :association, path: '' do
+      constraints(:subdomain => 'association') do
+        resources :associations, only: :index
+        resources :campaigns, only: :index
+        resources :events, only: :index
+        resources :posts, only: :index
+
+        root to: redirect('/campaigns'), as: :root
       end
     end
 

@@ -2,12 +2,24 @@ class Api::PostsController < ApiController
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
-    if @structure.nil?
+    posts = []
+    if @subdomain == 'admin'
       posts = Post.order(id: :desc)
-    else
-      posts = @structure.posts.order(id: :desc)
+    elsif @subdomain == 'association'
+      # get campaigns of the association of the current user
+      # Vérifier si l'utilisateur actuel a des responsabilités d'association
+      responsibilities_ids = current_user.associations_responsabilities.pluck(:id)
+
+      # Si l'utilisateur a des responsabilités d'association, récupérer les événements à venir associés à ces responsabilités
+      if responsibilities_ids.present?
+        posts = Post.where(structure_id: responsibilities_ids)
+                    .order(id: :desc)
+      end
+    elsif @subdomain.present? && !@structure.nil?
+      posts = @structure.posts.order(id: :asc)
     end
-    render json: { posts: posts }
+
+    render json: { posts: posts }, include: ['structure']
   end
 
   def show

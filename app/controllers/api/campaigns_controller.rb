@@ -2,13 +2,16 @@ class Api::CampaignsController < ApiController
   before_action :set_campaign, only: [:show, :update, :destroy, :change_state, :voters_count]
 
   def index
-    campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
-    if !@structure.nil?
+    campaigns = []
+    if @subdomain == 'admin'
+      campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
+    elsif @subdomain == 'association'
+      # get campaigns of the association of the current user
+      campaigns = current_user.associations_responsabilities.pluck(:id).present? ? Campaign.where(structure_id: current_user.associations_responsabilities.pluck(:id)).order(id: :desc) : []
+    elsif @subdomain.present? && !@structure.nil?
       campaigns = @structure.campaigns.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
     end
-    if current_user.has_any_role?(:president, :treasurer, :secretary) && !current_user.is_admin?
-      campaigns = Campaign.joins(:structure).where(structure_id: current_user.associations_responsabilities.pluck(:id)).select('campaigns.*, structures.name AS structure_name').order id: :desc
-    end
+
     render json: { campaigns: campaigns }
   end
 
