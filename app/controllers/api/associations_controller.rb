@@ -3,11 +3,14 @@ class Api::AssociationsController < ApiController
 
   def index
     associations = []
-    if current_user.is_admin?
-      associations = Association.all
-    elsif current_user.has_any_role? :president, :treasurer, :secretary
+    if @subdomain == 'admin'
+      associations = Association.order id: :desc
+    elsif @subdomain == 'association'
+      # get campaigns of the association of the current user
       associations = current_user.associations_responsabilities
     end
+
+
     render json: { associations: associations }
   end
 

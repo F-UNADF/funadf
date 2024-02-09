@@ -64,22 +64,32 @@ class Api::ReferentielsController < ApiController
       result[:members] = members
     when 'campaigns'
       structures = Association.select('id AS id, name AS name').order(:name)
-      if current_user.has_any_role?(:president, :treasurer, :secretary)
+      if @subdomain == 'association'
         structures = current_user.associations_responsabilities
       end
       positions  = User.get_levels + %w[Oeuvres Eglises]
 
       result[:structures] = structures
-      result[:positions]  = positions
+      result[:positions] = positions
     when 'events'
+      structures = Association.select('id AS id, name AS name').order(:name)
+      if @subdomain == 'association'
+        structures = current_user.associations_responsabilities
+      end
       if @intranet
         categories = @intranet.structure.categories
       else
         categories = Category.all
       end
       result[:categories] = categories
-      result[:levels]     = levels
+      result[:levels] = levels
+      result[:structures] = structures
     when 'posts'
+      structures = Association.select('id AS id, name AS name').order(:name)
+      if @subdomain == 'association'
+        structures = current_user.associations_responsabilities
+      end
+      result[:structures] = structures
       result[:levels] = levels
     else
       result[:error] = "Invalid referentiel #{referentiel}"

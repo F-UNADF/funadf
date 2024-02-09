@@ -1,14 +1,8 @@
 <template>
   <v-row justify="space-between">
     <v-col cols="12" lg="4" md="4" class="mb-3">
-      <v-text-field
-          density="compact"
-          v-model="search"
-          label="Chercher un événement..."
-          hide-details
-          variant="outlined"
-          clearable
-      ></v-text-field>
+      <v-text-field density="compact" v-model="search" label="Chercher un événement..." hide-details variant="outlined"
+        clearable></v-text-field>
     </v-col>
     <v-col cols="12" lg="3" md="3" class="text-right">
       <v-spacer></v-spacer>
@@ -21,28 +15,13 @@
       </v-btn>
     </v-col>
   </v-row>
-  <v-data-table
-      :headers="headers"
-      :items="filteredItems"
-      :search="search"
-      class="elevation-1"
-      :loading="loading"
-  >
+  <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <tr>
         <td colspan="5">
-          <v-progress-linear
-              indeterminate
-              color="cyan"
-              v-if="loading"
-          ></v-progress-linear>
-          <v-alert
-              v-else
-              color="danger"
-              icon="danger"
-              title="Aucun événement trouvé"
-              text="Aucun événement ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."
-          ></v-alert>
+          <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
+          <v-alert v-else color="danger" icon="danger" title="Aucun événement trouvé"
+            text="Aucun événement ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
         </td>
       </tr>
     </template>
@@ -53,6 +32,9 @@
           Du {{ getCleanDate(item.start_at) }} au {{ getCleanDate(item.end_at) }}
         </td>
         <td>
+          {{ item.structure.name }}
+        </td>
+        <td>
           <v-chip color="primary" text-color="white" small>
             {{ item.category.name }}
           </v-chip>
@@ -60,12 +42,7 @@
         <td>
           <v-tooltip location="top" text="Modifier l'événement">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  small
-                  v-bind="props"
-                  color="primary"
-                  @click="editItem(item.id)"
-                  title="Edit">
+              <v-icon small v-bind="props" color="primary" @click="editItem(item.id)" title="Edit">
                 mdi-pencil
               </v-icon>
             </template>
@@ -73,12 +50,7 @@
 
           <v-tooltip location="top" text="Supprimer l'événement">
             <template v-slot:activator="{ props }">
-              <v-icon
-                  v-bind="props"
-                  small
-                  class="text-error"
-                  title="Delete"
-                  @click="tryDeleteItem(item)">
+              <v-icon v-bind="props" small class="text-error" title="Delete" @click="tryDeleteItem(item)">
                 mdi-delete
               </v-icon>
             </template>
@@ -106,23 +78,23 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {VDataTable} from 'vuetify/labs/VDataTable'
+import { mapGetters } from "vuex";
+import { VDataTable } from 'vuetify/labs/VDataTable'
 import EventForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import moment from "moment";
 
 export default {
-  name      : "EventsIndex",
+  name: "EventsIndex",
   components: {
     VDataTable,
     EventForm,
     DialogConfirm,
   },
-  computed  : {
+  computed: {
     ...mapGetters('eventsStore', {
-      items       : 'getItems',
-      loading     : 'getLoading',
+      items: 'getItems',
+      loading: 'getLoading',
       referentiels: 'getReferentiels',
     }),
     dialogForm: {
@@ -139,73 +111,78 @@ export default {
       });
     },
   },
-  methods   : {
-    newItem      : function () {
+  methods: {
+    newItem: function () {
       let newItem = {
-        id         : null,
-        title      : '',
-        start_at   : '',
-        end_at     : '',
+        id: null,
+        title: '',
+        start_at: '',
+        end_at: '',
         description: '',
-        accesses   : [],
+        accesses: [],
       };
       this.$store.commit('eventsStore/setItem', newItem);
       this.$store.commit('eventsStore/setDialogForm', true);
     },
-    editItem     : function (item) {
+    editItem: function (item) {
       this.$store.dispatch('eventsStore/item', item);
       this.$store.commit('eventsStore/setDialogForm', true);
     },
-    refresh      : function () {
+    refresh: function () {
       this.$store.dispatch('eventsStore/items');
     },
     tryDeleteItem: function (item) {
       Object.assign(this.deletingItem, item);
       this.dialogConfirmDelete = true;
     },
-    deleteItem   : function (item) {
+    deleteItem: function (item) {
       this.$store.dispatch('eventsStore/delete', item.value).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
         this.$root.showSnackbar('Événement supprimé avec succès', 'success');
       });
     },
-    getCleanDate : function (value) {
+    getCleanDate: function (value) {
       return moment(value).format("DD/MM/YYYY HH:mm");
     },
   },
   data() {
     return {
-      deletingItem       : {},
+      deletingItem: {},
       dialogConfirmDelete: false,
-      loadingDelete      : false,
-      search             : '',
-      dialog             : false,
-      editedItem         : {},
-      valid              : true,
-      filter             : {
-        levels  : [],
+      loadingDelete: false,
+      search: '',
+      dialog: false,
+      editedItem: {},
+      valid: true,
+      filter: {
+        levels: [],
         disabled: false,
       },
-      headers            : [
+      headers: [
         {
-          title   : 'Titre',
-          key     : 'title',
+          title: 'Titre',
+          key: 'title',
           sortable: true
         },
         {
-          title   : 'Dates',
-          key     : 'start_at',
+          title: 'Dates',
+          key: 'start_at',
           sortable: true
         },
         {
-          title   : 'Catégorie',
-          key     : 'category.name',
+          title: 'Association',
+          key: 'structure.name',
           sortable: true
         },
         {
-          title   : 'Actions',
-          key     : 'actions',
+          title: 'Catégorie',
+          key: 'category.name',
+          sortable: true
+        },
+        {
+          title: 'Actions',
+          key: 'actions',
           sortable: false
         },
       ],
@@ -218,6 +195,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

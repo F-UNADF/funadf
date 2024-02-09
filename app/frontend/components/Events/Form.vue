@@ -16,79 +16,48 @@
         <v-window-item key="infos" value="infos" class="py-3">
           <v-row>
             <v-col cols="12" md="6">
-              <v-text-field
-                  v-model="editedItem.title"
-                  label="Nom"
-                  :rules="[rules.required]"
-                  hint='Exemple : "Pastorale Ressource 18/09", "Congrès National"...'
-                  persistent-hint
-                  required>
+              <v-text-field v-model="editedItem.title" label="Nom" :rules="[rules.required]"
+                hint='Exemple : "Pastorale Ressource 18/09", "Congrès National"...' persistent-hint required>
               </v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-combobox
-                  v-model="editedItem.category"
-                  :items="referentiels.categories.map((item) => item.name)"
-                  label="Catégorie"
-                  :rules="[rules.required]"
-                  hint="Si la catégorie n'existe pas, vous pouvez écrire le nom de la catégorie et appuyer sur 'Entrée' pour la créer."
-                  persistent-hint
-                  chips
-                  clearable
-                  required>
+              <v-autocomplete v-model="editedItem.structure_id" :items="referentiels.structures" item-value="id"
+                item-title="name" label="Structure">
+              </v-autocomplete>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-combobox v-model="editedItem.category" :items="referentiels.categories.map((item) => item.name)"
+                label="Catégorie" :rules="[rules.required]"
+                hint="Si la catégorie n'existe pas, vous pouvez écrire le nom de la catégorie et appuyer sur 'Entrée' pour la créer."
+                persistent-hint chips clearable required>
               </v-combobox>
             </v-col>
 
             <v-col cols="12" md="6">
-              <v-text-field
-                  v-model="editedItem.start_at"
-                  type="datetime-local"
-                  label="Date et heure de début"
-                  :rules="[rules.required]"
-                  hint="Exemple : 18/09/2021 09:00"
-                  :value="getIsoDate(editedItem.start_at)"
-                  persistent-hint
-                  required>
+              <v-text-field v-model="editedItem.start_at" type="datetime-local" label="Date et heure de début"
+                :rules="[rules.required]" hint="Exemple : 18/09/2021 09:00" :value="getIsoDate(editedItem.start_at)"
+                persistent-hint required>
               </v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field
-                  v-model="editedItem.end_at"
-                  type="datetime-local"
-                  label="Date et heure de fin"
-                  :rules="[rules.required]"
-                  :value="getIsoDate(editedItem.end_at)"
-                  hint="Exemple : 18/09/2021 09:00"
-                  persistent-hint
-                  required>
+              <v-text-field v-model="editedItem.end_at" type="datetime-local" label="Date et heure de fin"
+                :rules="[rules.required]" :value="getIsoDate(editedItem.end_at)" hint="Exemple : 18/09/2021 09:00"
+                persistent-hint required>
               </v-text-field>
             </v-col>
 
             <v-col cols="12" md="12">
               <!-- Textarea field -->
-              <v-textarea
-                  v-model="editedItem.description"
-                  label="Description de l'événement"
-                  :rules="[rules.required]"
-                  required
-                  rows="3">
+              <v-textarea v-model="editedItem.description" label="Description de l'événement" :rules="[rules.required]"
+                required rows="3">
               </v-textarea>
             </v-col>
 
             <v-col cols="12" md="12">
-              <v-file-input
-                  v-model="files"
-                  show-size
-                  counter
-                  multiple
-                  label="Pièces jointes"
-              ></v-file-input>
+              <v-file-input v-model="files" show-size counter multiple label="Pièces jointes"></v-file-input>
 
               <v-list lines="one">
-                <v-list-item
-                    v-for="file in editedItem.files"
-                    :key="file.id"
-                >
+                <v-list-item v-for="file in editedItem.files" :key="file.id">
                   <template v-slot:prepend>
                     <v-btn icon size="small" @click="downloadFile(file.url)">
                       <v-icon small color="green">mdi-download</v-icon>
@@ -103,15 +72,8 @@
                 </v-list-item>
               </v-list>
 
-              <v-select
-                  v-model="editedItem.accesses"
-                  :items="referentiels.levels"
-                  label="Gestion des accès"
-                  multiple
-                  chips
-                  hint="Qui peux accéder à cet événement ?"
-                  persistent-hint
-              ></v-select>
+              <v-select v-model="editedItem.accesses" :items="referentiels.levels" label="Gestion des accès" multiple
+                chips hint="Qui peux accéder à cet événement ?" persistent-hint></v-select>
             </v-col>
           </v-row>
         </v-window-item>
@@ -126,30 +88,30 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 import moment from "moment";
 
 export default {
-  name    : "EventForm",
+  name: "EventForm",
   computed: {
     ...mapGetters('eventsStore', {
-      items       : 'getItems',
-      item        : 'getItem',
-      formLoading : 'getFormLoading',
-      dialogForm  : 'getDialogForm',
+      items: 'getItems',
+      item: 'getItem',
+      formLoading: 'getFormLoading',
+      dialogForm: 'getDialogForm',
       referentiels: 'getReferentiels',
     }),
     getTitle() {
       return (this.editedItem.id === null) ? "Ajouter un événement" : "Modifier un événement";
     },
   },
-  methods : {
-    close     : function () {
+  methods: {
+    close: function () {
       this.$store.commit('eventsStore/setDialogForm', false);
       this.$store.commit('eventsStore/setItem', {});
     },
-    save      : function () {
-      this.$store.dispatch('eventsStore/save', {event: this.editedItem, files: this.files}).then(response => {
+    save: function () {
+      this.$store.dispatch('eventsStore/save', { event: this.editedItem, files: this.files }).then(response => {
         this.$root.showSnackbar('Événement enregistré avec succès', 'success');
         this.close();
       }, error => {
@@ -176,11 +138,11 @@ export default {
       window.open(url, '_blank');
     },
   },
-  watch   : {
+  watch: {
     item: {
-      deep     : true,
+      deep: true,
       immediate: true,
-      handler  : function () {
+      handler: function () {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
       },
     },
@@ -189,10 +151,10 @@ export default {
   data() {
     return {
       editedItem: {},
-      search    : '',
-      tab       : 'infos',
-      files     : [],
-      rules     : {
+      search: '',
+      tab: 'infos',
+      files: [],
+      rules: {
         required: value => !!value || 'Champ obligatoire',
       },
     };
@@ -200,6 +162,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

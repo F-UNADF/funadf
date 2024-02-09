@@ -16,12 +16,13 @@
         <v-window-item key="infos" value="infos" class="py-3">
           <v-row>
             <v-col cols="12" md="12">
-              <v-text-field
-                  v-model="editedItem.title"
-                  label="Titre"
-                  :rules="[rules.required]"
-                  required>
+              <v-text-field v-model="editedItem.title" label="Titre" :rules="[rules.required]" required>
               </v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-autocomplete v-model="editedItem.structure_id" :items="referentiels.structures" item-value="id"
+                item-title="name" label="Structure">
+              </v-autocomplete>
             </v-col>
 
             <v-col cols="12" md="12">
@@ -33,19 +34,10 @@
             </v-col>
 
             <v-col cols="12" md="12">
-              <v-file-input
-                  v-model="files"
-                  show-size
-                  counter
-                  multiple
-                  label="Pièces jointes"
-              ></v-file-input>
+              <v-file-input v-model="files" show-size counter multiple label="Pièces jointes"></v-file-input>
 
               <v-list lines="one">
-                <v-list-item
-                    v-for="file in editedItem.files"
-                    :key="file.id"
-                >
+                <v-list-item v-for="file in editedItem.files" :key="file.id">
                   <template v-slot:prepend>
                     <v-btn icon size="small" @click="downloadFile(file.url)">
                       <v-icon small color="green">mdi-download</v-icon>
@@ -60,15 +52,8 @@
                 </v-list-item>
               </v-list>
 
-              <v-select
-                  v-model="editedItem.accesses"
-                  :items="referentiels.levels"
-                  label="Gestion des accès"
-                  multiple
-                  chips
-                  hint="Qui peux accéder à cette actu ?"
-                  persistent-hint
-              ></v-select>
+              <v-select v-model="editedItem.accesses" :items="referentiels.levels" label="Gestion des accès" multiple
+                chips hint="Qui peux accéder à cette actu ?" persistent-hint></v-select>
             </v-col>
           </v-row>
         </v-window-item>
@@ -83,32 +68,32 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {VueEditor} from "vue3-editor";
+import { mapGetters } from "vuex";
+import { VueEditor } from "vue3-editor";
 
 export default {
-  name      : "PostForm",
-  components: {VueEditor},
-  computed  : {
+  name: "PostForm",
+  components: { VueEditor },
+  computed: {
     ...mapGetters('postsStore', {
-      items       : 'getItems',
-      item        : 'getItem',
-      formLoading : 'getFormLoading',
-      dialogForm  : 'getDialogForm',
+      items: 'getItems',
+      item: 'getItem',
+      formLoading: 'getFormLoading',
+      dialogForm: 'getDialogForm',
       referentiels: 'getReferentiels',
     }),
     getTitle() {
       return (this.editedItem.id === null) ? "Ajouter une actu" : "Modifier une actu";
     },
   },
-  methods   : {
-    close       : function () {
+  methods: {
+    close: function () {
       this.$store.commit('postsStore/setDialogForm', false);
       this.$store.commit('postsStore/setItem', {});
     },
-    save        : function () {
+    save: function () {
       this.$store.dispatch('postsStore/save', {
-        post : this.editedItem,
+        post: this.editedItem,
         files: this.files
       }).then(response => {
         this.$root.showSnackbar('Actu enregistrée avec succès', 'success');
@@ -119,7 +104,7 @@ export default {
         this.$root.showSnackbar(errors.join('<br/>'), 'error');
       });
     },
-    deleteFile  : function (file_id) {
+    deleteFile: function (file_id) {
       this.$store.dispatch('postsStore/deleteFile', file_id).then(response => {
         // remove file from list
         this.editedItem.files = this.editedItem.files.filter(function (file) {
@@ -136,11 +121,11 @@ export default {
       window.open(url, '_blank');
     },
   },
-  watch     : {
+  watch: {
     item: {
-      deep     : true,
+      deep: true,
       immediate: true,
-      handler  : function () {
+      handler: function () {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
       },
     },
@@ -149,10 +134,10 @@ export default {
   data() {
     return {
       editedItem: {},
-      search    : '',
-      tab       : 'infos',
-      files     : [],
-      rules     : {
+      search: '',
+      tab: 'infos',
+      files: [],
+      rules: {
         required: value => !!value || 'Champ obligatoire',
       },
     };

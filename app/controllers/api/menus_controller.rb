@@ -120,6 +120,56 @@ class Api::MenusController < ApiController
           icon: "mdi-newspaper",
           to: me_feed_path,
         },
+        {
+          title: "Annuaire",
+          icon: "mdi-card-account-details-outline",
+          to: me_annuaire_path,
+          new_tab: true,
+        },
+        {
+          title: "Espace de votes",
+          icon: "mdi-vote",
+          href: root_url(subdomain: ''),
+        }
+      ]
+    when 'association'
+      result = [
+        {
+          header: "ASSOCIATION",
+        },
+        {
+          title: "Mes assos",
+          icon: "mdi-newspaper",
+          to: association_associations_path,
+        },
+        {
+          title: "Actu",
+          icon: "mdi-newspaper",
+          to: association_posts_path,
+        },
+        {
+          title: "Agenda",
+          icon: "mdi-calendar",
+          to: association_events_path,
+        },
+        {
+          title: "Campagnes",
+          icon: "mdi-vote",
+          to: association_campaigns_path,
+        },
+        {
+          header: "NAVIGATION",
+        },
+        {
+          title: "Mon espace",
+          icon: "mdi-rss",
+          href: me_me_url(subdomain: :me),
+        },
+        {
+          title: "Espace de votes",
+          icon: "mdi-vote",
+          href: root_url(subdomain: ''),
+        },
       ]
     when /test|uadpif|urb/
       result = [
@@ -181,7 +231,7 @@ class Api::MenusController < ApiController
       end
     end
 
-    if current_user.is_admin?
+    if current_user.is_admin? 
       result << {
         header: "ADMIN",
       }
@@ -190,6 +240,14 @@ class Api::MenusController < ApiController
         icon: "mdi-cog",
         href: admin_root_url(subdomain: :admin),
       }
+      if !current_user.associations_responsabilities.blank?
+        result << {
+          title: "Association",
+          icon: "mdi-domain",
+          href: association_root_url(subdomain: :association),
+          new_tab: true,
+        }
+      end
     end
 
     render json: result

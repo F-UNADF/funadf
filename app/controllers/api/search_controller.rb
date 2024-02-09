@@ -9,11 +9,13 @@ class Api::SearchController < ApiController
       {
         id: user.id,
         icon: 'person',
+        mdi: 'mdi-account',
         name: "#{user.lastname} #{user.firstname}",
         phone: user.phone_1,
         email: user.email,
         zipcode: user.zipcode,
         town: user.town,
+        level: user.level,
         photo_url: "#{root_url}avatars/#{user.id}.png", # Assuming avatar URLs are based on user ID
         model_type: 'users'
       }
@@ -25,6 +27,7 @@ class Api::SearchController < ApiController
       {
         id: structure.id,
         icon: 'home',
+        mdi: 'mdi-church',
         name: structure.name,
         phone: structure.phone_1,
         email: structure.email,
@@ -41,6 +44,7 @@ class Api::SearchController < ApiController
       {
         id: structure.id,
         icon: 'business',
+        mdi: 'mdi-office-building',
         name: structure.name,
         phone: structure.phone_1,
         email: structure.email,
