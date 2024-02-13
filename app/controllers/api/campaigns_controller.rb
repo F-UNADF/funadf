@@ -86,14 +86,16 @@ class Api::CampaignsController < ApiController
           name:    motion_params[:name],
           kind:    motion_params[:kind],
           order:   motion_params[:order],
-          choices: motion_params[:choices]
+          choices: motion_params[:choices],
+          max_choice: motion_params[:max_choice]
         )
       else
         motion.update(
           name:    motion_params[:name],
           kind:    motion_params[:kind],
           order:   motion_params[:order],
-          choices: motion_params[:choices]
+          choices: motion_params[:choices],
+          max_choice: motion_params[:max_choice]
         )
       end
     end

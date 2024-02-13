@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" lg="12">
         <!-- Button to go back to the list -->
-        <v-btn color="primary" @click="$router.push({name: 'votes.index'})" variant="text" size="small" class="mb-5">
+        <v-btn color="primary" @click="$router.push({ name: 'votes.index' })" variant="text" size="small" class="mb-5">
           <template v-slot:prepend>
             <v-icon>mdi-arrow-left</v-icon>
           </template>
@@ -24,7 +24,7 @@
           <v-card-text class="justify-content-center pa-3">
 
             <v-btn-toggle class="btn-toggle-vote" flat divided elevation="2" border v-model="motion.vote" mandatory
-                          v-if="motion.kind === 'binary'">
+              v-if="motion.kind === 'binary'">
               <v-btn color="primary" value="oui">
                 OUI
               </v-btn>
@@ -33,8 +33,8 @@
               </v-btn>
             </v-btn-toggle>
 
-            <v-btn-toggle class="btn-toggle-vote" flat justify-center divided elevation="2" border v-model="motion.vote" mandatory
-                          v-else-if="motion.kind === 'neutral'">
+            <v-btn-toggle class="btn-toggle-vote" flat justify-center divided elevation="2" border v-model="motion.vote"
+              mandatory v-else-if="motion.kind === 'neutral'">
               <v-btn color="primary" value="oui">
                 OUI
               </v-btn>
@@ -46,9 +46,10 @@
               </v-btn>
             </v-btn-toggle>
 
-            <v-btn-toggle class="btn-toggle-vote" flat justify-center divided elevation="2" border v-model="motion.vote" mandatory
-                          v-else-if="motion.kind === 'choices'">
-              <v-btn v-for="choice in motion.choices.split(',')" color="primary" :value="choice">
+            <v-btn-toggle class="btn-toggle-vote" flat justify-center divided elevation="2" border v-model="motion.vote"
+              :mandatory="motion.max_choice === 1" :multiple="motion.max_choice > 1" :max="motion.max_choice"
+              v-else-if="motion.kind === 'choices'">
+              <v-btn v-for=" choice in motion.choices.split(',')" color="primary" :value="choice">
                 {{ choice }}
               </v-btn>
             </v-btn-toggle>
@@ -99,30 +100,30 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
-  name       : "VotesShow",
-  computed   : {
+  name: "VotesShow",
+  computed: {
     ...mapGetters('votesStore', {
-      item     : 'getItem',
+      item: 'getItem',
       structure: 'getStructure',
-      motions  : 'getMotions',
-      voters   : 'getVoters',
-      loading  : 'getLoading',
-      results  : 'getResults',
+      motions: 'getMotions',
+      voters: 'getVoters',
+      loading: 'getLoading',
+      results: 'getResults',
     }),
 
   },
-  watch      : {
+  watch: {
     results: {
       handler: function () {
         this.editResult = [];
         this.editResult = JSON.parse(JSON.stringify(this.results));
       },
-      deep   : true,
+      deep: true,
     },
-    voters : {
+    voters: {
       handler: function () {
         this.editVoters = [];
         this.editVoters = JSON.parse(JSON.stringify(this.voters));
@@ -130,10 +131,10 @@ export default {
           voter.selected = false;
         });
       },
-      deep   : true,
+      deep: true,
     },
   },
-  methods    : {
+  methods: {
     goVote() {
       // check if there is at least one voter selected
       if (this.editVoters.filter(voter => voter.selected === true).length === 0) {
@@ -145,28 +146,28 @@ export default {
       if (this.editResult.filter(motion => motion.vote === null).length > 0 && this.confirmValid === false) {
         // display confirmation dialog
         this.$root.showSnackbar(
-            'Vous n\'avez pas répondu à toutes les questions ! Une fois validé vous ne pourrez plus modifier votre vote. Cliquez à nouveau pour valider',
-            'warning');
+          'Vous n\'avez pas répondu à toutes les questions ! Une fois validé vous ne pourrez plus modifier votre vote. Cliquez à nouveau pour valider',
+          'warning');
         this.confirmValid = true;
         return;
       }
 
       this.$store.dispatch('votesStore/vote', {
         campaign_id: this.$route.params.id,
-        results    : this.editResult,
-        voters     : this.editVoters
+        results: this.editResult,
+        voters: this.editVoters
       }).then(response => {
         this.$root.showSnackbar('Vote pris en compte avec succès', 'success');
-        this.$router.push({name: 'votes.index'});
+        this.$router.push({ name: 'votes.index' });
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de votre vote', 'error');
       });
     },
   },
-  data       : () => ({
+  data: () => ({
     confirmValid: false,
-    editResult  : [],
-    editVoters  : [],
+    editResult: [],
+    editVoters: [],
   }),
   beforeMount: function () {
     this.$store.dispatch('votesStore/item', this.$route.params.id);
@@ -175,17 +176,19 @@ export default {
 </script>
 
 <style scoped>
-.v-btn-toggle{
+.v-btn-toggle {
   height: auto !important;
   display: flex;
   flex-direction: column;
 }
-html .v-btn-toggle > .v-btn{
+
+html .v-btn-toggle>.v-btn {
   height: 48px !important;
   border: none !important;
   border-bottom: solid 1px #ccc !important;
 }
-html .v-btn-toggle > .v-btn:last-child{
+
+html .v-btn-toggle>.v-btn:last-child {
   border-bottom: none !important;
 }
 </style>
