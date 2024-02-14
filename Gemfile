@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 ruby '2.7.1'
 gem 'rails', '6.1.7'
 
@@ -65,7 +64,6 @@ end
 
 group :test do
   gem 'cucumber-rails', require: false
-  # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
 end
 
