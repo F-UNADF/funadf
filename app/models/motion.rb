@@ -8,12 +8,4 @@ class Motion < ActiveRecord::Base
   def has_voted? elector
     elector && (voters.pluck(:resource_id, :resource_type).include?([elector.id, elector.get_class]))
   end
-
-  def self.kinds
-    {
-      "Oui / Non" => "binary" ,
-      "Oui / Non / Neutre" => "neutral",
-      "Texte libre" => "free"
-    }
-  end
 end

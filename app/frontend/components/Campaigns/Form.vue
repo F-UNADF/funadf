@@ -53,9 +53,19 @@
                       Choix Multiple
                     </v-btn>
                   </v-btn-toggle>
-                  <v-text-field v-if="motion.kind === 'choices'" :disabled="editedItem.state !== 'coming'"
-                    v-model="motion.choices" label="Choix" variant="solo-filled" persistent-hint
-                    hint="Séparer les choix par des virgules (Ex: 'Choix 1,Choix 2,Choix 3')"></v-text-field>
+                  <v-row v-if="motion.kind === 'choices'">
+                    <v-col cols="12" sm="8">
+                      <v-text-field :disabled="editedItem.state !== 'coming'" v-model="motion.choices" label="Choix"
+                        persistent-hint variant="solo-filled"
+                        hint="Séparer les choix par des virgules (Ex: 'Choix 1,Choix 2,Choix 3')"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="4">
+                      <v-text-field :disabled="editedItem.state !== 'coming'" v-model="motion.max_choice"
+                        label="Nombre de réponses max" persistent-hint variant="solo-filled"
+                        hint="Combien de choix le votant peut-il faire (Par défaut : 1)"></v-text-field>
+
+                    </v-col>
+                  </v-row>
                 </v-col>
                 <v-col cols="12" sm="1">
                   <v-btn icon size="x-small" @click="moveMotionUp(motion)" v-if="motion.order > 0"
@@ -539,6 +549,7 @@ export default {
       const newMotion = {
         name: '',
         kind: 'binary',
+        max_choice: 1,
         order: this.editedItem.motions.length, // Set the initial order as the length of the motions array
       };
 

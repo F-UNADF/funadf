@@ -106,12 +106,19 @@ class Api::VotesController < ApiController
         params[:results].each do |vote|
           exist_voter = Voter.where(motion_id: vote[:motion_id], resource_id: voter[:resource_id], resource_type: voter[:resource_type])
           if exist_voter.blank?
-            Vote.create(motion_id: vote[:motion_id], result: vote[:vote], is_consultative: voter[:is_consultative])
             Voter.create(motion_id: vote[:motion_id],
                          voted_at: Time.now,
                          ip: request.remote_ip,
                          resource_id: voter[:resource_id],
                          resource_type: voter[:resource_type])
+
+            if vote[:vote].kind_of?(Array)
+              vote[:vote].each do |v|
+                Vote.create(motion_id: vote[:motion_id], result: v, is_consultative: voter[:is_consultative])
+              end
+            else
+              Vote.create(motion_id: vote[:motion_id], result: vote[:vote], is_consultative: voter[:is_consultative])
+            end
           end
         end
       end
