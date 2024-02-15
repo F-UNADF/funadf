@@ -220,7 +220,7 @@ class Api::MenusController < ApiController
     end
 
     Intranet.order(:subdomain).each do |intranet|
-      if can? :manage, intranet
+      if current_user.associations_responsabilities.include?(intranet.structure)
         # insert header INTRANET if not present
         result << { header: "INTRANET" } unless result.any? { |h| h[:header] == "INTRANET" }
         result << {
