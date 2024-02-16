@@ -42,6 +42,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'test-unit'
   gem 'faker'
+  gem 'guard-test'
 end
 
 group :production do

@@ -172,6 +172,10 @@ GEM
     foreman (0.87.2)
     globalid (1.2.0)
       activesupport (>= 6.1)
+    guard-compat (1.2.1)
+    guard-test (2.0.8)
+      guard-compat (~> 1.2)
+      test-unit (~> 3.0)
     haml (6.1.2)
       temple (>= 0.8.2)
       thor
@@ -396,6 +400,7 @@ DEPENDENCIES
   exception_notification
   faker
   foreman
+  guard-test
   haml-rails
   jbuilder
   mysql2
