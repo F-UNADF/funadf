@@ -82,20 +82,16 @@ Rails.application.routes.draw do
         resources :users, only: :index
         resources :churches, only: :index
         resources :associations, only: :index
+        resources :campaigns, only: :index
         resources :events, only: :index
         resources :posts, only: :index
         resources :roles, only: :index
 
-        resources :campaigns do
-          get '/open', to: 'campaigns#open', as: :open
-          get '/close_definitly', to: 'campaigns#close_definitly', as: :close_definitly
-          get '/close_temporarily', to: 'campaigns#close_temporarily', as: :close_temporarily
-        end
-        resources :intranets
         root to: redirect('/users'), as: :root
       end
     end
 
+    # ME SUBDOMAIN
     namespace :me, path: '' do
       constraints(:subdomain => 'me') do
         get '/feed', to: 'feed#show', as: :feed
@@ -105,6 +101,7 @@ Rails.application.routes.draw do
       end
     end
 
+    # ASSOCIATION SUBDOMAIN
     namespace :association, path: '' do
       constraints(:subdomain => 'association') do
         resources :associations, only: :index
@@ -119,14 +116,11 @@ Rails.application.routes.draw do
     # ITNTRANETS SUBDOMAIN
     namespace :intranet, path: '' do
       constraints(:subdomain => /[a-z]+/) do
+        resources :posts, only: :index
+        resources :events, only: :index
         resources :users, only: :index
         resources :churches, only: :index
-        resources :associations, only: :index
-        resources :events, only: :index
-        resources :posts, only: :index
         resources :campaigns, only: :index
-
-        get '/mon-compte', :to => redirect('/events')
 
         root to: redirect('/users'), as: :root
       end
@@ -136,16 +130,9 @@ Rails.application.routes.draw do
     namespace :votes, path: '' do
       constraints(:subdomain => '') do
         resources :campaigns, only: [:index, :show]
-        resources :results, only: [:index, :show]
-        post '/voting', to: 'votings#create', as: :voting
         root :to => redirect('/campaigns')
       end
     end
-
-    resources :users, only: [:show, :index]
   end
-
-  post 'uploader/image', to: 'uploader#image'
   root to: redirect('/connexion')
-
 end

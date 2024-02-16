@@ -1,27 +1,22 @@
 source 'https://rubygems.org'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 ruby '2.7.1'
 gem 'rails', '6.1.7'
 
 gem 'sass-rails'
 gem 'uglifier'
-gem 'coffee-rails'
-gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
-gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
-gem 'sprockets-rails', :require => 'sprockets/railtie'
+gem 'net-protocol', '0.2.1'
 
-gem 'bourbon'
 gem 'devise'
 gem 'devise_invitable'
+
 gem 'haml-rails'
-gem 'high_voltage'
+
 gem 'mysql2'
-gem 'rolify'
-gem 'cancan'
+
 gem 'carrierwave'
 gem 'state_machines-activerecord'
 gem 'wkhtmltopdf-binary'
@@ -45,18 +40,9 @@ gem "omniauth-rails_csrf_protection"
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'html2haml'
-  gem 'hub', :require=>nil
-  gem 'rails_apps_pages'
-  gem 'rails_apps_testing'
-  gem 'rails_layout'
-  gem 'rb-fchange', :require=>false
-  gem 'rb-fsevent', :require=>false
-  gem 'rb-inotify', :require=>false
-  gem 'rubocop', require: false
-  gem 'spring-commands-rspec'
   gem 'test-unit'
   gem 'faker'
+  gem 'guard-test'
 end
 
 group :production do
@@ -65,7 +51,6 @@ end
 
 group :test do
   gem 'cucumber-rails', require: false
-  # database_cleaner is not required, but highly recommended
   gem 'database_cleaner'
 end
 

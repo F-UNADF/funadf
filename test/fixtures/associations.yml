@@ -1,0 +1,5 @@
+one:
+  name: "Business One"
+  zipcode: "12345"
+  town: "City One"
+  type: Association
