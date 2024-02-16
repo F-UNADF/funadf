@@ -8,6 +8,7 @@ gem 'uglifier'
 gem 'turbolinks'
 gem 'jbuilder'
 gem 'spring',        group: :development
+gem 'net-protocol', '0.2.1'
 
 gem 'devise'
 gem 'devise_invitable'
