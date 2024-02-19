@@ -31,9 +31,6 @@ class Api::MenusController < ApiController
             icon: "mdi-church",
             to: admin_churches_path,
           }
-      end
-
-      if current_user.is_admin? || current_user.has_any_role?(:president, :treasurer, :secretary)
         result <<
           {
             title: "Associations",
@@ -46,33 +43,39 @@ class Api::MenusController < ApiController
             icon: "mdi-vote",
             to: admin_campaigns_path,
           }
-      end
-
-      if current_user.is_admin?
-        result << {
-          title: "Agenda",
-          icon: "mdi-calendar",
-          to: admin_events_path,
-        }
+        result << 
+          {
+            title: "Agenda",
+            icon: "mdi-calendar",
+            to: admin_events_path,
+          }
         result <<
           {
             title: "Actu",
             icon: "mdi-newspaper",
             to: admin_posts_path,
           }
-      end
 
-      ## PARAMETTRAGE APPLICATION ##
-      result <<
-        {
-          header: "PARAMETRAGE",
-        }
-      result <<
-        {
-          title: 'Roles',
-          icon: 'mdi-account-key',
-          to: admin_roles_path,
-        }
+        
+          ## PARAMETTRAGE APPLICATION ##
+        result <<
+          {
+            header: "PARAMETRAGE",
+          }
+        result <<
+          {
+            title: 'Roles',
+            icon: 'mdi-account-key',
+            to: admin_roles_path,
+          }
+        result <<
+          {
+            title: 'Rassemblements',
+            icon: 'mdi-account-group',
+            to: admin_meetings_path,
+            new_tab: true,
+          }
+      end
 
       ## NAVIGATION ##
       result <<

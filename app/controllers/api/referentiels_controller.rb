@@ -91,6 +91,9 @@ class Api::ReferentielsController < ApiController
       end
       result[:structures] = structures
       result[:levels] = levels
+    when 'meetings'
+      users = User.enabled
+      result[:users] = users
     else
       result[:error] = "Invalid referentiel #{referentiel}"
     end

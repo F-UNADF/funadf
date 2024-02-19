@@ -56,6 +56,8 @@ Rails.application.routes.draw do
     resources :feed, only: [:index]
 
     resources :roles
+    resources :meetings
+    post '/meetings/:id/add_attendees', to: 'meetings#add_attendees'
 
     resources :files, only: [:destroy]
 
@@ -86,6 +88,7 @@ Rails.application.routes.draw do
         resources :events, only: :index
         resources :posts, only: :index
         resources :roles, only: :index
+        resources :meetings, only: :index
 
         root to: redirect('/users'), as: :root
       end
