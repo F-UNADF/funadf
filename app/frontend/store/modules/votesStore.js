@@ -5,6 +5,8 @@ const state = () => ({
   items: [],
   item: {},
   structure: {},
+  meeting: {},
+  present: true,
   motions: [],
   voters: [],
   results: [],
@@ -20,6 +22,8 @@ const getters = {
   getVoters: (state) => state.voters,
   getLoading: (state) => state.loading,
   getResults: (state) => state.results,
+  getMeeting: (state) => state.meeting,
+  getPresent: (state) => state.present,
 };
 
 // actions
@@ -50,6 +54,8 @@ const actions = {
           commit("setStructure", res.data.structure);
           commit("setMotions", res.data.motions);
           commit("setVoters", res.data.voters);
+          commit("setMeeting", res.data.meeting);
+          commit("setPresent", res.data.present);
           commit("setResults");
           resolve(res);
         })
@@ -82,6 +88,8 @@ const mutations = {
   setMotions: (state, payload) => (state.motions = payload),
   setVoters: (state, payload) => (state.voters = payload),
   setLoading: (state, payload) => (state.loading = payload),
+  setMeeting: (state, payload) => (state.meeting = payload),
+  setPresent: (state, payload) => (state.present = payload),
   setResults: (state) => {
     state.results = [];
     state.motions.forEach((element) => {

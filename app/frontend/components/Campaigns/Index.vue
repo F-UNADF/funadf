@@ -20,7 +20,7 @@
       <tr>
         <td colspan="5">
           <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
-          <v-alert v-else color="danger" icon="danger" title="Aucune église trouvée"
+          <v-alert v-else color="danger" icon="danger" title="Aucune campagne trouvée"
             text="Aucune campagne ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
         </td>
       </tr>

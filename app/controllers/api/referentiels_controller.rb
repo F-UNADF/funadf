@@ -68,9 +68,11 @@ class Api::ReferentielsController < ApiController
         structures = current_user.associations_responsabilities
       end
       positions  = User.get_levels + %w[Oeuvres Eglises]
+      meetings = Meeting.where('begin_at > ?', Time.now).order(:begin_at)
 
       result[:structures] = structures
       result[:positions] = positions
+      result[:meetings] = meetings
     when 'events'
       structures = Association.select('id AS id, name AS name').order(:name)
       if @subdomain == 'association'
@@ -91,6 +93,9 @@ class Api::ReferentielsController < ApiController
       end
       result[:structures] = structures
       result[:levels] = levels
+    when 'meetings'
+      users = User.enabled
+      result[:users] = users
     else
       result[:error] = "Invalid referentiel #{referentiel}"
     end

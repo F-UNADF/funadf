@@ -22,6 +22,7 @@ class Api::VotesController < ApiController
           s2.town,
           m.member_id AS resource_id,
           m.member_type AS resource_type,
+          m.can_vote,
           (vt.voting <> 'count') AS is_consultative,
           (SELECT COALESCE(COUNT(v.resource_id), 0)
             FROM voters v
@@ -51,6 +52,7 @@ class Api::VotesController < ApiController
           s2.town,
           m.member_id AS resource_id,
           m.member_type AS resource_type,
+          m.can_vote,
           (vt.voting <> 'count') AS is_consultative,
           (SELECT COALESCE(COUNT(v.resource_id), 0)
             FROM voters v
@@ -80,6 +82,7 @@ class Api::VotesController < ApiController
           u.town,
           m.member_id AS resource_id,
           m.member_type AS resource_type,
+          m.can_vote,
           (vt.voting <> 'count') AS is_consultative,
           (SELECT COALESCE(COUNT(v.resource_id), 0)
             FROM voters v
@@ -97,7 +100,14 @@ class Api::VotesController < ApiController
     results = Campaign.find_by_sql([sql, campaign_id: @campaign.id, user_id: @user.id, user_level: @user.level])
 
 
-    render json: { campaign: @campaign.as_json, structure: @campaign.structure, motions: @campaign.motions.as_json, voters: results.as_json }
+    render json: { 
+      campaign: @campaign.as_json, 
+      structure: @campaign.structure, 
+      motions: @campaign.motions.as_json, 
+      voters: results.as_json, 
+      meeting: @campaign.meeting,
+      present: @campaign.meeting.present?(@user)
+    }
   end
 
   def create

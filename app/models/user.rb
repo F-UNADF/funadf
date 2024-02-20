@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
 
   validates :firstname, :lastname, presence: true
 
-  scope :enabled, -> { where(disabled: false) }
+  scope :enabled, -> { where.not(disabled: true) }
   scope :disabled, -> { where(disabled: true) }
 
   has_one :wife_marriage, class_name: 'Marriage', foreign_key: :wife_id

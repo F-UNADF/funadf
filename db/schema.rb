@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_13_071318) do
+ActiveRecord::Schema.define(version: 2024_02_16_132420) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -74,6 +74,15 @@ ActiveRecord::Schema.define(version: 2024_02_13_071318) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_attachments_on_post_id"
+  end
+
+  create_table "attendees", charset: "latin1", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "meeting_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["meeting_id"], name: "index_attendees_on_meeting_id"
+    t.index ["user_id"], name: "index_attendees_on_user_id"
   end
 
   create_table "campaigns", id: :integer, charset: "utf8", force: :cascade do |t|
