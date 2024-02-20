@@ -114,6 +114,7 @@ const actions = {
         })
         .then((res) => {
           commit("setItem", res.data.meeting);
+          commit("setAttendees", res.data.attendees);
           commit("setItemInItemsById", res.data.meeting);
           resolve(res.data.meeting);
         })
@@ -122,6 +123,23 @@ const actions = {
         });
     });
   },
+  removeAttendees: function ({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("/api/meetings/" + payload.meeting.id + "/remove_attendees", {
+          attendees: payload.attendees,
+        })
+        .then((res) => {
+          commit("setItem", res.data.meeting);
+          commit("setAttendees", res.data.attendees);
+          commit("setItemInItemsById", res.data.meeting);
+          resolve(res.data.meeting);
+        })
+        .catch((error) => {
+          reject(error, 2000);
+        });
+    });
+  }
 };
 
 // mutations
@@ -131,8 +149,6 @@ const mutations = {
   setLoading: (state, payload) => (state.loading = payload),
   setReferentiels: (state, payload) => (state.referentiels = payload),
   setDialogForm: (state, payload) => (state.dialogForm = payload),
-  setFormLoading: (state, payload) => (state.formLoading = payload),
-  setReferentiels: (state, payload) => (state.referentiels = payload),
   setAttendees: (state, payload) => (state.attendees = payload),
   setItemInItemsById: function (state, item) {
     if (typeof item !== "object") {

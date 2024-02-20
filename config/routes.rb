@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     resources :roles
     resources :meetings
     post '/meetings/:id/add_attendees', to: 'meetings#add_attendees'
+    post '/meetings/:id/remove_attendeed', to: 'meetings#remove_attendeed'
 
     resources :files, only: [:destroy]
 

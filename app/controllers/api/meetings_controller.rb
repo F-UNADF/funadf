@@ -36,11 +36,15 @@ class Api::MeetingsController < ApiController
 
   def add_attendees
     meeting = Meeting.find(params[:id])
-
     params[:attendees].each do |attendee|
       meeting.attendees.find_or_create_by(user_id: attendee).save
     end
+    render json: { meeting: meeting, attendees: meeting.users }
+  end
 
+  def delete_attendees
+    meeting = Meeting.find(params[:id])
+    meeting.attendees.where(user_id: params[:attendees]).destroy_all
     render json: { meeting: meeting, attendees: meeting.users }
   end
 

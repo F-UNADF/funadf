@@ -37,21 +37,14 @@
           </v-row>
         </v-window-item>
         <v-window-item key="attendees" value="attendees">
-          <v-data-table :headers="headers" :items="this.attendees" density="compact" class="elevation-1">
+          <v-data-table v-model="this.deletingAttendees" :headers="headers" :items="this.attendees" density="compact" class="elevation-1" show-select>
             <template v-slot:item="{ item }">
               <tr>
+                <td>
+                  <v-checkbox hide-details density="compact" v-model="this.deletingAttendees" :value="item.id"></v-checkbox>
+                </td>
                 <td>{{ item.id }}</td>
                 <td>{{ item.lastname }} {{ item.firstname }}</td>
-                <td>
-                  <v-tooltip location="top" text="Supprimer le membre">
-                    <template v-slot:activator="{ props }">
-                      <v-icon v-bind="props" small class="text-error" title="Delete"
-                        @click="removeMember(item.membership_id)">
-                        mdi-delete
-                      </v-icon>
-                    </template>
-                  </v-tooltip>
-                </td>
               </tr>
             </template>
           </v-data-table>
@@ -70,6 +63,10 @@
 
             <v-btn color="primary" class="mt-5" @click="addAttendee">
               Ajouter les membres
+            </v-btn>
+
+            <v-btn color="red" class="mt-5 ml-5" @click="removeAttendees" v-if="deletingAttendees.length>0">
+              Supprimer les membres
             </v-btn>
           </div>
         </v-window-item>
@@ -126,7 +123,15 @@ export default {
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'ajout des participants', 'error');
       });
-    }
+    },
+    removeAttendees: function () {
+      this.$store.dispatch('meetingsStore/removeAttendees', { meeting: this.editedItem, attendees: this.deletingAttendees }).then(response => {
+        this.$root.showSnackbar('Participants supprimés avec succès', 'success');
+        this.deletingAttendees = [];
+      }, error => {
+        this.$root.showSnackbar('Un probleme est survenu lors de la suppression des participants', 'error');
+      });
+    },
   },
   watch: {
     item: {
@@ -143,10 +148,10 @@ export default {
       editedItem: {},
       tab: 'infos',
       addingAttendees: [],
+      deletingAttendees: [],
       headers: [
         { title: 'ID', key: 'id', sortable: true },
         { title: 'Nom', key: 'lastname', sortable: true },
-        { title: 'Actions', key: 'actions', sortable: false },
       ],
       rules: {
         required: value => !!value || 'Champ obligatoire',
@@ -155,3 +160,10 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.v-input__slot {
+  align-items: center;
+  justify-content: center;
+}
+</style>
