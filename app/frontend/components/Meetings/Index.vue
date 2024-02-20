@@ -28,7 +28,7 @@
     <template v-slot:item="{ item }">
       <tr>
         <td>{{ item.name }}</td>
-        <td><code class="text-grey">{{ formatedDate(item.start_at) }} - {{ formatedDate(item.start_at) }}</code></td>
+        <td><code class="text-grey">{{ formatedDate(item.begin_at) }} - {{ formatedDate(item.end_at) }}</code></td>
         <td>
           <v-tooltip location="top" text="Modifier l'actu">
             <template v-slot:activator="{ props }">
@@ -65,6 +65,7 @@
         <v-btn color="error" @click="deleteItem(deletingItem)">Supprimer</v-btn>
       </v-card-actions>
     </v-card>
+
   </v-dialog>
 </template>
 

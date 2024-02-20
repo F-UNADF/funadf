@@ -42,7 +42,7 @@ class Api::MeetingsController < ApiController
     render json: { meeting: meeting, attendees: meeting.users }
   end
 
-  def delete_attendees
+  def remove_attendees
     meeting = Meeting.find(params[:id])
     meeting.attendees.where(user_id: params[:attendees]).destroy_all
     render json: { meeting: meeting, attendees: meeting.users }
