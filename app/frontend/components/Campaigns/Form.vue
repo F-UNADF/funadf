@@ -18,6 +18,14 @@
           <v-text-field v-model="editedItem.name" label="Nom" :rules="[rules.required]" required>
           </v-text-field>
         </v-col>
+        <v-col>
+          <v-autocomplete hide-detail v-model="editedItem.meeting_id" :items="referentiels.meetings" item-value="id"
+            item-title="name" label="Rassemblement">
+          </v-autocomplete>
+          <small class="text-grey">
+            Si vous souhaitez bloquer les votes aux seuls présents à un rassemblement, sélectionnez le rassemblement
+          </small>
+        </v-col>
       </v-row>
 
       <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">

@@ -13,7 +13,7 @@ class Api::MeetingsController < ApiController
   def create
     meeting = Meeting.new(meeting_params)
     if meeting.save
-      render json: { meeting: meeting }
+      render json: { meeting: meeting, attendees: meeting.users}
     else
       render json: { errors: meeting.errors.full_messages }, status: :unprocessable_entity
     end

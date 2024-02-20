@@ -12,8 +12,9 @@
           </template>
         </v-btn>
         <h4 class="text-h5 font-weight-bold mb-4">
-          {{ structure.name }}
-          <small>{{ item.name }}</small>
+          <span v-if="meeting" class="text-grey text-h6">Rassemblement : {{ meeting.name }}<br></span>
+          Structure : {{ structure.name }}<br>
+          <small>Campagne : {{ item.name }}</small>
         </h4>
       </v-col>
       <v-col cols="12" lg="8">
@@ -64,8 +65,20 @@
           <v-list select-strategy="classic">
             <v-list-subheader>Mes bulletins</v-list-subheader>
 
-            <v-list-item v-for="voter in this.editVoters">
-              <v-list-item-title v-if="voter.has_voted === null">
+            <v-card-text v-if="this.present === false">
+              <v-alert type="warning">
+                <strong>Il semblerait que vous ne soyez pas présent au rassemblement concerné par ce vote.</strong>
+              </v-alert>
+            </v-card-text>
+
+            <v-list-item v-else v-for="voter in this.editVoters">
+              <v-list-item v-if="voter.can_vote === 0">
+                <v-alert type="warning">
+                  <em>{{ voter.name }} ne peut pas voter. Son vote a été bloqué par les administrateurs de <b>{{
+                    structure.name }}</b></em>
+                </v-alert>
+              </v-list-item>
+              <v-list-item-title v-else-if="voter.has_voted === null">
                 <v-checkbox v-model="voter.selected">
                   <template v-slot:label>
                     {{ voter.name }}&nbsp;
@@ -109,8 +122,10 @@ export default {
       item: 'getItem',
       structure: 'getStructure',
       motions: 'getMotions',
+      meeting: 'getMeeting',
       voters: 'getVoters',
       loading: 'getLoading',
+      present: 'getPresent',
       results: 'getResults',
     }),
 

@@ -1,6 +1,7 @@
 class Campaign < ActiveRecord::Base
 
   belongs_to :structure
+  belongs_to :meeting
   has_many :motions, -> { order 'motions.order asc' }, dependent: :destroy
   has_many :voting_tables, dependent: :destroy
 
