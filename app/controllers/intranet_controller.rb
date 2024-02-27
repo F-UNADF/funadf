@@ -14,7 +14,7 @@ class IntranetController < ApplicationController
   end
 
   def user_can_access?
-    unless can? :manage, @intranet_structure
+    if !current_user.associations_responsabilities.include?(@intranet_structure)
       redirect_to root_url(subdomain: 'me'), alert: 'Vous n\'avez pas les niveaux d\'accès nécessaires'
     end
   end
