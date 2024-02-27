@@ -20,8 +20,11 @@
           <div class="d-flex align-center my-4">
             <img :alt="this.user.fullname" :src="'/avatars/' + this.user.id + '.png'" class="rounded-circle" width="90" />
             <div class="ml-4">
-              <h4 class="font-weight-medium fs-18">{{ this.user.fullname }}</h4>
-              <span class="subtitle-2 font-weight-light">{{ this.user.level }}</span>
+              <h4 class="font-weight-medium fs-18">{{ this.user.firstname }} {{ this.user.lastname }}</h4>
+              <span class="subtitle-2 text-grey font-weight-light">
+                <v-icon>mdi-id-card</v-icon>
+                {{ this.user.id }}
+              </span>
               <div class="d-flex align-center">
                 <span class="subtitle-2 font-weight-light ml-1">{{ this.user.email }}</span>
               </div>
