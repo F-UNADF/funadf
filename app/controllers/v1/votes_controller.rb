@@ -65,7 +65,14 @@ module V1
       result = ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send(:sanitize_sql_array, [sql, *values]))
 
 
-      render json: { campaign: @campaign.as_json, motions: @campaign.motions.as_json, voters: result.as_json }
+      render json: { 
+        campaign: @campaign.as_json, 
+        structure: @campaign.structure, 
+        motions: @campaign.motions.as_json, 
+        voters: results.as_json, 
+        meeting: @campaign.meeting,
+        present: (!@campaign.meeting.present? || @campaign.meeting.user_is_present?(@user))
+      }
     end
 
     def create
