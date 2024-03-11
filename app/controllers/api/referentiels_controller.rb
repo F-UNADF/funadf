@@ -68,7 +68,7 @@ class Api::ReferentielsController < ApiController
         structures = current_user.associations_responsabilities
       end
       positions  = User.get_levels + %w[Oeuvres Eglises]
-      meetings = Meeting.where('begin_at > ?', Time.now).order(:begin_at)
+      meetings = Meeting.order(:begin_at)
 
       result[:structures] = structures
       result[:positions] = positions
