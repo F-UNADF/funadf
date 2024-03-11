@@ -62,8 +62,7 @@ module V1
         AND c.id = ?"
 
       values = [@user.id, @campaign.id, @structure.id, @user.level, @user.id, @campaign.id]
-      result = ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send(:sanitize_sql_array, [sql, *values]))
-
+      results = ActiveRecord::Base.connection.select_all(ActiveRecord::Base.send(:sanitize_sql_array, [sql, *values]))
 
       render json: { 
         campaign: @campaign.as_json, 
