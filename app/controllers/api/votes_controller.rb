@@ -106,7 +106,7 @@ class Api::VotesController < ApiController
       motions: @campaign.motions.as_json, 
       voters: results.as_json, 
       meeting: @campaign.meeting,
-      present: @campaign.meeting.present?(@user)
+      present: (!@campaign.meeting.present? || @campaign.meeting.user_is_present?(@user))
     }
   end
 
