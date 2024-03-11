@@ -5,7 +5,7 @@ class Meeting < ActiveRecord::Base
     has_many :attendees, dependent: :delete_all
     has_many :users, through: :attendees
 
-    def present?(user)
+    def user_is_present?(user)
         users.include?(user)
     end
 end
