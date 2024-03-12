@@ -12,6 +12,7 @@ import feedStore from "./modules/feedStore";
 import feedEventStore from "./modules/feedEventStore";
 import rolesStore from "./modules/rolesStore";
 import meetingsStore from "./modules/meetingsStore";
+import profileStore from "./modules/profileStore";
 
 const debug = process.env.NODE_ENV !== "production";
 
@@ -30,6 +31,7 @@ const store = createStore({
     feedEventStore,
     rolesStore,
     meetingsStore,
+    profileStore,
   },
   strict: debug,
 });

@@ -37,6 +37,7 @@ const vuetify = createVuetify({
     },
   },
 });
+
 const router = () => {
   let uris = window.location.hostname.split(".");
   let routes = votes_router;

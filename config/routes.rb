@@ -39,6 +39,8 @@ Rails.application.routes.draw do
     post '/associations/:id/members', to: 'associations#add_members'
     post '/associations/:id/roles/edit', to: 'associations#edit_roles'
 
+    get '/profile', to: 'profile#show'
+
     get '/search', to: 'search#index'
 
     namespace :me do
@@ -100,8 +102,9 @@ Rails.application.routes.draw do
       constraints(:subdomain => 'me') do
         get '/feed', to: 'feed#show', as: :feed
         get '/annuaire', to: 'annuaire#show', as: :annuaire
+        get '/mon-profil', to: 'profile#show', as: :me
 
-        root to: redirect('/feed'), as: :me
+        root to: redirect('/feed'), as: :root
       end
     end
 
