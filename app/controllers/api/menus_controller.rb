@@ -124,6 +124,12 @@ class Api::MenusController < ApiController
           to: me_feed_path,
         },
         {
+          title: "Mon profil",
+          icon: "mdi-account",
+          to: me_me_path,
+          new_tab: true,
+        },
+        {
           title: "Annuaire",
           icon: "mdi-card-account-details-outline",
           to: me_annuaire_path,

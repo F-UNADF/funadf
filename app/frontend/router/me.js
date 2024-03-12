@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import FeedIndex from "../components/Feed/Index.vue";
 import AnnuaireIndex from "../components/Annuaire/Index.vue";
+import ProfileShow from "../components/Profile/Show.vue";
 
 export default createRouter({
   history: createWebHistory(),
@@ -13,6 +14,11 @@ export default createRouter({
       path: "/feed",
       component: FeedIndex,
       name: "feed.index",
+    },
+    {
+      path: "/mon-profil",
+      component: ProfileShow,
+      name: "profile.show",
     },
     {
       path: "/annuaire",

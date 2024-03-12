@@ -144,11 +144,8 @@ class User < ActiveRecord::Base
   end
 
   def get_presidences
-    presidences = []
-    structures.each do |s|
-      presidences << s if self.has_role? :president, s
-    end
-    presidences
+    role= Role.where(name: :president).first
+    Structure.select('*', 'type AS type').where(id: self.memberships.where(role_id: role.id).pluck(:structure_id))
   end
 
   def church_presidences

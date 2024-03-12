@@ -18,12 +18,13 @@
         <v-list class="pa-6" elevation="10" rounded="lg">
           <h4 class="font-weight-medium fs-18">Profil</h4>
           <div class="d-flex align-center my-4">
-            <img :alt="this.user.fullname" :src="'/avatars/' + this.user.id + '.png'" class="rounded-circle" width="90" />
+            <img :alt="this.user.fullname" :src="'/avatars/' + this.user.id + '.png'" class="rounded-circle"
+              width="90" />
             <div class="ml-4">
               <h4 class="font-weight-medium fs-18">{{ this.user.firstname }} {{ this.user.lastname }}</h4>
               <span class="subtitle-2 text-grey font-weight-light">
                 <v-icon>mdi-id-card</v-icon>
-                {{ this.user.id }}
+                {{ zeroPad(this.user.id) }}
               </span>
               <div class="d-flex align-center">
                 <span class="subtitle-2 font-weight-light ml-1">{{ this.user.email }}</span>
@@ -58,6 +59,14 @@ export default {
     ouser: {
       type: Object,
       required: false,
+    },
+  },
+  computed: {
+    zeroPad: function () {
+      return function (num) {
+        var zero = 5 - num.toString().length + 1;
+        return Array(+(zero > 0 && zero)).join("0") + num;
+      };
     },
   },
   methods: {
