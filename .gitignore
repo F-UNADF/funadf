@@ -59,6 +59,7 @@ pickle-email-*.html
 /shared/*
 /docker/mysql/password.yml
 /public/vite-dev/*
+/backups/*
 
 yarn.lock
 
