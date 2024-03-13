@@ -8,7 +8,6 @@ gem 'uglifier'
 gem 'turbolinks'
 gem 'jbuilder'
 gem 'spring',        group: :development
-gem 'net-protocol', '0.2.1'
 
 gem 'devise'
 gem 'devise_invitable'
@@ -35,7 +34,6 @@ gem 'vite_rails'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
-
 
 group :development do
   gem 'better_errors'

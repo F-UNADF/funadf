@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_16_132420) do
+ActiveRecord::Schema.define(version: 2024_03_13_191743) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -83,6 +83,12 @@ ActiveRecord::Schema.define(version: 2024_02_16_132420) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["meeting_id"], name: "index_attendees_on_meeting_id"
     t.index ["user_id"], name: "index_attendees_on_user_id"
+  end
+
+  create_table "backups", charset: "utf8mb4", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "campaigns", id: :integer, charset: "utf8", force: :cascade do |t|
