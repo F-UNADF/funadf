@@ -240,15 +240,17 @@ class Api::MenusController < ApiController
       end
     end
 
-    if current_user.is_admin? 
+    if current_user.is_admin? || current_user.associations_responsabilities.any?
       result << {
         header: "ADMIN",
       }
-      result << {
-        title: "Admin",
-        icon: "mdi-cog",
-        href: admin_root_url(subdomain: :admin),
-      }
+      if current_user.is_admin?
+        result << {
+          title: "Admin",
+          icon: "mdi-cog",
+          href: admin_root_url(subdomain: :admin),
+        }
+      end
       if !current_user.associations_responsabilities.blank?
         result << {
           title: "Association",
