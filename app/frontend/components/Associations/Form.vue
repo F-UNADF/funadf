@@ -70,14 +70,19 @@
             <template v-slot:item="{ item }">
               <tr>
                 <td>
-                  <div class="d-flex align-center py-4">
+                  <div class="d-flex align-center">
                     <v-avatar
                       :icon="(item.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
-                    <div class="ml-5">
+                    <div class="ml-3">
                       <h4>{{ item.name }}</h4>
-                      <span class="subtitle-2 d-block font-weight-regular">{{
-                        item.town
-                      }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div v-if="item.town !== null" class="d-flex align-center">
+                    <v-icon>mdi-map-marker</v-icon>
+                    <div class="ml-3">
+                      <h4>{{ item.town }} <small>({{ item.zipcode }})</small></h4>
                     </div>
                   </div>
                 </td>
@@ -89,7 +94,7 @@
                       </v-btn>
                     </template>
                     <v-list>
-                      <v-list-item v-for="(role, index) in this.referentiels.roles" :key="index"
+                      <v-list-item v-for="( role, index ) in  this.referentiels.roles " :key="index"
                         @click="setRole(item, index)">
                         <v-list-item-title>{{ role }}</v-list-item-title>
                       </v-list-item>
@@ -290,6 +295,7 @@ export default {
       roleDialog: false,
       headers: [
         { title: 'Nom', key: 'name', sortable: true },
+        { title: 'Ville', key: 'town', sortable: true },
         { title: 'Role', key: 'role_name', sortable: true },
         { title: 'Peut voter ?', key: 'can_vote', sortable: true },
         { title: 'Actions', key: 'actions', sortable: false },
