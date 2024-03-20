@@ -190,19 +190,20 @@
                 <tr v-for="result in this.editedItem.results" :key="result.id">
                   <th>{{ result.motion_name }}</th>
                   <td>{{
-                    result.non_consultative_yes_count + result.non_consultative_no_count +
-                    result.non_consultative_neutre_count + result.non_consultative_null_count
-                  }}
+    result.non_consultative_yes_count + result.non_consultative_no_count +
+    result.non_consultative_neutre_count + result.non_consultative_null_count
+  }}
                   </td>
                   <td>
                     {{ result.non_consultative_yes_count }}
 
-                    <span class="small" v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
+                    <span class="small"
+                      v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
                       ({{
-                        ((result.non_consultative_yes_count / (result.non_consultative_yes_count +
-                          result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
-                            2)
-                      }}%)
+    ((result.non_consultative_yes_count / (result.non_consultative_yes_count +
+      result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
+        2)
+  }}%)
                     </span>
                     <span class="small" v-else>
                       (0%)
@@ -211,12 +212,13 @@
                   <td>
                     {{ result.non_consultative_no_count }}
 
-                    <span class="small" v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
+                    <span class="small"
+                      v-if="result.non_consultative_yes_count + result.non_consultative_no_count !== 0">
                       ({{
-                        ((result.non_consultative_no_count / (result.non_consultative_yes_count +
-                          result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
-                            2)
-                      }}%)
+    ((result.non_consultative_no_count / (result.non_consultative_yes_count +
+      result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
+        2)
+  }}%)
                     </span>
                     <span class="small" v-else>
                       (0%)
@@ -228,35 +230,36 @@
                     <span class="small"
                       v-if="result.non_consultative_neutre_count + result.non_consultative_no_count !== 0">
                       ({{
-                        ((result.non_consultative_neutre_count / (result.non_consultative_yes_count +
-                          result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
-                            2)
-                      }}%)
+    ((result.non_consultative_neutre_count / (result.non_consultative_yes_count +
+      result.non_consultative_no_count + result.non_consultative_neutre_count)) * 100).toFixed(
+        2)
+  }}%)
                     </span>
                     <span class="small" v-else>
                       (0%)
                     </span>
                   </td>
                   <td>{{ result.non_consultative_yes_count + result.non_consultative_no_count +
-                    result.non_consultative_neutre_count }}</td>
+    result.non_consultative_neutre_count }}</td>
                   <td>{{ result.non_consultative_null_count }}</td>
 
                   <!-- CONSULTATIVE -->
                   <template v-if="this.hasConsultative()">
                     <td>{{
-                      result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count +
-                      result.consultative_null_count
-                    }}
+    result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count +
+    result.consultative_null_count
+  }}
                     </td>
                     <td>
                       {{ result.consultative_yes_count }}
 
                       <span class="small" v-if="result.consultative_yes_count + result.consultative_no_count !== 0">
                         ({{
-                          ((result.consultative_yes_count / (result.consultative_yes_count + result.consultative_no_count +
-                            result.consultative_neutre_count)) * 100).toFixed(
-                              2)
-                        }}%)
+    ((result.consultative_yes_count / (result.consultative_yes_count + result.consultative_no_count
+      +
+      result.consultative_neutre_count)) * 100).toFixed(
+        2)
+  }}%)
                       </span>
                       <span class="small" v-else>
                         (0%)
@@ -267,10 +270,10 @@
 
                       <span class="small" v-if="result.consultative_yes_count + result.consultative_no_count !== 0">
                         ({{
-                          ((result.consultative_no_count / (result.consultative_yes_count + result.consultative_no_count +
-                            result.consultative_neutre_count)) * 100).toFixed(
-                              2)
-                        }}%)
+    ((result.consultative_no_count / (result.consultative_yes_count + result.consultative_no_count +
+      result.consultative_neutre_count)) * 100).toFixed(
+        2)
+  }}%)
                       </span>
                       <span class="small" v-else>
                         (0%)
@@ -281,17 +284,19 @@
 
                       <span class="small" v-if="result.consultative_neutre_count + result.consultative_no_count !== 0">
                         ({{
-                          ((result.consultative_neutre_count / (result.consultative_yes_count + result.consultative_no_count
-                            + result.consultative_neutre_count)) * 100).toFixed(
-                              2)
-                        }}%)
+    ((result.consultative_neutre_count / (result.consultative_yes_count +
+      result.consultative_no_count
+      + result.consultative_neutre_count)) * 100).toFixed(
+        2)
+  }}%)
                       </span>
                       <span class="small" v-else>
                         (0%)
                       </span>
                     </td>
-                    <td>{{ result.consultative_yes_count + result.consultative_no_count + result.consultative_neutre_count
-                    }}</td>
+                    <td>{{ result.consultative_yes_count + result.consultative_no_count +
+    result.consultative_neutre_count
+                      }}</td>
                     <td>{{ result.consultative_null_count }}</td>
                   </template>
                 </tr>
@@ -380,10 +385,10 @@
                   <td
                     v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length > 0">
                     {{
-                      this.editedItem.choices_results.filter(
-                        c => c.id === motion.id && c.consultative === 0 && c.choice !== null).reduce(
-                          (a, b) => a + (b['count'] || 0), 0)
-                    }}
+    this.editedItem.choices_results.filter(
+      c => c.id === motion.id && c.consultative === 0 && c.choice !== null).reduce(
+        (a, b) => a + (b['count'] || 0), 0)
+  }}
                   </td>
                   <td
                     v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0 && c.choice !== null)">
@@ -392,31 +397,31 @@
                     <span class="small"
                       v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0 && c.choice !== null).length > 0">
                       ({{
-                        ((choice.count / this.editedItem.choices_results.filter(
-                          c => c.id === motion.id && c.consultative === 0 && c.choice !== null).reduce(
-                            (a, b) => a + (b['count'] || 0),
-                            0)) * 100).toFixed(
-                              2)
-                      }}%)
+    ((choice.count / this.editedItem.choices_results.filter(
+      c => c.id === motion.id && c.consultative === 0 && c.choice !== null).reduce(
+        (a, b) => a + (b['count'] || 0),
+        0)) * 100).toFixed(
+          2)
+  }}%)
                     </span>
                   </td>
                   <td
                     v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 0).length > 0">
                     <!-- Check if value exist -->
                     {{
-                      (this.editedItem.choices_results.find(
-                        c => c.id === motion.id && c.consultative === 0 && c.choice === null) || {}).count || 0
-                    }}
+    (this.editedItem.choices_results.find(
+      c => c.id === motion.id && c.consultative === 0 && c.choice === null) || {}).count || 0
+  }}
                   </td>
 
                   <!-- CONSULTATIVE -->
                   <td
                     v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length > 0">
                     {{
-                      this.editedItem.choices_results.filter(
-                        c => c.id === motion.id && c.consultative === 1 && c.choice !== null).reduce(
-                          (a, b) => a + (b['count'] || 0), 0)
-                    }}
+    this.editedItem.choices_results.filter(
+      c => c.id === motion.id && c.consultative === 1 && c.choice !== null).reduce(
+        (a, b) => a + (b['count'] || 0), 0)
+  }}
                   </td>
                   <td
                     v-for="choice in this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1 && c.choice !== null)">
@@ -425,21 +430,21 @@
                     <span class="small"
                       v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1 && c.choice !== null).length > 0">
                       ({{
-                        ((choice.count / this.editedItem.choices_results.filter(
-                          c => c.id === motion.id && c.consultative === 1 && c.choice !== null).reduce(
-                            (a, b) => a + (b['count'] || 0),
-                            0)) * 100).toFixed(
-                              2)
-                      }}%)
+    ((choice.count / this.editedItem.choices_results.filter(
+      c => c.id === motion.id && c.consultative === 1 && c.choice !== null).reduce(
+        (a, b) => a + (b['count'] || 0),
+        0)) * 100).toFixed(
+          2)
+  }}%)
                     </span>
                   </td>
                   <td
                     v-if="this.editedItem.choices_results.filter(c => c.id === motion.id && c.consultative === 1).length > 0">
                     <!-- Check if value exist -->
                     {{
-                      (this.editedItem.choices_results.find(
-                        c => c.id === motion.id && c.consultative === 1 && c.choice === null) || {}).count || 0
-                    }}
+    (this.editedItem.choices_results.find(
+      c => c.id === motion.id && c.consultative === 1 && c.choice === null) || {}).count || 0
+  }}
                   </td>
                 </tr>
               </tbody>
@@ -596,7 +601,7 @@ export default {
     },
     downloadResults() {
       // open a URL to Download the results
-      window.open('/structures/' + this.editedItem.structure_id + '/campaigns/' + this.editedItem.id + '.pdf',
+      window.open('/campaigns/' + this.editedItem.id + '.pdf',
         '_blank');
     },
     async updateVotersCount() {
