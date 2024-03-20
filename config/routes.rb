@@ -140,6 +140,8 @@ Rails.application.routes.draw do
         root :to => redirect('/campaigns')
       end
     end
+
+    get '/campaigns/:id', to: 'campaigns#show'
   end
   root to: redirect('/connexion')
 end
