@@ -65,20 +65,7 @@ class Structure < ActiveRecord::Base
   end
 
   def full_address
-    result = ""
-    unless address_1.blank?
-      result = address_1 + "<br>"
-    end
-    unless address_2.blank?
-      result = result + address_2 + "<br>"
-    end
-    unless zipcode.blank?
-      result = result + zipcode
-    end
-    unless town.blank?
-      result = result + " " + town
-    end
-    result.html_safe
+    [address_1, address_2, zipcode, town].compact.join(' ')
   end
 
   def self.global_search q

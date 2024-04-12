@@ -170,6 +170,7 @@ GEM
     faraday-net_http (3.0.2)
     ffi (1.15.5)
     foreman (0.87.2)
+    geocoder (1.8.2)
     globalid (1.2.0)
       activesupport (>= 6.1)
     guard-compat (1.2.1)
@@ -400,6 +401,7 @@ DEPENDENCIES
   exception_notification
   faker
   foreman
+  geocoder (~> 1.8, >= 1.8.2)
   guard-test
   haml-rails
   jbuilder
