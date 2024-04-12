@@ -35,6 +35,8 @@ gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 
+gem 'geocoder', '~> 1.8', '>= 1.8.2'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
