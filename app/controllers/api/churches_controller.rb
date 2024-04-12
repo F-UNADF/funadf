@@ -13,6 +13,11 @@ class Api::ChurchesController < ApiController
                            .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
     end
 
+    if params[:search].present?
+      churches = churches.where("structures.name LIKE :search OR structures.zipcode LIKE :search OR structures.town LIKE :search", search: "%#{params[:search]}%")
+    end
+
+
     render json: { churches: churches.all }
   end
 
