@@ -13,10 +13,21 @@ class Api::ChurchesController < ApiController
                            .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
     end
 
+    # $api_url = 'https://add-fnadf.fr/api/churches.json?search=' . $keywords . '&dpt=' . $dpt;
+    # FROM WORDPRESS PLUGINS
     if params[:search].present?
-      churches = churches.where("structures.name LIKE :search OR structures.zipcode LIKE :search OR structures.town LIKE :search", search: "%#{params[:search]}%")
+      # On géolocalise la recherche
+      results = Geocoder.search(params[:search])
+      if results.present?
+        churches = Church.near(results.first.coordinates, 50, units: :km)
+      else
+        churches = Church.none
+      end
     end
 
+    if params[:dpt].present?
+      churches = churches.where("zipcode LIKE ?", "#{params[:dpt]}%")
+    end
 
     render json: { churches: churches.all }
   end
