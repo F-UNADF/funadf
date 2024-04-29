@@ -34,6 +34,9 @@
           </template>
         </td>
         <td>
+          {{ formatedDate(item.created_at) }}
+        </td>
+        <td>
           <v-tooltip location="top" text="Modifier l'actu">
             <template v-slot:activator="{ props }">
               <v-icon small v-bind="props" color="primary" @click="editItem(item.id)" title="Edit">
@@ -76,6 +79,7 @@ import { mapGetters } from "vuex";
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import PostForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
+import moment from "moment";
 
 export default {
   name: "PostsIndex",
@@ -105,6 +109,9 @@ export default {
     },
   },
   methods: {
+    formatedDate: function (date) {
+      return moment(date).format('DD/MM/YYYY HH:mm');
+    },
     newItem: function () {
       let newItem = {
         id: null,
@@ -156,6 +163,11 @@ export default {
         {
           title: 'Structure',
           key: 'structure.name',
+          sortable: true
+        },
+        {
+          title: 'Créé le',
+          key: 'created_at',
           sortable: true
         },
         {

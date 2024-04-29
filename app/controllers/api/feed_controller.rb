@@ -6,6 +6,10 @@ class Api::FeedController < ApiController
                 .where('accesses.level = ? AND accesses.can_access = TRUE', current_user.level)
                 .order(created_at: :desc)
 
+    if params[:search].present?
+      posts = posts.where('title LIKE ? OR content LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%")
+    end
+
     post_with_urls = posts.map do |post|
       {
         post:               post,
