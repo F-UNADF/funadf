@@ -7,21 +7,22 @@
       </h3>
     </v-col>
     <v-col cols="12">
-      <v-text-field
-          v-model="search"
-          label="Chercher une actualité"
-          append-icon="mdi-magnify"
-          single-line
-          hide-details
-          @change="searching()"
-      ></v-text-field>
+      <v-text-field v-model="search" label="Chercher une actualité" append-icon="mdi-magnify" single-line hide-details
+        @keyup="searching($event)"></v-text-field>
     </v-col>
-    <v-col cols="12" v-for="post in items" :key="post.id">
-      <PostItem :post="post"/>
+    <v-col cols="12" v-for="post in items" :key="post.id" v-if="!this.search_in_progress">
+      <PostItem :post="post" />
+    </v-col>
+    <v-col cols="12" v-if="this.search_in_progress">
+      <v-row>
+        <v-col>
+          <v-progress-circular style="display: block; margin: 0 auto;" color="primary" indeterminate :size="50"
+            :width="8"></v-progress-circular>
+        </v-col>
+      </v-row>
     </v-col>
     <v-col cols="12">
-      <v-btn append-icon="mdi-plus-circle" block size="large" color="primary" @click="load()"
-             :loading="this.loading">
+      <v-btn append-icon="mdi-plus-circle" block size="large" color="primary" @click="load()" :loading="this.loading">
         VOIR PLUS
       </v-btn>
     </v-col>
@@ -30,30 +31,38 @@
 
 <script>
 import PostItem from "@/components/Posts/me/Item.vue";
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
-  components : {PostItem,},
-  computed   : {
+  components: { PostItem, },
+  computed: {
     ...mapGetters('feedStore', {
-      items  : 'getItems',
+      items: 'getItems',
       loading: 'getLoading',
     }),
   },
-  methods    : {
-    load     : function () {
+  methods: {
+    load: function () {
       this.$store.dispatch('feedStore/loadMore');
     },
     searching: function () {
-      if (this.search.length === 0) {
-        this.$store.dispatch('feedStore/items');
-        return;
-      }
-      this.$store.dispatch('feedStore/search', this.search);
+      clearTimeout(this.timer);
+      this.search_in_progress = true;
+
+      this.timer = setTimeout(() => {
+        if (this.search.length === 0) {
+          this.$store.dispatch('feedStore/items');
+          this.search_in_progress = false;
+          return;
+        }
+        this.$store.dispatch('feedStore/search', this.search);
+        this.search_in_progress = false;
+      }, 1500);
     },
   },
-  data       : () => ({
+  data: () => ({
     search: '',
+    search_in_progress: false,
   }),
   beforeMount: function () {
     this.$store.dispatch('feedStore/items');
@@ -61,6 +70,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
