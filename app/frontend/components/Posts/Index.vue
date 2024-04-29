@@ -134,10 +134,10 @@ export default {
       this.dialogConfirmDelete = true;
     },
     deleteItem: function (item) {
-      this.$store.dispatch('postsStore/delete', item.value).then(response => {
+      this.$store.dispatch('postsStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
-        this.$root.showSnackbar('Événement supprimé avec succès', 'success');
+        this.$root.showSnackbar('Actualité supprimée avec succès', 'success');
       });
     },
   },
