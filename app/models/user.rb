@@ -253,7 +253,22 @@ class User < ActiveRecord::Base
   end
 
   def self.get_levels
-    ['Probatoire', 'Pasteur stagiaire', 'Pasteur AEM', 'Pasteur APE', 'Ancien', 'Pasteur Agréé', 'Pasteur Partenaire', 'Autre', 'Femme de pasteur', 'Hors ADD', 'Invité', 'Ministère P1', 'Ministère P2']
+    [
+      'Probatoire', 
+      'Pasteur stagiaire', 
+      'Pasteur AEM', 
+      'Pasteur APE', 
+      'Ministère P1', 
+      'Ministère P2',
+      'Pasteur Agréé AEM',
+      'Pasteur Agréé APE', 
+      'Pasteur Partenaire', 
+      'Autre', 
+      'Femme de pasteur', 
+      'Hors ADD', 
+      'Invité', 
+      'Ancien'
+    ]
   end
 
   def self.get_functions
