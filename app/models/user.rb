@@ -272,7 +272,15 @@ class User < ActiveRecord::Base
   end
 
   def self.get_functions
-    ['Président', 'Vice président', 'Pasteur principal', 'Pasteur adjoint', 'Pasteur stagiaire', 'Pasteur probatoire', 'Prédicateur', 'Missionnaire']
+    [
+      'Président', 
+      'Vice président', 
+      'Pasteur principal', 
+      'Pasteur associé', 
+      'Pasteur en formation', 
+      'Prédicateur', 
+      'Missionnaire'
+    ]
   end
 
   def self.get_responsabilities
