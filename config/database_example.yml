@@ -1,0 +1,8 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  database: 
+  username: 
+  password: 
+  port: 3306
+  host: db

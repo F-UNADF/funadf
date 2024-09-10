@@ -57,8 +57,9 @@
             <div class="ml-5">
               <h4 class="d-block">{{ item.lastname }} {{ item.firstname }}</h4>
               <span class="subtitle-2 font-weight-regular">{{ item.email }}</span>
-              <v-btn variant="plain" color="primary" small class="mt-2" @click="editItem(item)"
-                v-if="item.invitation_accepted_at === null">Invitation non validée</v-btn>
+              <span class="ml-2 text-grey" 
+                  v-if="item.invitation_accepted_at === null">(Invitation non validée)
+              </span>
             </div>
           </div>
         </td>
