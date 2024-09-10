@@ -117,10 +117,16 @@ class Api::UsersController < ApiController
 
   def update_gratitudes(user)
     gratitudes_params = params[:user][:gratitudes]
-    return unless gratitudes_params.present?
+
+    if gratitudes_params.blank?
+      user.gratitudes.destroy_all
+      return
+    end
+
+    # On supprime les lignes qui n'existes plus
+    user.gratitudes.where.not(id: gratitudes_params.values.map{ |p| p[:id] }).destroy_all
 
     gratitudes_params.each do |gratitude_params|
-      
       gratitude_id = gratitude_params.last[:id]
       if gratitude_id.present?
         c = Career.find_by(id: gratitude_id, user_id: user.id)
@@ -150,7 +156,14 @@ class Api::UsersController < ApiController
 
   def update_responsabilities(user)
     responsabilities_params = params[:user][:responsabilities]
-    return unless responsabilities_params.present?
+    
+    if responsabilities_params.blank?
+      user.responsabilities.destroy_all
+      return
+    end
+
+    # On supprime les lignes qui n'existes plus
+    user.responsabilities.where.not(id: responsabilities_params.values.map{ |p| p[:id] }).destroy_all
 
     responsabilities_params.each do |responsability_params|
       responsability_id = responsability_params.last[:id]
@@ -167,7 +180,14 @@ class Api::UsersController < ApiController
 
   def update_phases(user)
     phases_params = params[:user][:phases]
-    return unless phases_params.present?
+    
+    if phases_params.blank?
+      user.phases.destroy_all
+      return
+    end
+
+    # On supprime les lignes qui n'existes plus
+    user.phases.where.not(id: phases_params.values.map{ |p| p[:id] }).destroy_all
 
     phases_params.each do |phase_params|
       phase_id = phase_params.last[:id]

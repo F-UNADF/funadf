@@ -67,14 +67,19 @@
         <v-window-item key="reconnaissances" value="reconnaissances">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="career in editedItem.gratitudes"
+              <v-row class="mb-1" v-for="career in editedItem.gratitudes"
                 :key="career.id" justify="center">
-                <v-col cols="12" sm="4">
+                <v-col>
                   <v-select v-model="career.level" :items="referentiels.levels" hide-details label="Reconnaissance">
                   </v-select>
                 </v-col>
-                <v-col cols="12" sm="4">
+                <v-col>
                   <v-text-field v-model="career.start_at" type="date" label="Depuis le" hide-details></v-text-field>
+                </v-col>
+                <v-col>
+                  <v-btn @click="removeGratitude(career.id)" color="red" icon size="x-small">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-col>
@@ -88,9 +93,9 @@
         <v-window-item key="parcours" value="parcours">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="phase in editedItem.phases"
+              <v-row class="mb-1" v-for="phase in editedItem.phases"
                 :key="phase.id" justify="center">
-                <v-col cols="12" sm="5">
+                <v-col cols="12" sm="4">
                   <v-autocomplete v-model="phase.church_id" :items="referentiels.churches" item-value="id"
                     item-title="name" hide-details label="Eglise">
                   </v-autocomplete>
@@ -105,6 +110,11 @@
                 <v-col cols="12" sm="2">
                   <v-text-field v-model="phase.end_at" type="date" label="Jusqu'au" hide-details></v-text-field>
                 </v-col>
+                <v-col>
+                  <v-btn @click="removePhase(phase.id)" color="red" icon size="x-small">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-col>
               </v-row>
             </v-col>
             <v-col cols="12" sm="1">
@@ -117,9 +127,9 @@
         <v-window-item key="responsabilites" value="responsabilites">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="phase in editedItem.responsabilities"
+              <v-row class="mb-1" v-for="phase in editedItem.responsabilities"
                 :key="phase.id" justify="center">
-                <v-col cols="12" sm="5">
+                <v-col cols="12" sm="4">
                   <v-autocomplete v-model="phase.association_id" :items="referentiels.associations" item-value="id"
                     item-title="name" hide-details label="Association">
                   </v-autocomplete>
@@ -133,6 +143,11 @@
                 </v-col>
                 <v-col cols="12" sm="2">
                   <v-text-field v-model="phase.end_at" type="date" label="Jusqu'au" hide-details></v-text-field>
+                </v-col>
+                <v-col>
+                  <v-btn @click="removeResponsabilite(phase.id)" color="red" icon size="x-small">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
                 </v-col>
               </v-row>
             </v-col>
@@ -361,6 +376,14 @@ export default {
         start_at: null,
       });
     },
+    removeGratitude(id) {
+      // If id is null then remove last inserted
+      if (id === null){
+        this.editedItem.gratitudes.pop();
+      }else{
+        this.editedItem.gratitudes.splice(this.editedItem.gratitudes.findIndex(career => career.id === id), 1);
+      }
+    },
     addFee() {
       this.editedItem.fees.push({
         what: null,
@@ -376,6 +399,14 @@ export default {
         end_at: null,
       });
     },
+    removePhase(id) {
+      // If id is null then remove last inserted
+      if (id === null){
+        this.editedItem.phases.pop();
+      }else{
+        this.editedItem.phases.splice(this.editedItem.phases.findIndex(phase => phase.id === id), 1);
+      }
+    },
     addResponsabilite() {
       this.editedItem.responsabilities.push({
         association_id: null,
@@ -384,6 +415,13 @@ export default {
         end_at: null,
       });
     },
+    removeResponsabilite(id){
+      if (id === null){
+        this.editedItem.responsabilities.pop();
+      }else{
+        this.editedItem.responsabilities.splice(this.editedItem.responsabilities.findIndex(phase => phase.id === id), 1);
+      }
+    }
   },
   watch: {
     item: {
