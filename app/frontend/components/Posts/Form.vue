@@ -15,7 +15,7 @@
       <v-window v-model="tab">
         <v-window-item key="infos" value="infos" class="py-3">
           <v-row>
-            <v-col cols="12" md="12">
+            <v-col cols="12" md="6">
               <v-text-field v-model="editedItem.title" label="Titre" :rules="[rules.required]" required>
               </v-text-field>
             </v-col>
@@ -27,14 +27,15 @@
 
             <v-col cols="12" md="12">
               <!-- Textarea field -->
-              <v-layout full-height style="height:450px; padding-bottom: 100px;">
+              <v-layout full-height style="height:450px; width:100%; padding-bottom: 50px;">
                 <vue-editor v-model="editedItem.content">
                 </vue-editor>
               </v-layout>
             </v-col>
 
             <v-col cols="12" md="12">
-              <v-file-input v-model="files" show-size counter multiple label="Pièces jointes"></v-file-input>
+              <v-file-input v-model="files" hide-details show-size counter multiple
+                label="Pièces jointes"></v-file-input>
 
               <v-list lines="one">
                 <v-list-item v-for="file in editedItem.files" :key="file.id">
@@ -51,9 +52,9 @@
                   </template>
                 </v-list-item>
               </v-list>
-
-              <v-select v-model="editedItem.accesses" :items="referentiels.levels" label="Gestion des accès" multiple
-                chips hint="Qui peux accéder à cette actu ?" persistent-hint></v-select>
+            </v-col>
+            <v-col cols="12" md="12">
+              <select-all :options="referentiels.levels" v-model:selected="editedItem.accesses"></select-all>
             </v-col>
           </v-row>
         </v-window-item>
@@ -70,10 +71,11 @@
 <script>
 import { mapGetters } from "vuex";
 import { VueEditor } from "vue3-editor";
+import SelectAll from '../Tools/SelectAll.vue';
 
 export default {
   name: "PostForm",
-  components: { VueEditor },
+  components: { SelectAll, VueEditor },
   computed: {
     ...mapGetters('postsStore', {
       items: 'getItems',

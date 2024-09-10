@@ -72,8 +72,7 @@
                 </v-list-item>
               </v-list>
 
-              <v-select v-model="editedItem.accesses" :items="referentiels.levels" label="Gestion des accès" multiple
-                chips hint="Qui peux accéder à cet événement ?" persistent-hint></v-select>
+              <select-all :options="referentiels.levels" v-model:selected="editedItem.accesses"></select-all>
             </v-col>
           </v-row>
         </v-window-item>
@@ -90,9 +89,11 @@
 <script>
 import { mapGetters } from "vuex";
 import moment from "moment";
+import SelectAll from "@/components/Tools/SelectAll.vue";
 
 export default {
   name: "EventForm",
+  components: { SelectAll },
   computed: {
     ...mapGetters('eventsStore', {
       items: 'getItems',
