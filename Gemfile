@@ -37,6 +37,11 @@ gem "omniauth-rails_csrf_protection"
 
 gem 'geocoder', '~> 1.8', '>= 1.8.2'
 
+gem 'net-http', require: false
+gem 'net-imap', require: false
+gem 'net-protocol', require: false
+gem 'net-smtp', require: false
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
