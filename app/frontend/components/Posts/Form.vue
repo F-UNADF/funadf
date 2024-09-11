@@ -24,15 +24,10 @@
                 item-title="name" label="Structure">
               </v-autocomplete>
             </v-col>
-
-            <v-col cols="12" md="12">
-              <!-- Textarea field -->
-              <v-layout full-height style="height:450px; width:100%; padding-bottom: 50px;">
-                <vue-editor v-model="editedItem.content">
-                </vue-editor>
-              </v-layout>
+            <v-col cols="12" md="12" style="padding-bottom:70px;">
+              <vue-editor v-model="editedItem.content">
+              </vue-editor>
             </v-col>
-
             <v-col cols="12" md="12">
               <v-file-input v-model="files" hide-details show-size counter multiple
                 label="Pièces jointes"></v-file-input>
@@ -54,7 +49,8 @@
               </v-list>
             </v-col>
             <v-col cols="12" md="12">
-              <select-all :options="referentiels.levels" v-model:selected="editedItem.accesses"></select-all>
+              <select-all :options="referentiels.levels" v-model="editedItem.accesses"></select-all>
+              {{ editedItem.accesses }}
             </v-col>
           </v-row>
         </v-window-item>
