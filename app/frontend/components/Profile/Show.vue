@@ -1,13 +1,12 @@
 <template>
     <v-container style="max-width: 1200px;">
-
         <v-card class="mb-5" rounded>
-            <v-img variant="elevated" height="300" src="" class="bg-teal-lighten-2" cover style="overflow: visible;">
-                <v-avatar size="200" color="grey" class="avatar" variant="elevated">
+            <v-img variant="elevated" src="" class="cover bg-teal-lighten-2" cover style="overflow: visible;">
+                <v-avatar size="150" color="grey" class="avatar" variant="elevated">
                     <v-img :src="getAvatar" alt="John"></v-img>
                 </v-avatar>
             </v-img>
-            <v-card-text style="padding-left: 300px;">
+            <v-card-text class="userInfos">
                 <h2 class="display-1">
                     {{ this.profile.lastname }} {{ this.profile.firstname }}
                 </h2>
@@ -240,11 +239,23 @@ export default {
 </script>
 
 <style scoped>
+/** MOBILE FIRST */
+.cover {
+    height: 200px;
+    position: relative;
+    margin-bottom: 50px;
+}
+
 .avatar {
-    margin: 0 auto;
-    display: block;
     position: absolute;
-    bottom: -100px;
-    left: 50px;
+    bottom: -35%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.userInfos {
+    position: relative;
+    z-index: 1;
+    text-align: center;
 }
 </style>
