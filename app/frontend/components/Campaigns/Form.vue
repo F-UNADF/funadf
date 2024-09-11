@@ -8,14 +8,19 @@
       {{ this.getTitle }}
     </v-card-title>
     <v-card-text>
+      <v-alert v-if="errors.length > 0" class="mb-3" type="error" dismissible>
+        <ul>
+          <li v-for="error in errors" :key="error">{{ error }}</li>
+        </ul>
+      </v-alert>
       <v-row>
         <v-col>
           <v-autocomplete v-model="editedItem.structure_id" :items="referentiels.structures" item-value="id"
-            item-title="name" label="Structure">
+            item-title="name" label="Structure" :rules="[this.rules.required]">
           </v-autocomplete>
         </v-col>
         <v-col>
-          <v-text-field v-model="editedItem.name" label="Nom" :rules="[rules.required]" required>
+          <v-text-field v-model="editedItem.name" label="Nom" :rules="[rules.required]">
           </v-text-field>
         </v-col>
         <v-col>
@@ -38,8 +43,7 @@
         <v-window-item key="motions" value="motions" class="py-3">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="motion in this.editedItem.motions" :key="motion.id"
-                justify="left">
+              <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="motion in this.editedItem.motions" :key="motion.id">
                 <v-col cols="12" sm="6">
                   <v-text-field v-model="motion.name" label="Motion" :rules="[rules.required, rules.max255]"
                     :disabled="editedItem.state !== 'coming'">
@@ -105,7 +109,7 @@
           <v-row>
             <v-col cols="12" sm="11">
               <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="voting_table in this.editedItem.voting_tables"
-                :key="voting_table.id" justify="left">
+                :key="voting_table.id">
                 <v-col cols="12" sm="3">
                   <v-select v-model="voting_table.position" :items="referentiels.positions" label="Qualité"
                     :disabled="editedItem.state !== 'coming'">
@@ -321,8 +325,8 @@
               </tbody>
             </v-table>
 
-            <v-table v-for="motion in this.editedItem.motions.filter(m => m.kind === 'choices')" density="compact"
-              class="mb-3 text-center" hover>
+            <v-table v-for="motion in this.editedItem.motions.filter(m => m.kind === 'choices')" :key="motion.id"
+              density="compact" class="mb-3 text-center" hover>
               <!-- VOTE CHOICES -->
               <thead>
                 <tr>
@@ -525,6 +529,29 @@ export default {
       this.$store.commit('campaignsStore/setItem', {});
     },
     save() {
+
+      // Avant d'enregistrer, il faut que la structrue_id, le name soit renseigné
+      // Ainsi que motions et voting_tables ne doivent pas être vide
+
+      if (this.editedItem.structure_id === null || this.editedItem.name === '' || this.editedItem.motions.length === 0 || this.editedItem.voting_tables.length === 0) {
+        this.$root.showSnackbar('Veuillez renseigner les champs obligatoires', 'error');
+        this.errors = [];
+        if (this.editedItem.structure_id === null) {
+          this.errors.push('Merci de renseigner la structure');
+        }
+        if (this.editedItem.name === '') {
+          this.errors.push('Merci de renseigner le nom de la campagne');
+        }
+        if (this.editedItem.motions.length === 0) {
+          this.errors.push('Merci de renseigner au moins une motion');
+        }
+        if (this.editedItem.voting_tables.length === 0) {
+          this.errors.push('Merci de renseigner au moins une table de vote');
+        }
+        return;
+      }
+
+
       this.$store.dispatch('campaignsStore/save', this.editedItem).then(response => {
         this.$root.showSnackbar('Campagne enregistrée avec succès', 'success');
         this.close();
@@ -536,7 +563,7 @@ export default {
     },
     moveMotionUp(motion) {
       const currentIndex = this.editedItem.motions.findIndex(
-        (m) => m.id === motion.id
+        (m) => m.order === motion.order
       );
       if (currentIndex > 0) {
         const previousIndex = currentIndex - 1;
@@ -548,7 +575,7 @@ export default {
     },
     moveMotionDown(motion) {
       const currentIndex = this.editedItem.motions.findIndex(
-        (m) => m.id === motion.id
+        (m) => m.order === motion.order
       );
       if (currentIndex < this.editedItem.motions.length - 1) {
         const nextIndex = currentIndex + 1;
@@ -582,7 +609,7 @@ export default {
       this.editedItem.voting_tables.push(newVotingTable);
     },
     removeMotion(motion) {
-      const index = this.editedItem.motions.findIndex((m) => m.id === motion.id);
+      const index = this.editedItem.motions.findIndex((m) => m.order === motion.order);
       if (index !== -1) {
         this.editedItem.motions.splice(index, 1);
         this.updateMotionOrder();
@@ -657,6 +684,11 @@ export default {
       editedItem: {},
       tab: 'motions',
       countdown: 15,
+      errors: [],
+      rules: {
+        required: value => !!value || 'Champ obligatoire',
+        max255: value => (value && value.length <= 255) || 'Maximum 255 caractères',
+      },
       rules: {
         required: value => !!value || 'Champ obligatoire',
         max255: value => (value && value.length <= 255) || 'Maximum 255 caractères',
