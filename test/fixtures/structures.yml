@@ -1,0 +1,10 @@
+association:
+  name: "Business One"
+  zipcode: "12345"
+  town: "City One"
+  type: Association
+church:
+  name: "Church One"
+  zipcode: "12345"
+  town: "City One"
+  type: Church
