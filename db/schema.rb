@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_12_074035) do
+ActiveRecord::Schema.define(version: 2024_09_13_130142) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -69,6 +69,15 @@ ActiveRecord::Schema.define(version: 2024_04_12_074035) do
     t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable"
   end
 
+  create_table "api_tokens", charset: "latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.text "token"
+    t.boolean "active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
+  end
+
   create_table "attachments", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "post_id"
     t.datetime "created_at", null: false
@@ -85,7 +94,7 @@ ActiveRecord::Schema.define(version: 2024_04_12_074035) do
     t.index ["user_id"], name: "index_attendees_on_user_id"
   end
 
-  create_table "backups", charset: "latin1", force: :cascade do |t|
+  create_table "backups", charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -337,7 +346,9 @@ ActiveRecord::Schema.define(version: 2024_04_12_074035) do
     t.index ["campaign_id"], name: "index_voting_tables_on_campaign_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "attachments", "posts"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"

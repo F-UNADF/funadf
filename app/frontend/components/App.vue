@@ -98,6 +98,10 @@ export default ({
     this.$store.commit('sessionStore/setSubdomain', subdomain);
     this.$store.dispatch('menuStore/getMenu', subdomain);
     this.$store.dispatch('sessionStore/fetchUser');
+    // if currentUser is null then redirect to login
+    if (!this.currentUser) {
+      this.$router.push({ name: 'connexion' });
+    }
   },
 });
 </script>

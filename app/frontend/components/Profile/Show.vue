@@ -178,8 +178,10 @@ export default {
             }
         },
         getLevel: function () {
-            if (this.gratitudes && this.gratitudes.length > 0) {
-                let mostRecentGratitude = this.gratitudes.sort((a, b) => new Date(b.start_at) - new Date(a.start_at))[0];
+            // On cree un copy local de gratitudes
+            let my_gratitudes = [...this.gratitudes];
+            if (my_gratitudes && my_gratitudes.length > 0) {
+                let mostRecentGratitude = my_gratitudes.sort((a, b) => new Date(b.start_at) - new Date(a.start_at))[0];
                 return mostRecentGratitude.level;
             }
             return "Info indisponible";
@@ -217,9 +219,6 @@ export default {
             }
         },
         hasPaidFeeForYear(year) {
-            console.log(this.fees);
-            console.log(year);
-            console.log(this.fees.map(fee => fee.what === year.toString()));
             return this.fees.filter(fee => fee.what === year.toString()).length > 0;
         },
         editProfile: function () {

@@ -13,8 +13,15 @@ class Users::SessionsController < Devise::SessionsController
   def create
     user = User.find_by_email(params[:email])
     if user && user.valid_password?(params[:password])
-      sign_in user
-      render json: { user: user, token: user.authentication_token, redirect: root_url }, status: :created
+      # Fin du l'air Devise en Session, on passe en Tokenization
+      # On cherche le dernier token actif 
+      current_api_token = ApiToken.where(active: true).find_by_user_id(user.id)
+      # Si on en trouve pas, on en crée un
+      if current_api_token.nil?
+        current_api_token = ApiToken.create(user: user)
+      end
+
+      render json: { user: user, token: current_api_token.token, redirect: root_url }, status: :created
     else
       render json: { error: 'Invalid email or password' }, status: :unauthorized
     end

@@ -1,5 +1,11 @@
 import axios from "axios";
 
+if (null !== localStorage.getItem('token')) {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+}
+
+console.log(window.location.pathname);
+
 // initial state
 const state = () => ({
     currentUser: {},
@@ -24,7 +30,7 @@ const actions = {
             const response = await axios.get('/api/current_user');
             commit('setCurrentUser', response.data.user);
             commit('setRoles', response.data.roles);
-            // if response.data.user is empty or null the rediredct to login page
+            
             if (response.data.user === null &&
                 window.location.pathname !== '/connexion' &&
                 window.location.pathname !== '/mot-de-passe-oublie' &&
@@ -32,6 +38,7 @@ const actions = {
             ) {
                 window.location.href = '/connexion';
             }
+            
             commit('setOriginalUser', response.data.original_user);
         } catch (error) {
             commit('setCurrentUser', null);
@@ -39,7 +46,7 @@ const actions = {
     },
     async logout({ commit }) {
         try {
-            await axios.delete(' /users/sign_out');
+            await axios.delete('/users/sign_out');
             commit('setCurrentUser', null);
             commit('setOriginalUser', null);
         } catch (error) {
@@ -53,8 +60,11 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post('/users/sign_in', user)
                 .then((response) => {
+                    // On definit le header par defaut de axio avec le bearer token recu
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
+                    // On stocke le token dans le local storage
+                    localStorage.setItem('token', response.data.token);
                     commit('setCurrentUser', response.data.user);
-                    commit('setOriginalUser', null);
                     resolve(response);
                 })
                 .catch((error) => {
