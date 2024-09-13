@@ -8,7 +8,11 @@ class ApiController < ActionController::Base
   private
 
   def current_user
-    @current_user
+    if session[:connect_as].nil?
+      @current_user
+    else
+      User.find(session[:connect_as])
+    end
   end
 
   def authenticate
