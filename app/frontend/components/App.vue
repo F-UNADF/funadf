@@ -99,7 +99,7 @@ export default ({
     this.$store.dispatch('menuStore/getMenu', subdomain);
     this.$store.dispatch('sessionStore/fetchUser');
     // if currentUser is null then redirect to login
-    if (!this.currentUser) {
+    if (null === this.currentUser) {
       this.$router.push({ name: 'connexion' });
     }
   },

@@ -36,11 +36,6 @@
             prepend-icon="mdi-account-edit">
             Modifier mon profil
           </v-btn>
-
-          <v-btn block class="mt-4 py-4" color="secondary" @click="$emit('logout')" variant="flat"
-            prepend-icon="mdi-logout">
-            Se déconnecter
-          </v-btn>
         </v-list>
       </v-menu>
     </template>
