@@ -1,8 +1,12 @@
 import axios from "axios";
 
-if (null !== localStorage.getItem('token')) {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+// si on a un token dans le local storage ou en session on le met dans le header par defaut de axios
+const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+
+if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
+
 
 console.log(window.location.pathname);
 
@@ -30,7 +34,7 @@ const actions = {
             const response = await axios.get('/api/current_user');
             commit('setCurrentUser', response.data.user);
             commit('setRoles', response.data.roles);
-            
+
             if (response.data.user === null &&
                 window.location.pathname !== '/connexion' &&
                 window.location.pathname !== '/mot-de-passe-oublie' &&
@@ -38,7 +42,7 @@ const actions = {
             ) {
                 window.location.href = '/connexion';
             }
-            
+
             commit('setOriginalUser', response.data.original_user);
         } catch (error) {
             commit('setCurrentUser', null);
@@ -62,8 +66,9 @@ const actions = {
                 .then((response) => {
                     // On definit le header par defaut de axio avec le bearer token recu
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
-                    // On stocke le token dans le local storage
+                    // On stocke le token dans le local storage ET en session pour le cross domain
                     localStorage.setItem('token', response.data.token);
+                    sessionStorage.setItem('token', response.data.token);
                     commit('setCurrentUser', response.data.user);
                     resolve(response);
                 })
