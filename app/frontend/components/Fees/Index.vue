@@ -57,8 +57,8 @@
     </template>
   </v-data-table>
 
-  <v-dialog v-model="dialogForm" max-width="75%">
-    <post-form></post-form>
+  <v-dialog v-model="dialogForm" :class="dialogFormWidth">
+    <fee-form></fee-form>
   </v-dialog>
   <v-dialog max-width="25%" v-model="dialogConfirmDelete">
     <v-card>
@@ -80,6 +80,7 @@ import { VDataTable } from 'vuetify/labs/VDataTable'
 import FeeForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import moment from "moment";
+import { useDisplay } from 'vuetify'
 
 export default {
   name: "FeesIndex",
@@ -87,6 +88,7 @@ export default {
     VDataTable,
     FeeForm,
     DialogConfirm,
+    useDisplay
   },
   computed: {
     ...mapGetters('feesStore', {
@@ -121,6 +123,9 @@ export default {
       }
       return years;
     },
+    dialogFormWidth() {
+      return this.smAndDown ? 'w-100' : 'w-50';
+    }
   },
   methods: {
     formatedDevise: function (amount) {
@@ -194,8 +199,7 @@ export default {
   },
   beforeMount: function () {
     this.$store.dispatch('feesStore/items');
+    this.$store.dispatch('feesStore/referentiels');
   },
 }
 </script>
-
-<style scoped></style>

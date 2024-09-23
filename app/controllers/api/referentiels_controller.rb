@@ -96,6 +96,9 @@ class Api::ReferentielsController < ApiController
     when 'meetings'
       users = User.enabled
       result[:users] = users
+    when 'fees'
+      users = User.enabled
+      result[:users] = users
     else
       result[:error] = "Invalid referentiel #{referentiel}"
     end
