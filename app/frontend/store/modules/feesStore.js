@@ -7,6 +7,7 @@ const state = () => ({
   loading: false,
   formLoading: false,
   dialogForm: false,
+  referentiel: [],
 });
 
 // getters
@@ -16,6 +17,7 @@ const getters = {
   getLoading: (state) => state.loading,
   getFormLoading: (state) => state.formLoading,
   getDialogForm: (state) => state.dialogForm,
+  getReferentiel: (state) => state.referentiel,
 };
 
 // actions
@@ -96,6 +98,16 @@ const actions = {
         });
     });
   },
+  referentiels: function ({commit}) {
+      return new Promise((resolve, reject) => {
+          axios.get('/api/referentiels/fees', {}).then((res) => {
+              commit('setReferentiels', res.data);
+              resolve(res);
+          }).catch((error) => {
+              reject(error, 2000);
+          });
+      });
+  },
 };
 
 // mutations
@@ -106,6 +118,7 @@ const mutations = {
   setReferentiels: (state, payload) => (state.referentiels = payload),
   setDialogForm: (state, payload) => (state.dialogForm = payload),
   setFormLoading: (state, payload) => (state.formLoading = payload),
+  setReferentiels: (state, paypload) => (state.referentiel = paypload),
   setItemInItemsById: function (state, item) {
     if (typeof item !== "object") {
       item = JSON.parse(item);
