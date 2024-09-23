@@ -8,6 +8,7 @@ import EventsIndex from "../components/Events/Index.vue";
 import PostsIndex from "../components/Posts/Index.vue";
 import RolesIndex from "../components/Roles/Index.vue";
 import MeetingsIndex from "../components/Meetings/Index.vue";
+import FeesIndex from "../components/Fees/Index.vue";
 
 export default createRouter({
   history: createWebHistory(),
@@ -46,6 +47,11 @@ export default createRouter({
       path: "/posts",
       component: PostsIndex,
       name: "posts",
+    },
+    {
+      path: "/fees",
+      component: FeesIndex,
+      name: "fees",
     },
     {
       path: "/roles",
