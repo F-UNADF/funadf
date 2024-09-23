@@ -50,17 +50,12 @@ const actions = {
         });
     });
   },
-  save: function ({ dispatch, commit, state }, item) {
+  save: function ({ commit }, item) {
     return new Promise((resolve, reject) => {
       if (item.fee.id) {
         axios
-          .patch("/api/fees/" + item.fee.id, item, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
+          .patch("/api/fees/" + item.fee.id, item)
           .then((res) => {
-            commit("setItemInItemsById", res.data.fee);
             commit("setItem", res.data.fee);
             resolve(res.data.fee);
           })
@@ -69,14 +64,10 @@ const actions = {
           });
       } else {
         axios
-          .post("/api/fees", item, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
+          .post("/api/fees", item)
           .then((res) => {
+            console.log(res.data);
             commit("setItem", res.data.fee);
-            commit("setItemInItemsById", res.data.fee);
             resolve(res.data.fee);
           })
           .catch((error) => {
@@ -98,15 +89,15 @@ const actions = {
         });
     });
   },
-  referentiels: function ({commit}) {
-      return new Promise((resolve, reject) => {
-          axios.get('/api/referentiels/fees', {}).then((res) => {
-              commit('setReferentiels', res.data);
-              resolve(res);
-          }).catch((error) => {
-              reject(error, 2000);
-          });
+  referentiels: function ({ commit }) {
+    return new Promise((resolve, reject) => {
+      axios.get('/api/referentiels/fees', {}).then((res) => {
+        commit('setReferentiels', res.data);
+        resolve(res);
+      }).catch((error) => {
+        reject(error, 2000);
       });
+    });
   },
 };
 

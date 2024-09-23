@@ -13,8 +13,19 @@
           <v-select v-model="editedItem.what" :items="years" label="Année" hide-details></v-select>
         </v-col>
         <v-col cols="12" md="12">
-          <v-select v-model="editedItem.user_id" :items="users" item-id="id" item-value="name" label="Utilisateur">
-          </v-select>
+          <v-autocomplete :items="this.matchingUsers" v-model="editedItem.user_id" label="Utilisateur"
+            :item-value="item => item.value" v-model:search="search" no-filter
+            no-data-text="Utilisateur déjà renseigné ou inexistant"
+            hint="Merci d'indiquer les trois premières lettres du nom ou du prénom." persistent-hint>
+          </v-autocomplete>
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-text-field v-model="editedItem.amount" label="Montant" hide-details></v-text-field>
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-text-field v-model="editedItem.paid_at" type="date" label="Payé le" :rules="[rules.required]"
+            :value="getIsoDate(editedItem.paid_at)" hint="Exemple : 18/09/2021" persistent-hint required>
+          </v-text-field>
         </v-col>
       </v-row>
     </v-card-text>
@@ -50,25 +61,19 @@ export default {
       }
       return years;
     },
-    users() {
-    return this.referentiel.users.map(user => {
-      return {
-          id: user.id,
-          text: user.lastname + ' ' + user.firstname
-        };
-      })
-  
-    },
   },
   methods: {
     close: function () {
+      this.$store.dispatch('feesStore/items');
       this.$store.commit('feesStore/setDialogForm', false);
       this.$store.commit('feesStore/setItem', {});
     },
+    getIsoDate: function (value) {
+      return moment(value).format('YYYY-MM-DD');
+    },
     save: function () {
       this.$store.dispatch('feesStore/save', {
-        post: this.editedItem,
-        files: this.files
+        fee: this.editedItem
       }).then(response => {
         this.$root.showSnackbar('Cotisation enregistrée avec succès', 'success');
         this.close();
@@ -87,11 +92,37 @@ export default {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
       },
     },
+    search: function (val) {
+      if (val.length < 3) {
+        // si editedItem.user_id est defini, on le garde
+        if (this.editedItem.user_id) {
+          this.matchingUsers = this.referentiel.users.filter(user => {
+            return user.id === this.editedItem.user_id;
+          }).map(user => {
+            return {
+              value: user.id,
+              title: user.lastname + ' ' + user.firstname
+            };
+          });
+        }
+        return;
+      }
+      this.matchingUsers = this.referentiel.users.filter(user => {
+        return user.lastname.toLowerCase().includes(val.toLowerCase()) || user.firstname.toLowerCase().includes(val.toLowerCase());
+      }).map(user => {
+        return {
+          value: user.id,
+          title: user.lastname + ' ' + user.firstname
+        };
+      });
+    },
   },
 
   data() {
     return {
       editedItem: {},
+      search: '',
+      matchingUsers: [],
       rules: {
         required: value => !!value || 'Champ obligatoire',
       },

@@ -33,9 +33,8 @@
       <tr>
         <td>{{ item.what }}</td>
         <td>{{ item.user.lastname }} {{ item.user.firstname }}</td>
-        <td>
-          {{ formatedDevise(item.amount) }} €
-        </td>
+        <td>{{ formatedDevise(item.amount) }} €</td>
+        <td>{{ formatedDate(item.paid_at) }}</td>
         <td>
           <v-tooltip location="top" text="Modifier l'actu">
             <template v-slot:activator="{ props }">
@@ -57,7 +56,7 @@
     </template>
   </v-data-table>
 
-  <v-dialog v-model="dialogForm" :class="dialogFormWidth">
+  <v-dialog v-model="dialogForm">
     <fee-form></fee-form>
   </v-dialog>
   <v-dialog max-width="25%" v-model="dialogConfirmDelete">
@@ -123,20 +122,20 @@ export default {
       }
       return years;
     },
-    dialogFormWidth() {
-      return this.smAndDown ? 'w-100' : 'w-50';
-    }
   },
   methods: {
     formatedDevise: function (amount) {
       return new Intl.NumberFormat('fr-FR').format(amount);
     },
+    formatedDate: function (date) {
+      return moment(date).format('DD/MM/YYYY');
+    },
     newItem: function () {
       let newItem = {
-        id: null,
-        title: '',
-        content: '',
-        accesses: [],
+        what: moment().year().toString(),
+        user_id: null,
+        amount: 0,
+        paid_at: moment().format('YYYY-MM-DD'),
       };
       this.$store.commit('feesStore/setItem', newItem);
       this.$store.commit('feesStore/setDialogForm', true);
@@ -187,6 +186,11 @@ export default {
         {
           title: 'Combien',
           key: 'amount',
+          sortable: true
+        },
+        {
+          title: 'Payé le',
+          key: 'paid_at',
           sortable: true
         },
         {
