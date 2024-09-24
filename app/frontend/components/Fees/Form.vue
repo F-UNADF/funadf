@@ -12,9 +12,13 @@
         <v-col cols="12" md="12">
           <v-select v-model="editedItem.what" :items="years" label="Année" hide-details></v-select>
         </v-col>
-        <v-col cols="12" md="12">
-          <v-autocomplete :items="this.matchingUsers" v-model="editedItem.user_id" label="Utilisateur"
-            :item-value="item => item.value" v-model:search="search" no-filter
+        <v-col cols="12" md="6">
+          <v-select v-model="editedItem.member_type" :items="['User', 'Structure']" label="Type de membre"
+            hide-details></v-select>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-autocomplete :items="this.matchingUsers" v-model="editedItem.member_id" label="Membre"
+            :item-value="item => item.value" v-model:search="search" no-filter v-if="editedItem.member_type"
             no-data-text="Utilisateur déjà renseigné ou inexistant"
             hint="Merci d'indiquer les trois premières lettres du nom ou du prénom." persistent-hint>
           </v-autocomplete>
@@ -83,6 +87,12 @@ export default {
         this.$root.showSnackbar(errors.join('<br/>'), 'error');
       });
     },
+    onUserSelected(selectedItem) {
+      console.log(selectedItem);
+      if (selectedItem && selectedItem.type) {
+        this.editedItem.member_type = selectedItem.type;
+      }
+    }
   },
   watch: {
     item: {
@@ -95,12 +105,10 @@ export default {
     search: function (val) {
       if (val.length < 3) {
         // si editedItem.member_id est defini, on le garde
-        
+
         // On a deux referenciels users et structures
         // Si member_type = User on tape sur users
         // Si member_type = Structure on tape sur structures
-
-
         if (this.editedItem.member_id) {
           if (this.editedItem.member_type === 'User') {
             this.matchingUsers = this.referentiel.users.filter(user => {
@@ -108,18 +116,20 @@ export default {
             }).map(user => {
               return {
                 value: user.id,
+                type: 'User',
                 title: user.lastname + ' ' + user.firstname
               };
             });
           }
-          
+
           if (this.editedItem.member_type === 'Structure') {
             this.matchingUsers = this.referentiel.structures.filter(structure => {
               return structure.id === this.editedItem.member_id;
             }).map(structure => {
               return {
                 value: structure.id,
-                title: structure.name
+                type: 'Structure',
+                title: structure.name + ' (' + structure.zipcode + ' - ' + structure.town
               };
             });
           }
@@ -127,24 +137,27 @@ export default {
         return;
       }
 
+      if (this.editedItem.member_type === 'User') {
+        this.matchingUsers = this.referentiel.users.filter(user => {
+          return user.lastname.toLowerCase().includes(val.toLowerCase()) || user.firstname.toLowerCase().includes(val.toLowerCase());
+        }).map(user => {
+          return {
+            value: user.id,
+            title: user.lastname + ' ' + user.firstname
+          };
+        });
+      }
 
-      this.matchingUsers = this.referentiel.users.filter(user => {
-        return user.lastname.toLowerCase().includes(val.toLowerCase()) || user.firstname.toLowerCase().includes(val.toLowerCase());
-      }).map(user => {
-        return {
-          value: user.id,
-          title: user.lastname + ' ' + user.firstname
-        };
-      });
-      // On ajoute le référentiel des structures
-      this.matchingUsers = this.matchingUsers.concat(this.referentiel.structures.filter(structure => {
-        return structure.town.toLowerCase().includes(val.toLowerCase()) || structure.name.toLowerCase().includes(val.toLowerCase()) || structure.zipcode.toLowerCase().includes(val.toLowerCase());
-      }).map(structure => {
-        return {
-          value: structure.id,
-          title: structure.name + ' (' + structure.zipcode + ' ' + structure.town + ')'
-        };
-      }));
+      if (this.editedItem.member_type === 'Structure') {
+        this.matchingUsers = this.referentiel.structures.filter(structure => {
+          return structure.name.toLowerCase().includes(val.toLowerCase());
+        }).map(structure => {
+          return {
+            value: structure.id,
+            title: structure.name + ' (' + structure.zipcode + ' - ' + structure.town
+          };
+        });
+      }
     },
   },
 

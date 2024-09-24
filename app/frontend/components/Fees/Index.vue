@@ -6,7 +6,7 @@
     </v-col>
     <v-col cols="12" lg="4" md="4" class="mb-3">
       <!-- Filter by user lastname -->
-      <v-text-field v-model="filter.lastname" label="Nom" hide-details></v-text-field>
+      <v-text-field v-model="filter.name" label="Nom, Ville ou Code postal" hide-details></v-text-field>
     </v-col>
     <v-col cols="12" lg="3" md="3" class="text-right">
       <v-spacer></v-spacer>
@@ -34,7 +34,8 @@
         <td>{{ item.what }}</td>
         <td>
           <span v-if="item.member_type === 'User'">{{ item.member.lastname }} {{ item.member.firstname }}</span>
-          <span v-if="item.member_type === 'Structure'">{{ item.member.name }} ({{ item.member.zipcode }} {{ item.member.town }})</span>
+          <span v-if="item.member_type === 'Structure'">{{ item.member.name }} ({{ item.member.zipcode }} {{
+            item.member.town }})</span>
         </td>
         <td>{{ formatedDevise(item.amount) }} €</td>
         <td>{{ formatedDate(item.paid_at) }}</td>
@@ -110,10 +111,18 @@ export default {
         if (this.filter.what !== null && this.filter.what !== item.what) {
           return false;
         }
-        if (this.filter.lastname !== null &&
-          !item.user.lastname.toLowerCase().includes(this.filter.lastname.toLowerCase())) {
-          return false;
+        if (this.filter.name !== null) {
+          if (item.member_type === 'User' && !item.member.lastname.toLowerCase().includes(this.filter.name.toLowerCase())) {
+            return false;
+          }
+          if (item.member_type === 'Structure' &&
+            !item.member.name.toLowerCase().includes(this.filter.name.toLowerCase()) &&
+            !item.member.zipcode.toLowerCase().includes(this.filter.name.toLowerCase()) &&
+            !item.member.town.toLowerCase().includes(this.filter.name.toLowerCase())) {
+            return false;
+          }
         }
+
         return true;
       });
     },
@@ -136,7 +145,8 @@ export default {
     newItem: function () {
       let newItem = {
         what: moment().year().toString(),
-        user_id: null,
+        member_id: null,
+        member_type: null,
         amount: 0,
         paid_at: moment().format('YYYY-MM-DD'),
       };
@@ -173,7 +183,7 @@ export default {
       valid: true,
       filter: {
         what: moment().year().toString(),
-        lastname: null,
+        name: null,
       },
       headers: [
         {
