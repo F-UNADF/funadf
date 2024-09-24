@@ -57,7 +57,7 @@ class Api::MenusController < ApiController
           }
         result <<
           {
-            title: "Cotisation",
+            title: "Cotisations",
             icon: "mdi-wallet",
             to: admin_fees_path,
           }

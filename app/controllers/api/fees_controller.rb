@@ -39,7 +39,7 @@ class Api::FeesController < ApiController
   end
 
   def fee_params
-    params[:fee].permit(:what, :user_id, :amount, :paid_at)
+    params[:fee].permit(:what, :member_type, :member_id, :amount, :paid_at)
   end
 
 end

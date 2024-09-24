@@ -145,10 +145,10 @@ class Api::UsersController < ApiController
     fees_params.each do |fee_params|
       fee_id = fee_params.last[:id]
       if fee_id.present?
-        c = Fee.find_by(id: fee_id, user_id: user.id)
+        c = Fee.find_by(id: fee_id, member_id: user.id)
         c.update(fee_params.last.permit(:what, :amount, :paid_at))
       else
-        c = Fee.new(what: fee_params.last[:what], amount: fee_params.last[:amount], paid_at: fee_params.last[:paid_at], user_id: user.id)
+        c = Fee.new(what: fee_params.last[:what], amount: fee_params.last[:amount], paid_at: fee_params.last[:paid_at], member_id: user.id, member_type: 'User')
         c.save
       end
     end
@@ -156,7 +156,7 @@ class Api::UsersController < ApiController
 
   def update_responsabilities(user)
     responsabilities_params = params[:user][:responsabilities]
-    
+
     if responsabilities_params.blank?
       user.responsabilities.destroy_all
       return
@@ -172,7 +172,7 @@ class Api::UsersController < ApiController
         responsability.update(responsability_params.last.permit(:start_at, :end_at, :association_id, :function, :user_id))
       else
         responsibility = Career.new(responsability_params.last.permit(:function, :association_id, :start_at, :end_at).merge(user_id: user.id))
-      
+
         responsibility.save
       end
     end
@@ -180,7 +180,7 @@ class Api::UsersController < ApiController
 
   def update_phases(user)
     phases_params = params[:user][:phases]
-    
+
     if phases_params.blank?
       user.phases.destroy_all
       return

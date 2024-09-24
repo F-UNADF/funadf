@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   has_many :phases, ->(career) { where('church_id IS NOT NULL') }, class_name: "Career", foreign_key: :user_id
   has_many :responsabilities, ->(career) { where('association_id IS NOT NULL') }, class_name: "Career", foreign_key: :user_id
 
-  has_many :fees, dependent: :destroy
+  has_many :fees, as: :member, dependent: :destroy
 
   accepts_nested_attributes_for :careers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :gratitudes, reject_if: :all_blank, allow_destroy: true
@@ -254,31 +254,31 @@ class User < ActiveRecord::Base
 
   def self.get_levels
     [
-      'Probatoire', 
-      'Pasteur stagiaire', 
-      'Pasteur AEM', 
-      'Pasteur APE', 
-      'Ministère P1', 
+      'Probatoire',
+      'Pasteur stagiaire',
+      'Pasteur AEM',
+      'Pasteur APE',
+      'Ministère P1',
       'Ministère P2',
       'Pasteur Agréé AEM',
-      'Pasteur Agréé APE', 
-      'Pasteur Partenaire', 
-      'Autre', 
-      'Femme de pasteur', 
-      'Hors ADD', 
-      'Invité', 
+      'Pasteur Agréé APE',
+      'Pasteur Partenaire',
+      'Autre',
+      'Femme de pasteur',
+      'Hors ADD',
+      'Invité',
       'Ancien'
     ]
   end
 
   def self.get_functions
     [
-      'Président', 
-      'Vice président', 
-      'Pasteur principal', 
-      'Pasteur associé', 
-      'Pasteur en formation', 
-      'Prédicateur', 
+      'Président',
+      'Vice président',
+      'Pasteur principal',
+      'Pasteur associé',
+      'Pasteur en formation',
+      'Prédicateur',
       'Missionnaire'
     ]
   end
