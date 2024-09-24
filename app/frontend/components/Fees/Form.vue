@@ -94,19 +94,40 @@ export default {
     },
     search: function (val) {
       if (val.length < 3) {
-        // si editedItem.user_id est defini, on le garde
-        if (this.editedItem.user_id) {
-          this.matchingUsers = this.referentiel.users.filter(user => {
-            return user.id === this.editedItem.user_id;
-          }).map(user => {
-            return {
-              value: user.id,
-              title: user.lastname + ' ' + user.firstname
-            };
-          });
+        // si editedItem.member_id est defini, on le garde
+        
+        // On a deux referenciels users et structures
+        // Si member_type = User on tape sur users
+        // Si member_type = Structure on tape sur structures
+
+
+        if (this.editedItem.member_id) {
+          if (this.editedItem.member_type === 'User') {
+            this.matchingUsers = this.referentiel.users.filter(user => {
+              return user.id === this.editedItem.member_id;
+            }).map(user => {
+              return {
+                value: user.id,
+                title: user.lastname + ' ' + user.firstname
+              };
+            });
+          }
+          
+          if (this.editedItem.member_type === 'Structure') {
+            this.matchingUsers = this.referentiel.structures.filter(structure => {
+              return structure.id === this.editedItem.member_id;
+            }).map(structure => {
+              return {
+                value: structure.id,
+                title: structure.name
+              };
+            });
+          }
         }
         return;
       }
+
+
       this.matchingUsers = this.referentiel.users.filter(user => {
         return user.lastname.toLowerCase().includes(val.toLowerCase()) || user.firstname.toLowerCase().includes(val.toLowerCase());
       }).map(user => {
@@ -115,6 +136,15 @@ export default {
           title: user.lastname + ' ' + user.firstname
         };
       });
+      // On ajoute le référentiel des structures
+      this.matchingUsers = this.matchingUsers.concat(this.referentiel.structures.filter(structure => {
+        return structure.town.toLowerCase().includes(val.toLowerCase()) || structure.name.toLowerCase().includes(val.toLowerCase()) || structure.zipcode.toLowerCase().includes(val.toLowerCase());
+      }).map(structure => {
+        return {
+          value: structure.id,
+          title: structure.name + ' (' + structure.zipcode + ' ' + structure.town + ')'
+        };
+      }));
     },
   },
 

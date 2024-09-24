@@ -79,7 +79,7 @@
 
           <v-tooltip location="top" text="Se connecter en tant que l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" color="green" class="rounded-s-0" variant="flat" @click="connectAs(item)"
+              <v-btn v-bind="props" color="secondary" class="rounded-s-0" variant="flat" @click="connectAs(item)"
                 title="Activer">
                 <v-icon>mdi-drama-masks</v-icon>
               </v-btn>
