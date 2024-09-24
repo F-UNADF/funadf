@@ -32,7 +32,10 @@
     <template v-slot:item="{ item }">
       <tr>
         <td>{{ item.what }}</td>
-        <td>{{ item.user.lastname }} {{ item.user.firstname }}</td>
+        <td>
+          <span v-if="item.member_type === 'User'">{{ item.member.lastname }} {{ item.member.firstname }}</span>
+          <span v-if="item.member_type === 'Structure'">{{ item.member.name }} ({{ item.member.zipcode }} {{ item.member.town }})</span>
+        </td>
         <td>{{ formatedDevise(item.amount) }} €</td>
         <td>{{ formatedDate(item.paid_at) }}</td>
         <td>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_13_130142) do
+ActiveRecord::Schema.define(version: 2024_09_24_150435) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -158,13 +158,14 @@ ActiveRecord::Schema.define(version: 2024_09_13_130142) do
   end
 
   create_table "fees", charset: "latin1", force: :cascade do |t|
-    t.integer "user_id"
     t.string "what"
     t.date "paid_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "amount", precision: 10, scale: 2
-    t.index ["user_id"], name: "index_fees_on_user_id"
+    t.integer "member_id"
+    t.string "member_type"
+    t.index ["member_type", "member_id"], name: "index_fees_on_member_type_and_member_id"
   end
 
   create_table "intranets", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -352,7 +353,6 @@ ActiveRecord::Schema.define(version: 2024_09_13_130142) do
   add_foreign_key "attachments", "posts"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"
-  add_foreign_key "fees", "users"
   add_foreign_key "intranets", "structures"
   add_foreign_key "memberships", "roles"
   add_foreign_key "posts", "structures"

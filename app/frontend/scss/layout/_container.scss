@@ -3,7 +3,7 @@
 }
 .v-theme--light {
   .v-main {
-    background: $lightbg;
+    background: var(-v-theme-background);
   }
   .v-card .title {
     color: rgba(0, 0, 0, 0.87);

@@ -2,7 +2,7 @@ class Api::FeesController < ApiController
   before_action :set_fee, only: [:show, :update, :destroy]
 
   def index
-    render json: { fees: Fee.all }, include: ['user']
+    render json: { fees: Fee.all }, include: ['member']
   end
 
   def show
