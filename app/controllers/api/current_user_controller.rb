@@ -5,8 +5,12 @@ class Api::CurrentUserController < ApiController
     unless session[:original_user].nil?
       @original_user= User.find(session[:original_user])
     end
+
+    user_with_custom_attribute = @user.as_json
+    user_with_custom_attribute[:level] = @user.level
+
     respond_to do |format|
-      format.json { render json: { user: current_user, original_user: @original_user, roles: current_user.application_roles } }
+      format.json { render json: { user: user_with_custom_attribute, original_user: @original_user, roles: @user.application_roles } }
     end
   end
 
