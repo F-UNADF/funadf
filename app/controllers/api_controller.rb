@@ -1,7 +1,7 @@
 class ApiController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
 
-  before_action :authenticate
+  before_action :authenticate, :set_subdomain
 
   attr_reader :current_user
 
@@ -12,6 +12,23 @@ class ApiController < ActionController::Base
       @current_user
     else
       User.find(session[:connect_as])
+    end
+  end
+
+  def set_subdomain
+    @subdomain = ''
+
+    referer = request.referer
+    return unless referer
+
+    # Extraire le sous-domaine du referer (si nécessaire)
+    uri = URI.parse(referer)
+    referer_subdomain = uri.host.split('.').first
+
+    # Mettre à jour le sous-domaine dans la requête en fonction du referer
+    if referer_subdomain.present?
+      # Par exemple, changer la requête en fonction du sous-domaine du referer
+      @subdomain = referer_subdomain
     end
   end
 

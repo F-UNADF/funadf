@@ -27,7 +27,7 @@ const actions = {
     items       : function ({commit}) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
-            axios.get('/api/campaigns', {}).then((res) => {
+            axios.get('/api/campaigns', null).then((res) => {
                 commit('setItems', res.data.campaigns);
                 commit('setLoading', false);
                 resolve(res);

@@ -10,6 +10,8 @@ class Api::FeedController < ApiController
       posts = posts.where('title LIKE ? OR content LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%")
     end
 
+    posts = posts.limit(10).offset(params[:offset])
+
     post_with_urls = posts.map do |post|
       {
         post:               post,

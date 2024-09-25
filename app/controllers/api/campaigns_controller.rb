@@ -12,7 +12,7 @@ class Api::CampaignsController < ApiController
       campaigns = @structure.campaigns.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
     end
 
-    render json: { campaigns: campaigns }
+    render json: { campaigns: campaigns, subdomain: @subdomain }
   end
 
   def show

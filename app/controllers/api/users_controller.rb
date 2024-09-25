@@ -20,8 +20,11 @@ class Api::UsersController < ApiController
     phases           = @user.phases.joins('JOIN structures AS church ON church.id = careers.church_id').select('careers.id, careers.start_at, careers.end_at, careers.church_id, CONCAT(church.name, "(", church.town, ")") AS church_name, careers.function').order(:start_at)
     responsabilities = @user.responsabilities.joins('JOIN structures AS association ON association.id = careers.association_id').select('careers.id, careers.start_at, careers.end_at, careers.association_id, association.name, careers.function').order(:start_at)
 
+    user_with_custom_attribute = @user.as_json
+    user_with_custom_attribute[:level] = @user.level
+
     render json: {
-      user: @user.attributes,
+      user: user_with_custom_attribute,
       gratitudes: @user.gratitudes,
       fees: @user.fees.order(what: :desc),
       interns: @user.interns,
