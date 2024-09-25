@@ -43,7 +43,7 @@ class Api::MenusController < ApiController
             icon: "mdi-vote",
             to: admin_campaigns_path,
           }
-        result << 
+        result <<
           {
             title: "Agenda",
             icon: "mdi-calendar",
@@ -55,8 +55,14 @@ class Api::MenusController < ApiController
             icon: "mdi-newspaper",
             to: admin_posts_path,
           }
+        result <<
+          {
+            title: "Cotisations",
+            icon: "mdi-wallet",
+            to: admin_fees_path,
+          }
 
-        
+
           ## PARAMETTRAGE APPLICATION ##
         result <<
           {

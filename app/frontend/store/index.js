@@ -13,6 +13,7 @@ import feedEventStore from "./modules/feedEventStore";
 import rolesStore from "./modules/rolesStore";
 import meetingsStore from "./modules/meetingsStore";
 import profileStore from "./modules/profileStore";
+import feesStore from "./modules/feesStore";
 
 const debug = process.env.NODE_ENV !== "production";
 
@@ -32,6 +33,7 @@ const store = createStore({
     rolesStore,
     meetingsStore,
     profileStore,
+    feesStore,
   },
   strict: debug,
 });

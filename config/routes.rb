@@ -39,6 +39,8 @@ Rails.application.routes.draw do
     post '/associations/:id/members', to: 'associations#add_members'
     post '/associations/:id/roles/edit', to: 'associations#edit_roles'
 
+    resources :fees
+
     get '/profile', to: 'profile#show'
 
     get '/search', to: 'search#index'
@@ -91,6 +93,7 @@ Rails.application.routes.draw do
       resources :posts, only: :index
       resources :roles, only: :index
       resources :meetings, only: :index
+      resources :fees, only: :index
 
       root to: redirect('/users'), as: :root
     end
@@ -141,6 +144,6 @@ Rails.application.routes.draw do
   end
 
   get '/campaigns/:id', to: 'campaigns#show'
-    
+
   root to: redirect('/connexion')
 end
