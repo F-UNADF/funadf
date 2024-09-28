@@ -49,10 +49,12 @@ export default {
   props: {
     user: {
       type: Object,
+      default: null,
       required: true,
     },
     ouser: {
       type: Object,
+      default: null,
       required: false,
     },
   },
