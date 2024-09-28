@@ -7,14 +7,17 @@ if (token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
+<<<<<<< HEAD
 
 console.log(window.location.pathname);
 
+=======
+>>>>>>> hotfix/Session
 // initial state
 const state = () => ({
-    currentUser: {},
+    currentUser: null,
     roles: [],
-    originalUser: {},
+    originalUser: null,
     editProfilDialog: false,
     subdomain: null
 });
@@ -29,11 +32,11 @@ const getters = {
 
 // actions
 const actions = {
-    async fetchUser({ commit }) {
-        try {
-            const response = await axios.get('/api/current_user');
+    fetchUser({ commit }) {
+        axios.get('/api/current_user').then((response) => {
             commit('setCurrentUser', response.data.user);
             commit('setRoles', response.data.roles);
+<<<<<<< HEAD
 
             if (response.data.user === null &&
                 window.location.pathname !== '/connexion' &&
@@ -43,10 +46,10 @@ const actions = {
                 window.location.href = '/connexion';
             }
 
+=======
+>>>>>>> hotfix/Session
             commit('setOriginalUser', response.data.original_user);
-        } catch (error) {
-            commit('setCurrentUser', null);
-        }
+        });
     },
     async logout({ commit }) {
         try {
@@ -62,7 +65,7 @@ const actions = {
     login({ commit }, user) {
         // Return a Promise
         return new Promise((resolve, reject) => {
-            axios.post('/users/sign_in', user)
+            axios.post('/api/login', user)
                 .then((response) => {
                     // On definit le header par defaut de axio avec le bearer token recu
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
