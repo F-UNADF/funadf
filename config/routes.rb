@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     get 'switch/:id', to: 'current_user#switch', as: :switch_user
     get 'switch_back', to: 'current_user#switch_back', as: :switch_back
     post 'connect_with_google', to: 'sessions#connect_with_google', as: :connect_with_google
+    post 'login', to: 'sessions#login', as: :login
 
     resources :users
     patch '/users/:id/enable', to: 'users#enable'
