@@ -117,10 +117,11 @@ export default {
           }
           if (item.member_type === 'Structure' &&
             !item.member.name.toLowerCase().includes(this.filter.name.toLowerCase()) &&
-            !item.member.zipcode.toLowerCase().includes(this.filter.name.toLowerCase()) &&
-            !item.member.town.toLowerCase().includes(this.filter.name.toLowerCase())) {
+            (!item.member.zipcode || !item.member.zipcode.toLowerCase().includes(this.filter.name.toLowerCase())) &&
+            (!item.member.town || !item.member.town.toLowerCase().includes(this.filter.name.toLowerCase()))) {
             return false;
           }
+
         }
 
         return true;
