@@ -129,7 +129,7 @@ export default {
               return {
                 value: structure.id,
                 type: 'Structure',
-                title: structure.name + ' (' + structure.zipcode + ' - ' + structure.town
+                title: structure.name + ' (' + structure.zipcode + ' - ' + structure.town + ')'
               };
             });
           }
@@ -150,11 +150,13 @@ export default {
 
       if (this.editedItem.member_type === 'Structure') {
         this.matchingUsers = this.referentiel.structures.filter(structure => {
-          return structure.name.toLowerCase().includes(val.toLowerCase());
+          return structure.name.toLowerCase().includes(val.toLowerCase()) ||
+            structure.zipcode.toLowerCase().includes(val.toLowerCase()) ||
+            structure.town.toLowerCase().includes(val.toLowerCase());
         }).map(structure => {
           return {
             value: structure.id,
-            title: structure.name + ' (' + structure.zipcode + ' - ' + structure.town
+            title: structure.name + ' (' + structure.zipcode + ' - ' + structure.town + ')'
           };
         });
       }
