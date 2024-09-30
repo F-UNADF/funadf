@@ -1,11 +1,15 @@
 == README
 
+<<<<<<< HEAD
+v2.0.3
+=======
 v2.1.0
 
 ## releqse 2.1.0
 * Cotisations pour les eglises et associations
 * Tokenisation de la session
 * Bugs mineurs
+>>>>>>> hotfix/Session
 
 ## Bug Fixes 2024-09-11
 * SelectAll composant
