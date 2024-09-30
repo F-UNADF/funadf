@@ -7,12 +7,6 @@ if (token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
-<<<<<<< HEAD
-
-console.log(window.location.pathname);
-
-=======
->>>>>>> hotfix/Session
 // initial state
 const state = () => ({
     currentUser: null,
@@ -36,18 +30,6 @@ const actions = {
         axios.get('/api/current_user').then((response) => {
             commit('setCurrentUser', response.data.user);
             commit('setRoles', response.data.roles);
-<<<<<<< HEAD
-
-            if (response.data.user === null &&
-                window.location.pathname !== '/connexion' &&
-                window.location.pathname !== '/mot-de-passe-oublie' &&
-                window.location.pathname !== '/users/password/edit'
-            ) {
-                window.location.href = '/connexion';
-            }
-
-=======
->>>>>>> hotfix/Session
             commit('setOriginalUser', response.data.original_user);
         });
     },

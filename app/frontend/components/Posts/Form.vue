@@ -50,7 +50,6 @@
             </v-col>
             <v-col cols="12" md="12">
               <select-all :options="referentiels.levels" v-model="editedItem.accesses"></select-all>
-              {{ editedItem.accesses }}
             </v-col>
           </v-row>
         </v-window-item>
