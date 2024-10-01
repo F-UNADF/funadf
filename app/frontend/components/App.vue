@@ -100,7 +100,7 @@ export default ({
     this.$store.dispatch('menuStore/getMenu', subdomain);
     
     // if currentUser is null then redirect to login
-    if (null === this.currentUser) {
+    if (null === sessionStorage.getItem('token')) {
       this.$router.push({ name: 'connexion' });
     }
 

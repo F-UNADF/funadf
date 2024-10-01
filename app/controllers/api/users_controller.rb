@@ -22,7 +22,8 @@ class Api::UsersController < ApiController
 
     user_with_custom_attribute = @user.as_json
     user_with_custom_attribute[:level] = @user.level
-
+    user_with_custom_attribute[:invitation_accepted_at] = @user.invitation_accepted_at
+    
     render json: {
       user: user_with_custom_attribute,
       gratitudes: @user.gratitudes,
