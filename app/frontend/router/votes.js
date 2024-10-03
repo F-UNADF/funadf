@@ -22,16 +22,4 @@ const router = createRouter({
   ],
 });
 
-// Ajout du guard avant chaque navigation
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-
-  // Si le token est null et que la route n'est pas "/connexion"
-  if (!token && to.path !== '/connexion') {
-    next('/connexion'); // Redirige vers la page de connexion
-  } else {
-    next(); // Continue la navigation
-  }
-});
-
 export default router;
