@@ -7,7 +7,18 @@
       <v-container fluid class="page-wrapper">
         <router-view />
       </v-container>
+      <v-footer class="bg-grey" absolute style="position: fixed; width: 100%; bottom: 0px;">
+        <v-row justify="center">
+          <v-col>
+            &copy; {{ new Date().getFullYear() }} - <strong>Assemblées de Dieu de France</strong> - Tous droits
+            réservés - <v-btn size="small" color="secondary" variant="text" class="link"
+              @click="$router.push('privacy')">Mentions
+              légales</v-btn>
+          </v-col>
+        </v-row>
+      </v-footer>
     </v-main>
+
 
 
     <v-dialog v-model="dialogForm" fullscreen>
@@ -98,12 +109,6 @@ export default ({
     }
     this.$store.commit('sessionStore/setSubdomain', subdomain);
     this.$store.dispatch('menuStore/getMenu', subdomain);
-    
-    // if currentUser is null then redirect to login
-    if (null === sessionStorage.getItem('token')) {
-      this.$router.push({ name: 'connexion' });
-    }
-
   },
 });
 </script>

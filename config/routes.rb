@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   get '/support', to: 'pages#support'
   get '/app', to: 'pages#app'
+  get 'privacy', to: 'pages#privacy'
 
   get '/connexion', to: 'pages#connexion'
   get '/mot-de-passe-oublie', to: 'pages#forgot_password'

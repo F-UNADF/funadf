@@ -13,6 +13,7 @@ import asscoation_router from "../router/association";
 import PasswordIndex from "../components/Password/Index.vue";
 import SessionIndex from "../components/Session/Index.vue";
 import PasswordCreate from "../components/Password/Create.vue";
+import PrivacyPage from "../components/Pages/PrivacyPage.vue";
 
 // Vuetify
 import "@mdi/font/css/materialdesignicons.css";
@@ -103,6 +104,23 @@ const router = () => {
     path: "/users/password/edit",
     component: PasswordCreate,
     name: "createPassword",
+  });
+  routes.addRoute({
+    path: "/privacy",
+    component: PrivacyPage,
+    name: "privacy",
+  });
+
+  // Ajout du guard avant chaque navigation
+  routes.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('token');
+
+    // Si le token est null et que la route n'est pas "/connexion", "/mot-de-passe-oublie", "/users/password/edit" ou "/privacy"
+    if (!token && !['/connexion', '/mot-de-passe-oublie', '/users/password/edit', '/privacy'].includes(to.path)) {
+      next('/connexion'); // Redirige vers la page de connexion
+    } else {
+      next(); // Continue la navigation
+    }
   });
 
   return routes;
