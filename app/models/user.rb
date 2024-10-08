@@ -362,21 +362,6 @@ class User < ActiveRecord::Base
     phase.present? ? phase.church : nil
   end
 
-  def to_json(options = {})
-    JSON.pretty_generate({
-                           id:         self.friendly_id,
-                           fullname:   self.fullname,
-                           address:    self.address_1,
-                           zipcode:    self.zipcode,
-                           town:       self.town,
-                           email:      self.email,
-                           phone:      self.phone_1,
-                           avatar:     self.get_avatar_url([350, 350]),
-                           level:      self.level,
-                           passphrase: self.passphrase
-                         }, options)
-  end
-
   def passphrase
     year = Date.today.year - 1
     fee  = self.fees.where(what: year).first
@@ -400,7 +385,7 @@ class User < ActiveRecord::Base
       params[:user].except(:id, :encrypted_password, :sign_in_count, :created_at, :updated_at, :invitations_count, :disabled, :authentication_token)
                   .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2,
-                           :email, :level, :birthdate, :avatar, :biography,
+                           :email, :birthdate, :avatar, :biography,
                            husband_marriage_attributes: [:husband_id, :wife_id],
                            wife_marriage_attributes:    [:husband_id, :wife_id],
                            fees_attributes:             [:id, :what, :paid_at, :amount, :_destroy],
@@ -411,7 +396,7 @@ class User < ActiveRecord::Base
       params[:user].except(:id, :encrypted_password, :sign_in_count, :created_at, :updated_at, :invitations_count, :disabled, :authentication_token)
                   .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
-                           :email, :level, :birthdate, :password, :password_confirmation, :avatar,
+                           :email, :birthdate, :password, :password_confirmation, :avatar,
                            husband_marriage_attributes: [:husband_id, :wife_id],
                            wife_marriage_attributes:    [:husband_id, :wife_id],
                            fees_attributes:             [:id, :what, :paid_at, :amount, :_destroy],

@@ -3,7 +3,7 @@
     <Sidebar :menu="this.getMenu" :showSidebar="showSidebar"></Sidebar>
     <Header :user="this.currentUser" :ouser="this.ouser" @logout="logout()"
       @toggle-sidebar="this.showSidebar = !this.showSidebar"></Header>
-    <v-main scrollable>
+    <v-main class="main" scrollable>
       <v-container fluid class="page-wrapper">
         <router-view />
       </v-container>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+
 import { mapGetters, mapActions } from "vuex";
 import Sidebar from "../components/Layout/Sidebar.vue";
 import Header from "../components/Layout/Header.vue";
@@ -112,3 +113,9 @@ export default ({
   },
 });
 </script>
+
+<style scoped>
+.main {
+  padding-bottom: 55px;
+}
+</style>
