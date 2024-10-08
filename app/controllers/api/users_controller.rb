@@ -23,7 +23,7 @@ class Api::UsersController < ApiController
     user_with_custom_attribute = @user.as_json
     user_with_custom_attribute[:level] = @user.level
     user_with_custom_attribute[:invitation_accepted_at] = @user.invitation_accepted_at
-    
+
     render json: {
       user: user_with_custom_attribute,
       gratitudes: @user.gratitudes,
@@ -122,10 +122,7 @@ class Api::UsersController < ApiController
   def update_gratitudes(user)
     gratitudes_params = params[:user][:gratitudes]
 
-    if gratitudes_params.blank?
-      user.gratitudes.destroy_all
-      return
-    end
+    return unless gratitudes_params.present?
 
     # On supprime les lignes qui n'existes plus
     user.gratitudes.where.not(id: gratitudes_params.values.map{ |p| p[:id] }).destroy_all
@@ -144,6 +141,7 @@ class Api::UsersController < ApiController
 
   def update_fees(user)
     fees_params = params[:user][:fees]
+
     return unless fees_params.present?
 
     fees_params.each do |fee_params|
@@ -161,10 +159,7 @@ class Api::UsersController < ApiController
   def update_responsabilities(user)
     responsabilities_params = params[:user][:responsabilities]
 
-    if responsabilities_params.blank?
-      user.responsabilities.destroy_all
-      return
-    end
+    return unless fees_params.present?
 
     # On supprime les lignes qui n'existes plus
     user.responsabilities.where.not(id: responsabilities_params.values.map{ |p| p[:id] }).destroy_all
@@ -185,10 +180,7 @@ class Api::UsersController < ApiController
   def update_phases(user)
     phases_params = params[:user][:phases]
 
-    if phases_params.blank?
-      user.phases.destroy_all
-      return
-    end
+    return unless phases_params.present?
 
     # On supprime les lignes qui n'existes plus
     user.phases.where.not(id: phases_params.values.map{ |p| p[:id] }).destroy_all
