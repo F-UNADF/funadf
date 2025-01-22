@@ -88,7 +88,7 @@ class Api::PostsController < ApiController
   end
 
   def post_params
-    params[:post].permit(:title, :structure_id, :content)
+    params[:post].permit(:title, :structure_id, :content, :pinned)
   end
 
 end

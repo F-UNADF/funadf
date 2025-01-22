@@ -63,9 +63,11 @@ export default {
   data: () => ({
     search: '',
     search_in_progress: false,
+    offset: 0,
   }),
   beforeMount: function () {
-    this.$store.dispatch('feedStore/items');
+    this.offset = 0;
+    this.$store.dispatch('feedStore/items', this.offset);
   },
 }
 </script>

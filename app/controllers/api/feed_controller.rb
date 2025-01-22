@@ -4,7 +4,7 @@ class Api::FeedController < ApiController
     posts = Post.joins(:accesses, :structure)
                 .where(structure_id: current_user.memberships.pluck(:structure_id))
                 .where('accesses.level = ? AND accesses.can_access = TRUE', current_user.level)
-                .order(created_at: :desc)
+                .order(pinned: :desc, created_at: :desc)
 
     if params[:search].present?
       posts = posts.where('title LIKE ? OR content LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%")

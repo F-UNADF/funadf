@@ -27,7 +27,10 @@
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.title }}</td>
+        <td>
+          <v-icon v-if="item.pinned">mdi-pin</v-icon>
+          {{ item.title }}
+        </td>
         <td>
           <template v-if="item.structure">
             {{ item.structure.name }}
