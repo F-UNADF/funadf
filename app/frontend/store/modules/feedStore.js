@@ -16,15 +16,11 @@ const getters = {
 
 // actions
 const actions = {
-    items   : function ({
-                            commit,
-                            state
-                        }) {
+    items   : function ({ commit, state }, offset) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
-            axios.get('/api/feed?offset=' + state.offset, {}).then((res) => {
+            axios.get('/api/feed?offset=' + offset, {}).then((res) => {
                 commit('setItems', res.data.posts);
-                commit('setOffset', state.offset + 10)
                 commit('setLoading', false);
                 resolve(res);
             }).catch((error) => {
@@ -32,10 +28,7 @@ const actions = {
             });
         });
     },
-    loadMore: function ({
-                            commit,
-                            state
-                        }) {
+    loadMore: function ({ commit, state }) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
             axios.get('/api/feed?offset=' + state.offset, {}).then((res) => {

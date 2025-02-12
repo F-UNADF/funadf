@@ -19,6 +19,9 @@
               <v-text-field v-model="editedItem.title" label="Titre" :rules="[rules.required]" required>
               </v-text-field>
             </v-col>
+            <v-col class="12" md="6" v-if="userIsAdmin()">
+              <v-checkbox v-model="editedItem.pinned" label="Épinglé l'actualité"></v-checkbox>
+            </v-col>
             <v-col cols="12" md="6">
               <v-autocomplete v-model="editedItem.structure_id" :items="referentiels.structures" item-value="id"
                 item-title="name" label="Structure">
@@ -79,6 +82,9 @@ export default {
       dialogForm: 'getDialogForm',
       referentiels: 'getReferentiels',
     }),
+    ...mapGetters('sessionStore', {
+      roles: 'roles',
+    }),
     getTitle() {
       return (this.editedItem.id === null) ? "Ajouter une actu" : "Modifier une actu";
     },
@@ -117,6 +123,9 @@ export default {
     downloadFile: function (url) {
       window.open(url, '_blank');
     },
+    userIsAdmin(){
+      return this.roles.includes('admin');
+    }
   },
   watch: {
     item: {

@@ -159,7 +159,7 @@ class Api::UsersController < ApiController
   def update_responsabilities(user)
     responsabilities_params = params[:user][:responsabilities]
 
-    return unless fees_params.present?
+    return unless responsabilities_params.present?
 
     # On supprime les lignes qui n'existes plus
     user.responsabilities.where.not(id: responsabilities_params.values.map{ |p| p[:id] }).destroy_all
