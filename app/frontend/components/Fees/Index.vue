@@ -79,7 +79,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import FeeForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import moment from "moment";
@@ -88,7 +87,6 @@ import { useDisplay } from 'vuetify'
 export default {
   name: "FeesIndex",
   components: {
-    VDataTable,
     FeeForm,
     DialogConfirm,
     useDisplay

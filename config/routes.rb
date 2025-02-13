@@ -83,7 +83,6 @@ Rails.application.routes.draw do
     post '/votes', to: 'votes#create'
   end
 
-
   # ADMIN SUBDOMAIN
   namespace :admin, path: '' do
     constraints(:subdomain => /admin/) do
@@ -96,6 +95,7 @@ Rails.application.routes.draw do
       resources :roles, only: :index
       resources :meetings, only: :index
       resources :fees, only: :index
+      resources :documents, only: :index
 
       root to: redirect('/users'), as: :root
     end

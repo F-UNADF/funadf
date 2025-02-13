@@ -79,7 +79,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import PostForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import moment from "moment";
@@ -87,7 +86,6 @@ import moment from "moment";
 export default {
   name: "PostsIndex",
   components: {
-    VDataTable,
     PostForm,
     DialogConfirm,
   },

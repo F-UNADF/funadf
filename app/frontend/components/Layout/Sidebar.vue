@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer left elevation="10" mobile-breakpoint="960" app class="leftSidebar" :rail="false"
-    v-model="showSidebar" rail-width="75">
+    v-model="sidebarValue" rail-width="75">
     <!-- ---------------------------------------------- -->
     <!---Logo part -->
     <!-- ---------------------------------------------- -->
@@ -98,6 +98,16 @@
 <script>
 export default {
   name: "Sidebar",
+  computed: {
+    sidebarValue: {
+      get() {
+        return this.showSidebar;
+      },
+      set(value) {
+        this.$emit("update:showSidebar", value);
+      },
+    },
+  },
   props: {
     menu: {
       type: Array,

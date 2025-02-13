@@ -101,14 +101,12 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import CampaignForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
   name: "CampaignsIndex",
   components: {
-    VDataTable,
     CampaignForm,
     DialogConfirm,
   },

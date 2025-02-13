@@ -97,7 +97,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import UserForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import Download from "@/components/Tools/Download.vue";
@@ -106,7 +105,6 @@ export default {
   name: "UsersIndex",
   components: {
     Download,
-    VDataTable,
     UserForm,
     DialogConfirm,
   },

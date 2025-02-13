@@ -25,4 +25,8 @@ RUN npm install --global yarn
 
 ADD . /app
 
+RUN groupadd -g 1000 funadf && useradd -m -u 1000 -g funadf funadf
+RUN chown -R funadf:funadf /app
+USER funadf
+
 EXPOSE 3000

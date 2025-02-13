@@ -80,14 +80,12 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import AssociationForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
   name: "AssociationsIndex",
   components: {
-    VDataTable,
     AssociationForm,
     DialogConfirm,
   },
