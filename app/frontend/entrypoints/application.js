@@ -21,9 +21,6 @@ import "@mdi/font/css/materialdesignicons.css";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
-import PerfectScrollbar from "vue3-perfect-scrollbar";
-import "vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css";
-
 const vuetify = createVuetify({
     components,
     directives,
@@ -32,13 +29,13 @@ const vuetify = createVuetify({
         themes: {
             light: {
                 colors: {
-                    primary: "#b66dff",
-                    secondary: "#c3bdbd",
-                    success: "#1bcfb4",
-                    info: "#198ae3",
-                    warning: "#fed713",
-                    error: "#fe7c96",
-                    background: "#f1f1f1",
+                    primary: "#85AFFF",
+                    secondary: "#4B79FF",
+                    success: "#36B37E",
+                    info: "#8777D9",
+                    warning: "#FFAB00",
+                    error: "#FF5630",
+                    background: "#F8F9FA",
                     surface: "#f8f9fa",
                     anchor: "#0d6efd",
                     white: "#ffffff",
@@ -58,7 +55,7 @@ const vuetify = createVuetify({
                     grayLighter: "#e8eff4",
                     grayDark: "#0f1531",
                     lightText: "#495057",
-                    darkText: "#343a40",
+                    darkText: "#091E42",
                     border: "#ebedf2",
                 },
             },
@@ -105,5 +102,6 @@ router.beforeEach((to, from, next) => {
 
 const app = createApp(App);
 
-app.use(vuetify).use(PerfectScrollbar).use(router).use(store);
+app.use(vuetify)
+    .use(router).use(store);
 app.mount("#app");
