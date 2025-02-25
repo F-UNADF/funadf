@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   before_validation :clean_name_attributes
 
   def clean_name_attributes
-    self.lastname  = lastname.to_s.strip.upcase
+    self.lastname = lastname.to_s.strip.upcase
     self.firstname = firstname.to_s.strip.titlecase
   end
 
@@ -131,7 +131,7 @@ class User < ActiveRecord::Base
   end
 
   def remove_role role_name, structure = nil
-    role       = Role.find_or_create_by(name: role_name)
+    role = Role.find_or_create_by(name: role_name)
     membership = self.memberships.where(role: role, structure: structure).first
 
     membership.destroy
@@ -144,7 +144,7 @@ class User < ActiveRecord::Base
   end
 
   def get_presidences
-    role= Role.where(name: :president).first
+    role = Role.where(name: :president).first
     Structure.select('*', 'type AS type').where(id: self.memberships.where(role_id: role.id).pluck(:structure_id))
   end
 
@@ -364,7 +364,7 @@ class User < ActiveRecord::Base
 
   def passphrase
     year = Date.today.year - 1
-    fee  = self.fees.where(what: year).first
+    fee = self.fees.where(what: year).first
 
     if fee
       return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' OK'
@@ -383,25 +383,25 @@ class User < ActiveRecord::Base
   def self.allowed_params params
     if params[:user][:password].blank?
       params[:user].except(:id, :encrypted_password, :sign_in_count, :created_at, :updated_at, :invitations_count, :disabled, :authentication_token)
-                  .permit(:firstname, :lastname, :avatar, :address_1,
+                   .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2,
                            :email, :birthdate, :avatar, :biography,
                            husband_marriage_attributes: [:husband_id, :wife_id],
-                           wife_marriage_attributes:    [:husband_id, :wife_id],
-                           fees_attributes:             [:id, :what, :paid_at, :amount, :_destroy],
-                           gratitudes_attributes:       [:id, :level, :referent_id, :start_at, :_destroy],
-                           phases_attributes:           [:id, :church_id, :function, :start_at, :end_at, :_destroy],
+                           wife_marriage_attributes: [:husband_id, :wife_id],
+                           fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
+                           gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
+                           phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                            responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
     else
       params[:user].except(:id, :encrypted_password, :sign_in_count, :created_at, :updated_at, :invitations_count, :disabled, :authentication_token)
-                  .permit(:firstname, :lastname, :avatar, :address_1,
+                   .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
                            :email, :birthdate, :password, :password_confirmation, :avatar,
                            husband_marriage_attributes: [:husband_id, :wife_id],
-                           wife_marriage_attributes:    [:husband_id, :wife_id],
-                           fees_attributes:             [:id, :what, :paid_at, :amount, :_destroy],
-                           gratitudes_attributes:       [:id, :level, :referent_id, :start_at, :_destroy],
-                           phases_attributes:           [:id, :church_id, :function, :start_at, :end_at, :_destroy],
+                           wife_marriage_attributes: [:husband_id, :wife_id],
+                           fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
+                           gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
+                           phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
                            responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
     end
   end

@@ -61,6 +61,12 @@ class Api::MenusController < ApiController
             icon: "mdi-wallet",
             to: admin_fees_path,
           }
+        result <<
+          {
+            title: "Documents",
+            icon: "mdi-folder-open",
+            to: admin_documents_path,
+          }
 
 
           ## PARAMETTRAGE APPLICATION ##

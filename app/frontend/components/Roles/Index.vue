@@ -100,14 +100,12 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {VDataTable} from 'vuetify/labs/VDataTable';
 import RoleForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
   name:       "rolesIndex",
   components: {
-    VDataTable,
     RoleForm,
     DialogConfirm,
   },

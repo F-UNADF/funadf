@@ -9,7 +9,7 @@ RUN apt-get update -qq && \
                        libpq-dev \
                        default-mysql-client
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
       apt-get install -y nodejs build-essential
 
 RUN mkdir /app
@@ -24,5 +24,9 @@ RUN npm install --force
 RUN npm install --global yarn
 
 ADD . /app
+
+RUN groupadd -g 1000 funadf && useradd -m -u 1000 -g funadf funadf
+RUN chown -R funadf:funadf /app
+USER funadf
 
 EXPOSE 3000

@@ -67,9 +67,13 @@ Rails.application.routes.draw do
     post '/meetings/:id/remove_attendees', to: 'meetings#remove_attendees'
 
     resources :files, only: [:destroy]
+    resources :documents
+    post '/update_order_documents', to: 'documents#update_order'
+    resources :categories
 
     get 'referentiels/:referentiel', to: 'referentiels#show'
     get 'menus/:menu', to: 'menus#show'
+
   end
 
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: { format: 'json' } do
@@ -83,7 +87,6 @@ Rails.application.routes.draw do
     post '/votes', to: 'votes#create'
   end
 
-
   # ADMIN SUBDOMAIN
   namespace :admin, path: '' do
     constraints(:subdomain => /admin/) do
@@ -96,6 +99,7 @@ Rails.application.routes.draw do
       resources :roles, only: :index
       resources :meetings, only: :index
       resources :fees, only: :index
+      resources :documents, only: :index
 
       root to: redirect('/users'), as: :root
     end

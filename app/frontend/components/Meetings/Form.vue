@@ -111,12 +111,11 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import FileImportForm from './Import/File.vue'
 
 export default {
   name: "MeetingForm",
-  components: { VDataTable, FileImportForm },
+  components: { FileImportForm },
   computed: {
     ...mapGetters('meetingsStore', {
       items: 'getItems',

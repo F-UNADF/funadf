@@ -16,7 +16,6 @@
 <script>
 import PostList from "../Posts/me/List.vue";
 import EventList from "../Events/me/List.vue";
-
 export default {
   name      : "FeedIndex",
   components: {

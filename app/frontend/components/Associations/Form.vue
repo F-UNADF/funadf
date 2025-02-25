@@ -151,13 +151,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
 
 export default {
   name: "AssociationForm",
-  components: {
-    VDataTable
-  },
   computed: {
     ...mapGetters('associationsStore', {
       items: 'getItems',

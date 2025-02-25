@@ -111,14 +111,12 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {VDataTable} from 'vuetify/labs/VDataTable'
 import ChurchForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
   name: "ChurchesIndex",
   components: {
-    VDataTable,
     ChurchForm,
     DialogConfirm,
   },
