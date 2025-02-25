@@ -5,8 +5,29 @@ class Category < ActiveRecord::Base
 
   has_many :events, dependent: :nullify
   has_many :documents, dependent: :nullify
+  has_many :subcategories, class_name: 'Category', foreign_key: 'category_id', dependent: :destroy
 
   validates :name, presence: true
+
+  def as_tree
+    {
+      id: id,
+      order: order,
+      type: 'category',
+      name: name,
+      categories: subcategories.order(:order).map(&:as_tree),
+      documents: documents.order(:order).map do |doc|
+        {
+          id: doc.id,
+          name: doc.name,
+          order: doc.order,
+          description: doc.description,
+          type: doc.class.name.downcase,
+          href: Rails.application.routes.url_helpers.rails_blob_path(doc.file, disposition: "attachment")
+        }
+      end
+    }
+  end
 
   def font_color
     # remove hashtag

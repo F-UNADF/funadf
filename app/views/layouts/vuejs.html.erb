@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+<html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
   <title>
     <% if Rails.env == 'recette' %>
       RE7 - VOTES - INTRANET FNADF/UNADF
     <% elsif Rails.env == 'development' %>
-      MYLOCAL -  VOTES - INTRANET FNADF/UNADF
+      MYLOCAL - VOTES - INTRANET FNADF/UNADF
     <% else %>
       VOTES - INTRANET FNADF/UNADF
     <% end %>
@@ -23,3 +24,4 @@
 <%= vite_javascript_tag 'application' %>
 
 </body>
+</html>

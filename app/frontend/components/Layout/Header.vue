@@ -19,7 +19,7 @@
           <h4 class="font-weight-medium fs-18">Profil</h4>
           <div class="d-flex align-center my-4">
             <img :alt="this.user.fullname" :src="'/avatars/' + this.user.id + '.png'" class="rounded-circle"
-              width="90" />
+                 width="90"/>
             <div class="ml-4">
               <h4 class="font-weight-medium fs-18">{{ this.user.firstname }} {{ this.user.lastname }}</h4>
               <span class="subtitle-2 text-grey font-weight-light">
@@ -33,7 +33,7 @@
           </div>
 
           <v-btn block class="mt-4 py-4" color="primary" @click="editProfile()" variant="flat"
-            prepend-icon="mdi-account-edit">
+                 prepend-icon="mdi-account-edit">
             Modifier mon profil
           </v-btn>
         </v-list>
@@ -48,12 +48,12 @@ export default {
   name: "Header",
   props: {
     user: {
-      type: Object,
+      type: Object || null,
       default: null,
       required: true,
     },
     ouser: {
-      type: Object,
+      type: Object || null,
       default: null,
       required: false,
     },

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_12_200344) do
+ActiveRecord::Schema.define(version: 2025_02_21_144459) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(version: 2025_02_12_200344) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category_id"
+    t.integer "order"
     t.index ["category_id"], name: "index_categories_on_category_id"
     t.index ["structure_id"], name: "index_categories_on_structure_id"
   end
@@ -152,6 +153,7 @@ ActiveRecord::Schema.define(version: 2025_02_12_200344) do
     t.integer "category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "order"
     t.index ["category_id"], name: "index_documents_on_category_id"
   end
 

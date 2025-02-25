@@ -1,6 +1,6 @@
-class Document < ApplicationRecord
+class Document < ActiveRecord::Base
 
-  validates :title, presence: true
+  validates :name, presence: true
   has_one_attached :file
   belongs_to :category
 

@@ -1,7 +1,7 @@
 <template>
     <v-container style="max-width: 1200px;">
         <v-card class="mb-5" rounded>
-            <v-img variant="elevated" src="" class="cover bg-teal-lighten-2" cover style="overflow: visible;">
+            <v-img variant="elevated" src="" class="cover bg-primary" cover style="overflow: visible;">
                 <v-avatar size="150" color="grey" class="avatar" variant="elevated">
                     <v-img :src="getAvatar" alt="John"></v-img>
                 </v-avatar>

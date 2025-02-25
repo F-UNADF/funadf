@@ -67,9 +67,13 @@ Rails.application.routes.draw do
     post '/meetings/:id/remove_attendees', to: 'meetings#remove_attendees'
 
     resources :files, only: [:destroy]
+    resources :documents
+    post '/update_order_documents', to: 'documents#update_order'
+    resources :categories
 
     get 'referentiels/:referentiel', to: 'referentiels#show'
     get 'menus/:menu', to: 'menus#show'
+
   end
 
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: { format: 'json' } do
