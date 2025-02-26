@@ -1,7 +1,9 @@
 {
   "all": {
     "sourceCodeDir": "app/frontend",
-    "watchAdditionalPaths": []
+    "publicOutputDir": "vite",
+    "watchAdditionalPaths": [],
+    "manifest": "./vite/manifest.json"
   },
   "development": {
     "autoBuild": true,
@@ -12,5 +14,8 @@
   "test": {
     "autoBuild": true,
     "publicOutputDir": "vite-test"
+  },
+  "production": {
+    "publicOutputDir": "vite"
   }
 }
