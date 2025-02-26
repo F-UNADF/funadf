@@ -9,6 +9,9 @@ class Category < ActiveRecord::Base
 
   validates :name, presence: true
 
+  # scope kind = 'document' pour les catégories de documents
+  scope :documents, -> { where(kind: 'document') }
+
   def as_tree
     {
       id: id,

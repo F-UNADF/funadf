@@ -2,6 +2,7 @@ class Api::CategoriesController < ApiController
 
   def create
     @category = Category.new(category_params)
+    @category.kind = 'document'
     if @category.save
       render json: @category, status: :created
     else

@@ -1,6 +1,6 @@
 class Api::DocumentsController < ApiController
   def index
-    categories = Category.where(category_id: nil).includes(:subcategories, :documents).order(:order)
+    categories = Category.documents.where(category_id: nil).includes(:subcategories, :documents).order(:order)
 
     # Générer l'arbre pour les catégories existantes
     tree = categories.map(&:as_tree)
