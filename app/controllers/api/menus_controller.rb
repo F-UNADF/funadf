@@ -80,13 +80,6 @@ class Api::MenusController < ApiController
             icon: 'mdi-account-key',
             to: admin_roles_path,
           }
-        result <<
-          {
-            title: 'Rassemblements',
-            icon: 'mdi-account-group',
-            to: admin_meetings_path,
-            new_tab: true,
-          }
       end
 
       ## NAVIGATION ##
@@ -139,13 +132,16 @@ class Api::MenusController < ApiController
           title: "Mon profil",
           icon: "mdi-account",
           to: me_me_path,
-          new_tab: true,
         },
         {
           title: "Annuaire",
           icon: "mdi-card-account-details-outline",
           to: me_annuaire_path,
-          new_tab: true,
+        },
+        {
+          title: "Documents",
+          icon: "mdi-folder-outline",
+          to: me_documents_path,
         },
         {
           title: "Espace de votes",
@@ -268,7 +264,6 @@ class Api::MenusController < ApiController
           title: "Association",
           icon: "mdi-domain",
           href: association_root_url(subdomain: :association),
-          new_tab: true,
         }
       end
     end
