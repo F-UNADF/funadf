@@ -24,6 +24,8 @@ import * as directives from "vuetify/directives";
 import { PerfectScrollbarPlugin } from 'vue3-perfect-scrollbar';
 import 'vue3-perfect-scrollbar/style.css';
 
+import "../scss/style.scss";
+
 const vuetify = createVuetify({
     components,
     directives,
