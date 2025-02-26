@@ -13,4 +13,5 @@ export default defineConfig({
         allowedHosts: true,
         strictPort: true,
     },
+    base: '/app/frontend/entrypoints/',
 });
