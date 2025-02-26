@@ -21,7 +21,6 @@ import "@mdi/font/css/materialdesignicons.css";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
-
 import { PerfectScrollbarPlugin } from 'vue3-perfect-scrollbar';
 import 'vue3-perfect-scrollbar/style.css';
 
