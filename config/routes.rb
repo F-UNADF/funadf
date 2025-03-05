@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   get '/connexion', to: 'pages#connexion'
   get '/mot-de-passe-oublie', to: 'pages#forgot_password'
 
-  resources :logos, only: :index
-  resources :avatars, only: :index
+  resources :logos, only: :show
+  resources :avatars, only: :show
 
   namespace :api, defaults: { format: 'json' } do
     get 'current_user', to: 'current_user#show'
@@ -58,7 +58,7 @@ Rails.application.routes.draw do
     get '/campaigns/:id/voters_count', to: 'campaigns#voters_count'
     resources :events
     resources :posts
-    resources :votes, only: [:index, :index, :create]
+    resources :votes, only: [:index, :show, :create]
     resources :feed, only: [:index]
 
     resources :roles
@@ -145,7 +145,7 @@ Rails.application.routes.draw do
   # VOTES SPACES
   namespace :votes, path: '' do
     constraints(:subdomain => '') do
-      resources :campaigns, only: [:index, :index]
+      resources :campaigns, only: [:index, :show]
       root :to => redirect('/campaigns')
     end
   end
