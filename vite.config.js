@@ -9,7 +9,7 @@ export default defineConfig({
     ],
     build: {
         manifest: true,
-        outDir: '/vite/',
+        outDir: 'public/vite',
         rollupOptions: {
             input: 'app/frontend/entrypoints.js'
         },
