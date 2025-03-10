@@ -47,7 +47,12 @@
 import { mapGetters, mapActions } from "vuex";
 import Sidebar from "../components/Layout/Sidebar.vue";
 import Header from "../components/Layout/Header.vue";
-import UserForm from "@/components/Users/Form.vue";
+import UserForm from "../components/Users/Form.vue";
+
+function getSubdomain() {
+  const uris = window.location.hostname.split(".");
+  return uris.length > 2 ? uris[0] : "me";
+}
 
 export default {
   name: "App",
@@ -92,16 +97,14 @@ export default {
   },
   watch: {
     currentUser() {
-      let uris = window.location.hostname.split(".");
-      let subdomain = uris.length > 2 ? uris[0] : "votes";
+      let subdomain = getSubdomain();
       this.$store.dispatch("menuStore/getMenu", subdomain);
     },
   },
   beforeMount() {
     this.$store.dispatch("sessionStore/fetchUser");
 
-    let uris = window.location.hostname.split(".");
-    let subdomain = uris.length > 2 ? uris[0] : "votes";
+    let subdomain = getSubdomain();
 
     this.$store.commit("sessionStore/setSubdomain", subdomain);
     this.$store.dispatch("menuStore/getMenu", subdomain);

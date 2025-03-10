@@ -107,11 +107,12 @@ Rails.application.routes.draw do
 
   # ME SUBDOMAIN
   namespace :me, path: '' do
-    constraints(:subdomain => 'me') do
+    constraints(:subdomain => '') do
       get '/feed', to: 'feed#show', as: :feed
       get '/annuaire', to: 'annuaire#show', as: :annuaire
       get '/mon-profil', to: 'profile#show', as: :me
       get '/documents', to: 'documents#index', as: :documents
+      get '/campaigns', to: 'campaigns#index', as: :votes
 
       root to: redirect('/feed'), as: :root
     end
@@ -139,14 +140,6 @@ Rails.application.routes.draw do
       resources :campaigns, only: :index
 
       root to: redirect('/users'), as: :root
-    end
-  end
-
-  # VOTES SPACES
-  namespace :votes, path: '' do
-    constraints(:subdomain => '') do
-      resources :campaigns, only: [:index, :show]
-      root :to => redirect('/campaigns')
     end
   end
 

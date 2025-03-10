@@ -87,37 +87,13 @@ class Api::MenusController < ApiController
         {
           header: "NAVIGATION",
         }
+
       result <<
         {
           title: "Mon espace",
           icon: "mdi-rss",
-          href: me_me_url(subdomain: :me),
-        }
-      result <<
-        {
-          title: "Espace de votes",
-          icon: "mdi-vote",
           href: root_url(subdomain: ''),
         }
-    when 'votes'
-      result = [
-        {
-          header: "VOTES",
-        },
-        {
-          title: "Mes votes",
-          icon: "mdi-vote",
-          to: votes_campaigns_path,
-        },
-        {
-          header: "NAVIGATION",
-        },
-        {
-          title: "Mon espace",
-          icon: "mdi-rss",
-          href: me_me_url(subdomain: :me),
-        },
-      ]
     when 'me'
       result = [
         {
@@ -144,9 +120,9 @@ class Api::MenusController < ApiController
           to: me_documents_path,
         },
         {
-          title: "Espace de votes",
+          title: "Votes",
           icon: "mdi-vote",
-          href: root_url(subdomain: ''),
+          to: me_votes_path,
         }
       ]
     when 'association'
@@ -180,12 +156,7 @@ class Api::MenusController < ApiController
         {
           title: "Mon espace",
           icon: "mdi-rss",
-          href: me_me_url(subdomain: :me),
-        },
-        {
-          title: "Espace de votes",
-          icon: "mdi-vote",
-          href: root_url(subdomain: ''),
+          href: root_url,
         },
       ]
     when /test|uadpif|urb/
@@ -224,12 +195,7 @@ class Api::MenusController < ApiController
         {
           title: "Mon espace",
           icon: "mdi-rss",
-          href: me_me_url(subdomain: :me),
-        },
-        {
-          title: "Espace de votes",
-          icon: "mdi-vote",
-          href: root_url(subdomain: ''),
+          href: root_url,
         },
       ]
     else
