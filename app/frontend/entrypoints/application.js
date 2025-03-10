@@ -8,7 +8,6 @@ import "vuetify/styles";
 import { createRouter, createWebHistory } from "vue-router";
 import admin_router from "../router/admin";
 import intranet_router from "../router/intranet";
-import votes_router from "../router/votes";
 import me_router from "../router/me";
 import association_router from "../router/association";
 import PasswordIndex from "../components/Password/Index.vue";
@@ -69,7 +68,7 @@ const vuetify = createVuetify({
 });
 
 let uris = window.location.hostname.split(".");
-let routes = votes_router;
+let routes = me_router;
 if (uris.length > 2) {
     let subdomain = uris[0];
     if (subdomain === "admin") {
@@ -78,8 +77,6 @@ if (uris.length > 2) {
         routes = association_router;
     } else if (subdomain.match(/uadpif|test|urb/)) {
         routes = intranet_router;
-    } else if (subdomain === "me") {
-        routes = me_router;
     }
 }
 
@@ -108,7 +105,7 @@ router.beforeEach((to, from, next) => {
 const app = createApp(App);
 
 app.use(vuetify)
-    .use(router)
     .use(PerfectScrollbarPlugin)
+    .use(router)
     .use(store);
 app.mount("#app");
