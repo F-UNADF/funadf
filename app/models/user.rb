@@ -385,7 +385,7 @@ class User < ActiveRecord::Base
       params[:user].except(:id, :encrypted_password, :sign_in_count, :created_at, :updated_at, :invitations_count, :disabled, :authentication_token)
                    .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2,
-                           :email, :birthdate, :avatar, :biography,
+                           :email, :birthdate, :avatar, :biography, :fcm_token, :push_enabled,
                            husband_marriage_attributes: [:husband_id, :wife_id],
                            wife_marriage_attributes: [:husband_id, :wife_id],
                            fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
@@ -396,7 +396,7 @@ class User < ActiveRecord::Base
       params[:user].except(:id, :encrypted_password, :sign_in_count, :created_at, :updated_at, :invitations_count, :disabled, :authentication_token)
                    .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
-                           :email, :birthdate, :password, :password_confirmation, :avatar,
+                           :email, :birthdate, :password, :password_confirmation, :avatar, :fcm_token, :push_enabled,
                            husband_marriage_attributes: [:husband_id, :wife_id],
                            wife_marriage_attributes: [:husband_id, :wife_id],
                            fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],

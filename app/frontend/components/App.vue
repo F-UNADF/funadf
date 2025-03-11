@@ -1,6 +1,6 @@
 <template>
   <v-app theme="light">
-    <Sidebar :menu="getMenu" :showSidebar="showSidebar" />
+    <Sidebar :menu="getMenu" :showSidebar="showSidebar"/>
     <Header
         :user="currentUser"
         :ouser="ouser"
@@ -10,7 +10,7 @@
 
     <v-main class="main">
       <v-container fluid class="page-wrapper">
-        <router-view />
+        <router-view/>
       </v-container>
 
       <!-- Footer -->
@@ -20,7 +20,8 @@
             &copy; {{ new Date().getFullYear() }} -
             <strong>Assemblées de Dieu de France</strong> - Tous droits réservés -
             <v-btn size="small" color="secondary" variant="text" class="link"
-                   @click="$router.push('privacy')">Mentions légales</v-btn>
+                   @click="$router.push('privacy')">Mentions légales
+            </v-btn>
           </v-col>
         </v-row>
       </v-footer>
@@ -28,12 +29,19 @@
 
     <!-- Dialog User Form -->
     <v-dialog v-model="dialogForm" fullscreen>
-      <UserForm />
+      <UserForm/>
     </v-dialog>
 
     <!-- Snackbar -->
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
-      <div v-html="snackbar.message"></div>
+      <v-row align="center" justify="start" no-gutters class="snackbar-content">
+        <v-img v-if="snackbar.photo" cover :src="snackbar.photo" :width="80" aspect-ratio="1/1"
+               class="mr-5"></v-img>
+        <div>
+          <div class="text-subtitle-1 pb-2" v-if="snackbar.title">{{ snackbar.title }}</div>
+          <div v-html="snackbar.message"></div>
+        </div>
+      </v-row>
       <template v-slot:actions>
         <v-btn color="white" variant="text" @click="snackbar.show = false">
           <v-icon>mdi-close</v-icon>
@@ -44,10 +52,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import {mapGetters, mapActions} from "vuex";
 import Sidebar from "../components/Layout/Sidebar.vue";
 import Header from "../components/Layout/Header.vue";
 import UserForm from "../components/Users/Form.vue";
+
+import {initializeApp} from 'firebase/app';
+import {getMessaging, getToken, onMessage} from "firebase/messaging";
 
 function getSubdomain() {
   const uris = window.location.hostname.split(".");
@@ -78,21 +89,26 @@ export default {
   },
   methods: {
     ...mapActions("sessionStore", ["logout"]),
-    showSnackbar(message, color) {
-      this.snackbar.show = true;
+    showSnackbar(message, color, title = null, photo = null) {
+      this.snackbar.title = title;
       this.snackbar.message = message;
       this.snackbar.color = color;
+      this.snackbar.photo = photo;
+      this.snackbar.show = true;
     },
   },
   data() {
     return {
       snackbar: {
         show: false,
+        title: null,
         message: "",
         color: "",
-        timeout: 3000,
+        photo: null,
+        timeout: 10000,
       },
       showSidebar: true,
+      messaging: null,
     };
   },
   watch: {
@@ -103,12 +119,26 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch("sessionStore/fetchUser");
-
     let subdomain = getSubdomain();
-
     this.$store.commit("sessionStore/setSubdomain", subdomain);
     this.$store.dispatch("menuStore/getMenu", subdomain);
   },
+  mounted() {
+    const firebaseConfig = {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+      appId: import.meta.env.VITE_FIREBASE_APP_ID,
+      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+    };
+    const app = initializeApp(firebaseConfig);
+    this.messaging = getMessaging(app); // Stocke dans this.messaging
+    onMessage(this.messaging, (payload) => {
+      this.showSnackbar(payload.notification.body, "success", payload.notification.title, payload.notification.image);
+    });
+  }
 };
 </script>
 
