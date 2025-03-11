@@ -10,6 +10,7 @@
     <v-card-text>
       <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
         <v-tab value="infos">Informations générales</v-tab>
+        <v-tab value="notifications">Notifications</v-tab>
         <v-tab value="reconnaissances" v-if="canEditProfil">Reconnaissances</v-tab>
         <v-tab value="parcours">Parcours</v-tab>
         <v-tab value="responsabilites" v-if="canEditProfil">Responsabilités nationales</v-tab>
@@ -27,27 +28,27 @@
             <v-col cols="12" sm="3">
               <div class="logo w-50 mx-auto">
                 <v-img v-if="this.editedItem.user.id" style="border-radius: 100%;"
-                  :src="'/avatars/' + this.editedItem.user.id + '.png'"
-                  :lazy-src="'/avatars/' + this.editedItem.user.id + '.png'" cover aspect-ratio="1">
+                       :src="'/avatars/' + this.editedItem.user.id + '.png'"
+                       :lazy-src="'/avatars/' + this.editedItem.user.id + '.png'" cover aspect-ratio="1">
                 </v-img>
                 <v-img v-else style="border-radius: 100%;" src="https://fakeimg.pl/500x500" cover aspect-ratio="1">
                 </v-img>
               </div>
 
               <v-file-input label="Avatar" prepend-icon="mdi-camera" @change="prepareAvatar($event.target.files)"
-                accept="image/*" show-size class="mt-5">
+                            accept="image/*" show-size class="mt-5">
               </v-file-input>
             </v-col>
             <v-col cols="12" sm="3">
               <v-text-field v-model="editedItem.user.firstname" label="Prénom" validate-on="blur"
-                :rules="[rules.required]"></v-text-field>
+                            :rules="[rules.required]"></v-text-field>
               <v-text-field v-model="editedItem.user.lastname" label="Nom" validate-on="blur"
-                :rules="[rules.required]"></v-text-field>
+                            :rules="[rules.required]"></v-text-field>
               <v-text-field type="date" v-model="editedItem.user.birthdate" label="Date de naissance"></v-text-field>
             </v-col>
             <v-col cols="12" sm="3">
               <v-text-field v-model="editedItem.user.email" type="email" label="Email" validate-on="blur"
-                :rules="[rules.required]"></v-text-field>
+                            :rules="[rules.required]"></v-text-field>
               <v-text-field v-model="editedItem.user.phone_1" label="Téléphone"></v-text-field>
             </v-col>
             <v-col cols="12" sm="3">
@@ -59,16 +60,30 @@
           </v-row>
           <v-spacer></v-spacer>
           <v-btn color="info" @click="sendInvitation()" class="mr-3"
-            v-if="this.canEditProfil && editedItem.user.invitation_accepted_at === null">
+                 v-if="this.canEditProfil && editedItem.user.invitation_accepted_at === null">
             <v-icon class="mr-2">mdi-send</v-icon>
             Envoyer l'invitation à nouveau
           </v-btn>
         </v-window-item>
+
+        <v-window-item key="notifications" value="notifications">
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-btn v-if="!pushEnabled" color="primary" @click="enablePushNotifications"
+                     class="mr-3">Activer les notifications push
+              </v-btn>
+              <v-btn v-if="pushEnabled" color="warning" @click="disablePushNotifications"
+                     class="mr-3">Désactiver les notifications push
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-window-item>
+
         <v-window-item key="reconnaissances" value="reconnaissances">
           <v-row>
             <v-col cols="12" sm="11">
               <v-row class="mb-1" v-for="career in editedItem.gratitudes"
-                :key="career.id" justify="center">
+                     :key="career.id" justify="center">
                 <v-col>
                   <v-select v-model="career.level" :items="referentiels.levels" hide-details label="Reconnaissance">
                   </v-select>
@@ -94,10 +109,10 @@
           <v-row>
             <v-col cols="12" sm="11">
               <v-row class="mb-1" v-for="phase in editedItem.phases"
-                :key="phase.id" justify="center">
+                     :key="phase.id" justify="center">
                 <v-col cols="12" sm="4">
                   <v-autocomplete v-model="phase.church_id" :items="referentiels.churches" item-value="id"
-                    item-title="name" hide-details label="Eglise">
+                                  item-title="name" hide-details label="Eglise">
                   </v-autocomplete>
                 </v-col>
                 <v-col cols="12" sm="3">
@@ -128,14 +143,15 @@
           <v-row>
             <v-col cols="12" sm="11">
               <v-row class="mb-1" v-for="phase in editedItem.responsabilities"
-                :key="phase.id" justify="center">
+                     :key="phase.id" justify="center">
                 <v-col cols="12" sm="4">
                   <v-autocomplete v-model="phase.association_id" :items="referentiels.associations" item-value="id"
-                    item-title="name" hide-details label="Association">
+                                  item-title="name" hide-details label="Association">
                   </v-autocomplete>
                 </v-col>
                 <v-col cols="12" sm="3">
-                  <v-select v-model="phase.function" :items="referentiels.responsabilities" hide-details label="Fonction">
+                  <v-select v-model="phase.function" :items="referentiels.responsabilities" hide-details
+                            label="Fonction">
                   </v-select>
                 </v-col>
                 <v-col cols="12" sm="2">
@@ -161,8 +177,9 @@
         <v-window-item key="cotisations" value="cotisations">
           <v-row>
             <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="fee in editedItem.fees" :key="fee.id"
-                justify="center">
+              <v-row class="bg-grey-lighten-4 pa-5 rounded elevation-1 mb-3" v-for="fee in editedItem.fees"
+                     :key="fee.id"
+                     justify="center">
                 <v-col cols="12" sm="4">
                   <v-combobox v-model="fee.what" :items="referentiels.whatFees" hide-details label="Année">
                   </v-combobox>
@@ -188,13 +205,13 @@
               <v-card>
                 <v-card-text>
                   <v-btn v-if="!editedItem.roles.includes('admin')" @click="addRole('admin')" color="primary"
-                    class="mr-3">Promouvoir administrateur
+                         class="mr-3">Promouvoir administrateur
                   </v-btn>
                   <v-btn v-else @click="removeRole('admin')" color="secondary" class="mr-3">Destituer administrateur
                   </v-btn>
 
                   <v-btn v-if="!editedItem.roles.includes('moderator')" @click="addRole('moderator')" color="primary"
-                    class="mr-3">Promouvoir modérateur
+                         class="mr-3">Promouvoir modérateur
                   </v-btn>
                   <v-btn v-else @click="removeRole('moderator')" color="secondary" class="mr-3">Destituer modérateur
                   </v-btn>
@@ -209,8 +226,9 @@
           </v-alert>
 
           <v-text-field v-model="editedItem.user.password" type="password" label="Mot de passe" required></v-text-field>
-          <v-text-field v-model="editedItem.user.password_confirmation" type="password" label="Confirmer le mot de passe"
-            required></v-text-field>
+          <v-text-field v-model="editedItem.user.password_confirmation" type="password"
+                        label="Confirmer le mot de passe"
+                        required></v-text-field>
         </v-window-item>
         <v-window-item key="danger-zone" value="danger-zone">
           <v-alert type="error" icon="mdi-alert-circle-outline" class="mb-3">
@@ -219,11 +237,11 @@
           <v-btn color="red" @click="tryDeleteItem()" class="mr-3">Supprimer l'utilisateur</v-btn>
 
           <v-btn color="yellow" @click="disableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-off"
-            v-if="!editedItem.user.disabled">
+                 v-if="!editedItem.user.disabled">
             Désactiver l'utilisateur
           </v-btn>
           <v-btn color="green" @click="enableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-check"
-            v-else>
+                 v-else>
             Activer l'utilisateur
           </v-btn>
         </v-window-item>
@@ -252,7 +270,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+import {getMessaging, getToken} from "firebase/messaging";
 
 export default {
   name: "UserForm",
@@ -276,6 +295,9 @@ export default {
       // check if this.item has user property
 
       return this.roles.includes('admin') || (this.item && this.item.user && this.currentUser.id !== this.item.user.id);
+    },
+    pushEnabled() {
+      return this.editedItem.user.push_enabled;
     },
   },
   methods: {
@@ -378,9 +400,9 @@ export default {
     },
     removeGratitude(id) {
       // If id is null then remove last inserted
-      if (id === null){
+      if (id === null) {
         this.editedItem.gratitudes.pop();
-      }else{
+      } else {
         this.editedItem.gratitudes.splice(this.editedItem.gratitudes.findIndex(career => career.id === id), 1);
       }
     },
@@ -401,9 +423,9 @@ export default {
     },
     removePhase(id) {
       // If id is null then remove last inserted
-      if (id === null){
+      if (id === null) {
         this.editedItem.phases.pop();
-      }else{
+      } else {
         this.editedItem.phases.splice(this.editedItem.phases.findIndex(phase => phase.id === id), 1);
       }
     },
@@ -415,12 +437,70 @@ export default {
         end_at: null,
       });
     },
-    removeResponsabilite(id){
-      if (id === null){
+    removeResponsabilite(id) {
+      if (id === null) {
         this.editedItem.responsabilities.pop();
-      }else{
+      } else {
         this.editedItem.responsabilities.splice(this.editedItem.responsabilities.findIndex(phase => phase.id === id), 1);
       }
+    },
+    enablePushNotifications() {
+      const messaging = getMessaging();
+
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          console.log("Permission de notification accordée.");
+
+          getToken(messaging, { vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg" })
+              .then((token) => {
+                if (token) {
+                  console.log("Token FCM récupéré:", token);
+                  this.pushToken = token;
+                  this.pushEnabled = true;
+                  this.updatePushStatus(true, token);  // Mettre à jour en back
+                }
+              })
+              .catch((err) => {
+                console.error("Erreur lors de la récupération du token:", err);
+              });
+        } else {
+          console.log("Permission de notification refusée.");
+          this.$root.showSnackbar('Votre navigateur refuse les notifications.', 'error');
+        }
+      });
+    },
+    disablePushNotifications() {
+      const messaging = getMessaging();
+
+      // Supprimer le token FCM
+      getToken(messaging, { vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg" })
+          .then((token) => {
+            if (token) {
+              return token;
+            }
+          })
+          .then(() => {
+            console.log("Token FCM supprimé.");
+            this.pushToken = null;
+            this.pushEnabled = false;
+            this.updatePushStatus(false, null);  // Mettre à jour en back
+          })
+          .catch((err) => {
+            console.error("Erreur lors de la suppression du token:", err);
+          });
+    },
+    updatePushStatus(enabled, token) {
+      this.editedItem.user.push_enabled = enabled;
+      this.editedItem.user.fcm_token = token;
+
+      this.$store.dispatch('usersStore/save', this.editedItem).then(response => {
+        console.log('Statut de notification mis à jour avec succès');
+      }, error => {
+        this.$root.showSnackbar('Un probleme est survenu lors de la mise à jour du statut de notification', 'error');
+        let errors = error.response.data.errors;
+
+        this.$root.showSnackbar(errors.join('<br/>'), 'error');
+      });
     }
   },
   watch: {
@@ -443,6 +523,8 @@ export default {
       dialogConfirmDelete: false,
       loadingDelete: false,
       tab: 'infos',
+      pushEnabled: false,
+      pushToken: null,
       rules: {
         required: value => !!value || 'Champ obligatoire',
       },
@@ -451,6 +533,28 @@ export default {
   beforeMount: function () {
     this.$store.dispatch('usersStore/referentiels');
   },
+  mounted() {
+    const messaging = getMessaging();
+
+    getToken(messaging, { vapidKey: 'TA_CLE_VAPID' })
+        .then((token) => {
+          if (token) {
+            console.log('Token FCM récupéré:', token);
+            this.pushToken = token;
+            this.pushEnabled = true;
+            this.updatePushStatus(true, token);  // Mettre à jour en back
+          } else {
+            console.log('Aucun token FCM disponible.');
+            this.pushEnabled = false;
+            this.updatePushStatus(false, null);
+          }
+        })
+        .catch((err) => {
+          console.error('Erreur lors de la récupération du token:', err);
+          this.pushEnabled = false;
+          this.updatePushStatus(false, null);
+        });
+  }
 }
 </script>
 

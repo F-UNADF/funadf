@@ -47,5 +47,18 @@ services:
       file: ./docker/mysql/password.yml
       service: password
 
+  nginx:
+    container_name: funadf_nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/certs:/etc/nginx/ssl:ro
+    depends_on:
+      - app
+      - vite
+
 volumes:
   funadf_db:

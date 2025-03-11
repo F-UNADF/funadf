@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_21_144459) do
+ActiveRecord::Schema.define(version: 2025_03_11_080222) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -326,6 +326,8 @@ ActiveRecord::Schema.define(version: 2025_02_21_144459) do
     t.string "access_token"
     t.text "biography"
     t.string "authentication_token"
+    t.string "fcm_token"
+    t.boolean "push_enabled"
     t.index ["access_token"], name: "index_users_on_access_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

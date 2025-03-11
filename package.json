@@ -11,6 +11,8 @@
   "dependencies": {
     "@mdi/font": "^7.1.96",
     "axios": ">=1.7.4",
+    "dotenv": "^16.4.7",
+    "dotenv-expand": "^12.0.1",
     "firebase": "^11.4.0",
     "lodash-es": "^4.17.21",
     "moment": "^2.29.4",
