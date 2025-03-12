@@ -1,9 +1,4 @@
-class Intranet::HomeController < IntranetController
-
-
+class Intranet::HomeController < AssociationController
   def home
-
   end
-
-
 end
