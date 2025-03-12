@@ -3,7 +3,7 @@
     "sourceCodeDir": "app/frontend",
     "publicOutputDir": "vite",
     "watchAdditionalPaths": [],
-    "manifest": "/.vite/manifest.json"
+    "manifest": "/manifest.json"
   },
   "development": {
     "autoBuild": true,

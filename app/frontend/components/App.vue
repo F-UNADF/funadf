@@ -1,10 +1,9 @@
 <template>
   <v-app theme="light">
-    <Sidebar :menu="getMenu" :showSidebar="showSidebar"/>
+    <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar" />
     <Header
         :user="currentUser"
         :ouser="ouser"
-        @logout="logout"
         @toggle-sidebar="showSidebar = !showSidebar"
     />
 
@@ -19,8 +18,8 @@
           <v-col>
             &copy; {{ new Date().getFullYear() }} -
             <strong>Assemblées de Dieu de France</strong> - Tous droits réservés -
-            <v-btn size="small" color="secondary" variant="text" class="link"
-                   @click="$router.push('privacy')">Mentions légales
+            <v-btn size="small" color="secondary" variant="text" class="link" :to="{ path: '/privacy' }">
+              Mentions légales
             </v-btn>
           </v-col>
         </v-row>
@@ -28,26 +27,30 @@
     </v-main>
 
     <!-- Dialog User Form -->
-    <v-dialog v-model="dialogForm" fullscreen>
-      <UserForm/>
-    </v-dialog>
+    <v-container>
+      <v-dialog v-model="dialogForm" fullscreen>
+        <UserForm/>
+      </v-dialog>
+    </v-container>
 
     <!-- Snackbar -->
-    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
-      <v-row align="center" justify="start" no-gutters class="snackbar-content">
-        <v-img v-if="snackbar.photo" cover :src="snackbar.photo" :width="80" aspect-ratio="1/1"
-               class="mr-5"></v-img>
-        <div>
-          <div class="text-subtitle-1 pb-2" v-if="snackbar.title">{{ snackbar.title }}</div>
-          <div v-html="snackbar.message"></div>
-        </div>
-      </v-row>
-      <template v-slot:actions>
-        <v-btn color="white" variant="text" @click="snackbar.show = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </template>
-    </v-snackbar>
+    <v-container>
+      <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
+        <v-row align="center" justify="start" no-gutters class="snackbar-content">
+          <v-img v-if="snackbar.photo" cover :src="snackbar.photo" :width="80" aspect-ratio="1/1"
+                 class="mr-5"></v-img>
+          <div>
+            <div class="text-subtitle-1 pb-2" v-if="snackbar.title">{{ snackbar.title }}</div>
+            <div v-html="snackbar.message"></div>
+          </div>
+        </v-row>
+        <template v-slot:actions>
+          <v-btn color="white" variant="text" @click="snackbar.show = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </v-container>
   </v-app>
 </template>
 
@@ -61,8 +64,16 @@ import {initializeApp} from 'firebase/app';
 import {getMessaging, getToken, onMessage} from "firebase/messaging";
 
 function getSubdomain() {
-  const uris = window.location.hostname.split(".");
-  return uris.length > 2 ? uris[0] : "me";
+  const hostname = window.location.hostname;
+  let menu = 'me';
+
+  if (hostname.includes('admin')){
+    menu = 'admin';
+  } else if (hostname.includes('association')){
+    menu = 'association';
+  }
+
+  return menu;
 }
 
 export default {

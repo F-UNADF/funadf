@@ -105,19 +105,6 @@ Rails.application.routes.draw do
     end
   end
 
-  # ME SUBDOMAIN
-  namespace :me, path: '' do
-    constraints(:subdomain => '') do
-      get '/feed', to: 'feed#show', as: :feed
-      get '/annuaire', to: 'annuaire#show', as: :annuaire
-      get '/mon-profil', to: 'profile#show', as: :me
-      get '/documents', to: 'documents#index', as: :documents
-      get '/campaigns', to: 'campaigns#index', as: :votes
-
-      root to: redirect('/feed'), as: :root
-    end
-  end
-
   # ASSOCIATION SUBDOMAIN
   namespace :association, path: '' do
     constraints(:subdomain => 'association') do
@@ -125,22 +112,22 @@ Rails.application.routes.draw do
       resources :campaigns, only: :index
       resources :events, only: :index
       resources :posts, only: :index
+      resources :users, only: :index
+      resources :churches, only: :index
 
       root to: redirect('/campaigns'), as: :root
     end
   end
 
-  # ITNTRANETS SUBDOMAIN
-  namespace :intranet, path: '' do
-    constraints(:subdomain => /[a-z]+/) do
-      resources :posts, only: :index
-      resources :events, only: :index
-      resources :users, only: :index
-      resources :churches, only: :index
-      resources :campaigns, only: :index
+  # ME SUBDOMAIN
+  namespace :me, path: '' do
+    get '/feed', to: 'feed#show', as: :feed
+    get '/annuaire', to: 'annuaire#show', as: :annuaire
+    get '/mon-profil', to: 'profile#show', as: :me
+    get '/documents', to: 'documents#index', as: :documents
+    get '/campaigns', to: 'campaigns#index', as: :votes
 
-      root to: redirect('/users'), as: :root
-    end
+    root to: redirect('/feed'), as: :root
   end
 
   get '/campaigns/:id', to: 'campaigns#show'

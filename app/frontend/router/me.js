@@ -10,10 +10,6 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: "/",
-      redirect: "/feed",
-    },
-    {
       path: "/feed",
       component: FeedIndex,
       name: "feed.index",

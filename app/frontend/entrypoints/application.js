@@ -1,13 +1,12 @@
-import { createApp } from "vue";
-import { createVuetify } from "vuetify";
+import {createApp} from "vue";
+import {createVuetify} from "vuetify";
 import App from "../components/App.vue";
 import store from "../store/index";
 import "vuetify/styles";
 
 // Router
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import admin_router from "../router/admin";
-import intranet_router from "../router/intranet";
 import me_router from "../router/me";
 import association_router from "../router/association";
 import PasswordIndex from "../components/Password/Index.vue";
@@ -20,7 +19,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
-import { PerfectScrollbarPlugin } from 'vue3-perfect-scrollbar';
+import {PerfectScrollbarPlugin} from 'vue3-perfect-scrollbar';
 import 'vue3-perfect-scrollbar/style.css';
 
 import "../scss/style.scss";
@@ -67,29 +66,28 @@ const vuetify = createVuetify({
     },
 });
 
-let uris = window.location.hostname.split(".");
-let routes = me_router;
-if (uris.length > 2) {
-    let subdomain = uris[0];
-    if (subdomain === "admin") {
-        routes = admin_router;
-    } else if (subdomain === "association") {
-        routes = association_router;
-    } else if (subdomain.match(/uadpif|test|urb/)) {
-        routes = intranet_router;
-    }
+let hostname = window.location.hostname; // Récupère le domaine actuel
+let routes = me_router; // Route par défaut
+
+// si hostname contains admin
+if (hostname.includes('admin')){
+    routes = admin_router;
+} else if (hostname.includes('association')){
+    routes = association_router;
 }
 
 // Ajout des routes globales
-routes.addRoute({ path: "/connexion", component: SessionIndex, name: "connexion" });
-routes.addRoute({ path: "/mot-de-passe-oublie", component: PasswordIndex, name: "forgotPassword" });
-routes.addRoute({ path: "/users/password/edit", component: PasswordCreate, name: "createPassword" });
-routes.addRoute({ path: "/privacy", component: PrivacyPage, name: "privacy" });
+routes.addRoute({path: "/connexion", component: SessionIndex, name: "connexion"});
+routes.addRoute({path: "/mot-de-passe-oublie", component: PasswordIndex, name: "forgotPassword"});
+routes.addRoute({path: "/users/password/edit", component: PasswordCreate, name: "createPassword"});
+routes.addRoute({path: "/privacy", component: PrivacyPage, name: "privacy"});
 
 const router = createRouter({
     history: createWebHistory(),
     routes: routes.getRoutes(),
 });
+
+console.log(router);
 
 // Guard de navigation
 router.beforeEach((to, from, next) => {

@@ -1,9 +1,6 @@
 <template>
   <v-navigation-drawer left elevation="10" mobile-breakpoint="960" app class="leftSidebar" :rail="false"
     v-model="sidebarValue" rail-width="75">
-    <!-- ---------------------------------------------- -->
-    <!---Logo part -->
-    <!-- ---------------------------------------------- -->
     <div class="pa-4">
       <div class="logo">
         <RouterLink to="/" justify-content-center>
@@ -11,44 +8,26 @@
         </RouterLink>
       </div>
     </div>
-    <!-- ---------------------------------------------- -->
-    <!---Navigation -->
-    <!-- ---------------------------------------------- -->
     <perfect-scrollbar class="scrollnavbar">
       <v-list class="pa-4" color="transparent">
-        <!-- ---------------------------------------------- -->
-        <!---Menu Loop -->
-        <!-- ---------------------------------------------- -->
-        <template v-for="(item, i) in menu">
-          <!-- ---------------------------------------------- -->
-          <!---Item Sub Header -->
-          <!-- ---------------------------------------------- -->
-          <v-list-subheader v-if="item.header" style="border-bottom: solid 1px #e5e5e5">
+        <template v-for="(item, i) in menu" :key="i">
+          <v-list-subheader v-if="item.header" style="border-bottom: solid 1px #e5e5e5" :key="'header-' + i">
             {{ item.header }}
           </v-list-subheader>
-          <!-- ---------------------------------------------- -->
-          <!---If Has Child -->
-          <!-- ---------------------------------------------- -->
-          <v-list-group v-else-if="item.children" class="">
-            <!-- ---------------------------------------------- -->
-            <!---Dropdown  -->
-            <!-- ---------------------------------------------- -->
+
+          <v-list-group v-else-if="item.children" :value="item.title">
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" :value="item.title" rounded="lg" class="mb-1">
-                <!---Icon  -->
                 <template v-slot:prepend>
                   <v-icon>
                     {{ item.icon }}
                   </v-icon>
                 </template>
-                <!---Title  -->
                 <v-list-item-title v-text="item.title"></v-list-item-title>
               </v-list-item>
             </template>
-            <!-- ---------------------------------------------- -->
-            <!---Sub Item-->
-            <!-- ---------------------------------------------- -->
-            <v-list-item v-for="(subitem, i) in item.children" :key="i" :value="subitem.to" :to="subitem.to" rounded="lg"
+
+            <v-list-item v-for="(subitem, j) in item.children" :value="subitem.to" :key="'main'+i+'-sub-' + j" :to="subitem.to" rounded="lg"
               class="first-level-item mb-1">
               <template v-slot:prepend>
                 <v-icon>disc</v-icon>
@@ -96,8 +75,11 @@
 </template>
 
 <script>
+import {PerfectScrollbar} from "vue3-perfect-scrollbar";
+
 export default {
   name: "Sidebar",
+  components: {PerfectScrollbar},
   computed: {
     sidebarValue: {
       get() {
