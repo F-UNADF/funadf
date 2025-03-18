@@ -13,6 +13,10 @@
           </v-text-field>
         </v-col>
         <v-col cols="12" md="12">
+          <v-text-field v-model="this.document.url" label="Lien">
+          </v-text-field>
+        </v-col>
+        <v-col cols="12" md="12">
           <v-textarea v-model="document.description" label="description" required>
           </v-textarea>
         </v-col>
@@ -37,17 +41,33 @@ export default {
   },
   methods: {
     save: function () {
-      axios
-          .put(`/api/documents/${this.document.id}`, {
-            name: this.document.name,
-            description: this.document.description,
-          })
-          .then((response) => {
-            this.$emit("close");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      if (this.document.hasOwnProperty('id')) {
+        axios
+            .put(`/api/documents/${this.document.id}`, {
+              name: this.document.name,
+              url: this.document.url,
+              description: this.document.description,
+            })
+            .then((response) => {
+              this.$emit("close");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+      } else {
+        axios
+            .post('/api/documents', {
+              name: this.document.name,
+              url: this.document.url,
+              description: this.document.description,
+            })
+            .then((response) => {
+              this.$emit("close");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+      }
     },
   },
   data() {

@@ -20,8 +20,9 @@ class Api::DocumentsController < ApiController
             id: doc.id,
             name: doc.name,
             description: doc.description,
-            type: doc.class.name.downcase,
-            href: Rails.application.routes.url_helpers.rails_blob_path(doc.file, disposition: "attachment")
+            url: doc.url,
+            type: (doc.url?) ? 'url' : doc.class.name.downcase,
+            href: (doc.url?) ? doc.url : Rails.application.routes.url_helpers.rails_blob_path(doc.file, disposition: "attachment")
           }
         end
       }
@@ -38,6 +39,13 @@ class Api::DocumentsController < ApiController
         doc.file.attach(file)
         doc.save
       end
+      render json: { success: true }
+    elsif params[:url]
+      doc = Document.new
+      doc.name = params[:name]
+      doc.url = params[:url]
+      doc.description = params[:description]
+      doc.save
       render json: { success: true }
     else
       render json: { success: false, error: 'No files received' }, status: :unprocessable_entity
@@ -75,7 +83,7 @@ class Api::DocumentsController < ApiController
       if item['type'] == 'category' && item['id'] != -1
         category = Category.find(item['id'])
         category.update(order: index + 1, category_id: (parent_id && parent_id > 0) ? parent_id : nil)
-      elsif item['type'] == 'document'
+      elsif item['type'] == 'document' || item['type'] == 'url'
         document = Document.find(item['id'])
         document.update(order: index + 1, category_id: (parent_id && parent_id > 0) ? parent_id : nil)
       end
@@ -92,7 +100,7 @@ class Api::DocumentsController < ApiController
   end
 
   def document_params
-    params.permit(:name, :description, files: [])
+    params.permit(:name, :description, :url, files: [])
   end
 
   def clean_filename(filename)

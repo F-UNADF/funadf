@@ -30,7 +30,9 @@
         @click="$emit('downloadDocument', child)"
     >
       <template v-slot:prepend>
-        <v-icon>mdi-download</v-icon>
+        <v-icon>
+          {{ (child.type === 'url')?'mdi-link':'mdi-download'}}
+        </v-icon>
       </template>
       <v-list-item-title>
         {{ child.name }}

@@ -4,7 +4,6 @@
 
     <v-row>
       <v-col md="4">
-
         <v-card class="mb-5" color="white">
           <v-card-title>
             {{ (localCategory.id) ? 'Modifier' : 'Ajouter' }} une catégorie
@@ -29,6 +28,10 @@
             </v-btn>
           </v-card-actions>
         </v-card>
+
+        <v-btn flat block color="primary" class="mb-3" prepend-icon="mdi-link" @click="createDocument()">
+          Ajouter un lien
+        </v-btn>
 
         <v-file-upload
             @update:modelValue="handleFileUpload"
@@ -133,6 +136,10 @@ export default {
     },
     updateDocument(document) {
       this.localDocument = document;
+      this.dialog.update = true;
+    },
+    createDocument() {
+      this.localDocument = {};
       this.dialog.update = true;
     },
     deleteDocument(document) {

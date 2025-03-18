@@ -25,8 +25,9 @@ class Category < ActiveRecord::Base
           name: doc.name,
           order: doc.order,
           description: doc.description,
-          type: doc.class.name.downcase,
-          href: Rails.application.routes.url_helpers.rails_blob_path(doc.file, disposition: "attachment")
+          url: doc.url,
+          type: (doc.url?) ? 'url' : doc.class.name.downcase,
+          href: (doc.url?) ? doc.url : Rails.application.routes.url_helpers.rails_blob_path(doc.file, disposition: "attachment")
         }
       end
     }

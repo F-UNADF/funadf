@@ -72,7 +72,9 @@
         </v-list-item-title>
         <template v-slot:append>
           <v-btn size="small" variant="text" icon color="primary" @click="$emit('downloadDocument', child)">
-            <v-icon>mdi-download</v-icon>
+            <v-icon>
+              {{ child.type === 'url' ? 'mdi-link' : 'mdi-download' }}
+            </v-icon>
           </v-btn>
           <v-btn size="small" variant="text" icon color="success" @click="$emit('updateDocument', child)">
             <v-icon>mdi-pen</v-icon>
