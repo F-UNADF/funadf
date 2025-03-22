@@ -72,7 +72,7 @@
                 </v-list-item>
               </v-list>
 
-              <select-all :options="referentiels.levels" v-model:selected="editedItem.accesses"></select-all>
+              <select-all :options="referentiels.levels" v-model="editedItem.accesses"></select-all>
             </v-col>
           </v-row>
         </v-window-item>

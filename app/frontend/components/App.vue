@@ -136,13 +136,13 @@ export default {
   },
   mounted() {
     const firebaseConfig = {
-      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-      authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      appId: import.meta.env.VITE_FIREBASE_APP_ID,
-      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+      apiKey: "AIzaSyCxbYAg-_eIci32Qf1ZRoKZLwkOD-vTuHo",
+      authDomain: "funadf-49dfb.firebaseapp.com",
+      projectId: "funadf-49dfb",
+      storageBucket: "funadf-49dfb.firebasestorage.app",
+      messagingSenderId: "609947767440",
+      appId: "1:609947767440:web:17de62d5e49d3a0c2ffe15",
+      measurementId: "G-394J13VTZX"
     };
     const app = initializeApp(firebaseConfig);
     this.messaging = getMessaging(app); // Stocke dans this.messaging

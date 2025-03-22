@@ -4,6 +4,7 @@ class Api::FeedController < ApiController
     posts = Post.joins(:accesses, :structure)
                 .where(structure_id: current_user.memberships.pluck(:structure_id))
                 .where('accesses.level = ? AND accesses.can_access = TRUE', current_user.level)
+                .where('posts.created_at > ?', Time.now - 3.months)
                 .order(pinned: :desc, created_at: :desc)
 
     if params[:search].present?

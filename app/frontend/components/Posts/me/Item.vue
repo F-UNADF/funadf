@@ -93,7 +93,7 @@
             v-for="(attachment, index) in post?.attachments"
             :key="index"
             class="d-flex child-flex"
-            cols="4"
+            cols="6"
         >
           <v-btn
               :href="attachment"
@@ -101,7 +101,7 @@
               elevation="1"
               block>
             <v-icon>mdi-download</v-icon>
-            {{ attachment.split('/').pop().substring(0,15)+"..." }}
+            Pièce jointe {{ index + 1 }}
           </v-btn>
 
         </v-col>
