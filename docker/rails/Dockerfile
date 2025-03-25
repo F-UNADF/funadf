@@ -7,10 +7,16 @@ RUN apt-get update -qq && \
     apt-get install -y apt-utils \
                        build-essential \
                        libpq-dev \
-                       default-mysql-client
+                       default-mysql-client \
+                       libxrender1 \
+                       libxext6 \
+                       libfontconfig1 \
+                       xfonts-base \
+                       xfonts-75dpi \
+                       wkhtmltopdf
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
-      apt-get install -y nodejs build-essential
+    apt-get install -y nodejs build-essential
 
 RUN mkdir /app
 WORKDIR /app
@@ -27,6 +33,10 @@ ADD . /app
 
 RUN groupadd -g 1000 funadf && useradd -m -u 1000 -g funadf funadf
 RUN chown -R funadf:funadf /app
+
+# Assure-toi que wkhtmltopdf est accessible à l'utilisateur funadf
+RUN chmod +x /usr/bin/wkhtmltopdf
+
 USER funadf
 
 EXPOSE 3000
