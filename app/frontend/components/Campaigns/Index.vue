@@ -2,7 +2,7 @@
   <v-row justify="space-between">
     <v-col cols="12" lg="6" md="6" class="mb-3">
       <v-text-field density="compact" v-model="search" label="Chercher une campagne (Nom...)" hide-details
-        variant="outlined" clearable></v-text-field>
+                    variant="outlined" clearable></v-text-field>
     </v-col>
     <v-col cols="12" lg="6" md="6" class="text-right">
       <v-spacer></v-spacer>
@@ -17,13 +17,9 @@
   </v-row>
   <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
-      <tr>
-        <td colspan="5">
-          <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
-          <v-alert v-else color="danger" icon="danger" title="Aucune campagne trouvée"
-            text="Aucune campagne ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
-        </td>
-      </tr>
+      <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
+      <v-alert v-else color="danger" icon="danger" title="Aucune campagne trouvée"
+               text="Aucune campagne ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
     </template>
     <template v-slot:item="{ item }">
       <tr>
@@ -39,7 +35,7 @@
           <v-tooltip location="top" text="Fermer la campagne">
             <template v-slot:activator="{ props }">
               <v-icon small v-bind="props" color="green" v-if="item.state === 'opened'"
-                @click="changeCampaignState(item.id, 'close_temporarily')">
+                      @click="changeCampaignState(item.id, 'close_temporarily')">
                 mdi-eye-off
               </v-icon>
             </template>
@@ -47,7 +43,7 @@
           <v-tooltip location="top" text="Ouvrir la campagne">
             <template v-slot:activator="{ props }">
               <v-icon small v-bind="props" color="success" v-if="item.state === 'coming'"
-                @click="changeCampaignState(item.id, 'opening')">
+                      @click="changeCampaignState(item.id, 'opening')">
                 mdi-check
               </v-icon>
             </template>
@@ -55,7 +51,7 @@
           <v-tooltip location="top" text="Cloturer la campagne - La campagne ne pourra pas être réouverte.">
             <template v-slot:activator="{ props }">
               <v-icon small v-bind="props" color="danger" v-if="item.state === 'opened'"
-                @click="changeCampaignState(item.id, 'close_definitly')">
+                      @click="changeCampaignState(item.id, 'close_definitly')">
                 mdi-close
               </v-icon>
             </template>
@@ -100,15 +96,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
+import {mapGetters} from "vuex";
 import CampaignForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
 export default {
   name: "CampaignsIndex",
   components: {
-    VDataTable,
     CampaignForm,
     DialogConfirm,
   },

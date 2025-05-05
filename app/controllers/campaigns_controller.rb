@@ -4,7 +4,7 @@ class CampaignsController < ApplicationController
 
     respond_to do |format|
       format.pdf do
-        render pdf: "#{@campaign.name} - resultats", layout: "votes/layouts/pdf"
+        render pdf: "#{@campaign.name} - resultats", layout: "layouts/pdf"
       end
     end
   end

@@ -1,4 +1,4 @@
-import { createStore } from "vuex";
+import {createStore} from "vuex";
 import sessionStore from "./modules/sessionStore";
 import usersStore from "./modules/usersStore";
 import churchesStore from "./modules/churchesStore";
@@ -14,28 +14,30 @@ import rolesStore from "./modules/rolesStore";
 import meetingsStore from "./modules/meetingsStore";
 import profileStore from "./modules/profileStore";
 import feesStore from "./modules/feesStore";
+import documentsStore from "./modules/documentsStore";
 
 const debug = process.env.NODE_ENV !== "production";
 
 const store = createStore({
-  modules: {
-    sessionStore,
-    usersStore,
-    churchesStore,
-    associationsStore,
-    campaignsStore,
-    menuStore,
-    eventsStore,
-    postsStore,
-    votesStore,
-    feedStore,
-    feedEventStore,
-    rolesStore,
-    meetingsStore,
-    profileStore,
-    feesStore,
-  },
-  strict: debug,
+    modules: {
+        sessionStore,
+        usersStore,
+        churchesStore,
+        associationsStore,
+        campaignsStore,
+        menuStore,
+        eventsStore,
+        postsStore,
+        votesStore,
+        feedStore,
+        feedEventStore,
+        rolesStore,
+        meetingsStore,
+        profileStore,
+        feesStore,
+        documentsStore,
+    },
+    strict: debug,
 });
 
 export default store;

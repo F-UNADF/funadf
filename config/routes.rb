@@ -67,9 +67,13 @@ Rails.application.routes.draw do
     post '/meetings/:id/remove_attendees', to: 'meetings#remove_attendees'
 
     resources :files, only: [:destroy]
+    resources :documents
+    post '/update_order_documents', to: 'documents#update_order'
+    resources :categories
 
     get 'referentiels/:referentiel', to: 'referentiels#show'
     get 'menus/:menu', to: 'menus#show'
+
   end
 
   namespace :v1, module: :v1, constraints: ApiConstraints.new(version: 1, default: :true, domain: Rails.application.secrets.domain_name), defaults: { format: 'json' } do
@@ -83,7 +87,6 @@ Rails.application.routes.draw do
     post '/votes', to: 'votes#create'
   end
 
-
   # ADMIN SUBDOMAIN
   namespace :admin, path: '' do
     constraints(:subdomain => /admin/) do
@@ -96,19 +99,9 @@ Rails.application.routes.draw do
       resources :roles, only: :index
       resources :meetings, only: :index
       resources :fees, only: :index
+      resources :documents, only: :index
 
       root to: redirect('/users'), as: :root
-    end
-  end
-
-  # ME SUBDOMAIN
-  namespace :me, path: '' do
-    constraints(:subdomain => 'me') do
-      get '/feed', to: 'feed#show', as: :feed
-      get '/annuaire', to: 'annuaire#show', as: :annuaire
-      get '/mon-profil', to: 'profile#show', as: :me
-
-      root to: redirect('/feed'), as: :root
     end
   end
 
@@ -119,30 +112,22 @@ Rails.application.routes.draw do
       resources :campaigns, only: :index
       resources :events, only: :index
       resources :posts, only: :index
+      resources :users, only: :index
+      resources :churches, only: :index
 
       root to: redirect('/campaigns'), as: :root
     end
   end
 
-  # ITNTRANETS SUBDOMAIN
-  namespace :intranet, path: '' do
-    constraints(:subdomain => /[a-z]+/) do
-      resources :posts, only: :index
-      resources :events, only: :index
-      resources :users, only: :index
-      resources :churches, only: :index
-      resources :campaigns, only: :index
+  # ME SUBDOMAIN
+  namespace :me, path: '' do
+    get '/feed', to: 'feed#show', as: :feed
+    get '/annuaire', to: 'annuaire#show', as: :annuaire
+    get '/mon-profil', to: 'profile#show', as: :me
+    get '/documents', to: 'documents#index', as: :documents
+    get '/campaigns', to: 'campaigns#index', as: :votes
 
-      root to: redirect('/users'), as: :root
-    end
-  end
-
-  # VOTES SPACES
-  namespace :votes, path: '' do
-    constraints(:subdomain => '') do
-      resources :campaigns, only: [:index, :show]
-      root :to => redirect('/campaigns')
-    end
+    root to: redirect('/feed'), as: :root
   end
 
   get '/campaigns/:id', to: 'campaigns#show'

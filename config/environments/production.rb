@@ -67,7 +67,7 @@ Rails.application.configure do
   config.active_support.deprecation = :notify
 
   config.action_mailer.smtp_settings = {
-    address: "smtp-relay.sendinblue.com",
+    address: "smtp-relay.brevo.com",
     port: 587,
     domain: Rails.application.secrets.domain_name,
     authentication: "plain",
@@ -76,13 +76,13 @@ Rails.application.configure do
     password: Rails.application.secrets.email_provider_password
   }
   # ActionMailer Config
-  config.action_mailer.default_url_options = { :host => 'https://add-fnadf.fr' }
+  config.action_mailer.default_url_options = { :host => 'https://app.addfrance.fr' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
 
 
-  Rails.application.routes.default_url_options[:host] = "add-fnadf.fr"
+  Rails.application.routes.default_url_options[:host] = "app.addfrance.fr"
 
 
 

@@ -81,8 +81,7 @@ const actions = {
             }
         });
     },
-    delete      : function ({
-                                dispatch,
+    delete      : function ({ dispatch,
                                 commit,
                                 state
                             }, id) {

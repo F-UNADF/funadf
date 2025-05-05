@@ -1,16 +1,19 @@
 <template>
   <v-card variant="elevated" class="bg-surface">
     <v-card-item>
-      <div class="d-flex gap-3 align-center">
+      <div class="d-flex flex-wrap ga-3 align-center">
         <v-avatar size="40">
           <img :src="'/logos/'+post.structure.id+'.png'" width="40" alt="avatar"/>
         </v-avatar>
-        <div class="d-block d-sm-flex align-center gap-3">
+        <div class="d-block d-sm-flex flex-wrap align-center ga-3 ml-3">
           <h6 class="text-h6">{{ post.structure.name }}</h6>
-          <v-icon size="x-small" color="grey lighten-5">mdi-circle</v-icon>
+          <v-icon size="x-small" color="grey lighten-5 mx-3">mdi-circle</v-icon>
           <span class="text-subtitle-2 opacity-50">
             {{ dateFormat(post.post.created_at) }}
           </span>
+          <em v-if="post.post.pinned" class="small text-grey ml-3">
+            Actualité épinglée
+          </em>
         </div>
       </div>
       <div class="py-4 text-body-1 gap-3">
@@ -90,7 +93,7 @@
             v-for="(attachment, index) in post?.attachments"
             :key="index"
             class="d-flex child-flex"
-            cols="4"
+            cols="6"
         >
           <v-btn
               :href="attachment"
@@ -98,7 +101,7 @@
               elevation="1"
               block>
             <v-icon>mdi-download</v-icon>
-            {{ attachment.split('/').pop().substring(0,15)+"..." }}
+            Pièce jointe {{ index + 1 }}
           </v-btn>
 
         </v-col>

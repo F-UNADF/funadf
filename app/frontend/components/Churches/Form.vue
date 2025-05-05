@@ -19,15 +19,15 @@
             <v-col cols="12" md="3">
               <div class="logo w-50 mx-auto">
                 <v-img v-if="this.editedItem.id !== null" style="border-radius: 100%;"
-                  :src="'/logos/' + this.editedItem.id + '.png?cache=' + imgCache"
-                  :lazy-src="'/logos/' + this.editedItem.id + '.png'" cover aspect-ratio="1">
+                       :src="'/logos/' + this.editedItem.id + '.png?cache=' + imgCache"
+                       :lazy-src="'/logos/' + this.editedItem.id + '.png'" cover aspect-ratio="1">
                 </v-img>
                 <v-img v-else style="border-radius: 100%;" src="https://fakeimg.pl/500x500" cover aspect-ratio="1">
                 </v-img>
               </div>
 
               <v-file-input label="Logo" prepend-icon="mdi-camera" @change="prepareLogo($event.target.files)"
-                accept="image/*" show-size class="mt-5">
+                            accept="image/*" show-size class="mt-5">
               </v-file-input>
             </v-col>
             <v-col cols="12" md="9">
@@ -60,7 +60,7 @@
           <v-row justify="space-between">
             <v-col cols="12" lg="4" md="4" class="mb-3">
               <v-text-field density="compact" v-model.lazy="searchingMember" label="Chercher un membre par Nom"
-                hide-details variant="outlined" clearable></v-text-field>
+                            hide-details variant="outlined" clearable></v-text-field>
             </v-col>
           </v-row>
 
@@ -71,12 +71,12 @@
                 <td>
                   <div class="d-flex align-center py-4">
                     <v-avatar
-                      :icon="(item.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
+                        :icon="(item.member_type == 'Structure') ? 'mdi-office-building' : 'mdi-account'"></v-avatar>
                     <div class="ml-5">
                       <h4>{{ item.name }}</h4>
                       <span class="subtitle-2 d-block font-weight-regular">{{
-                        item.town
-                      }}</span>
+                          item.town
+                        }}</span>
                     </div>
                   </div>
                 </td>
@@ -89,7 +89,7 @@
                     </template>
                     <v-list>
                       <v-list-item v-for="(role, index) in this.referentiels.roles" :key="index"
-                        @click="setRole(item, index)">
+                                   @click="setRole(item, index)">
                         <v-list-item-title>{{ role }}</v-list-item-title>
                       </v-list-item>
                     </v-list>
@@ -99,7 +99,7 @@
                   <v-tooltip location="top" text="Supprimer le membre">
                     <template v-slot:activator="{ props }">
                       <v-icon v-bind="props" small class="text-error" title="Delete"
-                        @click="removeMember(item.membership_id)">
+                              @click="removeMember(item.membership_id)">
                         mdi-delete
                       </v-icon>
                     </template>
@@ -108,7 +108,6 @@
               </tr>
             </template>
           </v-data-table>
-
 
 
           <!-- AJOUTER UN MEMBRE -->
@@ -125,12 +124,13 @@
             </v-chip-group>
 
 
-            <v-text-field v-model="search" label="Chercher un membre : Nom, Ville, Code postal" hide-details class="mb-3"
-              variant="outlined" aria-autocomplete="none">
+            <v-text-field v-model="search" label="Chercher un membre : Nom, Ville, Code postal" hide-details
+                          class="mb-3"
+                          variant="outlined" aria-autocomplete="none">
             </v-text-field>
 
             <v-data-table v-model="addingMembers" :headers="headersMatching" :items="matchMembers"
-              :item-value="item => `${item.id}#${item.type}#${item.name}`" show-select class="elevation-1">
+                          :item-value="item => `${item.id}#${item.type}#${item.name}`" show-select class="elevation-1">
               <template v-slot:no-data>
                 <v-alert type="info" class="m-5">
                   <p>Aucun membre ne correspond a votre recherche :</p>
@@ -155,9 +155,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { VDataTable } from 'vuetify/labs/VDataTable'
-import { VAlert } from "vuetify/lib/components/index.mjs";
+import {mapGetters} from "vuex";
+import {VAlert} from "vuetify/lib/components/index.mjs";
 
 function debounce(fn, delay) {
   var timeoutID = null
@@ -174,7 +173,6 @@ function debounce(fn, delay) {
 export default {
   name: "ChurchForm",
   components: {
-    VDataTable,
     VAlert
   },
   computed: {
@@ -243,7 +241,7 @@ export default {
 
 
       let matchMembers = members.filter((member) =>
-        member.name.toLowerCase().includes(search)
+          member.name.toLowerCase().includes(search)
       ).map((member) => ({
         id: member.member_id,
         type: member.member_type,
@@ -265,7 +263,7 @@ export default {
       });
     },
     setRole(member, role) {
-      this.$store.dispatch('churchesStore/setRole', { member: member, role: role }).then(response => {
+      this.$store.dispatch('churchesStore/setRole', {member: member, role: role}).then(response => {
         this.$root.showSnackbar('Role modifié avec succés', 'success');
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de la modification du role', 'error');
@@ -309,13 +307,13 @@ export default {
       tab: 'infos',
       roleDialog: false,
       headers: [
-        { title: 'Nom', key: 'name', sortable: true },
-        { title: 'Role', key: 'role_name', sortable: true },
-        { title: 'Actions', key: 'actions', sortable: false },
+        {title: 'Nom', key: 'name', sortable: true},
+        {title: 'Role', key: 'role_name', sortable: true},
+        {title: 'Actions', key: 'actions', sortable: false},
       ],
       headersMatching: [
-        { title: 'Nom', key: 'name', sortable: true },
-        { title: 'Actions', key: 'actions', sortable: false },
+        {title: 'Nom', key: 'name', sortable: true},
+        {title: 'Actions', key: 'actions', sortable: false},
       ],
       rules: {
         required: value => !!value || 'Champ obligatoire',

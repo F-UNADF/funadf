@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_24_150435) do
+ActiveRecord::Schema.define(version: 2025_03_11_080222) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -140,7 +140,21 @@ ActiveRecord::Schema.define(version: 2024_09_24_150435) do
     t.integer "structure_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "category_id"
+    t.integer "order"
+    t.index ["category_id"], name: "index_categories_on_category_id"
     t.index ["structure_id"], name: "index_categories_on_structure_id"
+  end
+
+  create_table "documents", charset: "latin1", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "url"
+    t.integer "category_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "order"
+    t.index ["category_id"], name: "index_documents_on_category_id"
   end
 
   create_table "events", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -239,6 +253,7 @@ ActiveRecord::Schema.define(version: 2024_09_24_150435) do
     t.integer "structure_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "pinned"
     t.index ["structure_id"], name: "index_posts_on_structure_id"
   end
 
@@ -311,6 +326,8 @@ ActiveRecord::Schema.define(version: 2024_09_24_150435) do
     t.string "access_token"
     t.text "biography"
     t.string "authentication_token"
+    t.string "fcm_token"
+    t.boolean "push_enabled"
     t.index ["access_token"], name: "index_users_on_access_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -350,6 +367,8 @@ ActiveRecord::Schema.define(version: 2024_09_24_150435) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "api_tokens", "users"
   add_foreign_key "attachments", "posts"
+  add_foreign_key "categories", "categories"
+  add_foreign_key "documents", "categories"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"
   add_foreign_key "intranets", "structures"

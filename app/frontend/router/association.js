@@ -3,6 +3,8 @@ import EventsIndex from "../components/Events/Index.vue";
 import AssociationsIndex from "../components/Associations/Index.vue";
 import CampaignsIndex from "../components/Campaigns/Index.vue";
 import PostsIndex from "../components/Posts/Index.vue";
+import UsersIndex from "@/components/Users/Index.vue";
+import ChurchesIndex from "@/components/Churches/Index.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +32,16 @@ const router = createRouter({
       path: "/posts",
       component: PostsIndex,
       name: "posts",
+    },
+    {
+      path: '/users',
+      component: UsersIndex,
+      name: 'users',
+    },
+    {
+      path: '/churches',
+      component: ChurchesIndex,
+      name: 'churches',
     },
   ],
 });

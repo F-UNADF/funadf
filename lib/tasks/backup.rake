@@ -11,7 +11,7 @@ namespace :db do  desc "Backup project database. Options: DIR=backups RAILS_ENV=
 
     desc "### TACHE CRON ###"
     desc "MAILTO='p.gruson@gmail.com'"
-    desc "0 4 6 * * docker exec -it funadf_app bash -c 'RAILS_ENV=production bundle exec rake db:backup'"
+    desc "0 4 6 * * nginx exec -it funadf_app bash -c 'RAILS_ENV=production bundle exec rake db:backup'"
 
     datestamp = Time.now.strftime("%Y-%m-%d_%H-%M-%S")    
     base_path = Rails.root
@@ -23,7 +23,7 @@ namespace :db do  desc "Backup project database. Options: DIR=backups RAILS_ENV=
     FileUtils.mkdir_p(backup_folder)    
     db_config = ActiveRecord::Base.configurations[Rails.env] 
 
-    passwords = YAML.load_file(File.join(Rails.root, 'docker', 'mysql', 'password.yml'))
+    passwords = YAML.load_file(File.join(Rails.root, 'nginx', 'mysql', 'password.yml'))
 
     rootpswd = passwords["services"]['password']['environment']['MYSQL_ROOT_PASSWORD']
 

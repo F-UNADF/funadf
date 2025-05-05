@@ -1,14 +1,20 @@
 class Api::UsersController < ApiController
 
   def index
-    if @structure.nil?
+    users = []
+    # Si user is Admin, on récupère tous les utilisateurs
+    if current_user.is_admin? || current_user.has_role?(:moderator)
       users = User.left_joins(:roles)
                   .select("users.*, GROUP_CONCAT(roles.name) as roles")
                   .group('users.id')
-    else
-      users = @structure.users.left_joins(:roles)
-                        .select("users.*, GROUP_CONCAT(roles.name) as roles")
-                        .group('users.id')
+    elsif current_user.has_any_role?(:president, :treasurer, :secretary, :director)
+      # Si user est administrateur d'une structure, on récupère les utilisateurs de cette structure
+      structures = current_user.associations_responsabilities
+      User.joins(:structures)
+          .where(structures: { id: structures.pluck(:id) })
+          .left_joins(:roles)
+          .select("users.*, GROUP_CONCAT(roles.name) as roles")
+          .group('users.id')
     end
 
     render json: {users: users.map { |user| user.attributes.merge('current_level' => user.level)  }}

@@ -27,12 +27,11 @@
 
 <script>
 import Papa from 'papaparse';
-import { VDataTable } from 'vuetify/labs/VDataTable'
 
 export default {
     name: 'FileImportForm',
     components: {
-        Papa, VDataTable
+        Papa
     },
     methods: {
         handleFileUpload(event) {

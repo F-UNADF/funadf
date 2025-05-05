@@ -61,6 +61,12 @@ class Api::MenusController < ApiController
             icon: "mdi-wallet",
             to: admin_fees_path,
           }
+        result <<
+          {
+            title: "Documents",
+            icon: "mdi-folder-open",
+            to: admin_documents_path,
+          }
 
 
           ## PARAMETTRAGE APPLICATION ##
@@ -74,13 +80,6 @@ class Api::MenusController < ApiController
             icon: 'mdi-account-key',
             to: admin_roles_path,
           }
-        result <<
-          {
-            title: 'Rassemblements',
-            icon: 'mdi-account-group',
-            to: admin_meetings_path,
-            new_tab: true,
-          }
       end
 
       ## NAVIGATION ##
@@ -88,37 +87,13 @@ class Api::MenusController < ApiController
         {
           header: "NAVIGATION",
         }
+
       result <<
         {
           title: "Mon espace",
           icon: "mdi-rss",
-          href: me_me_url(subdomain: :me),
+          href: root_url(subdomain: nil),
         }
-      result <<
-        {
-          title: "Espace de votes",
-          icon: "mdi-vote",
-          href: root_url(subdomain: ''),
-        }
-    when 'votes'
-      result = [
-        {
-          header: "VOTES",
-        },
-        {
-          title: "Mes votes",
-          icon: "mdi-vote",
-          to: votes_campaigns_path,
-        },
-        {
-          header: "NAVIGATION",
-        },
-        {
-          title: "Mon espace",
-          icon: "mdi-rss",
-          href: me_me_url(subdomain: :me),
-        },
-      ]
     when 'me'
       result = [
         {
@@ -133,18 +108,21 @@ class Api::MenusController < ApiController
           title: "Mon profil",
           icon: "mdi-account",
           to: me_me_path,
-          new_tab: true,
         },
         {
           title: "Annuaire",
           icon: "mdi-card-account-details-outline",
           to: me_annuaire_path,
-          new_tab: true,
         },
         {
-          title: "Espace de votes",
+          title: "Documents",
+          icon: "mdi-folder-outline",
+          to: me_documents_path,
+        },
+        {
+          title: "Votes",
           icon: "mdi-vote",
-          href: root_url(subdomain: ''),
+          to: me_votes_path,
         }
       ]
     when 'association'
@@ -173,48 +151,14 @@ class Api::MenusController < ApiController
           to: association_campaigns_path,
         },
         {
-          header: "NAVIGATION",
-        },
-        {
-          title: "Mon espace",
-          icon: "mdi-rss",
-          href: me_me_url(subdomain: :me),
-        },
-        {
-          title: "Espace de votes",
-          icon: "mdi-vote",
-          href: root_url(subdomain: ''),
-        },
-      ]
-    when /test|uadpif|urb/
-      result = [
-        {
-          header: "INTRANET",
-        },
-        {
-          title: "Actu",
-          icon: "mdi-newspaper",
-          to: intranet_posts_path,
-        },
-        {
-          title: "Agenda",
-          icon: "mdi-calendar",
-          to: intranet_events_path,
-        },
-        {
           title: "Pasteurs",
           icon: "mdi-account-group",
-          to: intranet_users_path,
+          to: association_users_path,
         },
         {
           title: "Eglises",
           icon: "mdi-church",
-          to: intranet_churches_path,
-        },
-        {
-          title: "Campagnes",
-          icon: "mdi-vote",
-          to: intranet_campaigns_path,
+          to: association_churches_path,
         },
         {
           header: "NAVIGATION",
@@ -222,28 +166,11 @@ class Api::MenusController < ApiController
         {
           title: "Mon espace",
           icon: "mdi-rss",
-          href: me_me_url(subdomain: :me),
-        },
-        {
-          title: "Espace de votes",
-          icon: "mdi-vote",
-          href: root_url(subdomain: ''),
+          href: root_url,
         },
       ]
     else
       result[:error] = "Menu #{menu} not found"
-    end
-
-    Intranet.order(:subdomain).each do |intranet|
-      if current_user.associations_responsabilities.include?(intranet.structure)
-        # insert header INTRANET if not present
-        result << { header: "INTRANET" } unless result.any? { |h| h[:header] == "INTRANET" }
-        result << {
-          title: intranet.structure_name,
-          icon: "mdi-rss",
-          href: root_url(subdomain: intranet.subdomain),
-        }
-      end
     end
 
     if current_user.is_admin? || current_user.associations_responsabilities.any?
@@ -262,7 +189,6 @@ class Api::MenusController < ApiController
           title: "Association",
           icon: "mdi-domain",
           href: association_root_url(subdomain: :association),
-          new_tab: true,
         }
       end
     end
