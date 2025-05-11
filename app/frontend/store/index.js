@@ -15,6 +15,7 @@ import meetingsStore from "./modules/meetingsStore";
 import profileStore from "./modules/profileStore";
 import feesStore from "./modules/feesStore";
 import documentsStore from "./modules/documentsStore";
+import pushNotificationsStore from "./modules/pushNotificationsStore";
 
 const debug = process.env.NODE_ENV !== "production";
 
@@ -36,6 +37,7 @@ const store = createStore({
         profileStore,
         feesStore,
         documentsStore,
+        pushNotificationsStore,
     },
     strict: debug,
 });

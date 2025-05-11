@@ -42,6 +42,9 @@ gem 'net-imap', require: false
 gem 'net-protocol', require: false
 gem 'net-smtp', require: false
 
+gem 'googleauth'
+gem 'faraday'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

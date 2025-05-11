@@ -14,6 +14,7 @@ import ChurchesIndex from "../components/Churches/Index.vue";
 import FeesIndex from "../components/Fees/Index.vue";
 import RolesIndex from "../components/Roles/Index.vue";
 import MeetingsIndex from "../components/Meetings/Index.vue";
+import PushNotificationsIndex from "../components/PushNotifications/Index.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -135,6 +136,11 @@ const router = createRouter({
             path     : '/admin/documents',
             component: DocumentsIndex,
             name     : 'admin.documents'
+        },
+        {
+            path     : '/admin/push_notifications',
+            component: PushNotificationsIndex,
+            name     : 'admin.push_notifications'
         }
     ],
 });

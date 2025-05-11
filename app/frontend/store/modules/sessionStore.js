@@ -62,6 +62,18 @@ const actions = {
                 });
         });
     },
+    storeDeviceToken({ commit }, payload) {
+        // Return a Promise
+        return new Promise((resolve, reject) => {
+            axios.post('/api/device_tokens', payload)
+                .then((response) => {
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error); // Reject with the error if request fails
+                });
+        });
+    },
     connect_google({ commit }, payload) {
         // Return a Promise
         return new Promise((resolve, reject) => {
