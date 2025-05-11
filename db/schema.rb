@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_11_080222) do
+ActiveRecord::Schema.define(version: 2025_05_11_130016) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -146,6 +146,15 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.index ["structure_id"], name: "index_categories_on_structure_id"
   end
 
+  create_table "device_tokens", charset: "latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "token"
+    t.string "platform"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_device_tokens_on_user_id"
+  end
+
   create_table "documents", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -255,6 +264,15 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.datetime "updated_at", null: false
     t.boolean "pinned"
     t.index ["structure_id"], name: "index_posts_on_structure_id"
+  end
+
+  create_table "push_notifications", charset: "latin1", force: :cascade do |t|
+    t.string "title"
+    t.string "body"
+    t.string "url"
+    t.datetime "sent_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "roles", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -368,6 +386,7 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
   add_foreign_key "api_tokens", "users"
   add_foreign_key "attachments", "posts"
   add_foreign_key "categories", "categories"
+  add_foreign_key "device_tokens", "users"
   add_foreign_key "documents", "categories"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"

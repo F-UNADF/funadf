@@ -43,6 +43,8 @@ Rails.application.routes.draw do
 
     resources :fees
 
+    resources :device_tokens, only: [:create, :destroy]
+
     get '/profile', to: 'profile#show'
 
     get '/search', to: 'search#index'

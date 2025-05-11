@@ -1,6 +1,6 @@
 <template>
   <v-app theme="light">
-    <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar" />
+    <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar"/>
     <Header
         :user="currentUser"
         :ouser="ouser"
@@ -79,16 +79,16 @@ function getSubdomain() {
 }
 
 export default {
-  name: "App",
+  name      : "App",
   components: {
     Sidebar,
     Header,
     UserForm,
   },
-  computed: {
+  computed  : {
     ...mapGetters("sessionStore", {
       currentUser: "currentUser",
-      ouser: "getOriginalUser",
+      ouser      : "getOriginalUser",
     }),
     ...mapGetters("menuStore", ["getMenu"]),
     dialogForm: {
@@ -100,7 +100,7 @@ export default {
       },
     },
   },
-  methods: {
+  methods   : {
     ...mapActions("sessionStore", ["logout"]),
     showSnackbar(message, color, title = null, photo = null) {
       this.snackbar.title = title;
@@ -112,16 +112,16 @@ export default {
   },
   data() {
     return {
-      snackbar: {
-        show: false,
-        title: null,
+      snackbar   : {
+        show   : false,
+        title  : null,
         message: "",
-        color: "",
-        photo: null,
+        color  : "",
+        photo  : null,
         timeout: 10000,
       },
       showSidebar: true,
-      messaging: null,
+      messaging  : null,
     };
   },
   watch: {
@@ -138,15 +138,36 @@ export default {
   },
   mounted() {
     const firebaseConfig = {
-      apiKey: "AIzaSyCxbYAg-_eIci32Qf1ZRoKZLwkOD-vTuHo",
-      authDomain: "funadf-49dfb.firebaseapp.com",
-      projectId: "funadf-49dfb",
-      storageBucket: "funadf-49dfb.firebasestorage.app",
+      apiKey           : "AIzaSyCxbYAg-_eIci32Qf1ZRoKZLwkOD-vTuHo",
+      authDomain       : "funadf-49dfb.firebaseapp.com",
+      projectId        : "funadf-49dfb",
+      storageBucket    : "funadf-49dfb.firebasestorage.app",
       messagingSenderId: "609947767440",
-      appId: "1:609947767440:web:17de62d5e49d3a0c2ffe15",
-      measurementId: "G-394J13VTZX"
+      appId            : "1:609947767440:web:17de62d5e49d3a0c2ffe15",
+      measurementId    : "G-394J13VTZX"
     };
     const app = initializeApp(firebaseConfig);
+
+    // Demande la permission de recevoir des notifications
+    // Si on a l'auto on store le token api/device_tokens (post) en recuperant le user_id de la session
+    getToken(getMessaging(app),
+        {vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg"})
+    .then((currentToken) => {
+      if (currentToken) {
+        let payload = {
+          token   : currentToken,
+          user_id : this.currentUser.id,
+          platform: 'web',
+        }
+        this.$store.dispatch("sessionStore/storeDeviceToken", payload);
+      } else {
+        console.log("No registration token available. Request permission to generate one.");
+      }
+    })
+    .catch((err) => {
+      console.log("An error occurred while retrieving token. ", err);
+    });
+
     this.messaging = getMessaging(app); // Stocke dans this.messaging
     onMessage(this.messaging, (payload) => {
       this.showSnackbar(payload.notification.body, "success", payload.notification.title, payload.notification.image);
