@@ -64,12 +64,14 @@ import {initializeApp} from 'firebase/app';
 import {getMessaging, getToken, onMessage} from "firebase/messaging";
 
 function getSubdomain() {
-  const hostname = window.location.hostname;
-  let menu = 'me';
+  // on recupere le path de l'url
+  let path = window.location.pathname;
 
-  if (hostname.includes('admin')){
+  let menu = 'me';
+  // si le path commence par /admin
+  if (path.startsWith('/admin')) {
     menu = 'admin';
-  } else if (hostname.includes('association')){
+  } else if (path.startsWith('/association')) {
     menu = 'association';
   }
 

@@ -30,13 +30,8 @@ RUN npm install --force
 RUN npm install --global yarn
 
 ADD . /app
-
-RUN groupadd -g 1000 funadf && useradd -m -u 1000 -g funadf funadf
-RUN chown -R funadf:funadf /app
-
 # Assure-toi que wkhtmltopdf est accessible à l'utilisateur funadf
 RUN chmod +x /usr/bin/wkhtmltopdf
 
-USER funadf
 
 EXPOSE 3000

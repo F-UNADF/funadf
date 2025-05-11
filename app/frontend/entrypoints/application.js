@@ -6,9 +6,7 @@ import "vuetify/styles";
 
 // Router
 import {createRouter, createWebHistory} from "vue-router";
-import admin_router from "../router/admin";
-import me_router from "../router/me";
-import association_router from "../router/association";
+import routes from "../router/router";
 import PasswordIndex from "../components/Password/Index.vue";
 import SessionIndex from "../components/Session/Index.vue";
 import PasswordCreate from "../components/Password/Create.vue";
@@ -66,16 +64,6 @@ const vuetify = createVuetify({
     },
 });
 
-let hostname = window.location.hostname; // Récupère le domaine actuel
-let routes = me_router; // Route par défaut
-
-// si hostname contains admin
-if (hostname.includes('admin')){
-    routes = admin_router;
-} else if (hostname.includes('association')){
-    routes = association_router;
-}
-
 // Ajout des routes globales
 routes.addRoute({path: "/connexion", component: SessionIndex, name: "connexion"});
 routes.addRoute({path: "/mot-de-passe-oublie", component: PasswordIndex, name: "forgotPassword"});
@@ -86,8 +74,6 @@ const router = createRouter({
     history: createWebHistory(),
     routes: routes.getRoutes(),
 });
-
-console.log(router);
 
 // Guard de navigation
 router.beforeEach((to, from, next) => {
