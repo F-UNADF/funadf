@@ -92,7 +92,7 @@ class Api::MenusController < ApiController
         {
           title: "Mon espace",
           icon: "mdi-rss",
-          href: root_url(subdomain: 'app'),
+          href: root_url,
         }
     when 'me'
       result = [
@@ -181,14 +181,14 @@ class Api::MenusController < ApiController
         result << {
           title: "Admin",
           icon: "mdi-cog",
-          href: admin_root_url(subdomain: 'admin.app'),
+          href: admin_users_url,
         }
       end
       if !current_user.associations_responsabilities.blank?
         result << {
           title: "Association",
           icon: "mdi-domain",
-          href: association_root_url(subdomain: 'association.app'),
+          href: association_associations_url,
         }
       end
     end

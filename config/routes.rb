@@ -88,35 +88,31 @@ Rails.application.routes.draw do
   end
 
   # ADMIN SUBDOMAIN
-  namespace :admin, path: '' do
-    constraints(:subdomain => /admin/) do
-      resources :users, only: :index
-      resources :churches, only: :index
-      resources :associations, only: :index
-      resources :campaigns, only: :index
-      resources :events, only: :index
-      resources :posts, only: :index
-      resources :roles, only: :index
-      resources :meetings, only: :index
-      resources :fees, only: :index
-      resources :documents, only: :index
+  namespace :admin do
+    resources :users, only: :index
+    resources :churches, only: :index
+    resources :associations, only: :index
+    resources :campaigns, only: :index
+    resources :events, only: :index
+    resources :posts, only: :index
+    resources :roles, only: :index
+    resources :meetings, only: :index
+    resources :fees, only: :index
+    resources :documents, only: :index
 
-      root to: redirect('/users'), as: :root
-    end
+    root to: redirect('/admin/users'), as: :root
   end
 
   # ASSOCIATION SUBDOMAIN
-  namespace :association, path: '' do
-    constraints(:subdomain => 'association') do
-      resources :associations, only: :index
-      resources :campaigns, only: :index
-      resources :events, only: :index
-      resources :posts, only: :index
-      resources :users, only: :index
-      resources :churches, only: :index
+  namespace :association do
+    resources :associations, only: :index
+    resources :campaigns, only: :index
+    resources :events, only: :index
+    resources :posts, only: :index
+    resources :users, only: :index
+    resources :churches, only: :index
 
-      root to: redirect('/campaigns'), as: :root
-    end
+    root to: redirect('/association/campaigns'), as: :root
   end
 
   # ME SUBDOMAIN
