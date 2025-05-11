@@ -11,7 +11,7 @@ class FcmNotificationService
       json_key_io: File.open(Rails.root.join('config', 'credential.json')),
       scope: SCOPE
     )
-    @project_id = JSON.parse(File.read(Rails.root.join('config', 'service_account.json')))['project_id']
+    @project_id = JSON.parse(File.read(Rails.root.join('config', 'credential.json')))['project_id']
   end
 
   def send_notification(token:, title:, body:)

@@ -67,6 +67,12 @@ class Api::MenusController < ApiController
             icon: "mdi-folder-open",
             to: admin_documents_path,
           }
+        result <<
+          {
+            title: "Notifications",
+            icon: "mdi-message",
+            to: admin_push_notifications_path,
+          }
 
 
           ## PARAMETTRAGE APPLICATION ##

@@ -65,7 +65,7 @@ const actions = {
     storeDeviceToken({ commit }, payload) {
         // Return a Promise
         return new Promise((resolve, reject) => {
-            axios.post('api/device_tokens', payload)
+            axios.post('/api/device_tokens', payload)
                 .then((response) => {
                     resolve(response);
                 })

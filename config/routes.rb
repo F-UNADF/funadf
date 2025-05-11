@@ -73,6 +73,9 @@ Rails.application.routes.draw do
     post '/update_order_documents', to: 'documents#update_order'
     resources :categories
 
+    resources :push_notifications, only: [:index, :create, :update, :destroy]
+    post '/push_notifications/send', to: 'push_notifications#send_notification'
+
     get 'referentiels/:referentiel', to: 'referentiels#show'
     get 'menus/:menu', to: 'menus#show'
 
@@ -101,6 +104,7 @@ Rails.application.routes.draw do
     resources :meetings, only: :index
     resources :fees, only: :index
     resources :documents, only: :index
+    resources :push_notifications, only: :index
 
     root to: redirect('/admin/users'), as: :root
   end
