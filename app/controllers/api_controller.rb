@@ -22,7 +22,7 @@ class ApiController < ActionController::Base
     first_segment = path.split('/')[1] # => "admin"
 
     # first segment doit etre dans admin association et region
-    if first_segment.present? && first_segment.in?(%w[admin association region])
+    if first_segment.present?
       @subdomain = first_segment
     end
   end
