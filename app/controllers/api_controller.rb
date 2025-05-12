@@ -18,7 +18,7 @@ class ApiController < ActionController::Base
   def set_subdomain
     @subdomain = ''
 
-    path = request.path # exemple : /admin/dashboard
+    path = request.referer # exemple : /admin/dashboard
     first_segment = path.split('/')[1] # => "admin"
 
     # first segment doit etre dans admin association et region
