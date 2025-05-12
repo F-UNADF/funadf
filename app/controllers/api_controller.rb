@@ -18,19 +18,15 @@ class ApiController < ActionController::Base
   def set_subdomain
     @subdomain = ''
 
-    referer = request.referer
-    return unless referer
+    path = request.path # exemple : /admin/dashboard
+    first_segment = path.split('/')[1] # => "admin"
 
-    # Extraire le sous-domaine du referer (si nécessaire)
-    uri = URI.parse(referer)
-    referer_subdomain = uri.host.split('.').first
-
-    # Mettre à jour le sous-domaine dans la requête en fonction du referer
-    if referer_subdomain.present?
-      # Par exemple, changer la requête en fonction du sous-domaine du referer
-      @subdomain = referer_subdomain
+    # first segment doit etre dans admin association et region
+    if first_segment.present? && first_segment.in?(%w[admin association region])
+      @subdomain = first_segment
     end
   end
+
 
   def authenticate
     authenticate_user_with_token || handle_bad_authentication
