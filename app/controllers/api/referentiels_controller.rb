@@ -93,6 +93,8 @@ class Api::ReferentielsController < ApiController
       end
       result[:structures] = structures
       result[:levels] = levels
+    when 'push_notifications'
+      result[:levels] = levels
     when 'meetings'
       users = User.enabled
       result[:users] = users

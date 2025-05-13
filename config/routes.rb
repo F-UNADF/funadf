@@ -73,7 +73,7 @@ Rails.application.routes.draw do
     post '/update_order_documents', to: 'documents#update_order'
     resources :categories
 
-    resources :push_notifications, only: [:index, :create, :update, :destroy]
+    resources :push_notifications
     post '/push_notifications/send', to: 'push_notifications#send_notification'
 
     get 'referentiels/:referentiel', to: 'referentiels#show'

@@ -18,6 +18,9 @@
         <v-col cols="12" md="12">
           <v-text-field v-model="editedItem.url" label="Url"></v-text-field>
         </v-col>
+        <v-col cols="12" md="12">
+          <select-all :options="referentiels.levels" v-model="editedItem.accesses"></select-all>
+        </v-col>
       </v-row>
     </v-card-text>
     <v-card-actions class="bg-blue-lighten-5">
@@ -31,20 +34,23 @@
 <script>
 import {mapGetters} from "vuex";
 import moment from "moment";
+import SelectAll from "../Tools/SelectAll.vue";
 
 export default {
-  name    : "PushNotificationForm",
-  computed: {
+  name      : "PushNotificationForm",
+  components: {SelectAll},
+  computed  : {
     ...mapGetters('pushNotificationsStore', {
-      item       : 'getItem',
-      formLoading: 'getFormLoading',
-      dialogForm : 'getDialogForm',
+      item        : 'getItem',
+      formLoading : 'getFormLoading',
+      dialogForm  : 'getDialogForm',
+      referentiels: 'getReferentiels',
     }),
     getTitle() {
       return (this.editedItem.id === null) ? "Ajouter une notification" : "Modifier une notification";
     },
   },
-  methods : {
+  methods   : {
     close     : function () {
       this.$store.dispatch('pushNotificationsStore/items');
       this.$store.commit('pushNotificationsStore/setDialogForm', false);
@@ -66,7 +72,7 @@ export default {
       });
     },
   },
-  watch   : {
+  watch     : {
     item: {
       deep     : true,
       immediate: true,

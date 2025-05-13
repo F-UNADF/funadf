@@ -126,6 +126,8 @@ export default {
     },
     refresh: function () {
       this.$store.dispatch('pushNotificationsStore/items');
+      this.$store.dispatch('pushNotificationsStore/referentiels');
+
     },
     tryDeleteItem: function (item) {
       Object.assign(this.deletingItem, item);
