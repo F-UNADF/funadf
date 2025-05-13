@@ -28,6 +28,11 @@
           <small>{{ item.body }}</small>
         </td>
         <td>
+          <v-chip v-for="access in item.accesses" :key="access" class="ma-1" color="primary" text-color="white">
+            {{ access.level }}
+          </v-chip>
+        </td>
+        <td>
 
           <v-tooltip location="top" text="Envoyer la notification">
             <template v-slot:activator="{ props }">
@@ -137,7 +142,8 @@ export default {
       this.$store.dispatch('pushNotificationsStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
-        this.$root.showSnackbar('Actualité supprimée avec succès', 'success');
+        this.refresh();
+        this.$root.showSnackbar('Notification supprimée avec succès', 'success');
       });
     },
   },
@@ -161,6 +167,11 @@ export default {
           sortable: true
         },
         {
+          titre: 'Pour ?',
+          key: 'accesses',
+          sortable: false,
+        },
+        {
           title: 'Actions',
           key: 'actions',
           sortable: false
@@ -170,6 +181,7 @@ export default {
   },
   beforeMount: function () {
     this.$store.dispatch('pushNotificationsStore/items');
+    this.$store.dispatch('pushNotificationsStore/referentiels');
   },
 }
 </script>

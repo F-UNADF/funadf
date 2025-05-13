@@ -2,22 +2,19 @@ class Api::PushNotificationsController < ApiController
   before_action :set_push_notification, only: [:show, :update, :destroy, :send_notification]
 
   def index
-    render json: PushNotification.order(created_at: :desc)
+    render json: PushNotification.order(created_at: :desc), include: ['accesses']
   end
 
   def show
-    render json: @push_notification, include: ['accesses']
+    render json: {push_notification: @push_notification, accesses: @push_notification.accesses.pluck(:level)}
   end
 
   def create
     notification = PushNotification.new push_notification_params
-
-    params[:push_notification][:accesses].each do |level|
-      notification.accesses.find_or_create_by(level: level[1], can_access: true)
-    end
-    notification.accesses.where.not(level: params[:push_notification][:accesses].values).destroy_all
-
     if notification.save
+      params[:push_notification][:accesses].each do |level|
+        notification.accesses.find_or_create_by(level: level, can_access: true)
+      end
       render json: notification, status: :created
     else
       render json: { errors: notification.errors.full_messages }, status: :unprocessable_entity
@@ -27,7 +24,7 @@ class Api::PushNotificationsController < ApiController
   def update
     if @push_notification.update push_notification_params
       params[:push_notification][:accesses].each do |level|
-        notification.accesses.find_or_create_by(level: level[1], can_access: true)
+        notification.accesses.find_or_create_by(level: level, can_access: true)
       end
       notification.accesses.where.not(level: params[:push_notification][:accesses].values).destroy_all
       render json: @push_notification

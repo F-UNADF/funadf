@@ -42,7 +42,9 @@ const actions = {
             axios
             .get("/api/push_notifications/" + id, {})
             .then((res) => {
-                commit("setItem", res.data);
+                let item = res.data.push_notification;
+                item.accesses = res.data.accesses;
+                commit("setItem", item);
                 resolve(res);
             })
             .catch((error) => {
@@ -51,10 +53,11 @@ const actions = {
         });
     },
     save        : function ({commit}, item) {
+        console.log("save", item);
         return new Promise((resolve, reject) => {
-            if (item.id) {
+            if (item.push_notification.id) {
                 axios
-                .patch("/api/push_notifications/" + item.id, item)
+                .patch("/api/push_notifications/" + item.push_notification.id, item)
                 .then((res) => {
                     commit("setItem", res.data);
                     resolve(res.data);
