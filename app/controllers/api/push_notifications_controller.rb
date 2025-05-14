@@ -24,9 +24,9 @@ class Api::PushNotificationsController < ApiController
   def update
     if @push_notification.update push_notification_params
       params[:push_notification][:accesses].each do |level|
-        notification.accesses.find_or_create_by(level: level, can_access: true)
+        @push_notification.accesses.find_or_create_by(level: level, can_access: true)
       end
-      notification.accesses.where.not(level: params[:push_notification][:accesses].values).destroy_all
+      @push_notification.accesses.where.not(level: params[:push_notification][:accesses]).destroy_all
       render json: @push_notification
     else
       render json: { errors: @push_notification.errors.full_messages }, status: :unprocessable_entity
@@ -39,7 +39,14 @@ class Api::PushNotificationsController < ApiController
   end
 
   def send_notification
-    tokens = DeviceToken.pluck(:token).uniq
+    # Push notification a plusieurs accesses (level)
+    # On recupere les tokens dont les utilisateurs ont le niveau d'accès
+    users = User.with_latest_career_level_in(@push_notification.accesses.pluck(:level))
+
+    raise "Users with access levels: #{users.inspect}"
+
+    tokens = users.map(&:fcm_token).compact
+
     service = FcmNotificationService.new
 
     results = []

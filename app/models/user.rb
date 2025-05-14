@@ -31,11 +31,6 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :responsabilities, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :fees, reject_if: :all_blank, allow_destroy: true
 
-  validates :firstname, :lastname, presence: true
-
-  scope :enabled, -> { where.not(disabled: true) }
-  scope :disabled, -> { where(disabled: true) }
-
   has_one :wife_marriage, class_name: 'Marriage', foreign_key: :wife_id
   has_one :husband, class_name: 'User', through: :wife_marriage
   accepts_nested_attributes_for :wife_marriage, reject_if: :all_blank, allow_destroy: true
@@ -43,6 +38,25 @@ class User < ActiveRecord::Base
   has_one :husband_marriage, class_name: 'Marriage', foreign_key: :husband_id
   has_one :wife, class_name: 'User', through: :husband_marriage
   accepts_nested_attributes_for :husband_marriage, reject_if: :all_blank, allow_destroy: true
+
+  validates :firstname, :lastname, presence: true
+
+  scope :enabled, -> { where.not(disabled: true) }
+  scope :disabled, -> { where(disabled: true) }
+  scope :with_latest_career_level_in, ->(levels) {
+    normalized_levels = levels.map(&:downcase)
+
+    joins(:careers)
+      .where('careers.level IS NOT NULL')
+      .where('lower(careers.level) IN (?)', normalized_levels)
+      .where('careers.start_at = (
+        SELECT MAX(c2.start_at)
+        FROM careers c2
+        WHERE c2.user_id = users.id
+      )')
+      .order('careers.start_at DESC')
+  }
+
 
   before_validation :clean_name_attributes
 
