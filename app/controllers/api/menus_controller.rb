@@ -39,6 +39,12 @@ class Api::MenusController < ApiController
           }
         result <<
           {
+            title: "Regions",
+            icon: "mdi-map-marker-account",
+            to: admin_regions_path,
+          }
+        result <<
+          {
             title: "Campagnes",
             icon: "mdi-vote",
             to: admin_campaigns_path,
@@ -142,29 +148,9 @@ class Api::MenusController < ApiController
           to: association_associations_path,
         },
         {
-          title: "Actu",
-          icon: "mdi-newspaper",
-          to: association_posts_path,
-        },
-        {
-          title: "Agenda",
-          icon: "mdi-calendar",
-          to: association_events_path,
-        },
-        {
           title: "Campagnes",
           icon: "mdi-vote",
           to: association_campaigns_path,
-        },
-        {
-          title: "Pasteurs",
-          icon: "mdi-account-group",
-          to: association_users_path,
-        },
-        {
-          title: "Eglises",
-          icon: "mdi-church",
-          to: association_churches_path,
         },
         {
           header: "NAVIGATION",

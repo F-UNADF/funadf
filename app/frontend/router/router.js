@@ -15,6 +15,7 @@ import FeesIndex from "../components/Fees/Index.vue";
 import RolesIndex from "../components/Roles/Index.vue";
 import MeetingsIndex from "../components/Meetings/Index.vue";
 import PushNotificationsIndex from "../components/PushNotifications/Index.vue";
+import RegionsIndex from "../pages/Regions/Index.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -101,6 +102,11 @@ const router = createRouter({
             path     : "/admin/associations",
             component: AssociationsIndex,
             name     : "admin.associations",
+        },
+        {
+            path     : "/admin/regions",
+            component: RegionsIndex,
+            name     : "admin.regions",
         },
         {
             path     : "/admin/campaigns",
