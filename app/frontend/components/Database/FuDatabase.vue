@@ -2,7 +2,7 @@
     <div>
         <v-data-table
             :headers="headers"
-            :items="items"
+            :items="displayedItems"
             :search="search"
             class="elevation-1"
             :loading="loading"
@@ -17,6 +17,7 @@
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-text-field
+                        v-if="enabledSearch"
                         v-model="search"
                         :label="$t('search')"
                         class="mx-4"
@@ -26,14 +27,18 @@
                         hide-details
                         variant="outlined"
                     ></v-text-field>
-                    <v-btn
-                        class="me-2"
-                        
-                        color="primary"
-                        prepend-icon="mdi-plus"
-                        :text="$t(this.model + '.add')"
-                        @click="add"
-                    ></v-btn>
+
+                    <template v-for="action in config?.actions">
+                        <v-btn
+                            class="me-2"
+                            :color="action.color || 'primary'"
+                            :prepend-icon="action.icon || 'mdi-plus'"
+                            :text="$t(action.title)"
+                            @click="manageAction(action)"
+                        ></v-btn>
+
+                    </template>
+
                 </v-toolbar>
             </template>
             <template v-slot:no-data>
@@ -60,7 +65,7 @@
             @keydown.esc="dialog = false"
             @click:outside="dialog = false"
             >
-            <fuForm :model="model" :config="config" 
+            <fuForm :model="model" :config="config" v-if="dialog"
             @close="dialog = false"></fuForm>
         </v-dialog>
     </div>
@@ -83,6 +88,14 @@ export default {
             type: Array,
             default: () => [],
         },
+        localItems: {
+            type: Array,
+            default: () => [],
+        },
+        enabledSearch: {
+            type: Boolean,
+            default: () => true,
+        },
     },
     computed: {
         items() {
@@ -102,6 +115,13 @@ export default {
                 this.$store.commit(`${this.model}/setDialog`, value);
             },
         },
+        displayedItems() {
+            if(this.localItems.length > 0) {
+                console.log('localItems', this.localItems);
+                return this.localItems;
+            }
+            return this.items;
+        },
     },
     methods: {
         fetchItems() {
@@ -109,9 +129,19 @@ export default {
                 search: this.search,
             });
         },
+        manageAction(action) {
+            if (action.action === 'add') {
+                this.add();
+            } else if (action.action === 'edit') {
+                this.edit();
+            } else if (action.action === 'delete') {
+                this.delete();
+            } else if (action.action === 'custom') {
+                this.custom(action);
+            }
+        },
         add() {
             let newItem = this.config?.form?.defaultItem || {};
-            console.log(newItem);
             this.$store.commit(`${this.model}/setItem`, newItem);
             this.$store.commit(`${this.model}/setDialog`, true);
         },
@@ -130,14 +160,18 @@ export default {
     },
     watch: {
         search: function () {
-            this.$store.dispatch(`${this.model}/fetchItems`, {
-                search: this.search,
-            });
+            if (this.localItems.length === 0) {
+                this.$store.dispatch(`${this.model}/fetchItems`, {
+                    search: this.search,
+                });
+            }
         },
     },
     mounted() {
-        this.$store.dispatch(`${this.model}/fetchItems`);
-        this.$store.dispatch(`${this.model}/fetchConfig`);
+        if (this.localItems.length === 0) {
+            this.$store.dispatch(`${this.model}/fetchItems`);
+            this.$store.dispatch(`${this.model}/fetchConfig`);
+        }
     },
 
 }

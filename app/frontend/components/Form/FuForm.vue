@@ -8,29 +8,44 @@
         </v-toolbar>
         <v-card-text>
             <v-form v-model="valid">
+                <template v-if="config?.form?.tabs">
+                    <v-tabs v-model="tab"
+                            align-tabs="center"
+                            color="primary"
+                            class="mb-3">
+                        <v-tab v-for="t in config.form.tabs" :value="t.name">{{ t.title }}</v-tab>
+                    </v-tabs>
+
+                    {{config.form.tabs}}
+
+                    <v-tabs-window v-model="tab">
+                        <v-tabs-window-item v-for="t in config.form.tabs" :value="t.name" v-if="!t.hasOwnProperty('if') || manageCondition(t.if)">
+                            <v-row>
+                                <v-col v-for="(field, index) in t.fields" :key="index" cols="12" :md="field.grid || 12">
+                                    <fu-input
+                                        :type="field.type"
+                                        :value="editedItem[field.name]"
+                                        :model="model"
+                                        :label="$t(model + '.' + field.name)"
+                                        :rules="field.rules"
+                                        :placeholder="$t(model + '.' + field.name)"
+                                    ></fu-input>
+                                </v-col>
+                            </v-row>
+                        </v-tabs-window-item>
+                    </v-tabs-window>
+                </template>
+                <!-- Forumulaire simple sans onglet -->
                 <v-row>
                     <v-col v-for="(field, index) in config?.form?.fields" :key="index" cols="12" :md="field.grid || 12">
-                        <template v-if="field.type === 'text'">
-                            <v-text-field
-                                v-model="editedItem[field.name]"
-                                :label="$t(model + '.' + field.name)"
-                                :rules="field.rules"
-                                :type="field.type"
-                                :placeholder="$t(model + '.' + field.name)"
-                                variant="solo"
-                                clearable
-                            ></v-text-field>
-                        </template>
-                        <template v-else-if="field.type === 'file'">
-                            <v-file-input
-                                v-model="editedItem[field.name]"
-                                :label="$t(model + '.' + field.name)"
-                                :rules="field.rules"
-                                :placeholder="$t(model + '.' + field.name)"
-                                variant="solo"
-                                clearable
-                            ></v-file-input>
-                        </template>
+                        <fu-input
+                            :type="field.type"
+                            :value="editedItem[field.name]"
+                            :model="model"
+                            :label="$t(model + '.' + field.name)"
+                            :rules="field.rules"
+                            :placeholder="$t(model + '.' + field.name)"
+                        ></fu-input>
                     </v-col>
                 </v-row>
             </v-form>
@@ -44,19 +59,22 @@
 </template>
 
 <script>
+import FuInput from "./FuInput.vue";
+
 export default {
-    name: "FuForm",
-    props: {
-        model: {
-            type: String,
+    name      : "FuForm",
+    components: {FuInput},
+    props     : {
+        model : {
+            type   : String,
             default: () => "default",
         },
         config: {
-            type: Object,
+            type   : Object,
             default: () => ({}),
         },
     },
-    computed: {
+    computed  : {
         item() {
             return this.$store.getters[`${this.model}/getItem`] || {};
         },
@@ -69,7 +87,7 @@ export default {
             }
         }
     },
-    methods: {
+    methods   : {
         save() {
             this.$store.dispatch(`${this.model}/saveItem`, this.editedItem).then(response => {
                 this.$root.showSnackbar(this.$t(`${this.model}.saved`), 'success');
@@ -80,8 +98,34 @@ export default {
                 this.$root.showSnackbar(errors.join('<br/>'), 'error');
             });
         },
+        manageCondition(condition) {
+            if (condition) {
+                // condition[0] = this.editedItem[condition[0]];
+                // condition[1] = symbole
+                // condition[2] = comparaison
+                switch (condition[1]) {
+                    case '==':
+                        return this.editedItem[condition[0]] == condition[2];
+                    case '===':
+                        return this.editedItem[condition[0]] === condition[2];
+                    case '!=':
+                        return this.editedItem[condition[0]] != condition[2];
+                    case '!==':
+                        return this.editedItem[condition[0]] !== condition[2];
+                    case '<':
+                        return this.editedItem[condition[0]] < condition[2];
+                    case '<=':
+                        return this.editedItem[condition[0]] <= condition[2];
+                    case '>':
+                        return this.editedItem[condition[0]] > condition[2];
+                    case '>=':
+                        return this.editedItem[condition[0]] >= condition[2];
+                }
+            }
+            return true;
+        },
     },
-    watch: {
+    watch     : {
         item: {
             handler(newValue) {
                 this.editedItem = JSON.parse(JSON.stringify(newValue));
@@ -91,8 +135,9 @@ export default {
     },
     data() {
         return {
-            valid: false,
+            valid     : false,
             editedItem: {},
+            tab       : null,
         };
     },
 }
