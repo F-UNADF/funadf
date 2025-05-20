@@ -40,6 +40,8 @@ Rails.application.routes.draw do
     post '/churches/:id/roles/edit', to: 'churches#edit_roles'
 
     resources :regions
+    post '/regions/:id/members', to: 'regions#add_members'
+    post '/regions/:id/roles/edit', to: 'regions#edit_roles'
 
     resources :associations
     post '/associations/:id/members', to: 'associations#add_members'

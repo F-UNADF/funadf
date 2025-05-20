@@ -29,6 +29,15 @@ const i18n = createI18n({
         invalidCredentials: 'Identifiants invalides. Veuillez vérifier votre nom d\'utilisateur et votre mot de passe.',
         accountLocked: 'Votre compte est verrouillé. Veuillez contacter l\'administrateur.',
       },
+      form: {
+        error: 'Erreur lors de l\'enregistrement',
+        errors:{
+          required: "Ce champ est requis",
+          min: "La valeur doit être supérieure à {min}",
+          max: "La valeur doit être inférieure à {max}",
+          email: "Veuillez entrer une adresse e-mail valide",
+        }
+      },
       default: {
         noData: 'Aucun résultat trouvé',
         noDataExplain: 'Aucune donnée disponible. Si vous pensez qu\'il devrait y en avoir, veuillez contacter l\'administrateur.',
@@ -37,9 +46,12 @@ const i18n = createI18n({
         noData: 'Aucune région trouvée',
         noDataExplain: 'Aucune région disponible. Si vous pensez qu\'il devrait y en avoir, veuillez contacter l\'administrateur.',
         saved: 'Région enregistrée',
-        
+
         title: 'Régions',
         add: 'Ajouter une région',
+        edit: 'Modifier la région',
+        delete: 'Supprimer la région',
+
         name: 'Nom de la région',
         address_1: 'Adresse',
         address_2: 'Complément d\'adresse',

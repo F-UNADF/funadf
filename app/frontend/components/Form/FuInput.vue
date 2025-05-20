@@ -4,9 +4,9 @@
             <v-text-field
                 v-model="localValue"
                 :label="label"
-                :rules="rules"
+                :rules="computeRules(rules)"
                 :placeholder="placeholder"
-                variant="solo"
+                hide-details="auto"
                 @input="handleInput"
                 clearable
             ></v-text-field>
@@ -15,21 +15,15 @@
             <v-file-input
                 v-model="localValue"
                 :label="label"
-                :rules="rules"
+                :rules="computeRules(rules)"
                 :placeholder="placeholder"
+                hide-details="auto"
                 @input="handleInput"
-                variant="solo"
                 clearable
             ></v-file-input>
         </template>
         <template v-else-if="type === 'members'">
-            <FuMembersInput
-                v-model="localValue"
-                :model="model"
-                :label="label"
-                :rules="rules"
-                :placeholder="placeholder"
-                @input="handleInput"></FuMembersInput>
+            <FuMembersInput :model="model"></FuMembersInput>
         </template>
     </div>
 </template>
@@ -44,17 +38,12 @@ export default {
         FuMembersInput,
     },
     props: {
-        field      : {
-            type    : Object,
-            required: true,
-        },
         type       : {
             type   : String,
             default: () => "text",
         },
         value      : {
-            type    : Object,
-            required: true,
+            default : () => "",
         },
         model      : {
             type   : String,
@@ -74,10 +63,19 @@ export default {
         },
     },
     methods: {
-        handleInput     : function (newValue) {
-            this.localValue = newValue;
-            this.$emit('input', newValue);
-            this.$emit('update:value', newValue);
+        handleInput(event) {
+            this.$emit('update:modelValue', event.target.value); 
+        },
+        computeRules(rules) {
+            //rules est un tableau contenant les clés des rules à appliquer de localRules
+            //on va les appliquer à la valeur
+            let computedRules = [];
+            for (let rule of rules) {
+                if (this.localRules.hasOwnProperty(rule)) {
+                    computedRules.push(this.localRules[rule]);
+                }
+            }
+            return computedRules;
         },
     },
     watch: {
@@ -88,6 +86,17 @@ export default {
     data() {
         return {
             localValue: this.value,
+            localRules: 
+                {
+                    required: value => !!value || this.$t('form.errors.required'),
+                    minLength: value => (value && value.length >= 3) || this.$t('form.errors.minLength', [3]),
+                    maxLength: value => (value && value.length <= 255) || this.$t('form.errors.maxLength', [255]),
+                    email: value => {
+                        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        // attention une chaine vide est valide, email peut parfois être vide
+                        return value === null || value === "" || pattern.test(value) || this.$t('form.errors.email');
+                    },
+                }
         };
     },
 };

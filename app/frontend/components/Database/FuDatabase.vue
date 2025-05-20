@@ -28,7 +28,7 @@
                         variant="outlined"
                     ></v-text-field>
 
-                    <template v-for="action in config?.actions">
+                    <template v-for="action in config?.toolbarActions">
                         <v-btn
                             class="me-2"
                             :color="action.color || 'primary'"
@@ -56,6 +56,31 @@
                     :text="$t(this.model + '.noDataExplain')"
                 ></v-alert>
             </template>
+            <template v-slot:item.actions="{ item }">
+                 <v-menu :location="location">
+                    <template v-slot:activator="{ props }">
+                        <v-btn
+                        v-bind="props"
+                        icon
+                        variant="text"
+                        >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
+                    </template>
+
+                    <v-list>
+                        <v-list-item
+                            v-for="action, index in config?.itemActions"
+                            :key="index"
+                            :value="index"
+                            @click="manageAction(action, item)"
+                            :prepend-icon="action.icon || 'mdi-pencil'"
+                        >
+                            <v-list-item-title>{{ $t(action.title) }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </template>
         </v-data-table>
 
         <v-dialog
@@ -65,7 +90,7 @@
             @keydown.esc="dialog = false"
             @click:outside="dialog = false"
             >
-            <fuForm :model="model" :config="config" v-if="dialog"
+            <fuForm :model="model" :config="config" :item="item"
             @close="dialog = false"></fuForm>
         </v-dialog>
     </div>
@@ -129,11 +154,11 @@ export default {
                 search: this.search,
             });
         },
-        manageAction(action) {
+        manageAction(action, item = null) {
             if (action.action === 'add') {
                 this.add();
             } else if (action.action === 'edit') {
-                this.edit();
+                this.edit(item);
             } else if (action.action === 'delete') {
                 this.delete();
             } else if (action.action === 'custom') {
@@ -142,8 +167,16 @@ export default {
         },
         add() {
             let newItem = this.config?.form?.defaultItem || {};
+            console.log('add', newItem);
             this.$store.commit(`${this.model}/setItem`, newItem);
             this.$store.commit(`${this.model}/setDialog`, true);
+        },
+        edit(item) {
+            if (item) {
+                this.$store.dispatch(`${this.model}/fetchItem`, item.id).then(() => {
+                    this.$store.commit(`${this.model}/setDialog`, true);
+                });
+            }
         },
     },
     data() {
@@ -171,6 +204,7 @@ export default {
         if (this.localItems.length === 0) {
             this.$store.dispatch(`${this.model}/fetchItems`);
             this.$store.dispatch(`${this.model}/fetchConfig`);
+            this.$store.dispatch(`${this.model}/referentiels`);
         }
     },
 

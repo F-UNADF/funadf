@@ -1,5 +1,6 @@
 // stores/crudStore.js
 import axios from "axios";
+import { ref } from "firebase/database";
 
 export default function createCrudStore({ resource }) {
     const baseUri = `/api/${resource}`;
@@ -11,7 +12,9 @@ export default function createCrudStore({ resource }) {
             item: {},
             loading: false,
             dialog: false,
-            config: {}
+            config: {},
+            referentiels: [],
+            memebers: [],
         }),
         getters: {
             getItems: (state) => state.items,
@@ -19,6 +22,8 @@ export default function createCrudStore({ resource }) {
             getLoading: (state) => state.loading,
             getDialog: (state) => state.dialog,
             getConfig: (state) => state.config,
+            getReferentiels: (state) => state.referentiels,
+            getMembers: (state) => state.members,
         },
         actions: {
             async fetchItems({ commit }, params = {}) {
@@ -35,17 +40,66 @@ export default function createCrudStore({ resource }) {
             async fetchItem({ commit }, id) {
                 const res = await axios.get(`${baseUri}/${id}`);
                 commit('setItem', res.data[resource.slice(0, -1)]); // singular
+                // si il a des membres
+                if (res.data.members) {
+                    commit('setMembers', res.data.members);
+                }
             },
             async fetchConfig({ commit }) {
                 const res = await axios.get(`${baseUri}/config`);
                 commit('setConfig', res.data.config);
             },
-            async saveItem({ commit }, item) {
+            async saveItem({ commit, dispatch }, item) {
                 const method = item.id ? 'patch' : 'post';
                 const uri = item.id ? `${baseUri}/${item.id}` : baseUri;
                 const res = await axios[method](uri, { [resource.slice(0, -1)]: item });
                 commit('setItem', res.data[resource.slice(0, -1)]);
+                commit('setDialog', false);
+                await dispatch('fetchItems');
             },
+            referentiels: function ({commit}) {
+                return new Promise((resolve, reject) => {
+                    axios.get(`/api/referentiels/${resource}`, {}).then((res) => {
+                        commit('setReferentiels', res.data);
+                        resolve(res);
+                    }).catch((error) => {
+                        reject(error, 2000);
+                    });
+                });
+            },
+            addMembers: function ({dispatch, commit, state}, members) {
+                return new Promise((resolve, reject) => {
+                    axios.post(`/api/${resource}/${state.item.id}/members`, {members: members})
+                    .then((res) => {
+                        commit('setMembers', res.data.members);
+                        resolve(res);
+                    }).catch((error) => {
+                        reject(error, 2000);
+                    });
+                });
+            },
+            setRole: function ({dispatch, commit, state}, data) {
+                return new Promise((resolve, reject) => {
+                    axios.post(`/api/${resource}/${state.item.id}/roles/edit`, data)
+                    .then((res) => {
+                        commit('setMemberInMembersById', res.data.membership);
+                        resolve(res);
+                    }).catch((error) => {
+                        reject(error, 2000);
+                    });
+                });
+            },
+            removeMember: function ({dispatch, commit, state}, membership_id) {
+                return new Promise((resolve, reject) => {
+                    axios.delete(`/api/memberships/${membership_id}`, {})
+                    .then((res) => {
+                        dispatch('fetchItem', state.item.id);
+                        resolve(res);
+                    }).catch((error) => {
+                        reject(error, 2000);
+                    });
+                });
+            }
         },
         mutations: {
             setItems: (state, items) => (state.items = items),
@@ -53,6 +107,20 @@ export default function createCrudStore({ resource }) {
             setLoading: (state, loading) => (state.loading = loading),
             setDialog: (state, dialog) => (state.dialog = dialog),
             setConfig: (state, config) => (state.config = config),
+            setReferentiels: (state, referentiels) => (state.referentiels = referentiels),
+            setMembers: (state, members) => (state.members = members),
+            setMemberInMembersById: (state, membership) => {
+                const index = state.members.findIndex(member => member.id === membership.id);
+                if (index !== -1) {
+                    state.members[index] = membership;
+                }
+            },
+            removeMemberIdMembersById: (state, membership_id) => {
+                const index = state.members.findIndex(member => member.id === membership_id);
+                if (index !== -1) {
+                    state.members.splice(index, 1);
+                }
+            }
         },
     };
 }
