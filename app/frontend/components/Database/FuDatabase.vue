@@ -1,97 +1,85 @@
 <template>
     <div>
-        <v-data-table
-            :headers="headers"
-            :items="displayedItems"
-            :search="search"
-            class="elevation-1"
-            :loading="loading"
-            items-per-page="50"
-            :items-per-page-options="itemsPerPage"
-            :items-per-page-text="$t('itemsPerPage')"
-        >
+        <v-data-table :headers="headers" :items="displayedItems" :search="search" class="elevation-1" :loading="loading"
+            items-per-page="50" :items-per-page-options="itemsPerPage" :items-per-page-text="$t('itemsPerPage')">
             <template v-slot:top>
                 <v-toolbar>
+                    <v-btn icon color="info" variant="text" @click="fetchItems">
+                        <v-icon>mdi-refresh</v-icon>
+                    </v-btn>
+                    
                     <v-toolbar-title class="text-h6">
                         {{ $t(this.model + '.title') }}
                     </v-toolbar-title>
+
                     <v-spacer></v-spacer>
-                    <v-text-field
-                        v-if="enabledSearch"
-                        v-model="search"
-                        :label="$t('search')"
-                        class="mx-4"
-                        append-inner-icon="mdi-magnify"
-                        density="compact"
-                        single-line
-                        hide-details
-                        variant="outlined"
-                    ></v-text-field>
+
+                    <v-text-field v-if="enabledSearch" v-model="search" :label="$t('search')" class="mx-4"
+                        append-inner-icon="mdi-magnify" density="compact" single-line hide-details
+                        variant="outlined"></v-text-field>
 
                     <template v-for="action in config?.toolbarActions">
-                        <v-btn
-                            class="me-2"
-                            :color="action.color || 'primary'"
-                            :prepend-icon="action.icon || 'mdi-plus'"
-                            :text="$t(action.title)"
-                            @click="manageAction(action)"
-                        ></v-btn>
-
+                        <v-btn class="me-2" :color="action.color || 'primary'" :prepend-icon="action.icon || 'mdi-plus'"
+                            :text="$t(action.title)" @click="manageAction(action)"></v-btn>
                     </template>
 
                 </v-toolbar>
             </template>
             <template v-slot:no-data>
-                <v-progress-linear
-                    indeterminate
-                    color="cyan"
-                    v-if="loading"
-                ></v-progress-linear>
-                <v-alert
-                    v-else
-                    class="my-3"
-                    color="info"
-                    icon="$info"
-                    :title="$t(this.model + '.noData')"
-                    :text="$t(this.model + '.noDataExplain')"
-                ></v-alert>
+                <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
+                <v-alert v-else class="my-3" color="info" icon="$info" :title="$t(this.model + '.noData')"
+                    :text="$t(this.model + '.noDataExplain')"></v-alert>
             </template>
             <template v-slot:item.actions="{ item }">
-                 <v-menu :location="location">
-                    <template v-slot:activator="{ props }">
-                        <v-btn
-                        v-bind="props"
-                        icon
-                        variant="text"
-                        >
-                        <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
-                    </template>
 
-                    <v-list>
-                        <v-list-item
-                            v-for="action, index in config?.itemActions"
-                            :key="index"
-                            :value="index"
-                            @click="manageAction(action, item)"
-                            :prepend-icon="action.icon || 'mdi-pencil'"
-                        >
-                            <v-list-item-title>{{ $t(action.title) }}</v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
+            </template>
+            <template v-slot:item="{ item }">
+                <tr>
+                    <td v-for="(header, index) in headers" :key="index">
+                        <template v-if="header.value === 'actions'">
+                            <v-menu>
+                                <template v-slot:activator="{ props }">
+                                    <v-btn v-bind="props" icon variant="text">
+                                        <v-icon>mdi-dots-vertical</v-icon>
+                                    </v-btn>
+                                </template>
+
+                                <v-list>
+                                    <v-list-item v-for="action, index in config?.itemActions" :key="index"
+                                        :value="index" @click="manageAction(action, item)"
+                                        :prepend-icon="action.icon || 'mdi-pencil'">
+                                        <v-list-item-title>{{ $t(action.title) }}</v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </template>
+                        <template v-else-if="header.type === 'structure'">
+                            <v-avatar size="40" class="me-2">
+                                <img :src="`/logos/${item['id']}.png`" class="w-100" alt="Logo">
+                            </v-avatar>
+                            {{ item['name'] }}
+                        </template>
+                        <template v-else-if="header.type === 'user' && null !== item['user_id']">
+                            <v-avatar size="40" class="me-2">
+                                <img :src="`/avatars/${item['user_id']}.png`" class="w-100" alt="Logo">
+                            </v-avatar>
+                            {{ item['lastname'] }} {{ item['firstname'] }}
+                        </template>
+                        <template v-else-if="header.type === 'localisation' && null !== item['town']">
+                            {{ item['town'] }} ({{ item['zipcode'] }})
+                        </template>
+                        <template v-else>
+                            {{ item[header.value] }}
+                        </template>
+                    </td>
+                </tr>
             </template>
         </v-data-table>
 
-        <v-dialog
-            v-model="dialog"
-            :fullscreen="config?.form?.fullscreen === true"
-            :max-width="config?.form?.maxWidth || '600px'"
-            @keydown.esc="dialog = false"
-            @click:outside="dialog = false"
-            >
-            <fuForm :model="model" :config="config" :item="item"
-            @close="dialog = false"></fuForm>
+        <v-dialog v-model="dialog" :fullscreen="config?.form?.fullscreen === true"
+            :max-width="config?.form?.maxWidth || '600px'" @keydown.esc="dialog = false"
+            @click:outside="dialog = false">
+            <fuForm :model="model" :config="config" @close="dialog = false"></fuForm>
         </v-dialog>
     </div>
 </template>
@@ -141,7 +129,7 @@ export default {
             },
         },
         displayedItems() {
-            if(this.localItems.length > 0) {
+            if (this.localItems.length > 0) {
                 console.log('localItems', this.localItems);
                 return this.localItems;
             }
@@ -182,11 +170,11 @@ export default {
     data() {
         return {
             itemsPerPage: [
-                {value: 10, title: '10'},
-                {value: 25, title: '25'},
-                {value: 50, title: '50'},
-                {value: 100, title: '100'},
-                {value: -1, title: 'Tous'}
+                { value: 10, title: '10' },
+                { value: 25, title: '25' },
+                { value: 50, title: '50' },
+                { value: 100, title: '100' },
+                { value: -1, title: 'Tous' }
             ],
             search: '',
         };

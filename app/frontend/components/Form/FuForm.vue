@@ -23,10 +23,15 @@
                                 <v-row>
                                     <v-col v-for="(field, index) in t.fields" :key="index" cols="12"
                                         :md="field.grid || 12">
-                                        <fu-input :type="field.type" :value="editedItem[field.name]" :model="model"
-                                            :label="$t(model + '.' + field.name)" :rules="field.rules"
+                                        <fu-input 
+                                            :type="field.type" 
+                                            :value="editedItem[field.name]" 
+                                            :model="model"
+                                            :label="$t(model + '.' + field.name)" 
+                                            :rules="field.rules"
                                             :placeholder="$t(model + '.' + field.name)"
-                                            v-model="editedItem[field.name]"></fu-input>
+                                            v-model="editedItem[field.name]"
+                                        ></fu-input>
                                     </v-col>
                                 </v-row>
                             </v-tabs-window-item>
@@ -36,10 +41,15 @@
                 <!-- Forumulaire simple sans onglet -->
                 <v-row>
                     <v-col v-for="(field, index) in config?.form?.fields" :key="index" cols="12" :md="field.grid || 12">
-                        <fu-input :type="field.type" :value="editedItem[field.name]" :model="model"
-                            :label="$t(model + '.' + field.name)" :rules="field.rules"
+                        <fu-input 
+                            :type="field.type"
+                            :value="editedItem[field.name]"
+                            :model="model"
+                            :label="$t(model + '.' + field.name)" 
+                            :rules="field.rules"
                             :placeholder="$t(model + '.' + field.name)"
-                            v-model="editedItem[field.name]"></fu-input>
+                            v-model="editedItem[field.name]"
+                        ></fu-input>
                     </v-col>
                 </v-row>
             </v-card-text>

@@ -2,7 +2,7 @@ class Api::RegionsController < ApiController
   before_action :set_region, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index
-    regions = Region.select("structures.*, users.lastname, users.firstname")
+    regions = Region.select("structures.*, users.lastname, users.firstname, users.id AS user_id")
                      .joins("LEFT JOIN memberships ON memberships.structure_id = structures.id AND memberships.role_ID IN (SELECT id FROM roles WHERE name IN ('president'))")
                       .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
 
@@ -62,7 +62,7 @@ class Api::RegionsController < ApiController
 
     member_data[:role_name] = role.name
 
-    render json: { status: 200, membership: member_data }
+    render json: { status: 200, membership: member_data, members: @region.members_with_details}
   end
 
   def remove_members

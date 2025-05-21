@@ -20,8 +20,9 @@ export default {
             model: 'regions',
             headers: [
                 {title: 'ID', value: 'id'},
-                {title: 'Nom', value: 'name'},
-                {title: 'Ville', value: 'zipcode'},
+                {title: 'Nom', value: 'name', type: 'structure'}, // type structure : logo + nom
+                {title: 'Président', value: 'president', type: 'user'}, // type user : NOM + Prenom (friendly_id)
+                {title: 'Ville', value: 'zipcode', type: 'localisation'}, // type localisation : TOWN (zipcode)
                 {title: 'Actions', value: 'actions', sortable: false},
             ],
         };

@@ -23,7 +23,7 @@ class Api::ReferentielsController < ApiController
       result[:associations]     = associations
       result[:roles]            = roles
     when 'churches'
-      roles = I18n.t('activerecord.attributes.roles.names')
+      roles = Role.pluck(:name).uniq
 
       sql     = "
             SELECT
@@ -43,7 +43,7 @@ class Api::ReferentielsController < ApiController
       result[:roles]   = roles
       result[:members] = members
     when 'regions'
-      roles = I18n.t('activerecord.attributes.roles.names')
+      roles = Role.select(:name, :friendly_name).uniq.to_a
 
       sql     = "
             SELECT
@@ -63,7 +63,7 @@ class Api::ReferentielsController < ApiController
       result[:roles]   = roles
       result[:members] = members
     when 'associations'
-      roles = I18n.t('activerecord.attributes.roles.names')
+      roles = Role.pluck(:name).uniq
 
       sql     = "
             SELECT

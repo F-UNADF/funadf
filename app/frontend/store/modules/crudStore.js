@@ -14,7 +14,7 @@ export default function createCrudStore({ resource }) {
             dialog: false,
             config: {},
             referentiels: [],
-            memebers: [],
+            members: [],
         }),
         getters: {
             getItems: (state) => state.items,
@@ -52,12 +52,30 @@ export default function createCrudStore({ resource }) {
             async saveItem({ commit, dispatch }, item) {
                 const method = item.id ? 'patch' : 'post';
                 const uri = item.id ? `${baseUri}/${item.id}` : baseUri;
-                const res = await axios[method](uri, { [resource.slice(0, -1)]: item });
+
+                const formData = new FormData();
+                const resourceName = resource.slice(0, -1);
+
+                for (const key in item) {
+                    // Gestion spéciale pour les objets/fichiers si besoin
+                    if (item[key] instanceof File || item[key] instanceof Blob) {
+                        formData.append(`${resourceName}[${key}]`, item[key], item[key].name);
+                    } else if ( item[key] !== null ) {
+                        formData.append(`${resourceName}[${key}]`, item[key]);
+                    }
+                }
+
+                const res = await axios[method](uri, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                });
+
                 commit('setItem', res.data[resource.slice(0, -1)]);
                 commit('setDialog', false);
                 await dispatch('fetchItems');
             },
-            referentiels: function ({commit}) {
+            referentiels: function ({ commit }) {
                 return new Promise((resolve, reject) => {
                     axios.get(`/api/referentiels/${resource}`, {}).then((res) => {
                         commit('setReferentiels', res.data);
@@ -67,37 +85,37 @@ export default function createCrudStore({ resource }) {
                     });
                 });
             },
-            addMembers: function ({dispatch, commit, state}, members) {
+            addMembers: function ({ dispatch, commit, state }, members) {
                 return new Promise((resolve, reject) => {
-                    axios.post(`/api/${resource}/${state.item.id}/members`, {members: members})
-                    .then((res) => {
-                        commit('setMembers', res.data.members);
-                        resolve(res);
-                    }).catch((error) => {
-                        reject(error, 2000);
-                    });
+                    axios.post(`/api/${resource}/${state.item.id}/members`, { members: members })
+                        .then((res) => {
+                            commit('setMembers', res.data.members);
+                            resolve(res);
+                        }).catch((error) => {
+                            reject(error, 2000);
+                        });
                 });
             },
-            setRole: function ({dispatch, commit, state}, data) {
+            setRole: function ({ dispatch, commit, state }, data) {
                 return new Promise((resolve, reject) => {
                     axios.post(`/api/${resource}/${state.item.id}/roles/edit`, data)
-                    .then((res) => {
-                        commit('setMemberInMembersById', res.data.membership);
-                        resolve(res);
-                    }).catch((error) => {
-                        reject(error, 2000);
-                    });
+                        .then((res) => {
+                            commit('setMembers', res.data.members);
+                            resolve(res);
+                        }).catch((error) => {
+                            reject(error, 2000);
+                        });
                 });
             },
-            removeMember: function ({dispatch, commit, state}, membership_id) {
+            removeMember: function ({ dispatch, commit, state }, membership_id) {
                 return new Promise((resolve, reject) => {
                     axios.delete(`/api/memberships/${membership_id}`, {})
-                    .then((res) => {
-                        dispatch('fetchItem', state.item.id);
-                        resolve(res);
-                    }).catch((error) => {
-                        reject(error, 2000);
-                    });
+                        .then((res) => {
+                            commit('setMembers', res.data.members);
+                            resolve(res);
+                        }).catch((error) => {
+                            reject(error, 2000);
+                        });
                 });
             }
         },

@@ -24,13 +24,13 @@
                     <v-menu>
                         <template v-slot:activator="{ props }">
                             <v-btn color="secondary" v-bind="props">
-                                {{ getRoleName(item.role_name) }}
+                                {{ getRoleName(item.role_friendly_name) }}
                             </v-btn>
                         </template>
                         <v-list>
                             <v-list-item v-for="(role, index) in this.referentiels.roles" :key="index"
-                                @click="setRole(item, index)">
-                                <v-list-item-title>{{ role }}</v-list-item-title>
+                                @click="setRole(item, role.name)">
+                                <v-list-item-title>{{ role.friendly_name || role.name }}</v-list-item-title>
                             </v-list-item>
                         </v-list>
                     </v-menu>
@@ -135,6 +135,7 @@ export default {
         setRole(member, role) {
             this.$store.dispatch(`${this.model}/setRole`, { member: member, role: role }).then(response => {
                 this.$root.showSnackbar('Role modifié avec succés', 'success');
+                this.localItems = this.$store.getters[`${this.model}/getMembers`] || [];
             }, error => {
                 this.$root.showSnackbar('Un probleme est survenu lors de la modification du role', 'error');
                 let errors = error.response.data.errors;
