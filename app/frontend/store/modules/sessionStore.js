@@ -11,6 +11,7 @@ if (token) {
 const state = () => ({
     currentUser: null,
     roles: [],
+    region: null,
     originalUser: null,
     editProfilDialog: false,
     subdomain: null
@@ -22,6 +23,7 @@ const getters = {
     roles: (state) => state.roles,
     getOriginalUser: (state) => state.originalUser,
     subdomain: (state) => state.subdomain,
+    region: (state) => state.region,
 };
 
 // actions
@@ -29,6 +31,7 @@ const actions = {
     fetchUser({ commit }) {
         axios.get('/api/current_user').then((response) => {
             commit('setCurrentUser', response.data.user);
+            commit('setRegion', response.data.region);
             commit('setRoles', response.data.roles);
             commit('setOriginalUser', response.data.original_user);
         });
@@ -141,6 +144,9 @@ const mutations = {
     },
     setRoles: (state, roles) => {
         state.roles = roles;
+    },
+    setRegion: (state, region) => {
+        state.region = region;
     },
 };
 

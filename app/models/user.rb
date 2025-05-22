@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :memberships, as: :member
   has_many :associations, through: :memberships, source: :structure
   has_many :churches, through: :memberships, source: :structure
+  has_many :regions, through: :memberships, source: :structure
   has_many :roles, through: :memberships
 
   has_one_attached :avatar
@@ -140,7 +141,7 @@ class User < ActiveRecord::Base
   end
 
   def structures
-    Structure.where(id: (associations + churches))
+    Structure.where(id: (associations + churches + regions))
   end
 
   def get_presidences
@@ -156,6 +157,13 @@ class User < ActiveRecord::Base
   def associations_responsabilities
     Structure.joins(memberships: :role)
              .where(type: 'Association')
+             .where(roles: { name: %w[president secretary treasurer director] })
+             .where(memberships: { member_type: 'User', member_id: self.id })
+  end
+
+  def regions_responsabilities
+    Structure.joins(memberships: :role)
+             .where(type: 'Region')
              .where(roles: { name: %w[president secretary treasurer director] })
              .where(memberships: { member_type: 'User', member_id: self.id })
   end

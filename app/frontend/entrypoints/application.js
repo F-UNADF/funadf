@@ -17,6 +17,8 @@ import "@mdi/font/css/materialdesignicons.css";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
+import i18n from "../i18n/index.js";
+
 import {PerfectScrollbarPlugin} from 'vue3-perfect-scrollbar';
 import 'vue3-perfect-scrollbar/style.css';
 
@@ -89,6 +91,7 @@ router.beforeEach((to, from, next) => {
 const app = createApp(App);
 
 app.use(vuetify)
+    .use(i18n)
     .use(PerfectScrollbarPlugin)
     .use(router)
     .use(store);

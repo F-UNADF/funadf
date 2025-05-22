@@ -39,6 +39,12 @@ class Api::MenusController < ApiController
           }
         result <<
           {
+            title: "Regions",
+            icon: "mdi-map-marker-account",
+            to: admin_regions_path,
+          }
+        result <<
+          {
             title: "Campagnes",
             icon: "mdi-vote",
             to: admin_campaigns_path,
@@ -137,34 +143,40 @@ class Api::MenusController < ApiController
           header: "ASSOCIATION",
         },
         {
-          title: "Mes assos",
+          title: "Mes associations",
           icon: "mdi-newspaper",
           to: association_associations_path,
-        },
-        {
-          title: "Actu",
-          icon: "mdi-newspaper",
-          to: association_posts_path,
-        },
-        {
-          title: "Agenda",
-          icon: "mdi-calendar",
-          to: association_events_path,
         },
         {
           title: "Campagnes",
           icon: "mdi-vote",
           to: association_campaigns_path,
         },
+      ]
+    when 'region'
+      result = [
         {
-          title: "Pasteurs",
-          icon: "mdi-account-group",
-          to: association_users_path,
+          header: "REGION",
         },
         {
-          title: "Eglises",
-          icon: "mdi-church",
-          to: association_churches_path,
+          title: "Campagnes",
+          icon: "mdi-vote",
+          to: region_campaigns_path,
+        },
+        {
+          title: "Membres",
+          icon: "mdi-account-group",
+          to: region_members_path,
+        },
+        {
+          title: "Evènements",
+          icon: "mdi-calendar",
+          to: region_events_path,
+        },
+        {
+          title: "Actu",
+          icon: "mdi-newspaper",
+          to: region_posts_path,
         },
         {
           header: "NAVIGATION",
@@ -179,7 +191,11 @@ class Api::MenusController < ApiController
       result[:error] = "Menu #{menu} not found"
     end
 
-    if current_user.is_admin? || current_user.associations_responsabilities.any?
+    if !result.include?(:error) && (
+      current_user.is_admin? || 
+      current_user.associations_responsabilities.any? || 
+      current_user.regions_responsabilities.any?)
+
       result << {
         header: "ADMIN",
       }
@@ -194,7 +210,14 @@ class Api::MenusController < ApiController
         result << {
           title: "Association",
           icon: "mdi-domain",
-          href: association_associations_url,
+          href: association_associations_path,
+        }
+      end
+      if !current_user.regions_responsabilities.blank?
+        result << {
+          title: "Region",
+          icon: "mdi-map-marker-account",
+          href: region_members_url,
         }
       end
     end

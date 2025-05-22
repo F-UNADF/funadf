@@ -42,7 +42,7 @@ Rails.application.configure do
     :authentication => :cram_md5
   }
   # ActionMailer Config
-  config.action_mailer.default_url_options = { :host => 'app.localhost' }
+  config.action_mailer.default_url_options = { :host => 'localhost' }
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.perform_deliveries = true
 
@@ -55,9 +55,7 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  Rails.application.routes.default_url_options[:host] = "app.localhost"
-  config.hosts << 'admin.app.localhost'
-  config.hosts << 'association.app.localhost'
+  Rails.application.routes.default_url_options[:host] = "localhost"
 
   BetterErrors::Middleware.allow_ip! "0.0.0.0/0"
   config.active_storage.service = :amazon

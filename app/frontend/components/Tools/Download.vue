@@ -1,5 +1,5 @@
 <template>
-  <v-btn icon size="small" class="me-3" color="primary" @click="downloadCSV">
+  <v-btn icon class="me-3" color="info" @click="downloadCSV">
     <v-icon>mdi-download</v-icon>
   </v-btn>
 </template>

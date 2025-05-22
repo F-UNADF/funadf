@@ -25,6 +25,8 @@ Rails.application.routes.draw do
     post 'connect_with_google', to: 'sessions#connect_with_google', as: :connect_with_google
     post 'login', to: 'sessions#login', as: :login
 
+    get '/:model/config', to: 'config#show'
+
     resources :users
     patch '/users/:id/enable', to: 'users#enable'
     patch '/users/:id/disable', to: 'users#disable'
@@ -36,6 +38,10 @@ Rails.application.routes.draw do
     post '/churches/:id/members', to: 'churches#add_members'
     delete '/churches/:id/members/:membership_id', to: 'churches#remove_members'
     post '/churches/:id/roles/edit', to: 'churches#edit_roles'
+
+    resources :regions
+    post '/regions/:id/members', to: 'regions#add_members'
+    post '/regions/:id/roles/edit', to: 'regions#edit_roles'
 
     resources :associations
     post '/associations/:id/members', to: 'associations#add_members'
@@ -105,7 +111,8 @@ Rails.application.routes.draw do
     resources :fees, only: :index
     resources :documents, only: :index
     resources :push_notifications, only: :index
-
+    resources :regions, only: :index
+    
     root to: redirect('/admin/users'), as: :root
   end
 
@@ -113,12 +120,18 @@ Rails.application.routes.draw do
   namespace :association do
     resources :associations, only: :index
     resources :campaigns, only: :index
+
+    root to: redirect('/association/associations'), as: :root
+  end
+
+  # REGION
+  namespace :region do
+    resources :members, only: :index
+    resources :campaigns, only: :index
     resources :events, only: :index
     resources :posts, only: :index
-    resources :users, only: :index
-    resources :churches, only: :index
 
-    root to: redirect('/association/campaigns'), as: :root
+    root to: redirect('/region/members'), as: :root
   end
 
   # ME SUBDOMAIN

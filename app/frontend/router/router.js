@@ -1,8 +1,9 @@
-import {createRouter, createWebHistory} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import FeedIndex from "../components/Feed/Index.vue";
 import AnnuaireIndex from "../components/Annuaire/Index.vue";
 import ProfileShow from "../components/Profile/Show.vue";
-import DocumentsIndex from "../components/Documents/Me/Index.vue";
+import DocumentsIndex from "../components/Documents/Index.vue";
+import MeDocumentsIndex from "../components/Documents/Me/Index.vue";
 import VotesIndex from "../components/Votes/Index.vue";
 import VotesShow from "../components/Votes/Show.vue";
 import AssociationsIndex from "../components/Associations/Index.vue";
@@ -15,132 +16,165 @@ import FeesIndex from "../components/Fees/Index.vue";
 import RolesIndex from "../components/Roles/Index.vue";
 import MeetingsIndex from "../components/Meetings/Index.vue";
 import PushNotificationsIndex from "../components/PushNotifications/Index.vue";
+import RegionsIndex from "../pages/Regions/Index.vue";
+import MembersIndex from "../pages/Members/Index.vue";
 
 const router = createRouter({
     history: createWebHistory(),
-    routes : [
+    routes: [
         {
-            path    : "/",
+            path: "/",
             redirect: "/feed",
         },
         {
-            path     : "/feed",
+            path: "/feed",
             component: FeedIndex,
-            name     : "feed.index",
+            name: "feed.index",
         },
         {
-            path     : "/mon-profil",
+            path: "/mon-profil",
             component: ProfileShow,
-            name     : "profile.index",
+            name: "profile.index",
         },
         {
-            path     : "/annuaire",
+            path: "/annuaire",
             component: AnnuaireIndex,
-            name     : "annuaire.index",
+            name: "annuaire.index",
         },
         {
-            path     : "/documents",
-            component: DocumentsIndex,
-            name     : "documents.index",
+            path: "/documents",
+            component: MeDocumentsIndex,
+            name: "documents.index",
         },
         {
-            path     : "/campaigns",
+            path: "/campaigns",
             component: VotesIndex,
-            name     : "votes.index",
+            name: "votes.index",
         },
         {
-            path     : "/campaigns/:id",
+            path: "/campaigns/:id",
             component: VotesShow,
-            name     : "votes.show",
+            name: "votes.show",
         },
 
         // ASSOCIATION
         {
-            path     : "/association/associations",
+            path: "/association/associations",
             component: AssociationsIndex,
-            name     : "association.associations",
+            name: "association.associations",
+            props: { domain: 'association' }
         },
         {
-            path     : "/association/events",
-            component: EventsIndex,
-            name     : "association.events",
-        },
-        {
-            path     : "/association/campaigns",
+            path: "/association/campaigns",
             component: CampaignsIndex,
-            name     : "association.campaigns",
+            name: "association.campaigns",
+            props: { domain: 'association' }
         },
         {
-            path     : "/association/posts",
+            path: "/association/members",
+            component: MembersIndex,
+            name: "association.members",
+            props: { domain: 'association' }
+        },
+
+        // REGION
+        {
+            path: "/region/members",
+            component: MembersIndex,
+            name: "region.members",
+            props: { domain: 'region' }
+        },
+        {
+            path: "/region/events",
+            component: EventsIndex,
+            name: "region.events",
+            props: { domain: 'region' }
+        },
+        {
+            path: "/region/campaigns",
+            component: CampaignsIndex,
+            name: "region.campaigns",
+            props: { domain: 'region' }
+        },
+        {
+            path: "/region/posts",
             component: PostsIndex,
-            name     : "association.posts",
-        },
-        {
-            path     : '/association/users',
-            component: UsersIndex,
-            name     : 'association.users',
-        },
-        {
-            path     : '/association/churches',
-            component: ChurchesIndex,
-            name     : 'association.churches',
+            name: "region.posts",
+            props: { domain: 'region' }
         },
 
         // ADMIN
         {
-            path     : "/admin/users",
+            path: "/admin/users",
             component: UsersIndex,
-            name     : "admin.users",
+            name: "admin.users",
+            props: { domain: 'admin' }
         },
         {
-            path     : "/admin/churches",
+            path: "/admin/churches",
             component: ChurchesIndex,
-            name     : "admin.churches",
+            name: "admin.churches",
+            props: { domain: 'admin' }
         },
         {
-            path     : "/admin/associations",
+            path: "/admin/associations",
             component: AssociationsIndex,
-            name     : "admin.associations",
+            name: "admin.associations",
+            props: { domain: 'admin' }
         },
         {
-            path     : "/admin/campaigns",
+            path: "/admin/regions",
+            component: RegionsIndex,
+            name: "admin.regions",
+            props: { domain: 'admin' }
+        },
+        {
+            path: "/admin/campaigns",
             component: CampaignsIndex,
-            name     : "admin.campaigns",
+            name: "admin.campaigns",
+            props: { domain: 'admin' }
         },
         {
-            path     : "/admin/events",
+            path: "/admin/events",
             component: EventsIndex,
-            name     : "admin.events",
+            name: "admin.events",
+            props: { domain: 'admin' }
         },
         {
-            path     : "/admin/posts",
+            path: "/admin/posts",
             component: PostsIndex,
-            name     : "admin.posts",
+            name: "admin.posts",
+            props: { domain: 'admin' }
         },
         {
-            path     : "/admin/fees",
+            path: "/admin/fees",
             component: FeesIndex,
-            name     : "admin.fees",
+            name: "admin.fees",
+            props: { domain: 'admin' }
         },
         {
-            path     : "/admin/roles",
+            path: "/admin/roles",
             component: RolesIndex,
-            name     : "admin.roles",
+            name: "admin.roles",
+            props: { domain: 'admin' }
         },
         {
-            path     : "/admin/meetings",
+            path: "/admin/meetings",
             component: MeetingsIndex,
-            name     : "admin.meetings",
+            name: "admin.meetings",
+            props: { domain: 'admin' }
         },
         {
-            path     : '/admin/documents',
+            path: '/admin/documents',
             component: DocumentsIndex,
-            name     : 'admin.documents'
+            name: 'admin.documents',
+            props: { domain: 'admin' }
         },
         {
-            path     : '/admin/push_notifications',
+            path: '/admin/push_notifications',
             component: PushNotificationsIndex,
-            name     : 'admin.push_notifications'
+            name: 'admin.push_notifications',
+            props: { domain: 'admin' }
         }
     ],
 });

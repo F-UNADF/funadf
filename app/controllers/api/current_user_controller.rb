@@ -10,7 +10,7 @@ class Api::CurrentUserController < ApiController
     user_with_custom_attribute[:level] = @user.level
 
     respond_to do |format|
-      format.json { render json: { user: user_with_custom_attribute, original_user: @original_user, roles: @user.application_roles } }
+      format.json { render json: { user: user_with_custom_attribute, original_user: @original_user, roles: @user.application_roles, region: @user.regions_responsabilities.first } }
     end
   end
 

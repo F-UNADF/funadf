@@ -17,6 +17,8 @@ import feesStore from "./modules/feesStore";
 import documentsStore from "./modules/documentsStore";
 import pushNotificationsStore from "./modules/pushNotificationsStore";
 
+import createCrudStore from './modules/crudStore';
+
 const debug = process.env.NODE_ENV !== "production";
 
 const store = createStore({
@@ -38,6 +40,7 @@ const store = createStore({
         feesStore,
         documentsStore,
         pushNotificationsStore,
+        regions: createCrudStore({ resource: "regions" }),
     },
     strict: debug,
 });

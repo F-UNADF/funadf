@@ -1,39 +1,34 @@
 <template>
-  <v-row class="mb-0">
-    <v-col cols="12" lg="2" md="2">
-      <v-text-field density="compact" v-model="search" label="Chercher un utilisateur (Nom, Ville...)" hide-details
-        variant="outlined" clearable></v-text-field>
-    </v-col>
-    <v-col cols="12" lg="2" md="2">
-      <v-select density="compact" v-model="filter.levels" :items="referentiels.levels" label="Reconnaissance" hide-details
-        multiple clearable chips variant="outlined"></v-select>
-    </v-col>
-    <v-col cols="12" lg="2" md="2">
-      <v-select density="compact" v-model="filter.roles" :items="referentiels.roles" label="Rôle global" hide-details
-        multiple clearable chips variant="outlined"></v-select>
-    </v-col>
-    <v-col cols="12" lg="2" md="3">
-      <v-btn-toggle v-model="filter.disabled" rounded style="height: 40px">
-        <v-btn :value="false" color="success" class="py-1">
-          Actif
-        </v-btn>
+  <v-toolbar flat color="transparent" class="mb-3">
+    <v-text-field density="compact" v-model="search" label="Chercher un utilisateur (Nom, Ville...)" hide-details
+      variant="outlined" clearable class="me-3"></v-text-field>
 
-        <v-btn :value="true" color="warning" class="py-1">
-          Inactif
-        </v-btn>
-      </v-btn-toggle>
-    </v-col>
-    <v-col cols="12" lg="4" md="3" class="text-right">
-      <download :headers="downloadHeaders" :data="this.filteredItems" :name="downloadName"></download>
-      <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
-        <v-icon color="primary">mdi-reload</v-icon>
+    <v-select density="compact" v-model="filter.levels" :items="referentiels.levels" label="Reconnaissance" hide-details
+      multiple clearable chips variant="outlined" class="me-3"></v-select>
+
+    <v-select density="compact" v-model="filter.roles" :items="referentiels.roles" label="Rôle global" hide-details
+      multiple clearable chips variant="outlined" class="me-3"></v-select>
+
+    <v-btn-toggle v-model="filter.disabled" rounded style="height: 40px" class="me-3">
+      <v-btn :value="false" color="success" class="py-1">
+        Actif
       </v-btn>
-      <v-btn color="primary" class="ml-auto" @click="newItem()">
-        <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
-        Ajouter un utilisateur
+
+      <v-btn :value="true" color="red" class="py-1">
+        Inactif
       </v-btn>
-    </v-col>
-  </v-row>
+    </v-btn-toggle>
+
+    <download :headers="downloadHeaders" :data="this.filteredItems" :name="downloadName"></download>
+    
+    <v-btn color="white" class="me-3" @click="refresh()" icon>
+      <v-icon color="primary">mdi-reload</v-icon>
+    </v-btn>
+    <v-btn color="primary" variant="flat" class="ml-auto" @click="newItem()">
+      <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+      Ajouter un utilisateur
+    </v-btn>
+  </v-toolbar>
 
   <v-data-table :headers="headers" :items="filteredItems" item-value="name" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
@@ -57,8 +52,7 @@
             <div class="ml-5">
               <h4 class="d-block">{{ item.lastname }} {{ item.firstname }}</h4>
               <span class="subtitle-2 font-weight-regular">{{ item.email }}</span>
-              <span class="ml-2 text-grey" 
-                  v-if="item.invitation_accepted_at === null">(Invitation non validée)
+              <span class="ml-2 text-grey" v-if="item.invitation_accepted_at === null">(Invitation non validée)
               </span>
             </div>
           </div>
@@ -91,7 +85,7 @@
   </v-data-table>
 
   <v-dialog v-model="dialogForm" fullscreen>
-    <user-form></user-form>
+    <user-form @refresh="refresh()"></user-form>
   </v-dialog>
 </template>
 
@@ -103,6 +97,12 @@ import Download from "@/components/Tools/Download.vue";
 
 export default {
   name: "UsersIndex",
+  props: {
+    domain: {
+      type: String,
+      default: 'me',
+    },
+  },
   components: {
     Download,
     UserForm,
@@ -179,7 +179,7 @@ export default {
       this.$store.commit('usersStore/setDialogForm', true);
     },
     refresh: function () {
-      this.$store.dispatch('usersStore/fetchItems');
+      this.$store.dispatch('usersStore/fetchItems', { domain: this.domain });
     },
     connectAs: function (user) {
       this.$store.dispatch('sessionStore/switch_to', user.id).then(response => {
@@ -266,7 +266,7 @@ export default {
     }
   },
   beforeMount: function () {
-    this.$store.dispatch('usersStore/fetchItems');
+    this.refresh();
     this.$store.dispatch('usersStore/referentiels');
   },
 }

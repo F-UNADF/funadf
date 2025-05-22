@@ -2,17 +2,22 @@ class Api::CampaignsController < ApiController
   before_action :set_campaign, only: [:show, :update, :destroy, :change_state, :voters_count]
 
   def index
+    domain = params[:domain] || 'me'
     campaigns = []
-    if @subdomain == 'admin'
-      campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
-    elsif @subdomain == 'association'
-      # get campaigns of the association of the current user
-      campaigns = current_user.associations_responsabilities.pluck(:id).present? ? Campaign.where(structure_id: current_user.associations_responsabilities.pluck(:id)).order(id: :desc) : []
-    elsif @subdomain.present? && !@structure.nil?
-      campaigns = @structure.campaigns.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
+
+    case domain
+    when 'admin'
+      campaigns = Campaign
+                    .joins(:structure)
+                    .select('campaigns.*, structures.name AS structure_name')
+                    .order(id: :desc)
+    when 'association'
+      campaigns = campaigns_for(current_user.associations_responsabilities)
+    when 'region'
+      campaigns = campaigns_for(current_user.regions_responsabilities)
     end
 
-    render json: { campaigns: campaigns, subdomain: @subdomain }
+    render json: { campaigns: campaigns }
   end
 
   def show
@@ -133,6 +138,15 @@ class Api::CampaignsController < ApiController
 
   def campaign_params
     params[:campaign].permit(:name, :structure_id, :meeting_id)
+  end
+
+  def campaigns_for(responsabilities)
+    structure_ids = responsabilities.pluck(:id)
+    return [] if structure_ids.empty?
+
+    Campaign.joins(:structure)
+            .select('campaigns.*, structures.name AS structure_name')
+            .where(structure_id: structure_ids).order(id: :desc)
   end
 
 end

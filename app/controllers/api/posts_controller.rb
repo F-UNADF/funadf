@@ -3,20 +3,23 @@ class Api::PostsController < ApiController
 
   def index
     posts = []
-    if @subdomain == 'admin'
-      posts = Post.order(id: :desc)
-    elsif @subdomain == 'association'
-      # get campaigns of the association of the current user
-      # Vérifier si l'utilisateur actuel a des responsabilités d'association
-      responsibilities_ids = current_user.associations_responsabilities.pluck(:id)
+    domain = params[:domain] || 'me'
 
-      # Si l'utilisateur a des responsabilités d'association, récupérer les événements à venir associés à ces responsabilités
+    case domain
+    when 'admin'
+      posts = Post.order(id: :desc)
+    when 'association'
+      responsibilities_ids = current_user.associations_responsabilities.pluck(:id)
       if responsibilities_ids.present?
         posts = Post.where(structure_id: responsibilities_ids)
                     .order(id: :desc)
       end
-    elsif @subdomain.present? && !@structure.nil?
-      posts = @structure.posts.order(id: :asc)
+    when 'region'
+      responsibilities_ids = current_user.regions_responsabilities.pluck(:id)
+      if responsibilities_ids.present?
+        posts = Post.where(structure_id: responsibilities_ids)
+                    .order(id: :desc)
+      end
     end
 
     render json: { posts: posts }, include: ['structure']

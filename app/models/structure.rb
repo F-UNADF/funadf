@@ -41,6 +41,7 @@ class Structure < ActiveRecord::Base
               s.town AS town,
               m.role_id AS role_id,
               r.name AS role_name,
+              r.friendly_name AS role_friendly_name,
               m.can_vote AS can_vote
         FROM memberships m
         LEFT JOIN structures s ON m.member_id = s.id
@@ -56,6 +57,7 @@ class Structure < ActiveRecord::Base
               u.town AS town,
               m.role_id AS role_id,
               r.name AS role_name,
+              r.friendly_name AS role_friendly_name,
               m.can_vote AS can_vote
         FROM memberships m
         LEFT JOIN users u ON m.member_id = u.id

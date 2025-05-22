@@ -1,25 +1,22 @@
 <template>
-  <v-row justify="space-between">
-    <v-col cols="12" lg="6" md="6" class="mb-3">
-      <v-text-field density="compact" v-model="search" label="Chercher une campagne (Nom...)" hide-details
-                    variant="outlined" clearable></v-text-field>
-    </v-col>
-    <v-col cols="12" lg="6" md="6" class="text-right">
-      <v-spacer></v-spacer>
-      <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
-        <v-icon color="primary">mdi-reload</v-icon>
-      </v-btn>
-      <v-btn color="primary" class="ml-auto" @click="newItem()">
-        <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
-        Ajouter une campagne
-      </v-btn>
-    </v-col>
-  </v-row>
+  <v-toolbar flat color="transparent" class="mb-3">
+    <v-text-field density="compact" v-model="search" label="Chercher une campagne (Nom...)" hide-details
+      variant="outlined" clearable></v-text-field>
+
+    <v-spacer></v-spacer>
+    <v-btn color="white" class="me-3" @click="refresh()" icon>
+      <v-icon color="primary">mdi-reload</v-icon>
+    </v-btn>
+    <v-btn color="primary" variant='flat' class="ml-auto" @click="newItem()">
+      <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+      Ajouter une campagne
+    </v-btn>
+  </v-toolbar>
   <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
       <v-alert v-else color="danger" icon="danger" title="Aucune campagne trouvée"
-               text="Aucune campagne ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
+        text="Aucune campagne ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
     </template>
     <template v-slot:item="{ item }">
       <tr>
@@ -35,7 +32,7 @@
           <v-tooltip location="top" text="Fermer la campagne">
             <template v-slot:activator="{ props }">
               <v-icon small v-bind="props" color="green" v-if="item.state === 'opened'"
-                      @click="changeCampaignState(item.id, 'close_temporarily')">
+                @click="changeCampaignState(item.id, 'close_temporarily')">
                 mdi-eye-off
               </v-icon>
             </template>
@@ -43,7 +40,7 @@
           <v-tooltip location="top" text="Ouvrir la campagne">
             <template v-slot:activator="{ props }">
               <v-icon small v-bind="props" color="success" v-if="item.state === 'coming'"
-                      @click="changeCampaignState(item.id, 'opening')">
+                @click="changeCampaignState(item.id, 'opening')">
                 mdi-check
               </v-icon>
             </template>
@@ -51,7 +48,7 @@
           <v-tooltip location="top" text="Cloturer la campagne - La campagne ne pourra pas être réouverte.">
             <template v-slot:activator="{ props }">
               <v-icon small v-bind="props" color="danger" v-if="item.state === 'opened'"
-                      @click="changeCampaignState(item.id, 'close_definitly')">
+                @click="changeCampaignState(item.id, 'close_definitly')">
                 mdi-close
               </v-icon>
             </template>
@@ -79,7 +76,7 @@
   </v-data-table>
 
   <v-dialog v-model="dialogForm" fullscreen>
-    <campaign-form></campaign-form>
+    <campaign-form @refresh="refresh()"></campaign-form>
   </v-dialog>
   <v-dialog max-width="25%" v-model="dialogConfirmDelete">
     <v-card>
@@ -96,7 +93,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 import CampaignForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 
@@ -105,6 +102,12 @@ export default {
   components: {
     CampaignForm,
     DialogConfirm,
+  },
+  props: {
+    domain: {
+      type: String,
+      default: 'me',
+    },
   },
   computed: {
     ...mapGetters('campaignsStore', {
@@ -142,7 +145,7 @@ export default {
       this.$store.commit('campaignsStore/setDialogForm', true);
     },
     refresh: function () {
-      this.$store.dispatch('campaignsStore/items');
+      this.$store.dispatch('campaignsStore/items', { domain: this.domain });
     },
     tryDeleteItem: function (item) {
       Object.assign(this.deletingItem, item);
@@ -150,6 +153,7 @@ export default {
     },
     deleteItem: function (item) {
       this.$store.dispatch('campaignsStore/delete', item.id).then(response => {
+        this.refresh();
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
         this.$root.showSnackbar('Campagne supprimée avec succès', 'success');
@@ -180,6 +184,7 @@ export default {
         id: id,
         state: action
       }).then(response => {
+        this.refresh();
         this.$root.showSnackbar('Le Statut de la campagne a bien été changé', 'success');
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de la campagne', 'error');
@@ -236,8 +241,8 @@ export default {
     }
   },
   beforeMount: function () {
-    this.$store.dispatch('campaignsStore/items');
-    this.$store.dispatch('campaignsStore/referentiels');
+    this.refresh();
+    this.$store.dispatch('campaignsStore/referentiels', { domain: this.domain });
   },
 }
 </script>
