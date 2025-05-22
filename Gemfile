@@ -45,6 +45,8 @@ gem 'net-smtp', require: false
 gem 'googleauth'
 gem 'faraday'
 
+gem 'logtail-rails'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
