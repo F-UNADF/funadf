@@ -60,6 +60,9 @@ const i18n = createI18n({
         phone_1: 'Téléphone',
         email: 'Email',
         logo: 'Logo',
+      },
+      members: {
+        title: 'Membres',
       }
     }
   }

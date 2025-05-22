@@ -100,6 +100,7 @@ export default {
         files: this.files
       }).then(response => {
         this.$root.showSnackbar('Actu enregistrée avec succès', 'success');
+        this.$emit('refresh');
         this.close();
       }, error => {
         this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de l\'actu', 'error');

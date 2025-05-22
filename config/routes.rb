@@ -120,12 +120,18 @@ Rails.application.routes.draw do
   namespace :association do
     resources :associations, only: :index
     resources :campaigns, only: :index
+
+    root to: redirect('/association/associations'), as: :root
+  end
+
+  # REGION
+  namespace :region do
+    resources :members, only: :index
+    resources :campaigns, only: :index
     resources :events, only: :index
     resources :posts, only: :index
-    resources :users, only: :index
-    resources :churches, only: :index
 
-    root to: redirect('/association/campaigns'), as: :root
+    root to: redirect('/region/members'), as: :root
   end
 
   # ME SUBDOMAIN

@@ -1,6 +1,10 @@
 <template>
-
     <v-data-table :headers="headers" :items="localItems" density="compact" class="elevation-1">
+        <template v-slot:no-data>
+            <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
+            <v-alert v-else class="my-3" color="info" icon="$info" :title="$t(this.model + '.noData')"
+                :text="$t(this.model + '.noDataExplain')"></v-alert>
+        </template>
         <template v-slot:item="{ item }">
             <tr>
                 <td>
@@ -36,7 +40,7 @@
                     </v-menu>
                 </td>
                 <td>
-                    <v-switch v-model="item.can_vote" inset color="secondary" size="small" label="Peut voter ?"
+                    <v-switch v-model="item.can_vote" inset color="secondary" label="Peut voter ?"
                         @change="setCanVote(item)"></v-switch>
                 </td>
                 <td>
@@ -75,26 +79,28 @@
 </template>
 
 <script>
-
 export default {
-    components: {
-        FuDatabase: () => import('../Database/FuDatabase.vue'),
-    },
     props: {
         model: {
             type: String,
             default: () => 'default',
         },
     },
+    mounted() {
+        this.fuDatabaseReady = true;
+    },
     computed: {
         referentiels() {
             return this.$store.getters[`${this.model}/getReferentiels`] || {};
         },
+        localItems() {
+            return this.$store.getters[`${this.model}/getMembers`] || [];
+        }
     },
     methods: {
         getRoleName(role) {
             let roles = this.referentiels.roles;
-            if (roles.hasOwnProperty(role)) {
+            if (roles && roles.hasOwnProperty(role)) {
                 return roles[role];
             }
             return role;
@@ -157,7 +163,6 @@ export default {
             this.updateMatchingMembers();
         },
     },
-
     data() {
         return {
             search: '',
@@ -165,7 +170,6 @@ export default {
             addingMembers: [],
             matchMembers: [],
             editedMembers: [],
-            localItems: this.$store.getters[`${this.model}/getMembers`] || [],
             headers: [
                 { title: 'Nom', key: 'name', sortable: true },
                 { title: 'Ville', key: 'town', sortable: true },

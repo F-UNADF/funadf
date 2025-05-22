@@ -1,6 +1,5 @@
 // stores/crudStore.js
 import axios from "axios";
-import { ref } from "firebase/database";
 
 export default function createCrudStore({ resource }) {
     const baseUri = `/api/${resource}`;
@@ -37,13 +36,14 @@ export default function createCrudStore({ resource }) {
                     commit('setLoading', false);
                 }
             },
-            async fetchItem({ commit }, id) {
-                const res = await axios.get(`${baseUri}/${id}`);
-                commit('setItem', res.data[resource.slice(0, -1)]); // singular
-                // si il a des membres
-                if (res.data.members) {
-                    commit('setMembers', res.data.members);
-                }
+            fetchItem({ commit }, id) {
+                axios.get(`${baseUri}/${id}`).then((res) => {
+                    commit('setItem', res.data[resource.slice(0, -1)]); // singular
+                    // si il a des membres
+                    if (res.data.members) {
+                        commit('setMembers', res.data.members);
+                    }
+                });
             },
             async fetchConfig({ commit }) {
                 const res = await axios.get(`${baseUri}/config`);
@@ -60,7 +60,7 @@ export default function createCrudStore({ resource }) {
                     // Gestion spéciale pour les objets/fichiers si besoin
                     if (item[key] instanceof File || item[key] instanceof Blob) {
                         formData.append(`${resourceName}[${key}]`, item[key], item[key].name);
-                    } else if ( item[key] !== null ) {
+                    } else if (item[key] !== null) {
                         formData.append(`${resourceName}[${key}]`, item[key]);
                     }
                 }

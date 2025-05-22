@@ -2,15 +2,16 @@
   <v-card variant="tonal" :color="event.event?.category?.color" @click="seeDetail()">
     <v-card-item>
       <div class="d-flex gap-3 align-center">
-        <v-avatar size="40">
+        <v-avatar size="40" class="me-3">
           <img :src="'/logos/'+event.structure.id+'.png'" width="40" alt="avatar"/>
         </v-avatar>
         <div class="d-block d-sm-flex align-center gap-3">
-          <h6 class="text-h6">{{ event.structure.name }}</h6>
-          <v-icon size="x-small" :color="event.event?.category?.color">mdi-circle</v-icon>
-          <span class="text-subtitle-2 opacity-50">
-            {{ event.event?.category?.name }}
-          </span>
+          <h6 class="text-h6">
+            {{ event.structure.name }}
+            <span class="text-subtitle-2 opacity-50">
+              {{ event.event?.category?.name }}
+            </span>
+          </h6>
         </div>
       </div>
       <div class="py-4 text-body-1 gap-3">

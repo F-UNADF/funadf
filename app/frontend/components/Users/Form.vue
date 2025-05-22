@@ -291,9 +291,6 @@ export default {
       return (this.editedItem && !this.editedItem.id) ? "Ajouter un utilisateur" : "Modifier un utilisateur";
     },
     canEditProfil() {
-      // current_user can edit all profil if he is admin OR if he is not the user he want to edit
-      // check if this.item has user property
-
       return this.roles.includes('admin') || (this.item && this.item.user && this.currentUser.id !== this.item.user.id);
     },
     pushEnabled() {
@@ -305,6 +302,7 @@ export default {
       this.$store.commit('usersStore/setFormLoading', true);
       this.$store.commit('usersStore/setDialogForm', false);
       this.$store.commit('usersStore/setItem', null);
+      this.$emit('refresh');
     },
     enableItem: function (item) {
       this.$store.dispatch('usersStore/enable', item.id).then(response => {

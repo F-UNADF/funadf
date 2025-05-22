@@ -1,20 +1,18 @@
 <template>
-  <v-row justify="space-between">
-    <v-col cols="12" lg="4" md="4" class="mb-3">
-      <v-text-field density="compact" v-model="search" label="Chercher un événement..." hide-details variant="outlined"
-        clearable></v-text-field>
-    </v-col>
-    <v-col cols="12" lg="3" md="3" class="text-right">
-      <v-spacer></v-spacer>
-      <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
-        <v-icon color="primary">mdi-reload</v-icon>
-      </v-btn>
-      <v-btn color="primary" class="ml-auto" @click="newItem()">
-        <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
-        Ajouter un événement
-      </v-btn>
-    </v-col>
-  </v-row>
+  <v-toolbar flat color="transparent" class="mb-3">
+    <v-text-field density="compact" v-model="search" label="Chercher un événement..." hide-details variant="outlined"
+      clearable></v-text-field>
+
+    <v-spacer></v-spacer>
+    <v-btn color="primary" class="me-3" @click="refresh()" icon>
+      <v-icon color="primary">mdi-reload</v-icon>
+    </v-btn>
+    <v-btn color="primary" variant="flat" class="ml-auto" @click="newItem()">
+      <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+      Ajouter un événement
+    </v-btn>
+  </v-toolbar>
+
   <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <tr>
@@ -61,7 +59,7 @@
   </v-data-table>
 
   <v-dialog v-model="dialogForm" max-width="75%">
-    <event-form></event-form>
+    <event-form @refresh="refresh()"></event-form>
   </v-dialog>
   <v-dialog max-width="25%" v-model="dialogConfirmDelete">
     <v-card>
@@ -82,12 +80,19 @@ import { mapGetters } from "vuex";
 import EventForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import moment from "moment";
+import { formToJSON } from "axios";
 
 export default {
   name: "EventsIndex",
   components: {
     EventForm,
     DialogConfirm,
+  },
+  props: {
+    domain: {
+      type: String,
+      default: 'me',
+    },
   },
   computed: {
     ...mapGetters('eventsStore', {
@@ -104,9 +109,7 @@ export default {
       },
     },
     filteredItems() {
-      return this.items.filter(item => {
-        return true;
-      });
+      return this.items;
     },
   },
   methods: {
@@ -127,7 +130,7 @@ export default {
       this.$store.commit('eventsStore/setDialogForm', true);
     },
     refresh: function () {
-      this.$store.dispatch('eventsStore/items');
+      this.$store.dispatch('eventsStore/items', { domain: this.domain });
     },
     tryDeleteItem: function (item) {
       Object.assign(this.deletingItem, item);
@@ -137,6 +140,7 @@ export default {
       this.$store.dispatch('eventsStore/delete', item.value).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
+        this.refresh();
         this.$root.showSnackbar('Événement supprimé avec succès', 'success');
       });
     },
@@ -187,8 +191,8 @@ export default {
     }
   },
   beforeMount: function () {
-    this.$store.dispatch('eventsStore/items');
-    this.$store.dispatch('eventsStore/referentiels');
+    this.refresh();
+    this.$store.dispatch('eventsStore/referentiels', { domain: this.domain });
   },
 }
 </script>

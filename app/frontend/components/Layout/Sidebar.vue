@@ -1,10 +1,10 @@
 <template>
   <v-navigation-drawer left elevation="10" mobile-breakpoint="960" app class="leftSidebar" :rail="false"
     v-model="sidebarValue" rail-width="75">
-      <div class="pa-4">
+      <div class="px-4">
         <div class="logo">
           <RouterLink to="/" justify-content-center>
-            <img src="../../images/logo.png" alt="Logo ADD" style="max-width: 100%; margin: 0 auto;" />
+            <img src="../../images/logo_plus.png" alt="Logo ADD+" style="max-width: 100%; margin: 0 auto;" />
           </RouterLink>
         </div>
       </div>

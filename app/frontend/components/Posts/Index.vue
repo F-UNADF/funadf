@@ -1,20 +1,17 @@
 <template>
-  <v-row justify="space-between">
-    <v-col cols="12" lg="4" md="4" class="mb-3">
-      <v-text-field density="compact" v-model="search" label="Chercher une actu..." hide-details variant="outlined"
-        clearable></v-text-field>
-    </v-col>
-    <v-col cols="12" lg="3" md="3" class="text-right">
-      <v-spacer></v-spacer>
-      <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
-        <v-icon color="primary">mdi-reload</v-icon>
-      </v-btn>
-      <v-btn color="primary" class="ml-auto" @click="newItem()">
-        <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
-        Ajouter une actu
-      </v-btn>
-    </v-col>
-  </v-row>
+  <v-toolbar flat color="transparent" class="mb-3">
+    <v-text-field density="compact" v-model="search" label="Chercher une actu..." hide-details variant="outlined"
+      clearable></v-text-field>
+
+    <v-spacer></v-spacer>
+    <v-btn color="white" class="me-3" @click="refresh()" icon>
+      <v-icon color="primary">mdi-reload</v-icon>
+    </v-btn>
+    <v-btn color="primary" variant="flat" class="ml-auto" @click="newItem()">
+      <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+      Ajouter une actu
+    </v-btn>
+  </v-toolbar>
   <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <tr>
@@ -61,7 +58,7 @@
   </v-data-table>
 
   <v-dialog v-model="dialogForm" max-width="75%">
-    <post-form></post-form>
+    <post-form @refresh="refresh()"></post-form>
   </v-dialog>
   <v-dialog max-width="25%" v-model="dialogConfirmDelete">
     <v-card>
@@ -88,6 +85,12 @@ export default {
   components: {
     PostForm,
     DialogConfirm,
+  },
+  props: {
+    domain: {
+      type: String,
+      default: 'me',
+    },
   },
   computed: {
     ...mapGetters('postsStore', {
@@ -128,7 +131,7 @@ export default {
       this.$store.commit('postsStore/setDialogForm', true);
     },
     refresh: function () {
-      this.$store.dispatch('postsStore/items');
+      this.$store.dispatch('postsStore/items', { domain: this.domain });
     },
     tryDeleteItem: function (item) {
       Object.assign(this.deletingItem, item);
@@ -180,8 +183,8 @@ export default {
     }
   },
   beforeMount: function () {
-    this.$store.dispatch('postsStore/items');
-    this.$store.dispatch('postsStore/referentiels');
+    this.refresh();
+    this.$store.dispatch('postsStore/referentiels', { domain: this.domain });
   },
 }
 </script>

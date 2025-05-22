@@ -22,11 +22,11 @@ const getters = {
 
 // actions
 const actions = {
-  items: function ({ commit }) {
+  items: function ({ commit }, payload) {
     commit("setLoading", true);
     return new Promise((resolve, reject) => {
       axios
-        .get("/api/posts", {})
+        .get("/api/posts", { params: payload })
         .then((res) => {
           commit("setItems", res.data.posts);
           commit("setLoading", false);
@@ -113,10 +113,10 @@ const actions = {
         });
     });
   },
-  referentiels: function ({ commit }) {
+  referentiels: function ({ commit }, payload) {
     return new Promise((resolve, reject) => {
       axios
-        .get("/api/referentiels/posts", {})
+        .get("/api/referentiels/posts", { params: payload })
         .then((res) => {
           commit("setReferentiels", res.data);
           resolve(res);

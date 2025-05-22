@@ -73,6 +73,8 @@ function getSubdomain() {
     menu = 'admin';
   } else if (path.startsWith('/association')) {
     menu = 'association';
+  } else if (path.startsWith('/region')) {
+    menu = 'region';
   }
 
   return menu;

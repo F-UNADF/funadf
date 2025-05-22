@@ -2,22 +2,26 @@ class Api::EventsController < ApiController
   before_action :set_event, only: [:show, :update, :destroy]
 
   def index
+    domain = params[:domain] || 'me'
     events = []
-    if @subdomain == 'admin'
+    case domain
+    when 'admin'
       events = Event.joins(:structure).where("end_at > ?", Time.current).order(start_at: :asc)
-    elsif @subdomain == 'association'
-      # get campaigns of the association of the current user
-      # Vérifier si l'utilisateur actuel a des responsabilités d'association
+    when 'association'
       responsibilities_ids = current_user.associations_responsabilities.pluck(:id)
-
-      # Si l'utilisateur a des responsabilités d'association, récupérer les événements à venir associés à ces responsabilités
       if responsibilities_ids.present?
         events = Event.joins(:structure).where("end_at > ?", Time.current)
                               .where(structure_id: responsibilities_ids)
                               .order(id: :desc)
       end
-    elsif @subdomain.present? && !@structure.nil?
-      events = @structure.events.joins(:structure).where("end_at > ?", Time.current).order(start_at: :asc)
+    when 'region'
+      responsibilities_ids = current_user.regions_responsabilities.pluck(:id)
+      if responsibilities_ids.present?
+        events = Event.joins(:structure).where("end_at > ?", Time.current)
+                              .where(structure_id: responsibilities_ids)
+                              .order(id: :desc)
+      end
+      
     end
 
     render json: { events: events }, include: ['category', 'structure']

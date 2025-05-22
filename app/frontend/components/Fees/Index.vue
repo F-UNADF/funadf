@@ -1,24 +1,20 @@
 <template>
-  <v-row justify="space-between">
-    <v-col cols="12" lg="4" md="4" class="mb-3">
-      <!-- Filter by What (list of YEAR from 2017 to current year)-->
-      <v-select v-model="filter.what" :items="years" label="Année" hide-details></v-select>
-    </v-col>
-    <v-col cols="12" lg="4" md="4" class="mb-3">
+  <v-toolbar flat color="transparent" class="mb-3">
+    
+      <v-select v-model="filter.what" :items="years" label="Année" hide-details class="me-3"></v-select>
+      
       <!-- Filter by user lastname -->
       <v-text-field v-model="filter.name" label="Nom, Ville ou Code postal" hide-details></v-text-field>
-    </v-col>
-    <v-col cols="12" lg="3" md="3" class="text-right">
+      
       <v-spacer></v-spacer>
-      <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
+      <v-btn color="white" class="me-3" @click="refresh()" icon>
         <v-icon color="primary">mdi-reload</v-icon>
       </v-btn>
-      <v-btn color="primary" class="ml-auto" @click="newItem()">
+      <v-btn color="primary" variant="flat" class="ml-auto" @click="newItem()">
         <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
         Ajouter une cotisation
       </v-btn>
-    </v-col>
-  </v-row>
+  </v-toolbar>
   <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <tr>
