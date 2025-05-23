@@ -1,4 +1,3 @@
-version: '2'
 services:
   app:
     container_name: funadf_app
@@ -9,9 +8,6 @@ services:
     depends_on:
       - db
       - vite
-    environment:
-      RAILS_ENV: development
-      VITE_RUBY_HOST: vite
     ports:
       - '3000:3000'
     volumes:
@@ -19,7 +15,9 @@ services:
     extends:
       file: ./docker/mysql/password.yml
       service: password
-
+    profiles:
+      - production
+      - local
   vite:
     container_name: funadf_vite
     build:
@@ -34,6 +32,9 @@ services:
       - "3036:3036"
     volumes:
       - .:/app
+
+    profiles:
+      - local
   db:
     container_name: funadf_db
     build:
@@ -46,6 +47,22 @@ services:
     extends:
       file: ./docker/mysql/password.yml
       service: password
+    profiles:
+      - production
+      - local
+  cron:
+    container_name: funadf_cron
+    build:
+      context: .
+      dockerfile: ./docker/cron/Dockerfile
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - app
+    profiles:
+      - production
+      - local
 
 volumes:
   funadf_db:
