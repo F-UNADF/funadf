@@ -1,5 +1,6 @@
 services:
   app:
+    env_file: .env
     container_name: funadf_app
     build:
       context: .
