@@ -7,7 +7,6 @@ services:
     entrypoint: ./docker-rails.sh
     depends_on:
       - db
-      - vite
     ports:
       - '3000:3000'
     volumes:
