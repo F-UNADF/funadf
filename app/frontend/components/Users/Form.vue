@@ -442,51 +442,6 @@ export default {
         this.editedItem.responsabilities.splice(this.editedItem.responsabilities.findIndex(phase => phase.id === id), 1);
       }
     },
-    enablePushNotifications() {
-      const messaging = getMessaging();
-
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          console.log("Permission de notification accordée.");
-
-          getToken(messaging, { vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg" })
-              .then((token) => {
-                if (token) {
-                  console.log("Token FCM récupéré:", token);
-                  this.pushToken = token;
-                  this.pushEnabled = true;
-                  this.updatePushStatus(true, token);  // Mettre à jour en back
-                }
-              })
-              .catch((err) => {
-                console.error("Erreur lors de la récupération du token:", err);
-              });
-        } else {
-          console.log("Permission de notification refusée.");
-          this.$root.showSnackbar('Votre navigateur refuse les notifications.', 'error');
-        }
-      });
-    },
-    disablePushNotifications() {
-      const messaging = getMessaging();
-
-      // Supprimer le token FCM
-      getToken(messaging, { vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg" })
-          .then((token) => {
-            if (token) {
-              return token;
-            }
-          })
-          .then(() => {
-            console.log("Token FCM supprimé.");
-            this.pushToken = null;
-            this.pushEnabled = false;
-            this.updatePushStatus(false, null);  // Mettre à jour en back
-          })
-          .catch((err) => {
-            console.error("Erreur lors de la suppression du token:", err);
-          });
-    },
     updatePushStatus(enabled, token) {
       this.editedItem.user.push_enabled = enabled;
       this.editedItem.user.fcm_token = token;

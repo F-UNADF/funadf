@@ -111,3 +111,4 @@ node_modules
 *.local
 
 config/credential.json
+/log/cron.log

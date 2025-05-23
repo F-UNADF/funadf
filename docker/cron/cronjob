@@ -1,0 +1,7 @@
+# cronjob
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# À 8h, 14h, 20h chaque jour
+5 10 * * 1 cd /app && source /app/.env && bundle exec rake events:send_notif >> /app/log/cron.log 2>&1
+5 0,6,12,18 * * * cd /app && source /app/.env && bundle exec rake posts:send_notif >> /app/log/cron.log 2>&1

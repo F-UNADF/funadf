@@ -1,15 +1,11 @@
 <template>
   <v-app theme="light">
-    <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar"/>
-    <Header
-        :user="currentUser"
-        :ouser="ouser"
-        @toggle-sidebar="showSidebar = !showSidebar"
-    />
+    <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar" />
+    <Header :user="currentUser" :ouser="ouser" @toggle-sidebar="showSidebar = !showSidebar" />
 
     <v-main class="main">
       <v-container fluid class="page-wrapper">
-        <router-view/>
+        <router-view />
       </v-container>
 
       <!-- Footer -->
@@ -24,12 +20,17 @@
           </v-col>
         </v-row>
       </v-footer>
+
+      <v-btn v-if="this.showBell" class="notification-button" size="x-large" icon color="info"
+        @click="askNotification()">
+        <v-icon class="white--text">mdi-bell</v-icon>
+      </v-btn>
     </v-main>
 
     <!-- Dialog User Form -->
     <v-container>
       <v-dialog v-model="dialogForm" fullscreen>
-        <UserForm/>
+        <UserForm />
       </v-dialog>
     </v-container>
 
@@ -37,8 +38,7 @@
     <v-container>
       <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
         <v-row align="center" justify="start" no-gutters class="snackbar-content">
-          <v-img v-if="snackbar.photo" cover :src="snackbar.photo" :width="80" aspect-ratio="1/1"
-                 class="mr-5"></v-img>
+          <v-img v-if="snackbar.photo" cover :src="snackbar.photo" :width="80" aspect-ratio="1/1" class="mr-5"></v-img>
           <div>
             <div class="text-subtitle-1 pb-2" v-if="snackbar.title">{{ snackbar.title }}</div>
             <div v-html="snackbar.message"></div>
@@ -55,13 +55,25 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Sidebar from "../components/Layout/Sidebar.vue";
 import Header from "../components/Layout/Header.vue";
 import UserForm from "../components/Users/Form.vue";
 
-import {initializeApp} from 'firebase/app';
-import {getMessaging, getToken, onMessage} from "firebase/messaging";
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCxbYAg-_eIci32Qf1ZRoKZLwkOD-vTuHo",
+  authDomain: "funadf-49dfb.firebaseapp.com",
+  projectId: "funadf-49dfb",
+  storageBucket: "funadf-49dfb.firebasestorage.app",
+  messagingSenderId: "609947767440",
+  appId: "1:609947767440:web:17de62d5e49d3a0c2ffe15",
+  measurementId: "G-394J13VTZX"
+};
+const app = initializeApp(firebaseConfig);
+let messaging = null;
 
 function getSubdomain() {
   // on recupere le path de l'url
@@ -81,16 +93,16 @@ function getSubdomain() {
 }
 
 export default {
-  name      : "App",
+  name: "App",
   components: {
     Sidebar,
     Header,
     UserForm,
   },
-  computed  : {
+  computed: {
     ...mapGetters("sessionStore", {
       currentUser: "currentUser",
-      ouser      : "getOriginalUser",
+      ouser: "getOriginalUser",
     }),
     ...mapGetters("menuStore", ["getMenu"]),
     dialogForm: {
@@ -102,7 +114,7 @@ export default {
       },
     },
   },
-  methods   : {
+  methods: {
     ...mapActions("sessionStore", ["logout"]),
     showSnackbar(message, color, title = null, photo = null) {
       this.snackbar.title = title;
@@ -111,19 +123,61 @@ export default {
       this.snackbar.photo = photo;
       this.snackbar.show = true;
     },
+    async initMessaging() {
+      if (await isSupported()) {
+        messaging = getMessaging(app);
+        onMessage(messaging, (payload) => {
+          this.showSnackbar(payload.notification.body, "success", payload.notification.title, payload.notification.image);
+        });
+      } else {
+        console.warn("Notifications not supported in this browser.");
+      }
+    },
+    async askNotification() {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        this.showBell = false;
+        this.showSnackbar("Permission refusée pour les notifications", "error");
+        return;
+      }
+
+      try {
+        const token = await getToken(messaging, {
+          vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg"
+        });
+
+        if (token) {
+          this.showBell = false;
+          await this.$store.dispatch("sessionStore/storeDeviceToken", {
+            token,
+            user_id: this.currentUser.id,
+            platform: "web",
+          });
+          this.showSnackbar("Notifications activées avec succès", "success");
+        } else {
+          this.showBell = false;
+          this.showSnackbar("Aucun token généré", "error");
+        }
+      } catch (err) {
+        this.showBell = false;
+        console.error("Erreur lors de la récupération du token :", err);
+        this.showSnackbar("Erreur lors de l'enregistrement du token", "error");
+      }
+    },
   },
   data() {
     return {
-      snackbar   : {
-        show   : false,
-        title  : null,
+      snackbar: {
+        show: false,
+        title: null,
         message: "",
-        color  : "",
-        photo  : null,
+        color: "",
+        photo: null,
         timeout: 10000,
       },
+      showBell: true,
       showSidebar: true,
-      messaging  : null,
+      messaging: null,
     };
   },
   watch: {
@@ -138,42 +192,27 @@ export default {
     this.$store.commit("sessionStore/setSubdomain", subdomain);
     this.$store.dispatch("menuStore/getMenu", subdomain);
   },
-  mounted() {
-    const firebaseConfig = {
-      apiKey           : "AIzaSyCxbYAg-_eIci32Qf1ZRoKZLwkOD-vTuHo",
-      authDomain       : "funadf-49dfb.firebaseapp.com",
-      projectId        : "funadf-49dfb",
-      storageBucket    : "funadf-49dfb.firebasestorage.app",
-      messagingSenderId: "609947767440",
-      appId            : "1:609947767440:web:17de62d5e49d3a0c2ffe15",
-      measurementId    : "G-394J13VTZX"
-    };
-    const app = initializeApp(firebaseConfig);
+  async mounted() {
+    this.initMessaging();
 
-    // Demande la permission de recevoir des notifications
-    // Si on a l'auto on store le token api/device_tokens (post) en recuperant le user_id de la session
-    getToken(getMessaging(app),
-        {vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg"})
-    .then((currentToken) => {
-      if (currentToken) {
-        let payload = {
-          token   : currentToken,
-          user_id : this.currentUser.id,
-          platform: 'web',
-        }
-        this.$store.dispatch("sessionStore/storeDeviceToken", payload);
-      } else {
-        console.log("No registration token available. Request permission to generate one.");
-      }
-    })
-    .catch((err) => {
-      console.log("An error occurred while retrieving token. ", err);
-    });
+    const supported = await isSupported();
 
-    this.messaging = getMessaging(app); // Stocke dans this.messaging
-    onMessage(this.messaging, (payload) => {
-      this.showSnackbar(payload.notification.body, "success", payload.notification.title, payload.notification.image);
-    });
+    if (!supported) {
+      // Pas supporté, ne pas afficher la cloche
+      this.showBell = false;
+      return;
+    }
+
+    // On vérifie la permission actuelle
+    const permission = Notification.permission; // "granted", "denied" ou "default"
+
+    if (permission === "default") {
+      // Afficher la cloche pour demander la permission
+      this.showBell = true;
+    } else {
+      // "granted" ou "denied" => ne pas afficher
+      this.showBell = false;
+    }
   }
 };
 </script>
@@ -181,5 +220,40 @@ export default {
 <style scoped>
 .main {
   padding-bottom: 55px;
+}
+
+.notification-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  /* Petit shake animation toutes les 10 sec */
+  animation: shake 10s infinite;
+  animation-name: shake;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  animation-delay: 0s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-10px, 0px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 </style>

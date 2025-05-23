@@ -45,6 +45,8 @@ class User < ActiveRecord::Base
   has_one :wife, class_name: 'User', through: :husband_marriage
   accepts_nested_attributes_for :husband_marriage, reject_if: :all_blank, allow_destroy: true
 
+  has_many :device_tokens, dependent: :destroy
+
   before_validation :clean_name_attributes
 
   def clean_name_attributes
