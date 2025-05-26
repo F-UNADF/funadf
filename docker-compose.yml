@@ -50,19 +50,6 @@ services:
     profiles:
       - production
       - local
-  cron:
-    container_name: funadf_cron
-    build:
-      context: .
-      dockerfile: ./docker/cron/Dockerfile
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-      - app
-    profiles:
-      - production
-      - local
 
 volumes:
   funadf_db:
