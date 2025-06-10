@@ -36,7 +36,8 @@ class Api::PushNotificationsController < ApiController
       result = service.send_notification(
         token: token,
         title: @push_notification.title,
-        body: @push_notification.body
+        body: @push_notification.body,
+        url: @push_notification.url,
       )
       results << result
     end
