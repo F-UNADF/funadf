@@ -27,16 +27,45 @@ class FcmNotificationService
         notification: {
           title: title,
           body: body,
-          image: 'https://app.addfrance.fr/logo_plus.png',
-
+          image: 'https://app.addfrance.fr/logo_plus.png'
+        },
+        android: {
+          notification: {
+            icon: 'ic_launcher',
+            color: '#1E88E5',
+            sound: 'default'
+          },
+          priority: 'high'
+        },
+        apns: {
+          headers: {
+            'apns-priority': '10'
+          },
+          payload: {
+            aps: {
+              alert: {
+                title: title,
+                body: body
+              },
+              sound: 'default',
+              badge: 1
+            }
+          }
         },
         webpush: {
+          notification: {
+            title: title,
+            body: body,
+            icon: 'https://app.addfrance.fr/logo_plus.png',
+            click_action: url
+          },
           fcm_options: {
             link: url
           }
         }
       }
     }
+
 
     puts payload.inspect
 
