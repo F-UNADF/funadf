@@ -3,12 +3,10 @@
     <h1 class="mb-5">Documents</h1>
 
     <v-list>
-      <nested-document
-          v-for="item in items" :key="item.id"
-          :item="item"
-          @downloadDocument="downloadDocument"
-      >
-      </nested-document>
+      <template v-for="item in items">
+        <nested-document :item="item">
+        </nested-document>
+      </template>
     </v-list>
 
   </v-container>
@@ -36,11 +34,6 @@ export default {
           .catch((error) => {
             console.error(error);
           });
-    },
-    downloadDocument(activeItems) {
-      if (activeItems?.href) {
-        window.open(activeItems.href, "_blank"); // Ouvrir le fichier
-      }
     },
   },
   data() {
