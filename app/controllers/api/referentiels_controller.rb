@@ -84,7 +84,7 @@ class Api::ReferentielsController < ApiController
       result[:roles]   = roles
       result[:members] = members
     when 'campaigns'
-      structures = Association.select('id AS id, name AS name').order(:name)
+      structures = Association.select('id AS id, name AS name').order(:name) + Region.select('id AS id, name AS name').order(:name)
     
       if domain == 'association'
         structures = current_user.associations_responsabilities
@@ -113,7 +113,7 @@ class Api::ReferentielsController < ApiController
       result[:levels] = levels
       result[:structures] = structures
     when 'posts'
-      structures = Association.select('id AS id, name AS name').order(:name)
+      structures = Association.select('id AS id, name AS name').order(:name) + Region.select('id AS id, name AS name').order(:name)
       if domain == 'association'
         structures = current_user.associations_responsabilities
       elsif domain == 'region'
