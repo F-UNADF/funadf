@@ -1,1 +1,84 @@
-TODO ;)
+= 🧩 FUNADF
+
+Projet Ruby on Rails pour la gestion des actions FUNADF.
+
+== ⚙️ Environnement
+
+* Ruby 2.7.8
+* Rails 6.1.7
+
+== 🚀 Lancement du projet
+
+=== 1. Cloner le dépôt
+
+  git clone git@github.com:F-UNADF/funadf.git
+  cd funadf
+
+== 🐳 Lancer avec Docker
+
+=== 1. Configurer les fichiers nécessaires
+
+==== config/database.yml
+
+  cp config/database_example.yml config/database.yml
+
+==== docker/mysql/password.yml
+
+  cp docker/mysql/password_exemple.yml docker/mysql/password.yml
+
+Ensuite, remplir :
+
+  services:
+    password:
+      environment:
+        MYSQL_DATABASE: funadf_development
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: funadf
+        MYSQL_PASSWORD: your_password
+
+==== config/secrets.yml
+
+Assure-toi que le fichier contient :
+
+  development:
+    secret_key_base: e8e777c5868a2d27eb35c2bc844e2950322151264eba83e74964c5b755075811b5795d7cd185ab6d56537145cdca1f07f537dc7d6334a5cb8b518ab72f4286b4
+
+==== config/storage.yml
+
+Doit contenir :
+
+  amazon:
+    service: Disk
+    root: <%= Rails.root.join("tmp/storage") %>
+
+=== 2. Builder les images
+
+  docker compose -f docker-compose.yml --profile=local build
+
+=== 3. Démarrer les services
+
+  docker compose up
+
+=== 4. Initialiser l'application
+
+  docker compose exec app rake app:init
+
+Cette commande va :
+* Créer le premier utilisateur admin
+* Peupler la base de données
+
+== 🌐 Accès à l'application
+
+Ouvrir http://localhost:3000 dans le navigateur.
+
+== 🧪 Astuces
+
+=== Rebuild complet
+
+  docker compose down -v
+  docker compose -f docker-compose.yml --profile=local build
+  docker compose up
+
+---
+
+Pour toute question ou contribution, merci d'utiliser GitHub !
