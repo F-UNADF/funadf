@@ -37,14 +37,6 @@ class User < ActiveRecord::Base
   scope :enabled, -> { where.not(disabled: true) }
   scope :disabled, -> { where(disabled: true) }
 
-  has_one :wife_marriage, class_name: 'Marriage', foreign_key: :wife_id
-  has_one :husband, class_name: 'User', through: :wife_marriage
-  accepts_nested_attributes_for :wife_marriage, reject_if: :all_blank, allow_destroy: true
-
-  has_one :husband_marriage, class_name: 'Marriage', foreign_key: :husband_id
-  has_one :wife, class_name: 'User', through: :husband_marriage
-  accepts_nested_attributes_for :husband_marriage, reject_if: :all_blank, allow_destroy: true
-
   has_many :device_tokens, dependent: :destroy
 
   before_validation :clean_name_attributes
@@ -347,22 +339,6 @@ class User < ActiveRecord::Base
     return "https://www.gravatar.com/avatar/#{hash}"
   end
 
-  def wife_fullname
-    f = nil
-    if wife
-      f = wife.fullname
-    end
-    f
-  end
-
-  def husband_fullname
-    f = nil
-    if husband
-      f = husband.fullname
-    end
-    f
-  end
-
   def get_avatar_url size = [150, 150]
     "/avatars/#{self.id}.png"
   end
@@ -396,8 +372,6 @@ class User < ActiveRecord::Base
                    .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2,
                            :email, :birthdate, :avatar, :biography, :fcm_token, :push_enabled,
-                           husband_marriage_attributes: [:husband_id, :wife_id],
-                           wife_marriage_attributes: [:husband_id, :wife_id],
                            fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
                            gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                            phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
@@ -407,8 +381,6 @@ class User < ActiveRecord::Base
                    .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
                            :email, :birthdate, :password, :password_confirmation, :avatar, :fcm_token, :push_enabled,
-                           husband_marriage_attributes: [:husband_id, :wife_id],
-                           wife_marriage_attributes: [:husband_id, :wife_id],
                            fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
                            gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                            phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],

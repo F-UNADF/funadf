@@ -11,7 +11,6 @@ import votesStore from "./modules/votesStore";
 import feedStore from "./modules/feedStore";
 import feedEventStore from "./modules/feedEventStore";
 import rolesStore from "./modules/rolesStore";
-import meetingsStore from "./modules/meetingsStore";
 import profileStore from "./modules/profileStore";
 import feesStore from "./modules/feesStore";
 import documentsStore from "./modules/documentsStore";
@@ -35,7 +34,6 @@ const store = createStore({
         feedStore,
         feedEventStore,
         rolesStore,
-        meetingsStore,
         profileStore,
         feesStore,
         documentsStore,
