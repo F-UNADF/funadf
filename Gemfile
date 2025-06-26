@@ -3,56 +3,53 @@ source 'https://rubygems.org'
 ruby '2.7.8'
 gem 'rails', '6.1.7'
 
-gem 'sass-rails'
-gem 'uglifier'
-gem 'turbolinks'
-gem 'jbuilder'
-gem 'spring',        group: :development
-
+# AUTH
 gem 'devise'
 gem 'devise_invitable'
-
-gem 'haml-rails'
-
-gem 'mysql2'
-
-gem 'carrierwave'
-gem 'state_machines-activerecord'
-gem 'wkhtmltopdf-binary'
-gem 'wicked_pdf'
-gem 'public_activity'
 gem 'simple_token_authentication'
-gem 'rack-cors', '~> 0.3.1'
-
-gem 'aws-sdk-s3', require: false
-gem 'exception_notification'
-gem 'slack-notifier'
-
-gem 'foreman'
-gem 'vite_rails'
-
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 
+# BACKGROUND JOBS
+# Pas pour le moment
+
+# PDF
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
+# Fichiers
+gem 'carrierwave'
+gem 'aws-sdk-s3', require: false
+
+# Front
+gem 'vite_rails'
+
+# ORM
+gem 'mysql2'
 gem 'geocoder', '~> 1.8', '>= 1.8.2'
+gem 'public_activity'
+gem 'state_machines-activerecord'
 
-gem 'net-http', require: false
-gem 'net-imap', require: false
-gem 'net-protocol', require: false
-gem 'net-smtp', require: false
-
-gem 'googleauth'
-gem 'faraday'
-
+# Monitoring
+gem 'exception_notification'
+gem 'slack-notifier'
 gem 'logtail-rails'
+
+# Api / HTTP
+gem 'faraday'
+gem 'googleauth'
+gem 'rack-cors', '~> 1.1'
+
+gem 'haml-rails'
 
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'test-unit'
   gem 'faker'
   gem 'guard-test'
+  gem 'spring'
+  gem 'foreman'
 end
 
 group :production do
@@ -62,5 +59,6 @@ end
 group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
+  gem 'test-unit'
 end
 
