@@ -14,7 +14,6 @@ import UsersIndex from "../components/Users/Index.vue";
 import ChurchesIndex from "../components/Churches/Index.vue";
 import FeesIndex from "../components/Fees/Index.vue";
 import RolesIndex from "../components/Roles/Index.vue";
-import MeetingsIndex from "../components/Meetings/Index.vue";
 import PushNotificationsIndex from "../components/PushNotifications/Index.vue";
 import RegionsIndex from "../pages/Regions/Index.vue";
 import MembersIndex from "../pages/Members/Index.vue";
@@ -156,12 +155,6 @@ const router = createRouter({
             path: "/admin/roles",
             component: RolesIndex,
             name: "admin.roles",
-            props: { domain: 'admin' }
-        },
-        {
-            path: "/admin/meetings",
-            component: MeetingsIndex,
-            name: "admin.meetings",
             props: { domain: 'admin' }
         },
         {

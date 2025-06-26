@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_05_23_140432) do
+ActiveRecord::Schema.define(version: 2025_06_26_133914) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"

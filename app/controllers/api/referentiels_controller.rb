@@ -92,11 +92,9 @@ class Api::ReferentielsController < ApiController
         structures = current_user.regions_responsabilities
       end
       positions  = User.get_levels + %w[Oeuvres Eglises]
-      meetings = Meeting.order(:begin_at)
 
       result[:structures] = structures
       result[:positions] = positions
-      result[:meetings] = meetings
     when 'events'
       structures = Association.select('id AS id, name AS name').order(:name)
 
@@ -121,9 +119,6 @@ class Api::ReferentielsController < ApiController
       end
       result[:structures] = structures
       result[:levels] = levels
-    when 'meetings'
-      users = User.enabled
-      result[:users] = users
     when 'fees'
       users = User.enabled
       structures = Structure.order(:name)

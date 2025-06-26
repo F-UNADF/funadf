@@ -1,5 +1,4 @@
 class Users::AccessController < ApplicationController
-
   def new
     token = params[:token]
     @user = User.find_by(access_token: token)
@@ -9,5 +8,4 @@ class Users::AccessController < ApplicationController
     end
     redirect_to authenticated_user_url
   end
-
 end

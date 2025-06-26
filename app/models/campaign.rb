@@ -1,7 +1,5 @@
 class Campaign < ActiveRecord::Base
-
   belongs_to :structure
-  belongs_to :meeting
   has_many :motions, -> { order 'motions.order asc' }, dependent: :destroy
   has_many :voting_tables, dependent: :destroy
 
@@ -165,7 +163,6 @@ class Campaign < ActiveRecord::Base
     can_vote           = false
 
     church_presidences.each do |church|
-
       is_member = structure.member_can_vote?(church)
 
       vt = self.voting_tables.where(position: ((is_member) ? 'eglises membres' : 'eglises non membres'), as_member: is_member)
@@ -185,13 +182,8 @@ class Campaign < ActiveRecord::Base
       vt = self.voting_tables.where(position: (as_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: as_member).first
     end
 
-    logger.debug vt.inspect
-
     if as_member
       can_vote = structure.member_can_vote?(voting_structure)
-
-      logger.debug can_vote.inspect
-
       can_vote && (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
     else
       (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
