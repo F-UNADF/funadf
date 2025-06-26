@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_06_26_133914) do
+ActiveRecord::Schema.define(version: 2025_06_26_135551) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -83,15 +83,6 @@ ActiveRecord::Schema.define(version: 2025_06_26_133914) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_attachments_on_post_id"
-  end
-
-  create_table "attendees", charset: "latin1", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "meeting_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["meeting_id"], name: "index_attendees_on_meeting_id"
-    t.index ["user_id"], name: "index_attendees_on_user_id"
   end
 
   create_table "backups", charset: "latin1", force: :cascade do |t|
@@ -191,36 +182,10 @@ ActiveRecord::Schema.define(version: 2025_06_26_133914) do
     t.index ["member_type", "member_id"], name: "index_fees_on_member_type_and_member_id"
   end
 
-  create_table "intranets", id: :integer, charset: "utf8", force: :cascade do |t|
-    t.string "subdomain"
-    t.integer "structure_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["structure_id"], name: "index_intranets_on_structure_id"
-  end
-
   create_table "jwt_denylist", charset: "utf8", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
-  end
-
-  create_table "marriages", charset: "utf8", force: :cascade do |t|
-    t.integer "husband_id"
-    t.integer "wife_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["husband_id"], name: "index_marriages_on_husband_id"
-    t.index ["wife_id"], name: "index_marriages_on_wife_id"
-  end
-
-  create_table "meetings", id: :integer, charset: "utf8", force: :cascade do |t|
-    t.string "name"
-    t.date "begin_at"
-    t.date "end_at"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "memberships", charset: "utf8", force: :cascade do |t|
@@ -249,11 +214,20 @@ ActiveRecord::Schema.define(version: 2025_06_26_133914) do
     t.index ["campaign_id"], name: "index_motions_on_campaign_id"
   end
 
-  create_table "notifications", id: :integer, charset: "utf8", force: :cascade do |t|
-    t.string "title"
-    t.string "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "notifications", charset: "latin1", force: :cascade do |t|
+    t.string "recipient_type"
+    t.bigint "recipient_id"
+    t.string "sender_type"
+    t.bigint "sender_id"
+    t.string "notifiable_type"
+    t.bigint "notifiable_id"
+    t.string "action"
+    t.boolean "read"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
+    t.index ["sender_type", "sender_id"], name: "index_notifications_on_sender"
   end
 
   create_table "posts", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -391,7 +365,6 @@ ActiveRecord::Schema.define(version: 2025_06_26_133914) do
   add_foreign_key "documents", "categories"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"
-  add_foreign_key "intranets", "structures"
   add_foreign_key "memberships", "roles"
   add_foreign_key "posts", "structures"
   add_foreign_key "voting_tables", "campaigns"

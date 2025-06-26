@@ -13,6 +13,8 @@ class Event < ActiveRecord::Base
 
   validates :category_id, :start_at, :end_at, :title, presence: true
 
+  after_create_commit :notify_async
+
   def images
     files.select do |file|
       file.content_type.start_with?('image/')
@@ -24,5 +26,9 @@ class Event < ActiveRecord::Base
       file.content_type.start_with?('image/')
     end
   end 
+
+  def notify_async
+    NotificationEventBroadcastJob.perform_later(self.id)
+  end
 
 end

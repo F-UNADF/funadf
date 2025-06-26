@@ -20,5 +20,6 @@ module Funadf
     config.i18n.default_locale = :fr
 
     config.quiet_assets = true
+    config.active_job.queue_adapter = :sidekiq
   end
 end

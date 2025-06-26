@@ -12,7 +12,7 @@ gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 
 # BACKGROUND JOBS
-# Pas pour le moment
+gem 'sidekiq'
 
 # PDF
 gem 'wicked_pdf'
