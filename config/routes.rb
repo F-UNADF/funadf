@@ -49,6 +49,10 @@ Rails.application.routes.draw do
 
     resources :fees
 
+    get '/notifications', to: 'notifications#index'
+    patch '/notifications/:id/mark_as_read', to: 'notifications#mark_as_read'
+    patch '/notifications/mark_all_as_read', to: 'notifications#mark_all_as_read'
+
     resources :device_tokens, only: [:create, :destroy]
 
     get '/profile', to: 'profile#show'

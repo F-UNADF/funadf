@@ -5,10 +5,12 @@
     </template>
 
     <template v-slot:append>
+      <NotificationBell />
+
       <v-btn @click="switch_back()" color="green" variant="flat" v-show="ouser">
         <v-icon>mdi-account-switch</v-icon>
         Revenir à {{ this.ouser?.firstname }}
-      </v-btn>
+      </v-btn> 
 
       <v-menu>
         <template v-slot:activator="{ props }">
@@ -47,9 +49,13 @@
 </template>
 
 <script>
+import NotificationBell from '../Notifications/NotificationBell.vue';
 
 export default {
   name: "Header",
+  components: {
+    NotificationBell,
+  },
   props: {
     user: {
       type: [Object, null],

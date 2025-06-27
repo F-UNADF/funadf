@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
 
   has_many :fees, as: :member, dependent: :destroy
 
+  has_many :notifications, as: :recipient, dependent: :destroy
+
   accepts_nested_attributes_for :careers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :gratitudes, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :phases, reject_if: :all_blank, allow_destroy: true
