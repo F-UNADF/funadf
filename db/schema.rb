@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_06_26_135551) do
+ActiveRecord::Schema.define(version: 2025_06_27_075638) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -225,6 +225,7 @@ ActiveRecord::Schema.define(version: 2025_06_26_135551) do
     t.boolean "read"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "notified_at"
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
     t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
     t.index ["sender_type", "sender_id"], name: "index_notifications_on_sender"

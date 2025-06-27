@@ -13,6 +13,7 @@ gem "omniauth-rails_csrf_protection"
 
 # BACKGROUND JOBS
 gem 'sidekiq'
+gem 'sidekiq-scheduler'
 
 # PDF
 gem 'wicked_pdf'

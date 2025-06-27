@@ -1,0 +1,11 @@
+%h2 Bonjour #{@user.first_name},
+
+%p Voici vos dernières notifications :
+
+%ul
+  - @notifications.each do |notif|
+    %li
+      = "#{notif.title} - #{l notif.created_at, format: :short}"
+
+%p Pour consulter toutes vos notifications, veuillez vous connecter à votre compte.
+%p= link_to root_url, "Cliquez ici pour vous connecter"
