@@ -5,13 +5,15 @@ class NotificationDigestJob < ApplicationJob
     # Sélectionne les notifs non encore envoyées
     grouped = Notification
                 .where(read: false, notified_at: nil)
-                .where("created_at < ?", 10.minutes.ago) # buffer anti-doublon
                 .group_by(&:recipient)
+
+    puts "Envoi des notifications groupées pour #{grouped.count} utilisateurs."
 
     grouped.each do |user, notifs|
       next if notifs.empty?
 
       # Envoi par mail
+      puts "Envoi de la notification groupée pour l'utilisateur (#{user.email})"
       UserMailer.notification_digest(user, notifs).deliver_later
 
       # (Optionnel) Envoi Push ici
@@ -20,13 +22,13 @@ class NotificationDigestJob < ApplicationJob
       title = "Nouvelles notifications sur ADD+ !"
       body = "Il y a du nouveau sur ADD+ ! Vous avez #{notifs.count} notifications non lues !"
       device_tokens = user.device_tokens.pluck(:token).uniq
-      next if device_tokens.empty?
+      puts "Envoi de la notification push à #{device_tokens.count} appareils."
       device_tokens.each do |token|
         response = service.send_notification(
           token: token,
           title: title,
           body: body,
-          url: me_feed_url
+          url: 'https://app.addfrance.fr'
         )
 
         if response[:body][:error]

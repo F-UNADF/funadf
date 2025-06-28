@@ -8,7 +8,7 @@ class Notification < ActiveRecord::Base
     when 'Post'
       "Nouvelle actu : #{notifiable.title}"
     when 'Event'
-      "Nouvel événement : #{notifiable.name}"
+      "Nouvel événement : #{notifiable.title}"
     else
       "Notification"
     end

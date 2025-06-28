@@ -12,7 +12,6 @@
           </template>
         </v-btn>
         <h4 class="text-h5 font-weight-bold mb-4">
-          <span v-if="meeting" class="text-grey text-h6">Rassemblement : {{ meeting.name }}<br></span>
           Structure : {{ structure.name }}<br>
           <small>Campagne : {{ item.name }}</small>
         </h4>
@@ -122,7 +121,6 @@ export default {
       item: 'getItem',
       structure: 'getStructure',
       motions: 'getMotions',
-      meeting: 'getMeeting',
       voters: 'getVoters',
       loading: 'getLoading',
       present: 'getPresent',

@@ -33,17 +33,18 @@ Rails.application.configure do
   config.assets.check_precompiled_asset = false
 
   config.action_mailer.delivery_method = :smtp
+
   config.action_mailer.smtp_settings = {
-    :user_name => '3a40f564295fbf',
-    :password => '846a19ab4fedde',
-    :address => 'sandbox.smtp.mailtrap.io',
-    :domain => 'sandbox.smtp.mailtrap.io',
-    :port => '2525',
-    :authentication => :cram_md5
+    user_name: '3a40f564295fbf',
+    password: '846a19ab4fedde',
+    address: 'sandbox.smtp.mailtrap.io',
+    host: 'sandbox.smtp.mailtrap.io',
+    port: '2525',
+    authentication: :login
   }
   # ActionMailer Config
-  config.action_mailer.default_url_options = { :host => 'localhost' }
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
 
 
@@ -55,8 +56,7 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  Rails.application.routes.default_url_options[:host] = "localhost"
-
+  Rails.application.routes.default_url_options[:host] = "localhost:3000"
   BetterErrors::Middleware.allow_ip! "0.0.0.0/0"
   config.active_storage.service = :amazon
 end

@@ -74,9 +74,6 @@ Rails.application.routes.draw do
     resources :feed, only: [:index]
 
     resources :roles
-    resources :meetings
-    post '/meetings/:id/add_attendees', to: 'meetings#add_attendees'
-    post '/meetings/:id/remove_attendees', to: 'meetings#remove_attendees'
 
     resources :files, only: [:destroy]
     resources :documents
@@ -100,7 +97,6 @@ Rails.application.routes.draw do
     resources :events, only: :index
     resources :posts, only: :index
     resources :roles, only: :index
-    resources :meetings, only: :index
     resources :fees, only: :index
     resources :documents, only: :index
     resources :push_notifications, only: :index
