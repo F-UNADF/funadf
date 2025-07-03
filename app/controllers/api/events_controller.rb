@@ -35,7 +35,13 @@ class Api::EventsController < ApiController
         url:  url_for(file)
       }
     end
-    render json: { event: @event, files: files_data, accesses: @event.accesses.pluck(:level) }
+
+    event = @event.as_json.merge(
+        images:      @event.images.map { |image| url_for image },
+        attachments: @event.attachments.map { |file| url_for file },
+        structure:   @event.structure,
+    )
+    render json: { event: event, files: files_data, accesses: @event.accesses.pluck(:level) }
   end
 
   def create

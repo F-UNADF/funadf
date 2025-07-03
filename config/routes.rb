@@ -49,6 +49,10 @@ Rails.application.routes.draw do
 
     resources :fees
 
+    get '/notifications', to: 'notifications#index'
+    patch '/notifications/:id/mark_as_read', to: 'notifications#mark_as_read'
+    patch '/notifications/mark_all_as_read', to: 'notifications#mark_all_as_read'
+
     resources :device_tokens, only: [:create, :destroy]
 
     get '/profile', to: 'profile#show'
@@ -70,9 +74,6 @@ Rails.application.routes.draw do
     resources :feed, only: [:index]
 
     resources :roles
-    resources :meetings
-    post '/meetings/:id/add_attendees', to: 'meetings#add_attendees'
-    post '/meetings/:id/remove_attendees', to: 'meetings#remove_attendees'
 
     resources :files, only: [:destroy]
     resources :documents
@@ -96,7 +97,6 @@ Rails.application.routes.draw do
     resources :events, only: :index
     resources :posts, only: :index
     resources :roles, only: :index
-    resources :meetings, only: :index
     resources :fees, only: :index
     resources :documents, only: :index
     resources :push_notifications, only: :index
@@ -130,6 +130,8 @@ Rails.application.routes.draw do
     get '/mon-profil', to: 'profile#show', as: :me
     get '/documents', to: 'documents#index', as: :documents
     get '/campaigns', to: 'campaigns#index', as: :votes
+    get '/actus/:post', to: 'posts#show', as: :post
+    get '/evenements/:event', to: 'events#show', as: :event
 
     root to: redirect('/feed'), as: :root
   end

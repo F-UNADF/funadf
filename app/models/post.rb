@@ -8,6 +8,7 @@ class Post < ActiveRecord::Base
   has_many_attached :files
 
   delegate :name, to: :structure, prefix: true
+  after_create_commit :notify_async
 
   def images
     files.select do |file|
@@ -19,6 +20,10 @@ class Post < ActiveRecord::Base
     files.reject do |file|
       file.content_type.start_with?('image/')
     end
+  end
+
+  def notify_async
+    NotificationPostBroadcastJob.perform_later(self.id)
   end
 
 end

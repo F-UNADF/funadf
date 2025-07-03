@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.7.8'
+ruby '3.2.4'
 gem 'rails', '6.1.7'
 
 # AUTH
@@ -12,7 +12,8 @@ gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 
 # BACKGROUND JOBS
-# Pas pour le moment
+gem 'sidekiq'
+gem 'sidekiq-scheduler'
 
 # PDF
 gem 'wicked_pdf'

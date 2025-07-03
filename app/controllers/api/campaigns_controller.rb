@@ -137,7 +137,7 @@ class Api::CampaignsController < ApiController
   end
 
   def campaign_params
-    params[:campaign].permit(:name, :structure_id, :meeting_id)
+    params[:campaign].permit(:name, :structure_id)
   end
 
   def campaigns_for(responsabilities)

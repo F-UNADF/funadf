@@ -9,16 +9,16 @@
           <h6 class="text-h6">{{ post.structure.name }}</h6>
           <v-icon size="x-small" color="grey lighten-5 mx-3">mdi-circle</v-icon>
           <span class="text-subtitle-2 opacity-50">
-            {{ dateFormat(post.post.created_at) }}
+            {{ dateFormat(post.created_at) }}
           </span>
-          <em v-if="post.post.pinned" class="small text-grey ml-3">
+          <em v-if="post.pinned" class="small text-grey ml-3">
             Actualité épinglée
           </em>
         </div>
       </div>
       <div class="py-4 text-body-1 gap-3">
-        <h3>{{ post.post.title }}</h3>
-        <div v-html="post.post.content"></div>
+        <h3>{{ post.title }}</h3>
+        <div v-html="post.content"></div>
       </div>
       <!---If Images -->
       <v-row v-if="post?.images">
@@ -93,7 +93,7 @@
             v-for="(attachment, index) in post?.attachments"
             :key="index"
             class="d-flex child-flex"
-            cols="6"
+            cols="4"
         >
           <v-btn
               :href="attachment"
@@ -106,73 +106,8 @@
 
         </v-col>
       </v-row>
-
-      <!-- Like and comment count
-      <div class="my-4 mt-5 d-flex align-center gap-3">
-        <v-tooltip text="Like">
-          <template v-slot:activator="{ props }">
-            <v-btn
-                @click="handlePostLikes(`${post?.id}`)"
-                v-bind="props"
-                icon
-                :color="post?.data && post?.data.likes && post?.data.likes.like ? 'primary' : 'grey100'"
-                variant="flat"
-                size="x-small"
-            >
-              <ThumbUpIcon size="16" />
-            </v-btn>
-          </template>
-        </v-tooltip>
-        <span class="text-subtitle-1 font-weight-semibold">{{ post?.data && post?.data.likes && post?.data.likes.value }}</span>
-        <v-tooltip text="Comment">
-          <template v-slot:activator="{ props }">
-            <v-btn icon v-bind="props" color="secondary" variant="flat" size="x-small" @click="toggleCommentbox">
-              <Message2Icon size="16" />
-            </v-btn>
-          </template>
-        </v-tooltip>
-        <span class="text-subtitle-1 font-weight-semibold">{{ post?.data.comments ? post?.data.comments.length : 0 }}</span>
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <v-btn icon class="ml-auto" variant="text" size="small" v-bind="props"><ShareIcon size="16" /></v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item v-for="(item, index) in shareitems" :key="index" :value="index">
-              <template v-slot:prepend>
-                <component :is="item.icon" stroke-width="1.5" size="20" />
-              </template>
-              <v-list-item-title class="ml-3">{{ item.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>-->
     </v-card-item>
-    <!--If Comment
-    <div v-if="post?.data.comments" class="pa-5 pt-0">
-      <div v-for="comments in post?.data.comments">
-        <Comments :comments="comments" :postId="post?.id" />
-      </div>
-    </div>
-    Comment Form
-    <div v-if="showCommentBox">
-      <v-divider />
-      <div class="d-block d-sm-flex gap-3 align-center mb-4 px-4 pt-4">
-        <v-avatar class="flex-shrink-0 d-none d-sm-block" size="33">
-          <img :src="post?.profile.avatar" width="33" alt="avatar" />
-        </v-avatar>
-        <v-text-field variant="outlined" color="primary" v-model="searchValue" placeholder="Comment" hide-details></v-text-field>
-        <v-btn
-            color="primary"
-            variant="flat"
-            :disabled="searchValue === ''"
-            class="mt-3 mt-sm-0"
-            @click="onSubmit(post?.id, searchValue)"
-        >
-          Comment
-        </v-btn>
-      </div>
-    </div>-->
+
     <v-dialog v-model="carouselDialog" max-width="50%">
       <v-card>
         <v-card-title>
@@ -210,7 +145,6 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
 import moment from "moment/moment";
 
 export default {

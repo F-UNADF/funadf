@@ -1,4 +1,4 @@
-FROM ruby:2.7.8-bullseye
+FROM ruby:3.2.4-bullseye
 
 ENV BUNDLER_VERSION=2.3.13
 ENV PYTHONPATH=/usr/bin/python3

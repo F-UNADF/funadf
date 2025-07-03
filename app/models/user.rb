@@ -26,6 +26,9 @@ class User < ActiveRecord::Base
 
   has_many :fees, as: :member, dependent: :destroy
 
+  has_many :notifications, as: :recipient, dependent: :destroy
+  has_many :api_tokens, dependent: :destroy
+
   accepts_nested_attributes_for :careers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :gratitudes, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :phases, reject_if: :all_blank, allow_destroy: true
@@ -36,6 +39,22 @@ class User < ActiveRecord::Base
 
   scope :enabled, -> { where.not(disabled: true) }
   scope :disabled, -> { where(disabled: true) }
+  scope :with_current_level_in, ->(levels) {
+    joins(<<~SQL)
+      INNER JOIN (
+        SELECT c1.*
+        FROM careers c1
+        INNER JOIN (
+          SELECT user_id, MAX(start_at) AS max_start_at
+          FROM careers
+          WHERE level IS NOT NULL
+          GROUP BY user_id
+        ) c2 ON c1.user_id = c2.user_id AND c1.start_at = c2.max_start_at
+        WHERE c1.level IS NOT NULL
+      ) AS recent_careers ON recent_careers.user_id = users.id
+    SQL
+    .where("recent_careers.level IN (?)", levels)
+  }
 
   has_many :device_tokens, dependent: :destroy
 

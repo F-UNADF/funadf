@@ -4,13 +4,16 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:simple)
-    sign_in @user
+    api_token = @user.api_tokens.create!(token: "123456", active: true)
+
+    @current_api_token = "Bearer #{api_token.token}"
     @structure = structures(:association)
     @campaign = @structure.campaigns.create!(name: "Campaign")
   end
 
   test "user should have success response" do
-    get api_vote_url(subdomain: nil, id: @campaign.id)
+    get api_vote_url(subdomain: nil, id: @campaign.id),
+      headers: { 'Authorization' => @current_api_token }
     assert_response :success
 
     # response is a json
@@ -23,7 +26,8 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
     @user.gratitudes.create!(level: 'Pasteur APE', start_at: Date.yesterday)
     @campaign.voting_tables.create!(position: 'Pasteur APE', voting: 'count', as_member: true)
 
-    get api_vote_url(subdomain: nil, id: @campaign.id)
+    get api_vote_url(subdomain: nil, id: @campaign.id),
+      headers: { 'Authorization' => @current_api_token }
     assert_response :success
 
     response = JSON.parse(@response.body)
@@ -39,7 +43,8 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
 
     @campaign.voting_tables.create!(position: 'Eglises', voting: 'count', as_member: true)
 
-    get api_vote_url(subdomain: nil, id: @campaign.id)
+    get api_vote_url(subdomain: nil, id: @campaign.id),
+      headers: { 'Authorization' => @current_api_token }
     assert_response :success
 
     response = JSON.parse(@response.body)
@@ -56,7 +61,8 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
 
     @campaign.voting_tables.create!(position: 'Oeuvres', voting: 'count', as_member: true)
 
-    get api_vote_url(subdomain: nil, id: @campaign.id)
+    get api_vote_url(subdomain: nil, id: @campaign.id),
+      headers: { 'Authorization' => @current_api_token }
     assert_response :success
 
     response = JSON.parse(@response.body)
@@ -80,7 +86,8 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
     @campaign.voting_tables.create!(position: 'Eglises', voting: 'count', as_member: true)
     @campaign.voting_tables.create!(position: 'Oeuvres', voting: 'count', as_member: true)
 
-    get api_vote_url(subdomain: nil, id: @campaign.id)
+    get api_vote_url(subdomain: nil, id: @campaign.id),
+      headers: { 'Authorization' => @current_api_token }
     assert_response :success
 
     response = JSON.parse(@response.body)

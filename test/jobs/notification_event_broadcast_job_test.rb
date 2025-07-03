@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Api::PushNotificationsControllerTest < ActionDispatch::IntegrationTest
+class NotificationEventBroadcastJobTest < ActiveJob::TestCase
   # test "the truth" do
   #   assert true
   # end

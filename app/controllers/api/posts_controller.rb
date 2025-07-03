@@ -33,7 +33,13 @@ class Api::PostsController < ApiController
         url:  url_for(file)
       }
     end
-    render json: { post: @post, files: files_data, accesses: @post.accesses.pluck(:level) }
+    post = @post.as_json.merge(
+      images: @post.images.map { |image| url_for(image) },
+      attachments: files_data,
+      structure: @post.structure.as_json
+    )
+
+    render json: { post: post, files: files_data, accesses: @post.accesses.pluck(:level) }
   end
 
   def create

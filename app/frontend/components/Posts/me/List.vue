@@ -11,7 +11,7 @@
         @keyup="searching($event)"></v-text-field>
     </v-col>
     <v-col cols="12" v-for="post in items" :key="post.id" v-if="!this.search_in_progress">
-      <PostItem :post="post" />
+      <PostItem :post="post" @click="this.$router.push({ name: 'post.show', params: { id: post.id } })" />
     </v-col>
     <v-col cols="12" v-if="this.search_in_progress">
       <v-row>
