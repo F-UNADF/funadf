@@ -19,12 +19,16 @@
         </v-btn>
       </template>
 
-      <v-list style="min-width: 300px; max-height: 400px; overflow-y: auto;">
-        <v-list-item @click="markAllAsRead()" v-if="notifications.length > 0">
+      <v-list style="min-width: 400px; max-height: 500px; overflow-y: auto;">
+        <v-list-item @click="markAllAsRead()" v-if="notifications.filter(n => !n.read).length > 0">
           <v-list-item-title class="text--small text-caption text-grey">Marquer les {{ notifications.length }} notification(s) comment lue(s)</v-list-item-title>
         </v-list-item>
 
-        <NotificationContent v-for="notif in notifications.slice(0, 5)" :key="notif.id" @click="markAsRead(notif)" :notification="notif" />
+        <NotificationContent 
+          v-for="notif in notifications.slice(0, 5)" 
+          :key="notif.id" 
+          @click="goTo(notif)" 
+          :notification="notif" />
 
         <v-list-item v-if="notifications.length === 0">
           <v-list-item-title>Aucune notification</v-list-item-title>
@@ -57,7 +61,7 @@ export default {
           params: { unread: true },
         })
         this.notifications = response.data.notifications || []
-        this.unreadCount = response.data.notifications.length
+        this.unreadCount = response.data.notifications.filter(n => !n.read).length
       } catch (error) {
         console.error('Erreur lors du chargement des notifications', error)
       }
@@ -65,8 +69,8 @@ export default {
     async markAsRead(notif) {
       try {
         await axios.patch(`/api/notifications/${notif.id}/mark_as_read`)
-        this.notifications = this.notifications.filter(n => n.id !== notif.id)
-        this.unreadCount = this.notifications.length
+        notif.read = true
+        this.unreadCount = this.notifications.filter(n => !n.read).length
       } catch (error) {
         console.error('Erreur lors de la mise à jour de la notification', error)
       }
@@ -78,6 +82,14 @@ export default {
         this.unreadCount = 0
       } catch (error) {
         console.error('Erreur lors de la mise à jour de toutes les notifications', error)
+      }
+    },
+    goTo(notif) {
+      this.markAsRead(notif);
+      if (notif.notifiable) {
+        this.$router.push({ name: notif.notifiable_type.toLowerCase() + '.show', params: { id: notif.notifiable_id } })
+      } else {
+        console.warn('Notification notifiable is missing', notif)
       }
     },
     formatDate(isoDate) {

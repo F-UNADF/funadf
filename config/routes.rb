@@ -130,6 +130,8 @@ Rails.application.routes.draw do
     get '/mon-profil', to: 'profile#show', as: :me
     get '/documents', to: 'documents#index', as: :documents
     get '/campaigns', to: 'campaigns#index', as: :votes
+    get '/actus/:post', to: 'posts#show', as: :post
+    get '/evenements/:event', to: 'events#show', as: :event
 
     root to: redirect('/feed'), as: :root
   end

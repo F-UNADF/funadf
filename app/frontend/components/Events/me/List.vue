@@ -7,7 +7,7 @@
       </h3>
     </v-col>
     <v-col cols="12" v-for="event in items" :key="event.id">
-      <EventItem :event="event"/>
+      <EventItem :event="event"  />
     </v-col>
     <v-col cols="12">
       <v-btn append-icon="mdi-plus-circle" block size="large" color="primary" @click="load()"

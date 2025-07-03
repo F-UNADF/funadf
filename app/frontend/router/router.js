@@ -17,6 +17,8 @@ import RolesIndex from "../components/Roles/Index.vue";
 import PushNotificationsIndex from "../components/PushNotifications/Index.vue";
 import RegionsIndex from "../pages/Regions/Index.vue";
 import MembersIndex from "../pages/Members/Index.vue";
+import PostsShow from "../pages/Posts/Show.vue";
+import EventsShow from "../pages/Events/Show.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -54,6 +56,16 @@ const router = createRouter({
             path: "/campaigns/:id",
             component: VotesShow,
             name: "votes.show",
+        },
+        {
+            path: "/actus/:id",
+            component: PostsShow,
+            name: "post.show",
+        },
+        {
+            path: "/evenements/:id",
+            component: EventsShow,
+            name: "event.show",
         },
 
         // ASSOCIATION

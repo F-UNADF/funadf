@@ -1,7 +1,7 @@
 class Api::NotificationsController < ApiController
   
   def index
-    notifications = current_user.notifications.where(read: !params[:unread]).order(created_at: :desc).limit(10)
+    notifications = current_user.notifications.order(read: :asc, created_at: :desc).limit(10)
     render json: { notifications: notifications }, include: ['notifiable', 'sender']
   end
 

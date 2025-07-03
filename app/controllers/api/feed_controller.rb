@@ -14,12 +14,11 @@ class Api::FeedController < ApiController
     posts = posts.limit(10).offset(params[:offset])
 
     post_with_urls = posts.map do |post|
-      {
-        post:               post,
-        images:             post.images.map { |image| url_for image },
-        attachments:        post.attachments.map { |file| url_for file },
-        structure:          post.structure,
-      }
+      post.as_json.merge(
+        images:      post.images.map { |image| url_for(image) },
+        attachments: post.attachments.map { |file| url_for(file) },
+        structure:   post.structure.as_json
+      )
     end
 
     render json: { posts: post_with_urls }
