@@ -5,7 +5,10 @@
 %ul
   - @notifications.each do |notif|
     %li
-      = "#{notif.title} - #{notif.created_at.strftime('%d/%m/%Y')}"
+      = link_to notif.title, notif.url, class: "notification-link"
+      %span(style="color:#999; font-size:12px; margin-left:8px")= notif.created_at.strftime('%d/%m/%Y')
 
 %p Pour consulter toutes vos notifications, veuillez vous connecter à votre compte.
-%p= link_to root_url, "Cliquez ici pour vous connecter"
+
+%p
+  = link_to "Cliquez ici pour vous connecter", root_url, class: "primary-button"
