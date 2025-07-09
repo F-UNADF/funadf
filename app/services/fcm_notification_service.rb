@@ -14,7 +14,7 @@ class FcmNotificationService
     @project_id = JSON.parse(File.read(Rails.root.join('config', 'credential.json')))['project_id']
   end
 
-  def send_notification(token:, title:, body:, url:)
+  def send_notification(token:, title:, body:, url:, badge:)
     access_token = @credentials.fetch_access_token!['access_token']
 
     if url.nil?
@@ -48,7 +48,7 @@ class FcmNotificationService
                 body: body
               },
               sound: 'default',
-              badge: 1
+              badge: badge || 1,
             }
           }
         },
