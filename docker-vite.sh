@@ -1,5 +1,5 @@
 #!/bin/sh
 
-bin/vite clear
 npm install
+bin/vite clear
 bin/vite dev

@@ -59,4 +59,5 @@ Rails.application.configure do
   Rails.application.routes.default_url_options[:host] = "localhost:3000"
   BetterErrors::Middleware.allow_ip! "0.0.0.0/0"
   config.active_storage.service = :amazon
+
 end

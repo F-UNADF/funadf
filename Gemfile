@@ -24,7 +24,7 @@ gem 'carrierwave'
 gem 'aws-sdk-s3', require: false
 
 # Front
-gem 'vite_rails'
+gem 'vite_rails', '~> 3.0', '>= 3.0.19'
 
 # ORM
 gem 'mysql2'

@@ -28,7 +28,8 @@ class NotificationDigestJob < ApplicationJob
           token: token,
           title: title,
           body: body,
-          url: 'https://app.addfrance.fr'
+          url: 'https://app.addfrance.fr',
+          badge: notifs.count
         )
 
         if response[:body][:error]

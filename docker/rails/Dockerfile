@@ -26,8 +26,7 @@ ADD Gemfile.lock /app/Gemfile.lock
 RUN gem install bundler -v "$BUNDLER_VERSION" && bundle install -j4
 
 ADD package.json /app/package.json
-RUN npm install --force
-RUN npm install --global yarn
+RUN npm install
 
 ADD . /app
 # Assure-toi que wkhtmltopdf est accessible à l'utilisateur funadf
