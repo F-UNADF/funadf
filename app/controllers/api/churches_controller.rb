@@ -103,7 +103,7 @@ class Api::ChurchesController < ApiController
   end
 
   def church_params
-    params[:church].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :logo)
+    params[:church].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :logo, :website)
   end
 
 end

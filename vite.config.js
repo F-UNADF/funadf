@@ -10,6 +10,17 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         port: 3036,
+        strictPort: true,
+        cors: true,
+        watch: {
+            usePolling: true,       // active le polling
+            interval: 1000          // optionnel, en ms
+        },
+        hmr: {
+            protocol: 'ws',
+            host: 'localhost',
+            port: 3036
+        }
     },
     base: '/app/frontend/',
 });

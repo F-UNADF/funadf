@@ -25,6 +25,7 @@ db/*.sqlite3
 /config/database.yml
 /config/secrets.yml
 /config/storage.yml
+/config/sidekiq.yml
 
 /storage/
 

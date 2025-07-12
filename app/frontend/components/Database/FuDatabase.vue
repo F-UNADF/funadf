@@ -45,7 +45,7 @@
                                 </template>
 
                                 <v-list>
-                                    <v-list-item v-for="action, index in config?.itemActions" :key="index"
+                                    <v-list-item v-for="(action, index) in config?.itemActions" :key="index"
                                         :value="index" @click="manageAction(action, item)"
                                         :prepend-icon="action.icon || 'mdi-pencil'">
                                         <v-list-item-title>{{ $t(action.title) }}</v-list-item-title>

@@ -79,7 +79,7 @@ class Api::RegionsController < ApiController
   end
 
   def region_params
-    params[:region].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :logo)
+    params[:region].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :logo, :website)
   end
 
   def members_params

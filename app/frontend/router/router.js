@@ -11,7 +11,7 @@ import EventsIndex from "../components/Events/Index.vue";
 import CampaignsIndex from "../components/Campaigns/Index.vue";
 import PostsIndex from "../components/Posts/Index.vue";
 import UsersIndex from "../components/Users/Index.vue";
-import ChurchesIndex from "../components/Churches/Index.vue";
+import ChurchesIndex from "../pages/Churches/Index.vue";
 import FeesIndex from "../components/Fees/Index.vue";
 import RolesIndex from "../components/Roles/Index.vue";
 import PushNotificationsIndex from "../components/PushNotifications/Index.vue";

@@ -1,6 +1,19 @@
 // stores/crudStore.js
 import axios from "axios";
 
+function singularize(word) {
+    if (word.endsWith('ies')) {
+        return word.slice(0, -3) + 'y'; // e.g., "parties" -> "party"
+    }
+    if (word.endsWith('ches') || word.endsWith('shes') || word.endsWith('xes') || word.endsWith('ses') || word.endsWith('zes')) {
+        return word.slice(0, -2); // e.g., "churches" -> "church"
+    }
+    if (word.endsWith('s') && !word.endsWith('ss')) {
+        return word.slice(0, -1); // e.g., "regions" -> "region"
+    }
+    return word; // return as is if no rule matched
+}
+
 export default function createCrudStore({ resource }) {
     const baseUri = `/api/${resource}`;
 
@@ -38,8 +51,8 @@ export default function createCrudStore({ resource }) {
             },
             fetchItem({ commit }, id) {
                 axios.get(`${baseUri}/${id}`).then((res) => {
-                    commit('setItem', res.data[resource.slice(0, -1)]); // singular
-                    // si il a des membres
+                    commit('setItem', res.data[singularize(resource)]);
+
                     if (res.data.members) {
                         commit('setMembers', res.data.members);
                     }
@@ -54,7 +67,7 @@ export default function createCrudStore({ resource }) {
                 const uri = item.id ? `${baseUri}/${item.id}` : baseUri;
 
                 const formData = new FormData();
-                const resourceName = resource.slice(0, -1);
+                const resourceName = singularize(resource);
 
                 for (const key in item) {
                     // Gestion spéciale pour les objets/fichiers si besoin
@@ -71,7 +84,7 @@ export default function createCrudStore({ resource }) {
                     }
                 });
 
-                commit('setItem', res.data[resource.slice(0, -1)]);
+                commit('setItem', res.data[singularize(resource)]);
                 commit('setDialog', false);
                 await dispatch('fetchItems');
             },
