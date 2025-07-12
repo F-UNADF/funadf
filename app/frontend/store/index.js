@@ -1,7 +1,6 @@
 import {createStore} from "vuex";
 import sessionStore from "./modules/sessionStore";
 import usersStore from "./modules/usersStore";
-import churchesStore from "./modules/churchesStore";
 import associationsStore from "./modules/associationsStore";
 import campaignsStore from "./modules/campaignsStore";
 import menuStore from "./modules/menuStore";
@@ -24,7 +23,6 @@ const store = createStore({
     modules: {
         sessionStore,
         usersStore,
-        churchesStore,
         associationsStore,
         campaignsStore,
         menuStore,
@@ -39,6 +37,7 @@ const store = createStore({
         documentsStore,
         pushNotificationsStore,
         regions: createCrudStore({ resource: "regions" }),
+        churches: createCrudStore({ resource: "churches" }),
     },
     strict: debug,
 });

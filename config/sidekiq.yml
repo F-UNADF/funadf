@@ -1,9 +1,13 @@
 :concurrency: 5
 :queues:
   - default
+  - mailers
 
-:schedule:
-  notification_digest_job:
-    cron: "0 8,12,18 * * *"
-    class: NotificationDigestJob
-    queue: default
+:scheduler:
+  enabled: true
+  dynamic: false
+  :schedule:
+    notification_digest_job:
+      cron: "0 8,12,18 * * *"
+      class: NotificationDigestJob
+      queue: default

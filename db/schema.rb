@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_06_27_075638) do
+ActiveRecord::Schema.define(version: 2025_07_12_115318) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -273,6 +273,7 @@ ActiveRecord::Schema.define(version: 2025_06_27_075638) do
     t.string "email"
     t.float "longitude"
     t.float "latitude"
+    t.string "website"
   end
 
   create_table "uploads", id: :integer, charset: "utf8", force: :cascade do |t|
