@@ -10,7 +10,6 @@
     <v-card-text>
       <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
         <v-tab value="infos">Informations générales</v-tab>
-        <v-tab value="notifications">Notifications</v-tab>
         <v-tab value="reconnaissances" v-if="canEditProfil">Reconnaissances</v-tab>
         <v-tab value="parcours">Parcours</v-tab>
         <v-tab value="responsabilites" v-if="canEditProfil">Responsabilités nationales</v-tab>
@@ -64,19 +63,6 @@
             <v-icon class="mr-2">mdi-send</v-icon>
             Envoyer l'invitation à nouveau
           </v-btn>
-        </v-window-item>
-
-        <v-window-item key="notifications" value="notifications">
-          <v-row>
-            <v-col cols="12" sm="6">
-              <v-btn v-if="!pushEnabled" color="primary" @click="enablePushNotifications"
-                     class="mr-3">Activer les notifications push
-              </v-btn>
-              <v-btn v-if="pushEnabled" color="warning" @click="disablePushNotifications"
-                     class="mr-3">Désactiver les notifications push
-              </v-btn>
-            </v-col>
-          </v-row>
         </v-window-item>
 
         <v-window-item key="reconnaissances" value="reconnaissances">
@@ -271,7 +257,6 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {getMessaging, getToken} from "firebase/messaging";
 
 export default {
   name: "UserForm",
@@ -442,19 +427,6 @@ export default {
         this.editedItem.responsabilities.splice(this.editedItem.responsabilities.findIndex(phase => phase.id === id), 1);
       }
     },
-    updatePushStatus(enabled, token) {
-      this.editedItem.user.push_enabled = enabled;
-      this.editedItem.user.fcm_token = token;
-
-      this.$store.dispatch('usersStore/save', this.editedItem).then(response => {
-        console.log('Statut de notification mis à jour avec succès');
-      }, error => {
-        this.$root.showSnackbar('Un probleme est survenu lors de la mise à jour du statut de notification', 'error');
-        let errors = error.response.data.errors;
-
-        this.$root.showSnackbar(errors.join('<br/>'), 'error');
-      });
-    }
   },
   watch: {
     item: {
@@ -486,28 +458,6 @@ export default {
   beforeMount: function () {
     this.$store.dispatch('usersStore/referentiels');
   },
-  mounted() {
-    const messaging = getMessaging();
-
-    getToken(messaging, { vapidKey: 'TA_CLE_VAPID' })
-        .then((token) => {
-          if (token) {
-            console.log('Token FCM récupéré:', token);
-            this.pushToken = token;
-            this.pushEnabled = true;
-            this.updatePushStatus(true, token);  // Mettre à jour en back
-          } else {
-            console.log('Aucun token FCM disponible.');
-            this.pushEnabled = false;
-            this.updatePushStatus(false, null);
-          }
-        })
-        .catch((err) => {
-          console.error('Erreur lors de la récupération du token:', err);
-          this.pushEnabled = false;
-          this.updatePushStatus(false, null);
-        });
-  }
 }
 </script>
 
