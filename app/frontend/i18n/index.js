@@ -98,6 +98,19 @@ const i18n = createI18n({
       },
       members: {
         title: 'Membres',
+        noData: 'Aucun membre trouvé',
+        noDataExplain: 'Aucun membre disponible. Si vous pensez qu\'il devrait y en avoir, veuillez contacter l\'administrateur.',
+        saved: 'Membre enregistré',
+
+        name: 'Nom du membre',
+        address_1: 'Adresse',
+        address_2: 'Complément d\'adresse',
+        zipcode: 'Code postal',
+        town: 'Ville',
+        phone_1: 'Téléphone',
+        email: 'Email',
+        logo: 'Logo',
+        website: 'Site web',
       }
     }
   }

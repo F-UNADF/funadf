@@ -24,7 +24,7 @@ class Api::ReferentielsController < ApiController
       result[:associations]     = associations
       result[:roles]            = roles
     when 'churches'
-      roles = Role.pluck(:name).uniq
+      roles = Role.select(:name, :friendly_name).uniq.to_a
 
       sql     = "
             SELECT

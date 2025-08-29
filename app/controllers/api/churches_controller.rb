@@ -13,20 +13,9 @@ class Api::ChurchesController < ApiController
                            .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
     end
 
-    # $api_url = 'https://add-fnadf.fr/api/churches.json?search=' . $keywords . '&dpt=' . $dpt;
-    # FROM WORDPRESS PLUGINS
+    ## filter by params[:search]
     if params[:search].present?
-      # On géolocalise la recherche
-      results = Geocoder.search(params[:search])
-      if results.present?
-        churches = Church.near(results.first.coordinates, 50, units: :km)
-      else
-        churches = Church.none
-      end
-    end
-
-    if params[:dpt].present?
-      churches = churches.where("zipcode LIKE ?", "#{params[:dpt]}%")
+      churches = churches.where("structures.name ILIKE ?", "%#{params[:search]}%")
     end
 
     render json: { churches: churches.all }
@@ -86,7 +75,7 @@ class Api::ChurchesController < ApiController
 
     member_data[:role_name] = role.name
 
-    render json: { status: 200, membership: member_data }
+    render json: { status: 200, membership: member_data, members: @church.members_with_details }
   end
 
   def remove_members

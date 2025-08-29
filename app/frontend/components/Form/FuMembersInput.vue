@@ -2,8 +2,8 @@
     <v-data-table :headers="headers" :items="localItems" density="compact" class="elevation-1">
         <template v-slot:no-data>
             <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
-            <v-alert v-else class="my-3" color="info" icon="$info" :title="$t(this.model + '.noData')"
-                :text="$t(this.model + '.noDataExplain')"></v-alert>
+            <v-alert v-else class="my-3" color="info" icon="$info" :title="$t('members.noData')"
+                :text="$t('members.noDataExplain')"></v-alert>
         </template>
         <template v-slot:item="{ item }">
             <tr>
