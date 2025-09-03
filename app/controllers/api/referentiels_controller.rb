@@ -64,7 +64,7 @@ class Api::ReferentielsController < ApiController
       result[:roles]   = roles
       result[:members] = members
     when 'associations'
-      roles = Role.pluck(:name).uniq
+      roles = Role.select(:name, :friendly_name).uniq.to_a
 
       sql     = "
             SELECT

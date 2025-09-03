@@ -2,16 +2,11 @@ class Api::AssociationsController < ApiController
   before_action :set_association, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index
-    associations = []
-    if @subdomain == 'admin'
-      associations = Association.order id: :desc
-    elsif @subdomain == 'association'
-      # get campaigns of the association of the current user
-      associations = current_user.associations_responsabilities
-    end
+    associations = Association.select("structures.*, users.lastname, users.firstname, users.id AS user_id")
+                     .joins("LEFT JOIN memberships ON memberships.structure_id = structures.id AND memberships.role_ID IN (SELECT id FROM roles WHERE name IN ('president'))")
+                      .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
 
-
-    render json: { associations: associations }
+    render json: { associations: associations.all }
   end
 
   def show
@@ -42,16 +37,16 @@ class Api::AssociationsController < ApiController
   end
 
   def add_members
-    role_id = Role.find_by(name: :member).id
+    role_id = Role.find_by(name: :member)&.id
+    return render json: { status: 400, error: "Role 'member' not found" } unless role_id
 
-    params[:members].each do |member|
-      membership = Membership.new(
+    members_params.each do |member|
+      membership = Membership.create(
         structure_id: @association.id,
+        role_id: role_id,
         member_id: member[:id],
-        member_type: member[:type],
-        role_id: role_id
+        member_type: member[:type]
       )
-      membership.save
     end
 
     members = @association.members_with_details
@@ -67,7 +62,7 @@ class Api::AssociationsController < ApiController
 
     member_data[:role_name] = role.name
 
-    render json: { status: 200, membership: member_data }
+    render json: { status: 200, membership: member_data, members: @association.members_with_details }
   end
 
   def remove_members
@@ -85,6 +80,12 @@ class Api::AssociationsController < ApiController
 
   def association_params
     params[:association].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :logo)
+  end
+
+  def members_params
+    params[:members].map do |member|
+      member.permit(:id, :type)
+    end
   end
 
 end

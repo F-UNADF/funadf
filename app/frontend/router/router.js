@@ -6,7 +6,7 @@ import DocumentsIndex from "../components/Documents/Index.vue";
 import MeDocumentsIndex from "../components/Documents/Me/Index.vue";
 import VotesIndex from "../components/Votes/Index.vue";
 import VotesShow from "../components/Votes/Show.vue";
-import AssociationsIndex from "../components/Associations/Index.vue";
+import AssociationsIndex from "../pages/Associations/Index.vue";
 import EventsIndex from "../components/Events/Index.vue";
 import CampaignsIndex from "../components/Campaigns/Index.vue";
 import PostsIndex from "../components/Posts/Index.vue";

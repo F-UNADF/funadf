@@ -49,17 +49,16 @@ class Api::ChurchesController < ApiController
   end
 
   def add_members
-    role_id = Role.find_by(name: :member).id
+    role_id = Role.find_by(name: :member)&.id
+    return render json: { status: 400, error: "Role 'member' not found" } unless role_id
 
-    params[:members].each do |member|
-      m = member.split('#')
-      membership = Membership.new(
+    members_params.each do |member|
+      membership = Membership.create(
         structure_id: @church.id,
-        member_id: m[0],
-        member_type: m[1],
-        role_id: role_id
+        role_id: role_id,
+        member_id: member[:id],
+        member_type: member[:type]
       )
-      membership.save
     end
 
     members = @church.members_with_details

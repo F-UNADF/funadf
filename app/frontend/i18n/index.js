@@ -76,6 +76,26 @@ const i18n = createI18n({
         logo: 'Logo',
         website: 'Site web',
       },
+      associations: {
+        noData: 'Aucune association trouvée',
+        noDataExplain: 'Aucune association disponible. Si vous pensez qu\'il devrait y en avoir, veuillez contacter l\'administrateur.',
+        saved: 'Association enregistrée',
+
+        title: 'Associations',
+        add: 'Ajouter une association',
+        edit: 'Modifier l\'association',
+        delete: 'Supprimer l\'association',
+
+        name: 'Nom de l\'association',
+        address_1: 'Adresse',
+        address_2: 'Complément d\'adresse',
+        zipcode: 'Code postal',
+        town: 'Ville',
+        phone_1: 'Téléphone',
+        email: 'Email',
+        logo: 'Logo',
+        website: 'Site web',
+      },
       churches: {
         noData: 'Aucune église trouvée',
         noDataExplain: 'Aucune église disponible. Si vous pensez qu\'il devrait y en avoir, veuillez contacter l\'administrateur.',
