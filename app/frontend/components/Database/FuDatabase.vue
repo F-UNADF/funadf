@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="headers" :items="displayedItems" :search="search" class="elevation-1" :loading="loading"
+        <v-data-table :headers="headers" :items="displayedItems" class="elevation-1" :loading="loading"
             items-per-page="50" :items-per-page-options="itemsPerPage" :items-per-page-text="$t('itemsPerPage')">
             <template v-slot:top>
                 <v-toolbar>
@@ -129,8 +129,8 @@ export default {
             },
         },
         displayedItems() {
+            console.log('items:', this.items); // Debug log
             if (this.localItems.length > 0) {
-                console.log('localItems', this.localItems);
                 return this.localItems;
             }
             return this.items;

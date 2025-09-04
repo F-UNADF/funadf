@@ -21,7 +21,7 @@ class Api::CurrentUserController < ApiController
       session[:connect_as]    = params[:id]
       user                    = User.find(params[:id])
 
-      render json: { status: 200, current_user: current_user, original_user: original_user, redirect_to: root_url(subdomain: nil) }
+      render json: { status: 200, current_user: user, original_user: original_user, redirect_to: me_root_path }
     else
       render json: { status: 403, message: 'Already switched' }
     end
@@ -31,7 +31,7 @@ class Api::CurrentUserController < ApiController
     session[:connect_as]    = nil
     session[:original_user] = nil
 
-    render json: { status: 200, current_user: current_user, redirect_to: admin_users_url(subdomain: :admin) }
+    render json: { status: 200, current_user: current_user, redirect_to: admin_users_path }
   end
 
   def get_google_link

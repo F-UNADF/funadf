@@ -44,6 +44,7 @@ export default function createCrudStore({ resource }) {
                 commit('setLoading', true);
                 try {
                     const res = await axios.get(uri);
+                    console.log('fetchItems response:', res.data); // Debug log
                     commit('setItems', res.data[resource]);
                 } finally {
                     commit('setLoading', false);
