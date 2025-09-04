@@ -74,7 +74,7 @@ class Api::AssociationsController < ApiController
     membership = Membership.find(params[:membership_id])
     membership.destroy
 
-    render json: { status: 200 }
+    render json: { status: 200, members: @association.members_with_details }
   end
 
   private

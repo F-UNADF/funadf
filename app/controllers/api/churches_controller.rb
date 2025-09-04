@@ -79,7 +79,7 @@ class Api::ChurchesController < ApiController
     membership = Membership.find(params[:membership_id])
     membership.destroy
 
-    render json: { status: 200 }
+    render json: { status: 200, members: @church.members_with_details }
   end
 
   private
