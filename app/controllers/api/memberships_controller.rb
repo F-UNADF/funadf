@@ -8,8 +8,9 @@ class Api::MembershipsController < ApiController
 
   def destroy
     membership = Membership.find(params[:id])
+    structure = membership.structure
     membership.destroy
-    render json: { status: 200 }
+    render json: { status: 200, members: structure.members_with_details }
   end
 
   private
