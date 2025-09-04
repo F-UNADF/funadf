@@ -92,4 +92,10 @@ class Api::ChurchesController < ApiController
     params[:church].permit(:name, :address_1, :address_2, :zipcode, :town, :phone_1, :phone_2, :email, :logo, :website)
   end
 
+  def members_params
+    params[:members].map do |member|
+      member.permit(:id, :type)
+    end
+  end
+
 end
