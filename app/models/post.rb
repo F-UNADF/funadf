@@ -8,7 +8,7 @@ class Post < ActiveRecord::Base
   has_many_attached :files
 
   delegate :name, to: :structure, prefix: true
-  after_create_commit :notify_async
+  after_commit :notify_async, on: [:create]
 
   def images
     files.select do |file|
@@ -23,6 +23,7 @@ class Post < ActiveRecord::Base
   end
 
   def notify_async
+    Rails.logger.info "[DEBUG] after_create_commit déclenché pour Post##{self.id}"
     NotificationPostBroadcastJob.perform_later(self.id)
   end
 
