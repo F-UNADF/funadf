@@ -57,6 +57,9 @@ class Api::PostsController < ApiController
       params[:post][:accesses].each do |level|
         post.accesses.find_or_create_by(level: level[1], can_access: true)
       end
+
+      NotificationPostBroadcastJob.perform_later(post.id)
+
       render json: { status: 200, post: post }
     else
       render json: { status: 422, errors: post.errors }
