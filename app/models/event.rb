@@ -13,7 +13,7 @@ class Event < ActiveRecord::Base
 
   validates :category_id, :start_at, :end_at, :title, presence: true
 
-  after_create_commit :notify_async
+  after_commit :notify_async, on: :create
 
   def images
     files.select do |file|

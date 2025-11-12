@@ -8,6 +8,6 @@
   dynamic: false
   :schedule:
     notification_digest_job:
-      cron: "0 8,12,18 * * *"
+      cron: "0 8,12,18,22 * * *"
       class: NotificationDigestJob
       queue: default
