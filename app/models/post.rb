@@ -9,6 +9,8 @@ class Post < ActiveRecord::Base
 
   delegate :name, to: :structure, prefix: true
 
+  after_commit :perform_broadcast, on: :create
+
   def images
     files.select do |file|
       file.content_type.start_with?('image/')
@@ -19,6 +21,10 @@ class Post < ActiveRecord::Base
     files.reject do |file|
       file.content_type.start_with?('image/')
     end
+  end
+
+  def perform_broadcast
+    NotificationPostBroadcastJob.perform_later(self.id)
   end
 
 end
