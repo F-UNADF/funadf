@@ -25,7 +25,6 @@ const store = createStore({
         campaignsStore,
         menuStore,
         eventsStore,
-        postsStore,
         votesStore,
         feedStore,
         feedEventStore,
@@ -37,6 +36,7 @@ const store = createStore({
         regions: createCrudStore({ resource: "regions" }),
         churches: createCrudStore({ resource: "churches" }),
         associations: createCrudStore({ resource: "associations" }),
+        posts: createCrudStore({ resource: "posts" }),
     },
     strict: debug,
 });

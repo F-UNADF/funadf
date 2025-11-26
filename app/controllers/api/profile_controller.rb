@@ -7,7 +7,7 @@ class Api::ProfileController < ApiController
     render json: {
         profile: current_user,
         gratitudes: current_user.gratitudes,
-        fees: current_user.fees.order(what: :desc).limit(5),
+        fees: current_user.fees.order(what: :desc).limit(6),
         presidences: presidences,
         phases: phases,
         responsabilities: responsabilities,

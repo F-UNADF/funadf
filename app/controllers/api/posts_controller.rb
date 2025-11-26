@@ -2,27 +2,17 @@ class Api::PostsController < ApiController
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
-    posts = []
-    domain = params[:domain] || 'me'
+    posts = Post
+      .includes(:structure)
 
-    case domain
-    when 'admin'
-      posts = Post.order(id: :desc)
-    when 'association'
-      responsibilities_ids = current_user.associations_responsabilities.pluck(:id)
-      if responsibilities_ids.present?
-        posts = Post.where(structure_id: responsibilities_ids)
-                    .order(id: :desc)
-      end
-    when 'region'
-      responsibilities_ids = current_user.regions_responsabilities.pluck(:id)
-      if responsibilities_ids.present?
-        posts = Post.where(structure_id: responsibilities_ids)
-                    .order(id: :desc)
-      end
+    if params[:search].present?
+      posts = posts.joins(:structure).where(
+        "title LIKE :q OR content LIKE :q OR structures.name LIKE :q",
+        q: "%#{params[:search]}%"
+      )
     end
 
-    render json: { posts: posts }, include: ['structure']
+    render json: {posts: posts.as_json(include: ['structure'])}
   end
 
   def show
@@ -94,7 +84,7 @@ class Api::PostsController < ApiController
   private
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.find(params.permit(:id)[:id])
   end
 
   def post_params

@@ -27,10 +27,11 @@
                                             :type="field.type" 
                                             :value="editedItem[field.name]" 
                                             :model="model"
-                                            :label="$t(model + '.' + field.name)" 
+                                            :label="getLabel(field)"
                                             :rules="field.rules"
                                             :placeholder="$t(model + '.' + field.name)"
                                             v-model="editedItem[field.name]"
+                                            :items="field.items"
                                         ></fu-input>
                                     </v-col>
                                 </v-row>
@@ -92,6 +93,13 @@ export default {
         }
     },
     methods: {
+        getLabel(field) {
+            if (field.label) {
+                return this.$t(field.label);
+            } else {
+                return this.$t(this.model + '.' + field.name);
+            }
+        },
         save() {
             if(false === this.valid || this.valid === undefined ) {
                 this.$root.showSnackbar(this.$t('form.error'), 'error');

@@ -9,7 +9,7 @@ import VotesShow from "../components/Votes/Show.vue";
 import AssociationsIndex from "../pages/Associations/Index.vue";
 import EventsIndex from "../components/Events/Index.vue";
 import CampaignsIndex from "../components/Campaigns/Index.vue";
-import PostsIndex from "../components/Posts/Index.vue";
+import PostsIndex from "../pages/Posts/Index.vue";
 import UsersIndex from "../components/Users/Index.vue";
 import ChurchesIndex from "../pages/Churches/Index.vue";
 import FeesIndex from "../components/Fees/Index.vue";

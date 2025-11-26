@@ -89,6 +89,16 @@ export default function createCrudStore({ resource }) {
                 commit('setDialog', false);
                 await dispatch('fetchItems');
             },
+            deleteItem({ commit, dispatch }, id) {
+                return new Promise((resolve, reject) => {
+                    axios.delete(`${baseUri}/${id}`, {}).then(async (res) => {
+                        await dispatch('fetchItems');
+                        resolve(res);
+                    }).catch((error) => {
+                        reject(error, 2000);
+                    });
+                });
+            },
             referentiels: function ({ commit }) {
                 return new Promise((resolve, reject) => {
                     axios.get(`/api/referentiels/${resource}`, {}).then((res) => {

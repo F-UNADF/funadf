@@ -55,10 +55,14 @@ services:
     image: redis:7-alpine
     container_name: funadf_redis
     ports:
-      - '6379:6379'
+      - "6379:6379"
+    volumes:
+      - funadf_redis_data:/data
+    command: [ "redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof", "--dir", "/data", "--protected-mode", "yes" ]
     profiles:
       - local
       - production
+
   
   sidekiq:
     container_name: funadf_sidekiq
@@ -78,3 +82,4 @@ services:
 
 volumes:
   funadf_db:
+  funadf_redis_data:
