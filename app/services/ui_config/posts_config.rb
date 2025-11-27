@@ -36,6 +36,8 @@ module UiConfig
         { name: "structure_id", type: "select_one", grid: 6, items: structures },
         { name: "pinned", type: "bool", grid: 6 },
         { name: "content", type: "wysiwyg" },
+        { name: "existing_attachments", type: "list_files", grid: 6 },
+        { name: "new_attachments", type: "files", grid: 6 },
         { name: "accesses", type: "select_multiple", items: levels },
       ]
     end

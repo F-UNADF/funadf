@@ -2,44 +2,41 @@
   <div>
     <template v-if="type === 'text'">
       <v-text-field v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-                    hide-details="auto" @input="handleInput" clearable></v-text-field>
+        hide-details="auto" @input="handleInput" clearable></v-text-field>
     </template>
     <template v-else-if="type === 'file'">
       <v-file-input v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-                    hide-details="auto" @change="prepareInput($event.target.files)" clearable></v-file-input>
+        hide-details="auto" @change="prepareInput($event.target.files)" clearable></v-file-input>
     </template>
     <template v-else-if="type === 'bool'">
       <v-checkbox v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-                  hide-details="auto" @change="handleInput" clearable></v-checkbox>
+        hide-details="auto" @change="handleInput" clearable></v-checkbox>
+    </template>
+    <template v-else-if="type === 'files'">
+      <fu-file-upload v-model="localValue" :label="label"></fu-file-upload>
+    </template>
+    <template v-else-if="type === 'list_files'">
+      <v-list>
+        <v-list-item v-for="(file, index) in localValue" :key="index">
+          <v-list-item-content>
+            <v-list-item-title>
+              <a :href="file.url" target="_blank">{{ file.name }}</a>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </template>
     <template v-else-if="type === 'select_one'">
-      <v-combobox
-          v-model="localValue"
-          :label="label"
-          :rules="computeRules(rules)"
-          :placeholder="placeholder"
-          hide-details="auto"
-          @change="handleInput"
-          :items="items"
-      ></v-combobox>
+      <v-combobox v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
+        hide-details="auto" @change="handleInput" :items="items"></v-combobox>
     </template>
     <template v-else-if="type === 'select_multiple'">
-      <select-all
-          v-model="localValue"
-          :label="label"
-          :rules="computeRules(rules)"
-          :placeholder="placeholder"
-          hide-details="auto"
-          @change="handleInput"
-          :items="items"
-          multiple
-          chips
-          clearable
-      ></select-all>
+      <select-all v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
+        hide-details="auto" @change="handleInput" :items="items" multiple chips clearable></select-all>
     </template>
     <template v-else-if="type === 'wysiwyg'">
       <vue-editor v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-                  hide-details="auto" @input="handleInput" clearable>
+        hide-details="auto" @input="handleInput" clearable>
       </vue-editor>
     </template>
     <template v-else-if="type === 'members'">
@@ -49,9 +46,9 @@
 </template>
 
 <script>
-
 import FuMembersInput from "@/components/Form/FuMembersInput.vue";
-import {VueEditor} from "vue3-editor";
+import FuFileUpload from "@/components/Form/FuFileUpload.vue";
+import { VueEditor } from "vue3-editor";
 import SelectAll from "./SelectAll.vue";
 
 export default {
@@ -60,6 +57,7 @@ export default {
     SelectAll,
     VueEditor,
     FuMembersInput,
+    FuFileUpload
   },
   props: {
     type: {
@@ -107,7 +105,6 @@ export default {
       return computedRules;
     },
     prepareInput(file) {
-      console.log("prepareInput", file);
       if (!file.length) {
         this.$root.showSnackbar("Aucun fichier sélectionné", 'warning');
         return;
@@ -128,18 +125,20 @@ export default {
   },
   data() {
     return {
-      localValue: this.value,
+      localValue: Array.isArray(this.value)
+        ? this.value.map(f => ({ ...f, existing: true }))
+        : this.value && { ...this.value, existing: true },
       localRules:
-          {
-            required: value => !!value || this.$t('form.errors.required'),
-            minLength: value => (value && value.length >= 3) || this.$t('form.errors.minLength', [3]),
-            maxLength: value => (value && value.length <= 255) || this.$t('form.errors.maxLength', [255]),
-            email: value => {
-              const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-              // attention une chaine vide est valide, email peut parfois être vide
-              return value === null || value === "" || pattern.test(value) || this.$t('form.errors.email');
-            },
-          }
+      {
+        required: value => !!value || this.$t('form.errors.required'),
+        minLength: value => (value && value.length >= 3) || this.$t('form.errors.minLength', [3]),
+        maxLength: value => (value && value.length <= 255) || this.$t('form.errors.maxLength', [255]),
+        email: value => {
+          const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          // attention une chaine vide est valide, email peut parfois être vide
+          return value === null || value === "" || pattern.test(value) || this.$t('form.errors.email');
+        },
+      }
     };
   },
 };

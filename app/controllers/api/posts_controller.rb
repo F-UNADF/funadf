@@ -12,24 +12,31 @@ class Api::PostsController < ApiController
       )
     end
 
-    render json: {posts: posts.as_json(include: ['structure'])}
+    render json: {posts: posts.as_json(include: ['structure', 'accesses'])}
   end
 
   def show
     files_data = @post.files.map do |file|
       {
-        id:   file.id,
+        existing: true,
+        id: file.id,
         name: file.filename.to_s,
-        url:  url_for(file)
+        url: url_for(file),
+        type: file.content_type,
+        size: file.byte_size
       }
+    end
+    accesses = @post.accesses.map do |access|
+      { title: access.level, value: access.level }
     end
     post = @post.as_json.merge(
       images: @post.images.map { |image| url_for(image) },
-      attachments: files_data,
-      structure: @post.structure.as_json
+      existing_attachments: files_data,
+      structure: @post.structure.as_json,
+      accesses: accesses
     )
 
-    render json: { post: post, files: files_data, accesses: @post.accesses.pluck(:level) }
+    render json: { post: post }
   end
 
   def create
