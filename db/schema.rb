@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_07_12_115318) do
+ActiveRecord::Schema.define(version: 2025_11_27_201424) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -238,6 +238,8 @@ ActiveRecord::Schema.define(version: 2025_07_12_115318) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "pinned", default: false
+    t.datetime "published_at"
+    t.datetime "expired_at"
     t.index ["pinned"], name: "index_posts_on_pinned"
     t.index ["structure_id"], name: "index_posts_on_structure_id"
   end

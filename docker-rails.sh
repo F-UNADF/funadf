@@ -5,7 +5,10 @@ if [ "$RAILS_ENV" = "production" ]; then
   echo "===> Starting Unicorn in production"
   bundle exec unicorn -c /app/config/unicorn.rb -E production
 else
-  echo "===> Starting Rails server in $RAILS_ENV"
+  echo "===> Starting Vite dev server"
+  bin/vite dev &
+
+  echo "===> Starting Rails server"
   rm -f tmp/pids/server.pid
-  bin/rails server -b 0.0.0.0 -p 3000
+  exec bin/rails server -b 0.0.0.0 -p 3000
 fi
