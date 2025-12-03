@@ -161,7 +161,11 @@ const i18n = createI18n({
                 structure_id: 'Structure',
                 content: 'Contenu',
                 pinned: 'Épingler cette actu ? Elle sera affichée en haut de la liste des actus.',
-                accessed: 'Accessible par :',
+                accesses: 'Accessible par :',
+                new_attachments: 'Nouveaux fichiers',
+                existing_attachments: 'Fichiers existants',
+                published_at: 'Publié le',
+                expired_at: 'Expiré le',
             },
         }
     }

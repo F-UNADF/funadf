@@ -11,3 +11,7 @@
       cron: "0 8,12,18,22 * * *"
       class: NotificationDigestJob
       queue: default
+    notification_post_broadcast_job:
+      cron: "0 6 * * *"
+      class: NotificationPostBroadcastJob
+      queue: default

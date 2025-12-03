@@ -53,6 +53,9 @@
                 </v-list>
               </v-menu>
             </template>
+            <template v-if="header.type === 'datetime'">
+              {{ (null !== item[header.value] ? new Date(item[header.value]).toLocaleString() : '') }}
+            </template>
             <template v-else-if="header.type === 'structure'">
               <v-avatar size="40" class="me-2">
                 <img :src="`/logos/${item['structure']['id']}.png`" class="w-100" alt="Logo">

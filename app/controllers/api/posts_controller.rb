@@ -2,8 +2,7 @@ class Api::PostsController < ApiController
   before_action :set_post, only: [:show, :update, :destroy]
 
   def index
-    posts = Post
-      .includes(:structure)
+    posts = Post.includes(:structure).all.order(created_at: :desc)
 
     if params[:search].present?
       posts = posts.joins(:structure).where(
@@ -40,41 +39,73 @@ class Api::PostsController < ApiController
   end
 
   def create
-    post = Post.new(post_params)
+    @post = Post.new(post_params)
 
-    if @structure.present?
-      post.structure_id = @structure.id
+    # 1. Normaliser les nouveaux fichiers
+    attachments = params[:post][:new_attachments]
+    attachments = attachments.values if attachments.is_a?(ActionController::Parameters)
+
+    if attachments.present?
+      attachments.each do |file|
+        @post.files.attach(file)
+      end
     end
 
-    if post.save
-      params[:files]&.each do |file|
-        post.files.attach(file)
-      end
+    # 2. Normaliser les accesses
+    accesses = params[:post][:accesses]
+    accesses = accesses.values if accesses.is_a?(ActionController::Parameters)
+    accesses ||= []
 
-      params[:post][:accesses].each do |level|
-        post.accesses.find_or_create_by(level: level[1], can_access: true)
-      end
+    accesses.each do |level|
+      next if level['value'].blank?
 
-      render json: { status: 200, post: post }
+      @post.accesses.build(
+        level: level['value'],
+        can_access: true
+      )
+    end
+
+    # 3. Sauvegarde finale
+    if @post.save
+      render json: { status: 200, post: @post }
     else
-      render json: { status: 422, errors: post.errors }
+      render json: { status: 422, errors: @post.errors }
     end
   end
 
   def update
-
-    if @structure.present?
-      @post.structure_id = @structure.id
+      # Normaliser en array
+    attachments = []
+    attachments = params[:post][:new_attachments]
+    attachments = attachments.values if attachments.is_a?(ActionController::Parameters)
+    
+    if attachments.present?
+      # Attacher les fichiers
+      attachments.each do |file|
+        @post.files.attach(file)
+      end
     end
 
-    params[:files]&.each do |file|
-      @post.files.attach(file)
+    existing_attachments = params[:post][:existing_attachments]
+    existing_ids = if existing_attachments.present?
+                    existing_attachments.values.map { |h| h["id"].to_i }
+                  else
+                    []
+                  end
+    @post.files.each do |file|
+      file.purge unless existing_ids.include?(file.id)
     end
 
-    params[:post][:accesses].each do |level|
-      @post.accesses.find_or_create_by(level: level[1], can_access: true)
+    accesses = params[:post][:accesses]
+    accesses = accesses.values if accesses.is_a?(ActionController::Parameters)
+    if accesses.blank?
+      accesses = []
     end
-    @post.accesses.where.not(level: params[:post][:accesses].values).destroy_all
+    accesses.each do |level|
+      @post.accesses.find_or_create_by(level: level['value'], can_access: true) unless level['value'].blank?
+    end
+
+    @post.accesses.where.not(level: accesses.map { |l| l['value'] }).destroy_all
 
     if @post.update(post_params)
       render json: { status: 200, post: @post }
@@ -95,7 +126,7 @@ class Api::PostsController < ApiController
   end
 
   def post_params
-    params[:post].permit(:title, :structure_id, :content, :pinned)
+    params[:post].permit(:title, :structure_id, :content, :pinned, :published_at, :expired_at)
   end
 
 end

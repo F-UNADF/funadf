@@ -46,16 +46,8 @@ export default {
         this.localModelValue = [...val]; // Mettez à jour la copie locale
       }
     },
-    localModelValue: function (val, oldVal) {
-      if (val.length !== oldVal.length) {
-        this.$emit("update:modelValue", val);
-      }
-    },
-  },
-  methods: {
-    updateModelValue() {
-      this.localModelValue = [...this.items];
-      this.$emit("update:modelValue", this.localModelValue);
+    localModelValue: function (val) {
+      this.$emit("update:modelValue", val);
     },
   },
 };

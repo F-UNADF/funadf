@@ -14,6 +14,28 @@ function singularize(word) {
     return word; // return as is if no rule matched
 }
 
+function appendFormData(fd, key, value) {
+  if (value instanceof File || value instanceof Blob) {
+    fd.append(key, value, value.name); // OK pour Rails
+  } else if (Array.isArray(value)) {
+    value.forEach((v, i) => {
+      if (typeof v === 'object' && !(v instanceof File)) {
+        Object.keys(v).forEach(subKey => {
+          fd.append(`${key}[${i}][${subKey}]`, v[subKey]);
+        });
+      } else {
+        fd.append(`${key}[]`, v);
+      }
+    });
+  } else if (value !== null && typeof value === 'object') {
+    Object.keys(value).forEach(subKey => {
+      appendFormData(fd, `${key}[${subKey}]`, value[subKey]);
+    });
+  } else {
+    fd.append(key, value);
+  }
+}
+
 export default function createCrudStore({ resource }) {
     const baseUri = `/api/${resource}`;
 
@@ -71,12 +93,7 @@ export default function createCrudStore({ resource }) {
                 const resourceName = singularize(resource);
 
                 for (const key in item) {
-                    // Gestion spéciale pour les objets/fichiers si besoin
-                    if (item[key] instanceof File || item[key] instanceof Blob) {
-                        formData.append(`${resourceName}[${key}]`, item[key], item[key].name);
-                    } else if (item[key] !== null) {
-                        formData.append(`${resourceName}[${key}]`, item[key]);
-                    }
+                    appendFormData(formData, `${resourceName}[${key}]`, item[key]);
                 }
 
                 const res = await axios[method](uri, formData, {

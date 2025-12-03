@@ -2,7 +2,7 @@
   <div>
     <template v-if="type === 'text'">
       <v-text-field v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-        hide-details="auto" @input="handleInput" clearable></v-text-field>
+        hide-details="auto" clearable></v-text-field>
     </template>
     <template v-else-if="type === 'file'">
       <v-file-input v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
@@ -10,33 +10,37 @@
     </template>
     <template v-else-if="type === 'bool'">
       <v-checkbox v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-        hide-details="auto" @change="handleInput" clearable></v-checkbox>
+        hide-details="auto" clearable></v-checkbox>
+    </template>
+    <template v-else-if="type === 'datetime'">
+      <v-text-field
+        v-model="localValue"
+        :label="label"
+        :rules="computeRules(rules)"
+        :placeholder="placeholder"
+        hide-details="auto"
+        clearable
+        type="datetime-local"
+        :value="getIsoDate(localValue)"
+      ></v-text-field>
     </template>
     <template v-else-if="type === 'files'">
       <fu-file-upload v-model="localValue" :label="label"></fu-file-upload>
     </template>
     <template v-else-if="type === 'list_files'">
-      <v-list>
-        <v-list-item v-for="(file, index) in localValue" :key="index">
-          <v-list-item-content>
-            <v-list-item-title>
-              <a :href="file.url" target="_blank">{{ file.name }}</a>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <fu-existing-files-list v-model="localValue"></fu-existing-files-list>
     </template>
     <template v-else-if="type === 'select_one'">
       <v-combobox v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-        hide-details="auto" @change="handleInput" :items="items"></v-combobox>
+        hide-details="auto" :items="items"></v-combobox>
     </template>
     <template v-else-if="type === 'select_multiple'">
       <select-all v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-        hide-details="auto" @change="handleInput" :items="items" multiple chips clearable></select-all>
+        hide-details="auto" :items="items" multiple chips clearable></select-all>
     </template>
     <template v-else-if="type === 'wysiwyg'">
       <vue-editor v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-        hide-details="auto" @input="handleInput" clearable>
+        hide-details="auto" clearable>
       </vue-editor>
     </template>
     <template v-else-if="type === 'members'">
@@ -48,6 +52,7 @@
 <script>
 import FuMembersInput from "@/components/Form/FuMembersInput.vue";
 import FuFileUpload from "@/components/Form/FuFileUpload.vue";
+import FuExistingFilesList from "@/components/Form/FuExistingFilesList.vue";
 import { VueEditor } from "vue3-editor";
 import SelectAll from "./SelectAll.vue";
 
@@ -57,7 +62,8 @@ export default {
     SelectAll,
     VueEditor,
     FuMembersInput,
-    FuFileUpload
+    FuFileUpload,
+    FuExistingFilesList,
   },
   props: {
     type: {
@@ -90,9 +96,6 @@ export default {
     },
   },
   methods: {
-    handleInput(event) {
-      this.$emit('update:modelValue', event.target.value);
-    },
     computeRules(rules) {
       //rules est un tableau contenant les clés des rules à appliquer de localRules
       //on va les appliquer à la valeur
@@ -117,17 +120,26 @@ export default {
 
       this.$emit('update:modelValue', file[0]);
     },
+    getIsoDate(dateString) {
+      if (!dateString) return null;
+      const date = new Date(dateString);
+      const tzOffset = date.getTimezoneOffset() * 60000; // décalage en millisecondes
+      const localISOTime = new Date(date - tzOffset).toISOString().slice(0, 16);
+      return localISOTime;
+    },
   },
   watch: {
     value(newValue, oldValue) {
       this.localValue = newValue
-    }
+    },
+    localValue(newValue) {
+      this.$emit('update:modelValue', newValue);
+    },
   },
   data() {
     return {
-      localValue: Array.isArray(this.value)
-        ? this.value.map(f => ({ ...f, existing: true }))
-        : this.value && { ...this.value, existing: true },
+      localValue: this.value,
+      menu: false,
       localRules:
       {
         required: value => !!value || this.$t('form.errors.required'),

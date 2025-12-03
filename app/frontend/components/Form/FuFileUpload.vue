@@ -1,9 +1,7 @@
 <template>
-    <div>
-        <v-file-upload v-model="localModelValue" browse-text="Rechercher des fichiers" divider-text="ou choisissez localement" icon="mdi-upload"
-            title="Glissez et déposez ici" density="compact" @change="prepareInput" multiple clearable>
-        </v-file-upload> Totodsdsd
-    </div>
+    <v-file-upload v-model="localModelValue" browse-text="Rechercher des fichiers"
+        divider-text="ou choisissez localement" icon="mdi-upload" title="Glissez et déposez ici" density="compact"
+        multiple clearable></v-file-upload>
 </template>
 
 <script>
@@ -14,18 +12,18 @@ export default {
     components: {
         VFileUpload,
     },
-    data() {
-        return {
-            localModelValue: []
-        };
+    props: {
+        modelValue: { type: Array, default: () => [] },
     },
-    methods: {
-        prepareInput(files) {
-            if (!files.length) {
-                this.$root.showSnackbar("Aucun fichier sélectionné", 'warning');
-                return;
-            }
-            this.$emit('update:modelValue', this.files);
+    data() {
+        return { localModelValue: [...this.modelValue] }
+    },
+    watch: {
+        localModelValue(val) {
+            this.$emit('update:modelValue', val)
+        },
+        modelValue(val) {
+            this.localModelValue = [...val]
         }
     }
 };

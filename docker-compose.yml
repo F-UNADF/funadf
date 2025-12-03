@@ -10,6 +10,7 @@ services:
       - db
     ports:
       - '3000:3000'
+      - '3036:3036'
     volumes:
       - .:/app
     extends:
@@ -17,22 +18,6 @@ services:
       service: password
     profiles:
       - production
-      - local
-  vite:
-    container_name: funadf_vite
-    build:
-      context: .
-      dockerfile: ./docker/rails/Dockerfile
-    entrypoint: ./docker-vite.sh
-    environment:
-      DEBUG: '*vite*'
-      RAILS_ENV: development
-      VITE_RUBY_HOST: 0.0.0.0
-    ports:
-      - "3036:3036"
-    volumes:
-      - .:/app
-    profiles:
       - local
   db:
     container_name: funadf_db
@@ -57,12 +42,11 @@ services:
       - "6379:6379"
     volumes:
       - funadf_redis_data:/data
-    command: [ "redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof", "--dir", "/data", "--protected-mode", "yes" ]
+    command: [ "redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof", "--dir", "/data", "--protected-mode", "no" ]
     profiles:
       - local
       - production
 
-  
   sidekiq:
     container_name: funadf_sidekiq
     build:

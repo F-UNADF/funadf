@@ -105,7 +105,6 @@ export default {
                 this.$root.showSnackbar(this.$t('form.error'), 'error');
                 return;
             }
-
             this.$store.dispatch(`${this.model}/saveItem`, this.editedItem).then(response => {
                 this.$root.showSnackbar(this.$t(`${this.model}.saved`), 'success');
                 this.dialog = false;
