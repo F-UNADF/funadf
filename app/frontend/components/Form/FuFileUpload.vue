@@ -1,30 +1,13 @@
 <template>
-    <v-file-upload v-model="localModelValue" browse-text="Rechercher des fichiers"
-        divider-text="ou choisissez localement" icon="mdi-upload" title="Glissez et déposez ici" density="compact"
-        multiple clearable></v-file-upload>
+    <v-file-input :model-value="modelValue" @update:modelValue="$emit('update:modelValue', $event)" hide-details
+        show-size counter multiple chips clearable label="Rechercher des fichiers" />
 </template>
 
 <script>
-import { VFileUpload } from 'vuetify/labs/VFileUpload'
-
 export default {
     name: "FuFileUpload",
-    components: {
-        VFileUpload,
-    },
     props: {
         modelValue: { type: Array, default: () => [] },
     },
-    data() {
-        return { localModelValue: [...this.modelValue] }
-    },
-    watch: {
-        localModelValue(val) {
-            this.$emit('update:modelValue', val)
-        },
-        modelValue(val) {
-            this.localModelValue = [...val]
-        }
-    }
 };
 </script>

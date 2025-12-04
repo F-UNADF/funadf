@@ -74,18 +74,6 @@ class Api::PostsController < ApiController
   end
 
   def update
-      # Normaliser en array
-    attachments = []
-    attachments = params[:post][:new_attachments]
-    attachments = attachments.values if attachments.is_a?(ActionController::Parameters)
-    
-    if attachments.present?
-      # Attacher les fichiers
-      attachments.each do |file|
-        @post.files.attach(file)
-      end
-    end
-
     existing_attachments = params[:post][:existing_attachments]
     existing_ids = if existing_attachments.present?
                     existing_attachments.values.map { |h| h["id"].to_i }
@@ -94,6 +82,18 @@ class Api::PostsController < ApiController
                   end
     @post.files.each do |file|
       file.purge unless existing_ids.include?(file.id)
+    end
+
+      # Normaliser en array
+    attachments = []
+    attachments = params[:post][:new_attachments]
+    attachments = attachments.values if attachments.is_a?(ActionController::Parameters)
+
+    if attachments.present?
+      # Attacher les fichiers
+      attachments.each do |file|
+        @post.files.attach(file)
+      end
     end
 
     accesses = params[:post][:accesses]
