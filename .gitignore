@@ -114,3 +114,5 @@ node_modules
 
 config/credential.json
 /log/cron.log
+
+.vscode/
