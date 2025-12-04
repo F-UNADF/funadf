@@ -1,2 +1,2 @@
-class JobRun < ApplicationRecord
+class JobRun < ActiveRecord::Base
 end
