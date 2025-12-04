@@ -1,8 +1,6 @@
 <template>
     <div>
-        <fu-database 
-            :model="model"
-            :headers="headers" />
+        <fu-database :model="model" :headers="headers" />
     </div>
 </template>
 
@@ -19,11 +17,11 @@ export default {
             items: [],
             model: 'regions',
             headers: [
-                {title: 'ID', value: 'id'},
-                {title: 'Nom', value: 'name', type: 'structure'}, // type structure : logo + nom
-                {title: 'Président', value: 'president', type: 'user'}, // type user : NOM + Prenom (friendly_id)
-                {title: 'Ville', value: 'zipcode', type: 'localisation'}, // type localisation : TOWN (zipcode)
-                {title: 'Actions', value: 'actions', sortable: false},
+                { title: 'ID', value: 'id' },
+                { title: 'Nom', value: 'name' }, // type structure : logo + nom
+                { title: 'Président', value: 'president', type: 'user' }, // type user : NOM + Prenom (friendly_id)
+                { title: 'Ville', value: 'zipcode', type: 'localisation' }, // type localisation : TOWN (zipcode)
+                { title: 'Actions', value: 'actions', sortable: false },
             ],
         };
     },

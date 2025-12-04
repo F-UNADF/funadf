@@ -3,7 +3,7 @@ class NotificationEventBroadcastJob < ApplicationJob
   
   JOB_NAME = "notification_event_broadcast".freeze
 
-  def perform(event_id)
+  def perform
     last_run = JobRun.find_by(job_name: JOB_NAME)&.ran_at || 4.hours.ago
     now = Time.current
     events = Event.where(created_at: last_run..now)

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-data-table :headers="headers" :items="displayedItems" class="elevation-1" :loading="loading"
-                  items-per-page="50" :items-per-page-options="itemsPerPage" :items-per-page-text="$t('itemsPerPage')">
+    <v-data-table :headers="headers" :items="displayedItems" class="elevation-1" :loading="loading" items-per-page="50"
+      :items-per-page-options="itemsPerPage" :items-per-page-text="$t('itemsPerPage')">
       <template v-slot:top>
         <v-toolbar>
           <v-btn icon color="info" variant="text" @click="fetchItems">
@@ -15,12 +15,12 @@
           <v-spacer></v-spacer>
 
           <v-text-field v-if="enabledSearch" v-model="search" :label="$t('search')" class="mx-4"
-                        append-inner-icon="mdi-magnify" density="compact" single-line hide-details
-                        variant="outlined"></v-text-field>
+            append-inner-icon="mdi-magnify" density="compact" single-line hide-details
+            variant="outlined"></v-text-field>
 
           <template v-for="action in config?.toolbarActions">
             <v-btn class="me-2" :color="action.color || 'primary'" :prepend-icon="action.icon || 'mdi-plus'"
-                   :text="$t(action.title)" @click="manageAction(action)"></v-btn>
+              :text="$t(action.title)" @click="manageAction(action)"></v-btn>
           </template>
 
         </v-toolbar>
@@ -28,7 +28,7 @@
       <template v-slot:no-data>
         <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
         <v-alert v-else class="my-3" color="info" icon="$info" :title="$t(this.model + '.noData')"
-                 :text="$t(this.model + '.noDataExplain')"></v-alert>
+          :text="$t(this.model + '.noDataExplain')"></v-alert>
       </template>
       <template v-slot:item.actions="{ item }">
 
@@ -45,9 +45,8 @@
                 </template>
 
                 <v-list>
-                  <v-list-item v-for="(action, index) in config?.itemActions" :key="index"
-                               :value="index" @click="manageAction(action, item)"
-                               :prepend-icon="action.icon || 'mdi-pencil'">
+                  <v-list-item v-for="(action, index) in config?.itemActions" :key="index" :value="index"
+                    @click="manageAction(action, item)" :prepend-icon="action.icon || 'mdi-pencil'">
                     <v-list-item-title>{{ $t(action.title) }}</v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -80,8 +79,7 @@
     </v-data-table>
 
     <v-dialog v-model="dialog" :fullscreen="config?.form?.fullscreen === true"
-              :max-width="config?.form?.maxWidth || '600px'" @keydown.esc="dialog = false"
-              @click:outside="dialog = false">
+      :max-width="config?.form?.maxWidth || '600px'" @keydown.esc="dialog = false" @click:outside="dialog = false">
       <fuForm :model="model" :config="config" @close="dialog = false"></fuForm>
     </v-dialog>
     <v-dialog max-width="25%" v-model="dialogConfirmDelete">
@@ -197,11 +195,11 @@ export default {
   data() {
     return {
       itemsPerPage: [
-        {value: 10, title: '10'},
-        {value: 25, title: '25'},
-        {value: 50, title: '50'},
-        {value: 100, title: '100'},
-        {value: -1, title: 'Tous'}
+        { value: 10, title: '10' },
+        { value: 25, title: '25' },
+        { value: 50, title: '50' },
+        { value: 100, title: '100' },
+        { value: -1, title: 'Tous' }
       ],
       search: '',
       deletingItem: {},
