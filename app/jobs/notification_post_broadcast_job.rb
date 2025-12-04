@@ -1,13 +1,15 @@
 class NotificationPostBroadcastJob < ApplicationJob
   queue_as :default
 
+  JOB_NAME = "notification_post_broadcast".freeze
 
   def perform
     # On recupere les posts published_at aujourd'hui
-    posts = Post.where(published_at: Time.current.beginning_of_day..Time.current.end_of_day)
+    last_run = JobRun.find_by(job_name: JOB_NAME)&.ran_at || 4.hours.ago
+    now = Time.current
+    posts = Post.where(published_at: last_run..now)
 
     posts.each do |post|
-      structure = post.structure
       users = User
         .with_current_level_in(post.accesses.pluck(:level).uniq)
 
@@ -22,5 +24,8 @@ class NotificationPostBroadcastJob < ApplicationJob
         )
       end
     end
+
+    JobRun.find_or_initialize_by(job_name: JOB_NAME)
+          .update!(ran_at: now)
   end
 end
