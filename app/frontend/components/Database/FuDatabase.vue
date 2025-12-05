@@ -122,6 +122,10 @@ export default {
       type: Boolean,
       default: () => true,
     },
+    domain: {
+      type: String,
+      default: () => null,
+    },
   },
   computed: {
     items() {
@@ -151,7 +155,7 @@ export default {
   methods: {
     fetchItems() {
       this.$store.dispatch(`${this.model}/fetchItems`, {
-        search: this.search,
+        search: this.search, domain: this.domain,
       });
     },
     manageAction(action, item = null) {
@@ -211,16 +215,15 @@ export default {
       if (this.localItems.length === 0) {
         this.$store.dispatch(`${this.model}/fetchItems`, {
           search: this.search,
+          domain: this.domain,
         });
       }
     },
   },
   mounted() {
-    if (this.localItems.length === 0) {
-      this.$store.dispatch(`${this.model}/fetchItems`);
-      this.$store.dispatch(`${this.model}/fetchConfig`);
-      this.$store.dispatch(`${this.model}/referentiels`);
-    }
+    this.$store.dispatch(`${this.model}/fetchItems`, { search: this.search, domain: this.domain });
+    this.$store.dispatch(`${this.model}/fetchConfig`);
+    this.$store.dispatch(`${this.model}/referentiels`);
   },
 
 }

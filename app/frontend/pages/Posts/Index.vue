@@ -1,8 +1,6 @@
 <template>
     <div>
-        <fu-database 
-            :model="model"
-            :headers="headers" />
+        <fu-database :model="model" :headers="headers" :domain="domain" />
     </div>
 </template>
 
@@ -14,23 +12,25 @@ export default {
     components: {
         FuDatabase,
     },
+    props: {
+        domain: {
+            type: String,
+            default: () => 'me',
+        },
+    },
     data() {
         return {
             items: [],
             model: 'posts',
             headers: [
-                {title: 'ID', value: 'id'},
-                {title: 'Titre', value: 'title'},
-                {title: 'Structure', value: 'structure', type: 'structure'},
-                {title: 'Publié le', value: 'published_at', type: 'datetime'},
-                {title: 'Expiré le', value: 'expired_at', type: 'datetime'},
-                {title: 'Actions', value: 'actions', sortable: false},
+                { title: 'ID', value: 'id' },
+                { title: 'Titre', value: 'title' },
+                { title: 'Structure', value: 'structure', type: 'structure' },
+                { title: 'Publié le', value: 'published_at', type: 'datetime' },
+                { title: 'Expiré le', value: 'expired_at', type: 'datetime' },
+                { title: 'Actions', value: 'actions', sortable: false },
             ],
         };
-    },
-    methods: {
-    },
-    mounted() {
     },
 }
 

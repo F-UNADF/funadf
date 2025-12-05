@@ -1,6 +1,6 @@
 <template>
     <div>
-        <fu-database :model="model" :headers="headers" />
+        <fu-database :model="model" :headers="headers" :domain="domain" />
     </div>
 </template>
 
@@ -11,6 +11,12 @@ export default {
     name: "AssociationsIndex",
     components: {
         FuDatabase,
+    },
+    props: {
+        domain: {
+            type: String,
+            default: () => 'me',
+        },
     },
     data() {
         return {
@@ -24,10 +30,6 @@ export default {
                 { title: 'Actions', value: 'actions', sortable: false },
             ],
         };
-    },
-    methods: {
-    },
-    mounted() {
     },
 }
 

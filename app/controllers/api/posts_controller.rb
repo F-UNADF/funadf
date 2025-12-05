@@ -4,6 +4,15 @@ class Api::PostsController < ApiController
   def index
     posts = Post.includes(:structure).all.order(created_at: :desc)
 
+    case params[:domain]
+    when 'association'
+      region_structure_ids = current_user.associations_responsabilities.pluck('structures.id').uniq
+      posts = posts.where(structure_id: region_structure_ids)
+    when 'region'
+      region_structure_ids = current_user.regions_responsabilities.pluck('structures.id').uniq
+      posts = posts.where(structure_id: region_structure_ids)
+    end
+
     if params[:search].present?
       posts = posts.joins(:structure).where(
         "title LIKE :q OR content LIKE :q OR structures.name LIKE :q",

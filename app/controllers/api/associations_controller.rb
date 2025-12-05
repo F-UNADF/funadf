@@ -2,13 +2,17 @@ class Api::AssociationsController < ApiController
   before_action :set_association, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
 
   def index
-
     associations = Association.select("structures.*, users.lastname, users.firstname, users.id AS user_id")
                      .joins("LEFT JOIN memberships ON memberships.structure_id = structures.id AND memberships.role_ID IN (SELECT id FROM roles WHERE name IN ('president'))")
                       .joins("LEFT JOIN users ON users.id = memberships.member_id AND memberships.member_type = 'User'")
 
-    if !current_user.is_admin?
-      associations = associations.where("structures.id IN (SELECT structure_id FROM memberships WHERE member_id = ? AND member_type = 'User')", current_user.id)
+    case params[:domain]
+    when 'region'
+      region_structure_ids = current_user.regions_responsabilities.pluck('structures.id').uniq
+      associations = associations.where(id: region_structure_ids)
+    when 'association'
+      association_structure_ids = current_user.associations_responsabilities.pluck('structures.id').uniq
+      associations = associations.where(id: association_structure_ids)
     end
 
     render json: { associations: associations.all }
