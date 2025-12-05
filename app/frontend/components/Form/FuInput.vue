@@ -13,16 +13,8 @@
         hide-details="auto" clearable></v-checkbox>
     </template>
     <template v-else-if="type === 'datetime'">
-      <v-text-field
-        v-model="localValue"
-        :label="label"
-        :rules="computeRules(rules)"
-        :placeholder="placeholder"
-        hide-details="auto"
-        clearable
-        type="datetime-local"
-        :value="getIsoDate(localValue)"
-      ></v-text-field>
+      <v-text-field v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
+        hide-details="auto" clearable type="datetime-local" :value="getIsoDate(localValue)"></v-text-field>
     </template>
     <template v-else-if="type === 'files'">
       <fu-file-upload v-model="localValue" :label="label"></fu-file-upload>
@@ -133,6 +125,11 @@ export default {
       this.localValue = newValue
     },
     localValue(newValue) {
+      // si new Value vient du combo box, on ne prend que la valeur
+      if (this.type === 'select_one' && typeof newValue === 'object' && newValue !== null) {
+        this.$emit('update:modelValue', newValue.value);
+        return;
+      }
       this.$emit('update:modelValue', newValue);
     },
   },

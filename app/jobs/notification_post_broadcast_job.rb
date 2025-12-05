@@ -10,9 +10,14 @@ class NotificationPostBroadcastJob < ApplicationJob
     posts = Post.where(published_at: last_run..now)
 
     posts.each do |post|
-      users = User
-        .with_current_level_in(post.accesses.pluck(:level).uniq)
+      puts post.inspect
+      structure = Structure.find post.structure_id
 
+      # On part du principe que POUR L'INSTANT, on a pas besoin de commuiquer aux présidents des structures membres
+      users = structure.users
+
+      users = users
+        .with_current_level_in(post.accesses.pluck(:level).uniq)
 
       users.each do |user|
         Notification.create!(
