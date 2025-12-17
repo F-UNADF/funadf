@@ -13,7 +13,8 @@ RUN apt-get update -qq && \
                        libfontconfig1 \
                        xfonts-base \
                        xfonts-75dpi \
-                       wkhtmltopdf
+                       wkhtmltopdf \
+                       git
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs build-essential

@@ -7,6 +7,16 @@ class Structure < ActiveRecord::Base
 
   has_many :memberships, dependent: :destroy
 
+  has_one :president_membership,
+          -> { joins(:role).where(roles: { name: 'president' }) },
+          class_name: 'Membership',
+          foreign_key: 'structure_id'
+
+  has_one :president,
+          through: :president_membership,
+          source: :member,
+          source_type: 'User'
+
   has_one_attached :logo
 
   validates :name, :type, presence: true

@@ -55,17 +55,20 @@
             <template v-if="header.type === 'datetime'">
               {{ (null !== item[header.value] ? new Date(item[header.value]).toLocaleString() : '') }}
             </template>
+            <template v-else-if="header.type === 'date'">
+              {{ (null !== item[header.value] ? new Date(item[header.value]).toLocaleDateString() : '') }}
+            </template>
+            <template v-else-if="header.type === 'currency'">
+              {{ new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(item[header.value]) }}
+            </template>
             <template v-else-if="header.type === 'structure'">
               <v-avatar size="40" class="me-2">
                 <img :src="`/logos/${item['structure']['id']}.png`" class="w-100" alt="Logo">
               </v-avatar>
               {{ item['structure']['name'] }}
             </template>
-            <template v-else-if="header.type === 'user' && null !== item['user_id']">
-              <v-avatar size="40" class="me-2">
-                <img :src="`/avatars/${item['user_id']}.png`" class="w-100" alt="Logo">
-              </v-avatar>
-              {{ item['lastname'] }} {{ item['firstname'] }}
+            <template v-else-if="header.type === 'user'">
+              <user-display :user="item[header.value]"></user-display>
             </template>
             <template v-else-if="header.type === 'localisation' && null !== item['town']">
               {{ item['town'] }} ({{ item['zipcode'] }})
@@ -99,11 +102,13 @@
 
 <script>
 import fuForm from "@/components/Form/FuForm.vue";
+import UserDisplay from "@/components/Users/Display.vue";
 
 export default {
   name: "FuDatabase",
   components: {
     fuForm,
+    UserDisplay,
   },
   props: {
     model: {
@@ -208,16 +213,21 @@ export default {
       search: '',
       deletingItem: {},
       dialogConfirmDelete: false,
+      debounceTimer: null,
     };
   },
   watch: {
     search: function () {
-      if (this.localItems.length === 0) {
-        this.$store.dispatch(`${this.model}/fetchItems`, {
-          search: this.search,
-          domain: this.domain,
-        });
-      }
+      clearTimeout(this.debounceTimer);
+
+      this.debounceTimer = setTimeout(() => {
+        if (this.localItems.length === 0) {
+          this.$store.dispatch(`${this.model}/fetchItems`, {
+            search: this.search,
+            domain: this.domain,
+          });
+        }
+      }, 500);
     },
   },
   mounted() {

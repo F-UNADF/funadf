@@ -16,6 +16,14 @@
       <v-text-field v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
         hide-details="auto" clearable type="datetime-local" :value="getIsoDate(localValue)"></v-text-field>
     </template>
+    <template v-else-if="type === 'date'">
+      <v-text-field v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
+                    hide-details="auto" clearable type="date"></v-text-field>
+    </template>
+    <template v-else-if="type === 'float'">
+      <v-text-field v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
+                    hide-details="auto" clearable type="float"></v-text-field>
+    </template>
     <template v-else-if="type === 'files'">
       <fu-file-upload v-model="localValue" :label="label"></fu-file-upload>
     </template>
@@ -30,6 +38,11 @@
       <select-all v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
         hide-details="auto" :items="items" multiple chips clearable></select-all>
     </template>
+    <template v-else-if="type === 'autocomplete_one'">
+      <v-autocomplete v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
+        hide-details="auto" :items="items" clearable>
+      </v-autocomplete>
+    </template>
     <template v-else-if="type === 'wysiwyg'">
       <vue-editor v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
         hide-details="auto" clearable>
@@ -37,6 +50,9 @@
     </template>
     <template v-else-if="type === 'members'">
       <FuMembersInput :model="model"></FuMembersInput>
+    </template>
+    <template v-else>
+      {{ $t('form.errors.unknownInputType') }} {{type}}
     </template>
   </div>
 </template>

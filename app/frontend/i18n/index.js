@@ -36,6 +36,7 @@ const i18n = createI18n({
                     min: "La valeur doit être supérieure à {min}",
                     max: "La valeur doit être inférieure à {max}",
                     email: "Veuillez entrer une adresse e-mail valide",
+                    unknownInputType: "Type de champ inconnu : {type}"
                 }
             },
             default: {
@@ -167,6 +168,23 @@ const i18n = createI18n({
                 published_at: 'Publié le',
                 expired_at: 'Expiré le',
             },
+            fees: {
+                title: 'Cotisations',
+                noData: 'Aucune cotisation trouvée',
+                noDataExplain: 'Aucune cotisation disponible. Si vous pensez qu\'il devrait y en avoir, veuillez contacter l\'administrateur.',
+                saved: 'Cotisation enregistrée',
+
+                add: 'Ajouter une cotisation',
+                edit: 'Modifier la cotisation',
+                delete: 'Supprimer la cotisation',
+
+                deleteMessage: 'Êtes-vous sûr de vouloir supprimer cette cotisation ? Cette action est irréversible.',
+                deleteSuccess: 'Cotisation supprimée',
+
+                what: 'Année',
+                amount: 'Montant',
+                paid_at: 'Date de paiement',
+            }
         }
     }
 })

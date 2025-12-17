@@ -4,7 +4,8 @@ module UiConfig
       "regions"      => -> { StructuresConfig.new("regions") },
       "posts"        => -> { PostsConfig.new },
       "associations" => -> { StructuresConfig.new("associations") },
-      "churches"     => -> { StructuresConfig.new("churches") }
+      "churches"     => -> { StructuresConfig.new("churches") },
+      "fees"     => -> { FeesConfig.new },
     }
 
     def self.build(model)

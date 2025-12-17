@@ -8,7 +8,7 @@
     "autoBuild": false,
     "publicOutputDir": "vite-dev",
     "manifest": ".vite/manifest.json",
-    "host": "localhost",
+    "host": "0.0.0.0",
     "port": 3036
   },
   "test": {
