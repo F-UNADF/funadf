@@ -3,7 +3,11 @@
 # add 5 Churches
 # add 5 Associations
 # add 5 users to each association
-require 'faker'
+begin
+  require 'faker'
+rescue LoadError
+  # noop
+end
 
 namespace :app do
 
