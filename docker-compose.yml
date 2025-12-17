@@ -34,7 +34,6 @@ services:
     profiles:
       - production
       - local
-
   redis:
     image: redis:7-alpine
     container_name: funadf_redis
