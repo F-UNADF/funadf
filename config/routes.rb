@@ -85,7 +85,6 @@ Rails.application.routes.draw do
 
     get 'referentiels/:referentiel', to: 'referentiels#show'
     get 'menus/:menu', to: 'menus#show'
-
   end
 
   # ADMIN SUBDOMAIN

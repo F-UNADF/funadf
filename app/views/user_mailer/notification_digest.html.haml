@@ -1,14 +1,44 @@
 %h2 Bonjour #{@user.firstname},
 
-%p Voici vos dernières notifications sur ADD+ :
+%p Voici votre récapitulatif de la semaine sur <strong>ADD+</strong> 👇
 
-%ul
-  - @notifications.each do |notif|
-    %li
-      = link_to notif.title, notif.url, class: "notification-link"
-      %span(style="color:#999; font-size:12px; margin-left:8px")= notif.created_at.strftime('%d/%m/%Y')
+- @notifications.each do |notif|
+  %table{ width: "100%", cellpadding: "0", cellspacing: "0", style: "margin-bottom:24px; border-bottom:1px solid #eee; padding-bottom:16px;" }
+    %tr
+      / Colonne texte
+      %td{ valign: "top", style: "padding-right:16px;" }
+        %h3{ style: "margin:0 0 8px 0; font-size:16px; line-height:1.3;" }
+          = link_to notif.title, notif.url, style: "color:#111; text-decoration:none;"
+        - structure = notif.structure
+        - if structure.present?
+          %table{ cellpadding: "0", cellspacing: "0", style: "margin-bottom:8px;" }
+            %tr
+              %td{ valign: "middle", style: "padding-right:6px;" }
+                %img{
+                  src: "#{root_url}logos/#{structure.id}.png",
+                  width: "20",
+                  style: "display:block; border-radius:3px;",
+                  alt: structure.name
+                }
+              %td= structure.name
 
-%p Pour consulter toutes vos notifications, veuillez vous connecter à votre compte.
+        - if notif.excerpt.present?
+          %p{ style: "margin:0 0 8px 0; color:#555; font-size:14px; line-height:1.4;" }
+            = truncate(notif.excerpt, length: 120)
+
+      - if notif.image_url.present?
+        %td{ width: "200", valign: "top" }
+          = link_to notif.url do
+            %img{
+              src: notif.image_url,
+              width: "200",
+              style: "display:block; border-radius:6px;",
+              alt: notif.title
+            }
+
+%p{ style: "margin-top:32px;" }
+  Pour consulter toutes vos notifications :
 
 %p
-  = link_to "Cliquez ici pour vous connecter", root_url, class: "primary-button"
+  = link_to "Se connecter à ADD+", root_url,
+    style: "display:inline-block; background:#1a73e8; color:#fff; padding:10px 16px; border-radius:6px; text-decoration:none; font-weight:600;"

@@ -12,10 +12,6 @@ class NotificationDigestJob < ApplicationJob
     grouped.each do |user, notifs|
       next if notifs.empty?
 
-      # Envoi par mail
-      puts "Envoi de la notification groupée pour l'utilisateur (#{user.email})"
-      UserMailer.notification_digest(user, notifs).deliver_later
-
       # (Optionnel) Envoi Push ici
       service = FcmNotificationService.new
       

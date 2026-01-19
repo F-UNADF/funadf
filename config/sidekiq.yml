@@ -13,10 +13,14 @@
       class: NotificationDigestJob
       queue: default
     notification_post_broadcast_job:
-      cron: "0 */4 * * *"
+      cron: "50 7,11,17,21 * * *"
       class: NotificationPostBroadcastJob
       queue: default
     notification_event_broadcast_job:
-      cron: "0 */4 * * *"
+      cron: "55 7,11,17,21 * * *"
       class: NotificationEventBroadcastJob
+      queue: default
+    weekly_notification_recap_job:
+      cron: "0 8 * * 5"
+      class: WeeklyNotificationRecapJob
       queue: default
