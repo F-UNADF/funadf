@@ -21,6 +21,6 @@
       class: NotificationEventBroadcastJob
       queue: default
     weekly_notification_recap_job:
-      cron: "0 8 * * 5"
+      cron: "0 18 * * 5"
       class: WeeklyNotificationRecapJob
       queue: default
