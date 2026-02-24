@@ -1,5 +1,12 @@
 <template>
   <v-card variant="elevated" class="bg-surface">
+    <v-img
+        v-if="post?.images"
+        color="surface-variant"
+        height="300"
+        :src="post.images[0]"
+        cover
+    ></v-img>
     <v-card-item>
       <div class="d-flex flex-wrap ga-3 align-center">
         <v-avatar size="40">

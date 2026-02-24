@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer left elevation="10" mobile-breakpoint="960" app class="leftSidebar" :rail="false"
     v-model="sidebarValue" rail-width="75">
-      <div class="px-4 mb-0 w-100">
+      <div class="px-0 my-5 w-100">
         <div class="logo">
           <RouterLink to="/" >
             <img src="../../images/logo_plus.png" alt="Logo ADD+" style="max-width: 70%; display: block; margin: 0 auto;" />

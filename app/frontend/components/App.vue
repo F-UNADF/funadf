@@ -9,7 +9,7 @@
       </v-container>
 
       <!-- Footer -->
-      <v-footer class="bg-grey position-fixed" style="width: 100%; bottom: 0;">
+      <v-footer class="elevation-5 position-fixed" style="width: 100%; bottom: 0;">
         <v-row justify="center">
           <v-col>
             &copy; {{ new Date().getFullYear() }} -

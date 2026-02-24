@@ -3,3 +3,7 @@
 @use "./layout/topbar";
 @use "./layout/horizontal";
 @use "./layout/dark";
+
+html{
+  font-family: Montserrat, sans-serif;
+}

@@ -4,7 +4,10 @@ class Api::SearchController < ApiController
     query = params[:query]
     
     # Search in the User model
-    users = User.where('lastname LIKE ? OR firstname LIKE ? OR zipcode LIKE ? OR town LIKE ?', "#{query}%", "#{query}%", "#{query}%", "#{query}%")
+    users = User
+      .where('lastname LIKE ? OR firstname LIKE ? OR zipcode LIKE ? OR town LIKE ?', "#{query}%", "#{query}%", "#{query}%", "#{query}%")
+      .enabled
+
     user_results = users.map do |user|
       {
         id: user.id,
