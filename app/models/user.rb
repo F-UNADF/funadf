@@ -37,8 +37,9 @@ class User < ActiveRecord::Base
 
   validates :firstname, :lastname, presence: true
 
-  scope :enabled, -> { where.not(disabled: true) }
-  scope :disabled, -> { where(disabled: true) }
+  scope :enabled, -> { where(disabled: 0) }
+  scope :disabled, -> { where(disabled: 1) }
+
   scope :with_current_level_in, ->(levels) {
     joins(<<~SQL)
       INNER JOIN (
