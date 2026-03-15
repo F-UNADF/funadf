@@ -13,6 +13,12 @@ class Api::MembershipsController < ApiController
     render json: { status: 200, members: structure.members_with_details }
   end
 
+  def toggle_can_vote
+    membership = Membership.find(params[:id])
+    membership.update(can_vote: !membership.can_vote)
+    render json: { status: 200, membership: membership }
+  end
+
   private
 
   def membership_params

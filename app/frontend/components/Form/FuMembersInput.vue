@@ -28,20 +28,26 @@
                     <v-menu>
                         <template v-slot:activator="{ props }">
                             <v-btn color="secondary" v-bind="props">
-                                {{ getRoleName(item.role_friendly_name) }}
+                                {{ item.role_friendly_name || item.role_name }}
                             </v-btn>
                         </template>
                         <v-list>
                             <v-list-item v-for="(role, index) in this.referentiels.roles" :key="index"
                                 @click="setRole(item, role.name)">
+
                                 <v-list-item-title>{{ role.friendly_name || role.name }}</v-list-item-title>
                             </v-list-item>
                         </v-list>
                     </v-menu>
                 </td>
                 <td>
-                    <v-switch v-model="item.can_vote" inset color="secondary" label="Peut voter ?"
-                        @change="setCanVote(item)"></v-switch>
+                  <v-switch
+                      :model-value="item.can_vote"
+                      inset
+                      color="secondary"
+                      label="Peut voter ?"
+                      @update:model-value="setCanVote(item.membership_id)"
+                  />
                 </td>
                 <td>
                     <v-tooltip location="top" text="Supprimer le membre">
@@ -100,6 +106,7 @@ export default {
     methods: {
         getRoleName(role) {
             let roles = this.referentiels.roles;
+            console.log(roles);
             if (roles && roles.hasOwnProperty(role)) {
                 return roles[role];
             }
@@ -129,7 +136,6 @@ export default {
         addMember() {
             this.$store.dispatch(`${this.model}/addMembers`, this.addingMembers).then(response => {
                 this.$root.showSnackbar('Membres ajoutés avec succés', 'success');
-                this.localItems = this.$store.getters[`${this.model}/getMembers`] || [];
                 this.addingMembers = [];
                 this.search = '';
             }, error => {
@@ -140,8 +146,7 @@ export default {
         },
         setRole(member, role) {
             this.$store.dispatch(`${this.model}/setRole`, { member: member, role: role }).then(response => {
-                this.$root.showSnackbar('Role modifié avec succés', 'success');
-                this.localItems = this.$store.getters[`${this.model}/getMembers`] || [];
+                this.$root.showSnackbar('Role modifié avec succés', 'success')
             }, error => {
                 this.$root.showSnackbar('Un probleme est survenu lors de la modification du role', 'error');
                 let errors = error.response.data.errors;
@@ -157,6 +162,15 @@ export default {
                 this.$root.showSnackbar(errors.join('<br/>'), 'error');
             });
         },
+        setCanVote(membership_id) {
+          this.$store.dispatch(`${this.model}/toggleCanVote`, membership_id).then(response => {
+            this.$root.showSnackbar('Membre mis à jour avec succés', 'success');
+          }, error => {
+            this.$root.showSnackbar('Un probleme est survenu lors de la mise à jour du membre', 'error');
+            let errors = error.response.data.errors;
+            this.$root.showSnackbar(errors.join('<br/>'), 'error');
+          });
+        }
     },
     watch: {
         search: function () {

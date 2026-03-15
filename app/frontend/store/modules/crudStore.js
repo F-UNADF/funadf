@@ -158,6 +158,18 @@ export default function createCrudStore({ resource }) {
                             reject(error, 2000);
                         });
                 });
+            },
+            toggleCanVote({ commit }, membership_id) {
+                return new Promise((resolve, reject) => {
+                    axios.post(`/api/memberships/${membership_id}/toggleCanVote`)
+                        .then((res) => {
+                            commit('setMemberInMembersById', res.data.membership);
+                            resolve(res);
+                        })
+                        .catch((error) => {
+                            reject(error);
+                        });
+                });
             }
         },
         mutations: {
@@ -168,10 +180,23 @@ export default function createCrudStore({ resource }) {
             setConfig: (state, config) => (state.config = config),
             setReferentiels: (state, referentiels) => (state.referentiels = referentiels),
             setMembers: (state, members) => (state.members = members),
-            setMemberInMembersById: (state, membership) => {
-                const index = state.members.findIndex(member => member.id === membership.id);
+            setMemberInMembersById(state, membership) {
+                const index = state.members.findIndex(
+                    member => member.membership_id === membership.id
+                );
+
                 if (index !== -1) {
-                    state.members[index] = membership;
+                    state.members.splice(index, 1, {
+                        ...state.members[index],
+                        can_vote: membership.can_vote,
+                        role_id: membership.role_id,
+                        member_type: membership.member_type,
+                        member_id: membership.member_id,
+                        structure_id: membership.structure_id,
+                        reason: membership.reason,
+                        created_at: membership.created_at,
+                        updated_at: membership.updated_at,
+                    });
                 }
             },
             removeMemberIdMembersById: (state, membership_id) => {

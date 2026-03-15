@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     end
 
     resources :memberships, only: [:update, :destroy]
+    post '/memberships/:id/toggleCanVote', to: 'memberships#toggle_can_vote'
 
     resources :campaigns
     patch '/campaigns/:id/change_state', to: 'campaigns#change_state'
