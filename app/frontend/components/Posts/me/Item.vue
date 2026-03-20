@@ -1,14 +1,14 @@
 <template>
   <v-card variant="elevated" class="bg-surface">
-    <!-- Cover -->
-    <v-img
-        v-if="hasCover"
-        :src="coverImage"
-        color="surface-variant"
-        height="300"
-        cover
-        :alt="postTitle"
-    />
+
+    <div class="cover" v-if="hasCover">
+      <div
+          class="cover-bg"
+          :style="{ backgroundImage: `url(${coverImage})` }"
+      ></div>
+
+      <img :src="coverImage" alt="Cover" class="cover-img" />
+    </div>
 
     <v-card-item>
       <!-- Header -->
@@ -195,3 +195,30 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.cover {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+  background-color: #251A7A;
+}
+
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  filter: blur(20px);
+  opacity: 0.9;
+  transform: scale(1.1); /* évite les bords dégueu du blur */
+}
+
+.cover-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 0 auto;
+  height: 100%;
+}
+</style>

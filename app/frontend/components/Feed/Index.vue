@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-row justify="start">
-      <v-col cols="12" lg="8" md="6" sm="12">
+    <v-row>
+      <v-col cols="12" lg="6" md="7" sm="12">
         <PostList></PostList>
       </v-col>
       <v-col cols="12" md="6" sm="12">
