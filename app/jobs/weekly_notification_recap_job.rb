@@ -6,8 +6,6 @@ class WeeklyNotificationRecapJob < ApplicationJob
   def perform
     range = previous_week_range
 
-    # On ne veut pas charger toutes les notifs.
-    # On parcourt les users qui ont eu des notifs dans la période.
     user_ids = Notification
       .where(created_at: range)
       .distinct
@@ -23,7 +21,6 @@ class WeeklyNotificationRecapJob < ApplicationJob
   private
 
   def previous_week_range
-    # Semaine précédente (lundi -> dimanche) en timezone app
     tz = Time.zone
     start = tz.now.beginning_of_week - 1.week
     finish = start.end_of_week
@@ -31,12 +28,14 @@ class WeeklyNotificationRecapJob < ApplicationJob
   end
 
   def send_weekly_recap_to(user, range)
-    # Exemple: compter et/ou regrouper par type
     scope = Notification.where(recipient: user, created_at: range)
 
     total = scope.count
     return if total.zero?
 
-    UserMailer.notification_digest(user, scope).deliver_later
+    notification_ids = scope.pluck(:id)
+
+    UserMailer.notification_digest(user, notification_ids).deliver_later
   end
+
 end
