@@ -19,6 +19,7 @@ import RegionsIndex from "../pages/Regions/Index.vue";
 import MembersIndex from "../pages/Members/Index.vue";
 import PostsShow from "../pages/Posts/Show.vue";
 import EventsShow from "../pages/Events/Show.vue";
+import ChurchShow from "../pages/Churches/Show.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -66,6 +67,11 @@ const router = createRouter({
             path: "/evenements/:id",
             component: EventsShow,
             name: "event.show",
+        },
+        {
+            path: '/mon-eglise',
+            component: ChurchShow,
+            name: "church.show",
         },
 
         // ASSOCIATION

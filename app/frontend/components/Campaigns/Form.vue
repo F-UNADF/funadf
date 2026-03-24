@@ -480,9 +480,10 @@
               <v-card-text>
                 <h3 class="display-3">
                   {{ this.voterCount }} votants
-                  <v-chip prepend-icon="mdi-timelapse">
-                    {{ this.countdown }}
-                  </v-chip>
+
+                  <v-btn prepend-icon="mdi-refresh" color="primary" class="ml-5" @click="updateVotersCount()">
+                    Actualiser
+                  </v-btn>
                 </h3>
               </v-card-text>
             </v-card>
@@ -610,7 +611,7 @@ export default {
       }
     },
     removeVotingTable(voting_table) {
-      const index = this.editedItem.voting_tables.findIndex((v) => v.id === voting_table.id);
+      const index = this.editedItem.voting_tables.indexOf(voting_table);
       if (index !== -1) {
         this.editedItem.voting_tables.splice(index, 1);
       }
@@ -626,23 +627,11 @@ export default {
         '_blank');
     },
     async updateVotersCount() {
-      if (this.editedItem.id === null || this.editedItem.state !== 'closed') {
-        return;
-      }
       try {
         this.$store.dispatch('campaignsStore/votersCount', this.editedItem.id);
       } catch (error) {
         console.error('API request failed:', error);
       }
-    },
-    startCountdown() {
-      this.countdownId = setInterval(() => {
-        this.countdown--;
-        if (this.countdown === 0) {
-          clearInterval(this.countdownId);
-          this.countdown = 15;
-        }
-      }, 1000);
     },
     hasConsultative() {
       return this.editedItem.results.some(result =>
@@ -660,15 +649,7 @@ export default {
       handler: function () {
         this.editedItem = JSON.parse(JSON.stringify(this.item));
         this.updateMotionOrder();
-        if (this.editedItem.id !== null && this.editedItem.state === 'closed') {
-          this.$store.dispatch('campaignsStore/votersCount', this.editedItem.id);
-          this.updateVotersCount();  // Initial value update
-          this.startCountdown();
-          this.intervalId = setInterval(() => {
-            this.updateVotersCount();
-            this.startCountdown();
-          }, 15000);
-        }
+        this.$store.dispatch('campaignsStore/votersCount', this.editedItem.id);
       },
     },
   },
@@ -679,10 +660,6 @@ export default {
       tab: 'motions',
       countdown: 15,
       errors: [],
-      rules: {
-        required: value => !!value || 'Champ obligatoire',
-        max255: value => (value && value.length <= 255) || 'Maximum 255 caractères',
-      },
       rules: {
         required: value => !!value || 'Champ obligatoire',
         max255: value => (value && value.length <= 255) || 'Maximum 255 caractères',

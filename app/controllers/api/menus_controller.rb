@@ -135,7 +135,7 @@ class Api::MenusController < ApiController
           title: "Votes",
           icon: "mdi-vote",
           to: me_votes_path,
-        }
+        },
       ]
     when 'association'
       result = [

@@ -132,6 +132,7 @@ Rails.application.routes.draw do
     get '/campaigns', to: 'campaigns#index', as: :votes
     get '/actus/:post', to: 'posts#show', as: :post
     get '/evenements/:event', to: 'events#show', as: :event
+    get '/mon-eglise', to: "churches#show", as: :church
 
     root to: redirect('/feed'), as: :root
   end
