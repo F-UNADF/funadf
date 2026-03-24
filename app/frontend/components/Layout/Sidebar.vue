@@ -1,6 +1,15 @@
 <template>
-  <v-navigation-drawer left elevation="10" mobile-breakpoint="960" app class="leftSidebar" :rail="false"
-    v-model="sidebarValue" rail-width="75">
+  <v-navigation-drawer
+      v-model="sidebarValue"
+      elevation="10"
+      class="leftSidebar"
+      :rail="false"
+      rail-width="75"
+      :temporary="isMobile"
+      :permanent="!isMobile"
+      :app="!isMobile"
+      :mobile-breakpoint="960"
+  >
       <div class="px-0 my-5 w-100">
         <div class="logo">
           <RouterLink to="/" >
@@ -96,6 +105,10 @@ export default {
       default: () => [],
     },
     showSidebar: {
+      type: Boolean,
+      default: false,
+    },
+    isMobile: {
       type: Boolean,
       default: false,
     },

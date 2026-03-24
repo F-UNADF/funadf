@@ -1,7 +1,7 @@
 <template>
   <v-app theme="light">
-    <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar" />
-    <Header :user="currentUser" :ouser="ouser" @toggle-sidebar="showSidebar = !showSidebar" />
+    <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar" :is-mobile="isMobile" />
+    <Header :user="currentUser" :ouser="ouser" @toggle-sidebar="toggleSidebar" />
 
     <v-main class="main">
       <v-container fluid class="page-wrapper">
@@ -62,6 +62,8 @@ import UserForm from "../components/Users/Form.vue";
 
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
+
+const MOBILE_BREAKPOINT = 768;
 
 const firebaseConfig = {
   apiKey: "AIzaSyCxbYAg-_eIci32Qf1ZRoKZLwkOD-vTuHo",
@@ -164,6 +166,31 @@ export default {
         this.showSnackbar("Erreur lors de l'enregistrement du token", "error");
       }
     },
+    isMobile() {
+      return window.innerWidth < MOBILE_BREAKPOINT;
+    },
+
+    updateSidebarState() {
+      this.showSidebar = !this.isMobile();
+    },
+
+    handleResize() {
+      this.updateSidebarState();
+    },
+
+    toggleSidebar() {
+      this.showSidebar = !this.showSidebar;
+    },
+
+    handleBreakpointChange(e) {
+      this.isMobile = e.matches;
+
+      if (this.isMobile) {
+        this.showSidebar = false;
+      } else {
+        this.showSidebar = true;
+      }
+    },
   },
   data() {
     return {
@@ -176,7 +203,10 @@ export default {
         timeout: 10000,
       },
       showBell: true,
-      showSidebar: true,
+      showSidebar: false,
+      showSidebarOverlay: false,
+      isMobile: false,
+      mediaQuery: null,
       messaging: null,
     };
   },
@@ -192,28 +222,28 @@ export default {
     this.$store.commit("sessionStore/setSubdomain", subdomain);
     this.$store.dispatch("menuStore/getMenu", subdomain);
   },
-  async mounted() {
+  mounted() {
     this.initMessaging();
 
-    const supported = await isSupported();
+    this.mediaQuery = window.matchMedia("(max-width: 767px)");
+    this.isMobile = this.mediaQuery.matches;
+    this.showSidebar = !this.isMobile;
 
-    if (!supported) {
-      // Pas supporté, ne pas afficher la cloche
-      this.showBell = false;
-      return;
-    }
+    this.mediaQuery.addEventListener("change", this.handleBreakpointChange);
 
-    // On vérifie la permission actuelle
-    const permission = Notification.permission; // "granted", "denied" ou "default"
+    isSupported().then((supported) => {
+      if (!supported) {
+        this.showBell = false;
+        return;
+      }
 
-    if (permission === "default") {
-      // Afficher la cloche pour demander la permission
-      this.showBell = true;
-    } else {
-      // "granted" ou "denied" => ne pas afficher
-      this.showBell = false;
-    }
-  }
+      const permission = Notification.permission;
+      this.showBell = permission === "default";
+    });
+  },
+  beforeUnmount() {
+    this.mediaQuery?.removeEventListener("change", this.handleBreakpointChange);
+  },
 };
 </script>
 
