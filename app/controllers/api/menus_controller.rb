@@ -136,6 +136,11 @@ class Api::MenusController < ApiController
           icon: "mdi-vote",
           to: me_votes_path,
         },
+        {
+          title: "Archivate",
+          icon: "mdi-cloud-outline",
+          to: "/archivate",
+        },
       ]
     when 'association'
       result = [
