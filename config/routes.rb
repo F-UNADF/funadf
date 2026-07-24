@@ -25,6 +25,11 @@ Rails.application.routes.draw do
     post 'connect_with_google', to: 'sessions#connect_with_google', as: :connect_with_google
     post 'login', to: 'sessions#login', as: :login
 
+    namespace :archivate do
+      post 'sso/generate', to: 'sso#generate', as: :sso_generate
+      post 'sso/validate', to: 'sso#validate', as: :sso_validate
+    end
+
     get '/:model/config', to: 'config#show'
 
     resources :users
@@ -129,6 +134,7 @@ Rails.application.routes.draw do
     get '/annuaire', to: 'annuaire#show', as: :annuaire
     get '/mon-profil', to: 'profile#show', as: :me
     get '/documents', to: 'documents#index', as: :documents
+    get '/archivate', to: 'archivate#index', as: :archivate
     get '/campaigns', to: 'campaigns#index', as: :votes
     get '/actus/:post', to: 'posts#show', as: :post
     get '/evenements/:event', to: 'events#show', as: :event

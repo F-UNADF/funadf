@@ -18,6 +18,7 @@ import PushNotificationsIndex from "../components/PushNotifications/Index.vue";
 import RegionsIndex from "../pages/Regions/Index.vue";
 import MembersIndex from "../pages/Members/Index.vue";
 import PostsShow from "../pages/Posts/Show.vue";
+import ArchivateRedirect from "../components/Archivate/Redirect.vue";
 import EventsShow from "../pages/Events/Show.vue";
 import ChurchShow from "../pages/Churches/Show.vue";
 
@@ -47,6 +48,11 @@ const router = createRouter({
             path: "/documents",
             component: MeDocumentsIndex,
             name: "documents.index",
+        },
+        {
+            path: "/archivate",
+            component: ArchivateRedirect,
+            name: "archivate.redirect",
         },
         {
             path: "/campaigns",
