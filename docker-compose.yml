@@ -2,6 +2,7 @@ services:
   app:
     env_file: .env
     container_name: funadf_app
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
@@ -21,6 +22,7 @@ services:
       - local
   db:
     container_name: funadf_db
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
@@ -37,17 +39,19 @@ services:
   redis:
     image: redis:7-alpine
     container_name: funadf_redis
+    restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - funadf_redis_data:/data
-    command: [ "redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof", "--dir", "/data", "--protected-mode", "no" ]
+    command: [ "redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof", "--dir", "/data", "--requirepass", "${REDIS_PASSWORD:?REDIS_PASSWORD manquant dans .env}" ]
     profiles:
       - local
       - production
 
   sidekiq:
     container_name: funadf_sidekiq
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
