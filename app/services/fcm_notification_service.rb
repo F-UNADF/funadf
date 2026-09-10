@@ -14,7 +14,7 @@ class FcmNotificationService
     @project_id = JSON.parse(File.read(Rails.root.join('config', 'credential.json')))['project_id']
   end
 
-  def send_notification(token:, title:, body:, url:, badge:)
+  def send_notification(token:, title:, body:, url:, badge: nil)
     access_token = @credentials.fetch_access_token!['access_token']
 
     if url.nil?
@@ -67,7 +67,7 @@ class FcmNotificationService
     }
 
 
-    puts payload.inspect
+    Rails.logger.debug { "[FCM] Payload: #{payload.inspect}" }
 
     response = Faraday.post("https://fcm.googleapis.com/v1/projects/#{@project_id}/messages:send") do |req|
       req.headers['Authorization'] = "Bearer #{access_token}"
@@ -81,15 +81,22 @@ class FcmNotificationService
       Rails.logger.error("[FCM] Token not found: #{token}")
     end
 
+    parsed = begin
+      JSON.parse(response.body)
+    rescue JSON::ParserError
+      {}
+    end
+
     return {
       status: response.status,
-      body: JSON.parse(response.body)
+      body: parsed,
+      error: parsed['error']
     }
   rescue Faraday::Error => e
     Rails.logger.error("[FCM] HTTP error: #{e.message}")
-    { error: e.message }
+    { status: nil, body: {}, error: e.message }
   rescue => e
     Rails.logger.error("[FCM] General error: #{e.message}")
-    { error: e.message }
+    { status: nil, body: {}, error: e.message }
   end
 end
