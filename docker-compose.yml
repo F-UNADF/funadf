@@ -44,7 +44,10 @@ services:
       - "127.0.0.1:6379:6379"
     volumes:
       - funadf_redis_data:/data
-    command: [ "redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof", "--dir", "/data", "--requirepass", "${REDIS_PASSWORD:?REDIS_PASSWORD manquant dans .env}" ]
+    # --save "" : snapshots RDB desactives, la persistance est assuree par l'AOF.
+    # Le fork de BGSAVE segfaultait (THP=always sur l'hote), ce qui bloquait
+    # toutes les ecritures via stop-writes-on-bgsave-error et gelait Sidekiq.
+    command: [ "redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof", "--dir", "/data", "--save", "", "--requirepass", "${REDIS_PASSWORD:?REDIS_PASSWORD manquant dans .env}" ]
     profiles:
       - local
       - production
