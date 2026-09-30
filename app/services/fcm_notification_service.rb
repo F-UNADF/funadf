@@ -31,7 +31,9 @@ class FcmNotificationService
         },
         android: {
           notification: {
-            icon: 'ic_launcher',
+            # Petite icône monochrome embarquée dans l'app (res/drawable/ic_stat_notification).
+            # Une app plus ancienne sans cette ressource retombe sur son icône par défaut.
+            icon: 'ic_stat_notification',
             color: '#1E88E5',
             sound: 'default'
           },
