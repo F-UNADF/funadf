@@ -77,20 +77,6 @@ const actions = {
                 });
         });
     },
-    connect_google({ commit }, payload) {
-        // Return a Promise
-        return new Promise((resolve, reject) => {
-            axios.post('/api/connect_with_google', payload)
-                .then((response) => {
-                    commit('setCurrentUser', response.data.user);
-                    commit('setOriginalUser', null);
-                    resolve(response);
-                })
-                .catch((error) => {
-                    reject(error); // Reject with the error if request fails
-                });
-        });
-    },
     switch_to({ commit, dispatch, state }, user_id) {
         axios.get('/api/switch/' + user_id).then((response) => {
             commit('setCurrentUser', response.data.current_user);

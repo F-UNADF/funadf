@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
-         :omniauthable, :recoverable, :rememberable, :trackable, :validatable,
-         :validate_on_invite => true, omniauth_providers: [:google_oauth2]
+         :recoverable, :rememberable, :trackable, :validatable,
+         :validate_on_invite => true
 
   has_many :memberships, as: :member
   has_many :associations, through: :memberships, source: :structure
@@ -378,13 +378,6 @@ class User < ActiveRecord::Base
     else
       return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' KO'
     end
-  end
-
-  def self.from_omniauth(access_token)
-    data = access_token.info
-    user = User.where(email: data['email']).first
-
-    user
   end
 
   def self.allowed_params params
