@@ -1,6 +1,6 @@
 <template>
-  <v-btn icon class="me-3" color="info" @click="downloadCSV">
-    <v-icon>mdi-download</v-icon>
+  <v-btn variant="outlined" color="primary" prepend-icon="mdi-download" @click="downloadCSV">
+    Exporter la liste (CSV)
   </v-btn>
 </template>
 

@@ -1,12 +1,15 @@
 <template>
-  <v-container>
-    <v-btn variant="text" color="primary" class="small mb-3" @click="$router.push({ name: 'feed.index' })">
-      <v-icon left>mdi-arrow-left</v-icon>
-      Retour au feed
+  <div class="reading-width">
+    <v-btn variant="text" color="primary" prepend-icon="mdi-arrow-left" class="mb-3 px-2"
+      @click="$router.push({ name: 'feed.index' })">
+      Retour au fil d’actualité
     </v-btn>
-    <v-skeleton-loader v-if="loading" type="card"></v-skeleton-loader>
+    <v-alert v-if="error" type="warning" variant="tonal">
+      Cette actualité n’a pas pu être affichée. Elle a peut-être été supprimée ou vous n’y avez pas accès.
+    </v-alert>
+    <v-skeleton-loader v-else-if="loading" type="card"></v-skeleton-loader>
     <PostItem v-else :post="post" />
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -28,6 +31,7 @@ export default {
     return {
       post: null,
       loading: true,
+      error: false,
     };
   },
   async mounted() {
@@ -36,7 +40,7 @@ export default {
       this.post = response.data.post;
       this.loading = false;
     } catch (error) {
-      console.error("Erreur lors du chargement du post :", error);
+      this.error = true;
     }
   },
 };

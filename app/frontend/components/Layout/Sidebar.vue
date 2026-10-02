@@ -18,9 +18,9 @@
         </div>
       </div>
       <perfect-scrollbar class="scrollnavbar">
-        <v-list class="pa-4" color="transparent">
+        <v-list class="pa-4" color="transparent" aria-label="Menu principal">
           <template v-for="(item, i) in menu" :key="i">
-            <v-list-subheader v-if="item.header" style="border-bottom: solid 1px #e5e5e5" :key="'header-' + i">
+            <v-list-subheader v-if="item.header" class="sidebar-header" :key="'header-' + i">
               {{ item.header }}
             </v-list-subheader>
 
@@ -39,7 +39,7 @@
               <v-list-item v-for="(subitem, j) in item.children" :value="subitem.to" :key="'main'+i+'-sub-' + j" :to="subitem.to" rounded="lg"
                 class="first-level-item mb-1">
                 <template v-slot:prepend>
-                  <v-icon>disc</v-icon>
+                  <v-icon>mdi-circle-small</v-icon>
                 </template>
                 <v-list-item-title v-text="subitem.title"></v-list-item-title>
               </v-list-item>
@@ -135,6 +135,12 @@ export default {
 .scrollnavbar .v-list--one-line .v-list-group__items .v-list-item .v-list-item__prepend>.v-icon,
 .scrollnavbar .v-list--one-line .v-list-item .v-list-item__prepend>.v-icon {
   margin-inline-end: 0;
+}
+
+.sidebar-header {
+  border-bottom: 1px solid rgb(var(--v-theme-border));
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .logo {

@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <h1 class="mb-5">Documents</h1>
 
     <v-row>
       <v-col md="4">

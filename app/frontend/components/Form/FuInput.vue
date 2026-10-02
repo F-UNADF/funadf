@@ -22,7 +22,7 @@
     </template>
     <template v-else-if="type === 'float'">
       <v-text-field v-model="localValue" :label="label" :rules="computeRules(rules)" :placeholder="placeholder"
-                    hide-details="auto" clearable type="float"></v-text-field>
+                    hide-details="auto" clearable type="number" step="any" inputmode="decimal"></v-text-field>
     </template>
     <template v-else-if="type === 'files'">
       <fu-file-upload v-model="localValue" :label="label"></fu-file-upload>

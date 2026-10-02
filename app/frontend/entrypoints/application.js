@@ -16,6 +16,7 @@ import PrivacyPage from "../components/Pages/PrivacyPage.vue";
 import "@mdi/font/css/materialdesignicons.css";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
+import {fr} from "vuetify/locale";
 
 import i18n from "../i18n/index.js";
 
@@ -27,6 +28,11 @@ import "../scss/style.scss";
 const vuetify = createVuetify({
     components,
     directives,
+    // Textes internes de Vuetify (pagination, « Aucune donnée », etc.) en français
+    locale: {
+        locale: "fr",
+        messages: {fr},
+    },
     theme: {
         defaultTheme: "light",
         themes: {
@@ -114,10 +120,10 @@ const vuetify = createVuetify({
 });
 
 // Ajout des routes globales
-routes.addRoute({path: "/connexion", component: SessionIndex, name: "connexion"});
-routes.addRoute({path: "/mot-de-passe-oublie", component: PasswordIndex, name: "forgotPassword"});
-routes.addRoute({path: "/users/password/edit", component: PasswordCreate, name: "createPassword"});
-routes.addRoute({path: "/privacy", component: PrivacyPage, name: "privacy"});
+routes.addRoute({path: "/connexion", component: SessionIndex, name: "connexion", meta: {title: "Connexion", auth: true}});
+routes.addRoute({path: "/mot-de-passe-oublie", component: PasswordIndex, name: "forgotPassword", meta: {title: "Mot de passe oublié", auth: true}});
+routes.addRoute({path: "/users/password/edit", component: PasswordCreate, name: "createPassword", meta: {title: "Nouveau mot de passe", auth: true}});
+routes.addRoute({path: "/privacy", component: PrivacyPage, name: "privacy", meta: {title: "Mentions légales"}});
 
 const router = createRouter({
     history: createWebHistory(),
@@ -133,6 +139,15 @@ router.beforeEach((to, from, next) => {
     } else {
         next(); // Continue la navigation
     }
+});
+
+// Titre de l'onglet : page courante + nom de l'intranet.
+// On garde le préfixe d'environnement posé par le layout Rails (RE7, MYLOCAL).
+const envPrefix = (/^\s*(RE7|MYLOCAL)\b/.exec(document.title) || [])[1];
+router.afterEach((to) => {
+    const title = to.meta?.title;
+    const base = title ? `${title} – Intranet ADD+` : "Intranet ADD+";
+    document.title = envPrefix ? `${envPrefix} – ${base}` : base;
 });
 
 const app = createApp(App);

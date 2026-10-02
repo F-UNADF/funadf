@@ -2,22 +2,27 @@
     <v-card>
         <v-card-title>
             <v-avatar size="50" class="me-3">
-                <img :src="'/logos/' + event.structure.id + '.png'" width="50" alt="avatar" />
+                <img :src="'/logos/' + event.structure.id + '.png'" width="50" alt="" />
             </v-avatar>
             {{ event.title }}
         </v-card-title>
         <v-card-subtitle>
-            {{ event.category?.name }}
-            <v-icon size="x-small" :color="event.category?.color">mdi-circle</v-icon>
             {{ event.structure.name }}
+            <template v-if="event.category?.name">
+              <span aria-hidden="true"> – </span>{{ event.category?.name }}
+            </template>
         </v-card-subtitle>
         <v-card-text>
+            <div class="d-flex align-center text-body-1 font-weight-medium mb-4">
+                <v-icon class="me-2" color="primary">mdi-calendar-clock</v-icon>
+                Du {{ dateFormat(event.start_at) }} au {{ dateFormat(event.end_at) }}
+            </div>
             <div class="mb-5" v-html="event.description"></div>
 
             <v-row v-if="event?.images">
                 <v-col v-for="(photo, index) in event?.images" :key="index" class="d-flex child-flex" cols="4">
-                    <v-img :src="photo" :lazy-src="photo" class="bg-grey-lighten-2"
-                        @click="window.open(photo, '_blank', 'noreferrer');">
+                    <v-img :src="photo" :lazy-src="photo" class="bg-grey-lighten-2 cursor-pointer" alt=""
+                        @click="openImage(photo)">
                         <template v-slot:placeholder>
                             <v-row class="fill-height ma-0" align="center" justify="center">
                                 <v-progress-circular indeterminate color="grey-lighten-5"></v-progress-circular>
@@ -69,7 +74,10 @@ export default {
     },
     methods: {
         dateFormat(value) {
-            return moment(value).format('DD/MM/YYYY HH:mm');
+            return moment(value).format('DD/MM/YYYY [à] HH:mm');
+        },
+        openImage(url) {
+            window.open(url, '_blank', 'noopener,noreferrer');
         },
     },
 };

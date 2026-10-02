@@ -1,26 +1,13 @@
 <template>
-  <v-row justify="space-between">
-    <v-col cols="12" lg="4" md="4" class="mb-3">
-      <v-text-field
-          density="compact"
-          v-model="search"
-          label="Chercher un rôle..."
-          hide-details
-          variant="outlined"
-          clearable
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" lg="3" md="3" class="text-right">
-      <v-spacer></v-spacer>
-      <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
-        <v-icon color="primary">mdi-reload</v-icon>
-      </v-btn>
-      <v-btn color="primary" class="ml-auto" @click="newItem()">
-        <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
-        Ajouter un rôle
-      </v-btn>
-    </v-col>
-  </v-row>
+  <div class="list-toolbar">
+    <v-text-field density="compact" v-model="search" label="Rechercher un rôle" prepend-inner-icon="mdi-magnify"
+      hide-details variant="outlined" clearable class="list-toolbar__search"></v-text-field>
+    <v-btn icon="mdi-refresh" variant="text" color="primary" aria-label="Actualiser la liste" @click="refresh()"></v-btn>
+    <v-spacer></v-spacer>
+    <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" @click="newItem()">
+      Ajouter un rôle
+    </v-btn>
+  </div>
   <v-data-table
       :headers="headers"
       :items="filteredItems"
@@ -29,70 +16,40 @@
       :loading="loading"
   >
     <template v-slot:no-data>
-      <tr>
-        <td colspan="5">
-          <v-progress-linear
-              indeterminate
-              color="cyan"
-              v-if="loading"
-          ></v-progress-linear>
-          <v-alert
-              v-else
-              color="danger"
-              icon="danger"
-              title="Aucun rôle n'a été trouvée"
-              text="Aucun rôle ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."
-          ></v-alert>
-        </td>
-      </tr>
+      <div class="list-empty">
+        <p class="text-subtitle-1 font-weight-medium mb-1">
+          {{ search ? `Aucun rôle ne correspond à « ${search} »` : 'Aucun rôle pour le moment' }}
+        </p>
+        <v-btn v-if="search" variant="text" color="primary" @click="search = ''">Effacer la recherche</v-btn>
+        <v-btn v-else variant="tonal" color="primary" prepend-icon="mdi-plus" @click="newItem()">Ajouter un rôle</v-btn>
+      </div>
+    </template>
+    <template v-slot:loading>
+      <v-skeleton-loader type="table-row@3"></v-skeleton-loader>
     </template>
     <template v-slot:item="{ item }">
       <tr>
-        <td>{{ item.friendly_name }}</td>
+        <td class="font-weight-medium">{{ item.friendly_name || item.name }}</td>
         <td><code class="text-grey">{{ item.name }}</code></td>
-        <td>
-          <v-tooltip location="top" text="Modifier l'actu">
-            <template v-slot:activator="{ props }">
-              <v-icon
-                  small
-                  v-bind="props"
-                  color="primary"
-                  @click="editItem(item.id)"
-                  title="Edit">
-                mdi-pencil
-              </v-icon>
-            </template>
-          </v-tooltip>
+        <td class="text-right text-no-wrap">
+          <row-action icon="mdi-pencil" color="primary" label="Modifier le rôle" @click="editItem(item.id)"></row-action>
 
-          <v-tooltip location="top" text="Supprimer l'actu">
-            <template v-slot:activator="{ props }">
-              <v-icon
-                  v-bind="props"
-                  small
-                  class="text-error"
-                  title="Delete"
-                  @click="tryDeleteItem(item)">
-                mdi-delete
-              </v-icon>
-            </template>
-          </v-tooltip>
+          <row-action icon="mdi-delete-outline" color="error" label="Supprimer le rôle" @click="tryDeleteItem(item)"></row-action>
         </td>
       </tr>
     </template>
   </v-data-table>
 
-  <v-dialog v-model="dialogForm" max-width="75%">
+  <v-dialog v-model="dialogForm" max-width="960">
     <role-form></role-form>
   </v-dialog>
-  <v-dialog max-width="25%" v-model="dialogConfirmDelete">
-    <v-card>
-      <v-card-text>
-        Etes-vous sûr de vouloir supprimer ce rôle ?
-      </v-card-text>
+  <v-dialog max-width="440" v-model="dialogConfirmDelete">
+    <v-card title="Supprimer le rôle ?">
+      <v-card-text><strong>{{ deletingItem.friendly_name || deletingItem.name }}</strong><p class="mt-2">Les personnes qui ont ce rôle le perdront. Cette action est irréversible.</p></v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="dialogConfirmDelete = false">Annuler</v-btn>
-        <v-btn color="error" @click="deleteItem(deletingItem)">Supprimer</v-btn>
+        <v-btn variant="text" @click="dialogConfirmDelete = false">Annuler</v-btn>
+        <v-btn color="error" variant="flat" @click="deleteItem(deletingItem)">Supprimer</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -102,10 +59,12 @@
 import {mapGetters} from "vuex";
 import RoleForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
+import RowAction from "../Tools/RowAction.vue";
 
 export default {
   name:       "rolesIndex",
   components: {
+    RowAction,
     RoleForm,
     DialogConfirm,
   },
@@ -147,7 +106,7 @@ export default {
       this.$store.dispatch('rolesStore/items');
     },
     tryDeleteItem: function (item) {
-      Object.assign(this.deletingItem, item);
+      this.deletingItem = { ...item };
       this.dialogConfirmDelete = true;
     },
     deleteItem:    function (item) {
@@ -178,14 +137,15 @@ export default {
           sortable: true
         },
         {
-          title:    'Slug',
+          title:    'Identifiant technique',
           key:      'name',
           sortable: true
         },
         {
           title:    'Actions',
           key:      'actions',
-          sortable: false
+          sortable: false,
+          align: 'end'
         },
       ],
     }

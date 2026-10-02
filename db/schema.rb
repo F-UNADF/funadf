@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_12_04_081647) do
+ActiveRecord::Schema.define(version: 2026_07_06_000000) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -268,6 +268,17 @@ ActiveRecord::Schema.define(version: 2025_12_04_081647) do
     t.datetime "updated_at"
   end
 
+  create_table "sso_tokens", charset: "latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "token", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "used_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["token"], name: "index_sso_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_sso_tokens_on_user_id"
+  end
+
   create_table "structures", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "name"
     t.string "address_1"
@@ -378,5 +389,6 @@ ActiveRecord::Schema.define(version: 2025_12_04_081647) do
   add_foreign_key "events", "structures"
   add_foreign_key "memberships", "roles"
   add_foreign_key "posts", "structures"
+  add_foreign_key "sso_tokens", "users"
   add_foreign_key "voting_tables", "campaigns"
 end

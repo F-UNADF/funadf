@@ -3,7 +3,7 @@
 }
 .v-theme--light {
   .v-main {
-    background: var(-v-theme-background);
+    background: rgb(var(--v-theme-background));
   }
   .v-card .title {
     color: rgba(0, 0, 0, 0.87);
@@ -14,8 +14,14 @@
   cursor: pointer;
 }
 .page-wrapper {
-  padding: 30px;
+  padding: 24px 32px 32px;
   max-width: 100%;
+}
+
+@media (max-width: 599px) {
+  .page-wrapper {
+    padding: 16px;
+  }
 }
 
 $sizes: (

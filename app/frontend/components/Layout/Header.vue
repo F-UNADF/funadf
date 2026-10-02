@@ -1,48 +1,51 @@
 <template>
-  <v-app-bar color="white" :elevation="2">
+  <v-app-bar color="white" :elevation="1">
     <template v-slot:prepend>
-      <v-app-bar-nav-icon @click="this.$emit('toggleSidebar')"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon aria-label="Afficher ou masquer le menu" @click="this.$emit('toggleSidebar')"></v-app-bar-nav-icon>
     </template>
+
+    <h1 v-if="title" class="page-title text-truncate flex-grow-1 ms-1">{{ title }}</h1>
 
     <template v-slot:append>
       <NotificationBell />
 
-      <v-btn @click="switch_back()" color="green" variant="flat" v-show="ouser">
-        <v-icon>mdi-account-switch</v-icon>
+      <v-btn @click="switch_back()" color="success" variant="flat" v-show="ouser" class="mx-2"
+        prepend-icon="mdi-account-switch">
         Revenir à {{ this.ouser?.firstname }}
-      </v-btn> 
+      </v-btn>
 
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn v-bind="props" class="pa-0 px-1" color="transparent" elevation="0" plain>
-            <img :src="getAvatar(user)" class="rounded-circle img-fluid" width="45px" alt="Avatar User"/>
+          <v-btn v-bind="props" icon variant="text" class="mr-2" aria-label="Mon compte">
+            <v-avatar size="40" color="primary">
+              <v-img v-if="user?.id" :src="'/avatars/' + user.id + '.png'" :alt="user?.fullname || 'Mon compte'" cover></v-img>
+              <v-icon v-else>mdi-account</v-icon>
+            </v-avatar>
           </v-btn>
         </template>
 
-        <v-list class="pa-6" elevation="10" rounded="lg">
-          <div>
-            <h4 class="font-weight-medium fs-18">Profil</h4>
-            <div class="d-flex align-center my-4">
-              <img :alt="this.user?.fullname" :src="'/avatars/' + this.user?.id + '.png'" class="rounded-circle"
-                   width="90"/>
-              <div class="ml-4">
-                <h4 class="font-weight-medium fs-18">{{ this.user?.firstname }} {{ this.user?.lastname }}</h4>
-                <span class="subtitle-2 text-grey font-weight-light">
-                    <v-icon>mdi-id-card</v-icon>
-                    {{ zeroPad(this.user?.id || 0) }}
-                  </span>
-                <div class="d-flex align-center">
-                  <span class="subtitle-2 font-weight-light ml-1">{{ this.user?.email }}</span>
-                </div>
+        <v-card class="pa-5" min-width="300" rounded="lg">
+          <div class="d-flex align-center mb-4">
+            <v-avatar size="64" color="primary">
+              <v-img v-if="user?.id" :src="'/avatars/' + user.id + '.png'" :alt="user?.fullname" cover></v-img>
+            </v-avatar>
+            <div class="ml-4" style="min-width: 0">
+              <div class="text-subtitle-1 font-weight-bold">{{ this.user?.firstname }} {{ this.user?.lastname }}</div>
+              <div class="text-body-2 text-medium-emphasis text-truncate">{{ this.user?.email }}</div>
+              <div class="text-caption text-medium-emphasis">
+                <v-icon size="small">mdi-card-account-details-outline</v-icon>
+                N° {{ zeroPad(this.user?.id || 0) }}
               </div>
             </div>
-
-            <v-btn block class="mt-4 py-4" color="primary" @click="editProfile()" variant="flat"
-                   prepend-icon="mdi-account-edit">
-              Modifier mon profil
-            </v-btn>
           </div>
-        </v-list>
+
+          <v-btn block color="primary" @click="editProfile()" variant="flat" prepend-icon="mdi-account-edit">
+            Modifier mon profil
+          </v-btn>
+          <v-btn block class="mt-2" variant="text" prepend-icon="mdi-logout" @click="logout()">
+            Se déconnecter
+          </v-btn>
+        </v-card>
       </v-menu>
     </template>
   </v-app-bar>
@@ -67,6 +70,10 @@ export default {
       default: null,
       required: false,
     },
+    title: {
+      type: String,
+      default: "",
+    },
   },
   computed: {
     zeroPad: function () {
@@ -77,14 +84,11 @@ export default {
     },
   },
   methods: {
-    getAvatar: function (user) {
-      if (!user || !user.hasOwnProperty('id')) {
-        return "https://fakeimg.pl/200x200/015486/F8F9FA/?retina=1&text=?";
-      }
-      return "/avatars/" + user.id + ".png";
-    },
     switch_back: function () {
       this.$store.dispatch('sessionStore/switch_back');
+    },
+    logout: function () {
+      this.$store.dispatch('sessionStore/logout');
     },
     editProfile: function () {
       this.$store.dispatch('usersStore/getItem', this.user.id);
