@@ -5,14 +5,18 @@ class ApiController < ActionController::Base
 
   attr_reader :current_user
 
+  # Rôles applicatifs : jamais attribuables à travers une structure.
+  APPLICATION_ROLES = %w[admin moderator].freeze
+
   private
 
+  # Usurpation (« se connecter en tant que ») : uniquement si la session a été
+  # ouverte par ce même utilisateur authentifié, et qu'il a toujours le droit d'usurper.
   def current_user
-    if session[:connect_as].nil?
-      @current_user
-    else
-      User.find(session[:connect_as])
-    end
+    return @current_user if @current_user.nil? || session[:connect_as].nil?
+    return @current_user unless session[:original_user].to_s == @current_user.id.to_s && @current_user.can_switch?
+
+    @switched_user ||= User.find_by(id: session[:connect_as]) || @current_user
   end
 
   def set_subdomain
@@ -48,5 +52,54 @@ class ApiController < ActionController::Base
 
   def handle_not_found
     render json: { message: "Record not found" }, status: :not_found
+  end
+
+  # ---------- Autorisations ----------
+
+  def forbidden!
+    render json: { message: "Forbidden" }, status: :forbidden
+  end
+
+  def admin?
+    current_user.present? && current_user.is_admin?
+  end
+
+  def admin_or_moderator?
+    admin? || current_user.has_role?(:moderator)
+  end
+
+  # Associations et régions dont l'utilisateur est responsable
+  # (président, secrétaire, trésorier ou directeur).
+  def managed_structure_ids
+    @managed_structure_ids ||= (current_user.associations_responsabilities.pluck('structures.id') +
+                                current_user.regions_responsabilities.pluck('structures.id')).uniq
+  end
+
+  def can_manage_structure?(structure_or_id)
+    return true if admin?
+
+    id = structure_or_id.respond_to?(:id) ? structure_or_id.id : structure_or_id
+    id.present? && managed_structure_ids.include?(id.to_i)
+  end
+
+  def require_admin!
+    forbidden! unless admin?
+  end
+
+  def require_admin_or_moderator!
+    forbidden! unless admin_or_moderator?
+  end
+
+  # Espace demandé par la SPA (`domain`) : admin réservé aux admins ;
+  # association et région déjà bornées aux responsabilités de l'utilisateur.
+  def require_domain_access!
+    forbidden! if params[:domain].to_s == 'admin' && !admin?
+  end
+
+  # Rôle attribuable dans une structure : un rôle existant, hors rôles applicatifs.
+  def structure_role(name)
+    return nil if APPLICATION_ROLES.include?(name.to_s)
+
+    Role.find_by(name: name.to_s)
   end
 end

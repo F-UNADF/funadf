@@ -1,4 +1,6 @@
 class Api::FeesController < ApiController
+  # Cotisations : réservées aux admins (chaque membre voit les siennes via /api/profile).
+  before_action :require_admin!
   before_action :set_fee, only: [:show, :update, :destroy]
 
   def index

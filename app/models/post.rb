@@ -1,4 +1,6 @@
 class Post < ActiveRecord::Base
+  include Publishable
+  rich_text_attribute :content
 
   has_many :accesses, as: :resource
   accepts_nested_attributes_for :accesses, reject_if: :all_blank, allow_destroy: true

@@ -40,4 +40,10 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Stockage local pour les tests : jamais le bucket S3 de config/storage.yml.
+  config.active_storage.service_configurations = {
+    test: { service: 'Disk', root: Rails.root.join('tmp/storage_test').to_s }
+  }
+  config.active_storage.service = :test
 end

@@ -1,4 +1,5 @@
 class Api::CategoriesController < ApiController
+  before_action :require_admin!
 
   def create
     @category = Category.new(category_params)

@@ -1,7 +1,11 @@
 class Api::PostsController < ApiController
   before_action :set_post, only: [:show, :update, :destroy]
+  before_action :require_manager!, only: [:update, :destroy]
 
+  # Liste de gestion : admin (domain=admin ou sans domain), sinon bornée aux responsabilités.
   def index
+    return forbidden! unless admin? || params[:domain].to_s.in?(%w[association region])
+
     posts = Post.includes(:structure).all.order(created_at: :desc)
 
     case params[:domain]
@@ -23,7 +27,10 @@ class Api::PostsController < ApiController
     render json: {posts: posts.as_json(include: ['structure', 'accesses'])}
   end
 
+  # Lecture : admin, gestionnaire de la structure, ou membre à qui le contenu est destiné.
   def show
+    return forbidden! unless can_manage_structure?(@post.structure_id) || @post.visible_to?(current_user)
+
     files_data = @post.files.map do |file|
       {
         existing: true,
@@ -49,6 +56,7 @@ class Api::PostsController < ApiController
 
   def create
     @post = Post.new(post_params)
+    return forbidden! unless can_manage_structure?(@post.structure_id)
 
     # 1. Normaliser les nouveaux fichiers
     attachments = params[:post][:new_attachments]
@@ -83,6 +91,8 @@ class Api::PostsController < ApiController
   end
 
   def update
+    return forbidden! if post_params.key?(:structure_id) && !can_manage_structure?(post_params[:structure_id])
+
     existing_attachments = params[:post][:existing_attachments]
     existing_ids = if existing_attachments.present?
                     existing_attachments.values.map { |h| h["id"].to_i }
@@ -129,6 +139,10 @@ class Api::PostsController < ApiController
   end
 
   private
+
+  def require_manager!
+    forbidden! unless can_manage_structure?(@post.structure_id)
+  end
 
   def set_post
     @post = Post.find(params.permit(:id)[:id])

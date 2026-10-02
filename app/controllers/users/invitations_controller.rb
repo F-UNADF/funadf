@@ -34,7 +34,7 @@ class Users::InvitationsController < Devise::InvitationsController
 
   def update
     invitation_token = params[:invitation_token]
-    resource = User.accept_invitation!(update_resource_params)
+    self.resource = User.accept_invitation!(update_resource_params)
 
     invitation_accepted = resource.errors.empty?
 

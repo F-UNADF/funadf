@@ -1,5 +1,7 @@
 class Api::AssociationsController < ApiController
   before_action :set_association, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
+  before_action :require_admin!, only: [:create, :destroy]
+  before_action :require_manager!, only: [:update, :add_members, :edit_roles, :remove_members]
 
   def index
     associations = Association.all
@@ -48,6 +50,8 @@ class Api::AssociationsController < ApiController
     return render json: { status: 400, error: "Role 'member' not found" } unless role_id
 
     members_params.each do |member|
+      next unless %w[User Structure].include?(member[:type])
+
       membership = Membership.create(
         structure_id: @association.id,
         role_id: role_id,
@@ -63,8 +67,10 @@ class Api::AssociationsController < ApiController
   def edit_roles
     member_data = params[:member]
 
-    membership = Membership.find(member_data[:membership_id])
-    role = Role.find_or_create_by(name: params[:role])
+    membership = @association.memberships.find(member_data[:membership_id])
+    role = structure_role(params[:role])
+    return render json: { status: 422, error: 'Invalid role' }, status: :unprocessable_entity unless role
+
     membership.update(role_id: role.id)
 
     member_data[:role_name] = role.name
@@ -73,13 +79,18 @@ class Api::AssociationsController < ApiController
   end
 
   def remove_members
-    membership = Membership.find(params[:membership_id])
+    membership = @association.memberships.find(params[:membership_id])
     membership.destroy
 
     render json: { status: 200, members: @association.members_with_details }
   end
 
   private
+
+  # Admin, ou responsable de cette structure (association ou région).
+  def require_manager!
+    forbidden! unless can_manage_structure?(@association)
+  end
 
   def set_association
     @association = Association.find(params[:id])

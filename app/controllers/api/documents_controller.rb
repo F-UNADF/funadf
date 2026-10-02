@@ -1,4 +1,6 @@
 class Api::DocumentsController < ApiController
+  # Lecture pour tous les membres ; gestion réservée aux admins.
+  before_action :require_admin!, except: [:index]
   def index
     categories = Category.documents.where(category_id: nil).includes(:subcategories, :documents).order(:order)
 
