@@ -8,6 +8,10 @@ class Api::ReferentielsController < ApiController
     levels = User.get_levels
 
     result = {}
+    # Listes d'administration (tous les utilisateurs, avec leurs coordonnées).
+    return forbidden! if referentiel == 'users' && !admin_or_moderator?
+    return forbidden! if referentiel == 'fees' && !admin?
+
     case referentiel
     when 'users'
       whatfees                  = Fee.pluck(:what).uniq
@@ -24,7 +28,7 @@ class Api::ReferentielsController < ApiController
       result[:associations]     = associations
       result[:roles]            = roles
     when 'churches'
-      roles = Role.select(:name, :friendly_name).uniq.to_a
+      roles = Role.where.not(name: APPLICATION_ROLES).select(:name, :friendly_name).uniq.to_a
 
       sql     = "
             SELECT
@@ -44,7 +48,7 @@ class Api::ReferentielsController < ApiController
       result[:roles]   = roles
       result[:members] = members
     when 'regions'
-      roles = Role.select(:name, :friendly_name).uniq.to_a
+      roles = Role.where.not(name: APPLICATION_ROLES).select(:name, :friendly_name).uniq.to_a
 
       sql     = "
             SELECT
@@ -64,7 +68,7 @@ class Api::ReferentielsController < ApiController
       result[:roles]   = roles
       result[:members] = members
     when 'associations'
-      roles = Role.select(:name, :friendly_name).uniq.to_a
+      roles = Role.where.not(name: APPLICATION_ROLES).select(:name, :friendly_name).uniq.to_a
 
       sql     = "
             SELECT

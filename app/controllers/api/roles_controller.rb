@@ -1,4 +1,5 @@
 class Api::RolesController < ApiController
+  before_action :require_admin!, only: [:create, :update, :destroy]
 
   def index
     roles = Role.all

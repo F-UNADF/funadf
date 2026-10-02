@@ -7,9 +7,6 @@ gem 'rails', '6.1.7'
 gem 'devise'
 gem 'devise_invitable'
 gem 'simple_token_authentication'
-gem 'omniauth'
-gem 'omniauth-google-oauth2'
-gem "omniauth-rails_csrf_protection"
 
 # BACKGROUND JOBS
 gem 'sidekiq'

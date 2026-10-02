@@ -1,5 +1,8 @@
 class Api::CampaignsController < ApiController
   before_action :set_campaign, only: [:show, :update, :destroy, :change_state, :voters_count]
+  before_action :require_domain_access!, only: [:index]
+  # Résultats et gestion : admin, ou responsable de la structure organisatrice.
+  before_action :require_manager!, only: [:show, :update, :destroy, :change_state, :voters_count]
 
   def index
     domain = params[:domain] || 'me'
@@ -40,6 +43,8 @@ class Api::CampaignsController < ApiController
 
   def create
     campaign = Campaign.new(campaign_params)
+    return forbidden! unless can_manage_structure?(campaign.structure_id)
+
     if campaign.save
       save_motions(campaign, params[:campaign][:motions])
       save_voting_tables(campaign, params[:campaign][:voting_tables])
@@ -50,6 +55,9 @@ class Api::CampaignsController < ApiController
   end
 
   def update
+    # Pas de déplacement vers une structure hors périmètre.
+    return forbidden! if campaign_params.key?(:structure_id) && !can_manage_structure?(campaign_params[:structure_id])
+
     if @campaign.update(campaign_params)
       save_motions(@campaign, params[:campaign][:motions])
       save_voting_tables(@campaign, params[:campaign][:voting_tables])
@@ -79,6 +87,10 @@ class Api::CampaignsController < ApiController
   end
 
   private
+
+  def require_manager!
+    forbidden! unless can_manage_structure?(@campaign.structure_id)
+  end
 
   def save_motions(campaign, motions_params)
     motion_ids = motions_params.map { |motion| motion[:id] }

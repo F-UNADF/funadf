@@ -1,4 +1,6 @@
 class Api::PushNotificationsController < ApiController
+  # Diffusion de push à tout le réseau : réservée aux admins.
+  before_action :require_admin!
   before_action :set_push_notification, only: [:update, :destroy, :send_notification]
 
   def index

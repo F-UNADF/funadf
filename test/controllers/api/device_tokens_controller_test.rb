@@ -28,8 +28,7 @@ class DeviceTokensControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "destroy does not remove another user's token" do
-    other = DeviceToken.new(token: "fcm:autre-utilisateur", platform: 'mobile', user_id: @user.id + 1000)
-    other.save!(validate: false)
+    other = DeviceToken.create!(token: "fcm:autre-utilisateur", platform: 'mobile', user: users(:other))
 
     delete api_device_token_url(subdomain: nil, id: 'current', token: other.token),
       headers: { 'Authorization' => @current_api_token }
@@ -43,5 +42,23 @@ class DeviceTokensControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
 
     assert DeviceToken.exists?(token: @fcm_token)
+  end
+
+  test "create rattache le jeton à l'utilisateur connecté, pas au user_id envoyé" do
+    post api_device_tokens_url(subdomain: nil),
+      params: { token: "fcm:nouveau", platform: 'mobile', user_id: users(:other).id },
+      headers: { 'Authorization' => @current_api_token }
+    assert_response :success
+
+    assert_equal @user.id, DeviceToken.find_by(token: "fcm:nouveau").user_id
+  end
+
+  test "create sans user_id fonctionne (rétrocompatibilité)" do
+    post api_device_tokens_url(subdomain: nil),
+      params: { token: "fcm:sans-user-id", platform: 'web' },
+      headers: { 'Authorization' => @current_api_token }
+    assert_response :success
+
+    assert_equal @user.id, DeviceToken.find_by(token: "fcm:sans-user-id").user_id
   end
 end

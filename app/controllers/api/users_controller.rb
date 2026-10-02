@@ -1,7 +1,12 @@
 class Api::UsersController < ApiController
+  before_action :require_admin_or_moderator!, only: [:create, :destroy, :enable, :disable, :send_invitation]
+  before_action :require_admin!, only: [:add_role, :remove_role]
 
+  # GET /api/users?domain=admin|region|association
+  # admin : admins et modérateurs ; region / association : bornés aux responsabilités.
   def index
     domain = params[:domain] || 'me'
+    return forbidden! if domain == 'admin' && !admin_or_moderator?
 
     case domain
     when 'me'
@@ -26,7 +31,7 @@ class Api::UsersController < ApiController
                   .select("users.*, GROUP_CONCAT(roles.name) as roles")
                   .group('users.id')
     end
-    render json: {users: users.map { |user| user.attributes.merge('current_level' => user.level)  }}
+    render json: {users: users.map { |user| user.public_attributes.merge('current_level' => user.level)  }}
   end
 
   def show
@@ -42,7 +47,8 @@ class Api::UsersController < ApiController
     render json: {
       user: user_with_custom_attribute,
       gratitudes: @user.gratitudes,
-      fees: @user.fees.order(what: :desc),
+      # Cotisations : visibles par l'intéressé, les admins et les modérateurs seulement.
+      fees: (@user == current_user || admin_or_moderator?) ? @user.fees.order(what: :desc) : [],
       interns: @user.interns,
       phases: phases,
       responsabilities: responsabilities,
@@ -69,14 +75,23 @@ class Api::UsersController < ApiController
     end
   end
 
+  # Un membre ne modifie que son propre profil (app mobile, « Mon profil »),
+  # sans toucher à sa reconnaissance, ses fonctions ni ses cotisations.
   def update
     user = User.find(params[:id])
-    user.update(user_params)
 
-    update_gratitudes(user)
-    update_phases(user)
-    update_responsabilities(user)
-    update_fees(user)
+    if admin_or_moderator?
+      user.update(user_params)
+
+      update_gratitudes(user)
+      update_phases(user)
+      update_responsabilities(user)
+      update_fees(user)
+    elsif user == current_user
+      user.update(user_params.except(*MANAGED_NESTED_ATTRIBUTES))
+    else
+      return forbidden!
+    end
 
     render json: { status: 'success', user: user }
   end
@@ -129,6 +144,8 @@ class Api::UsersController < ApiController
   end
 
   private
+
+  MANAGED_NESTED_ATTRIBUTES = %w[fees_attributes gratitudes_attributes phases_attributes responsabilities_attributes].freeze
 
   def user_params
     User.allowed_params(params[:user])

@@ -60,6 +60,21 @@ class User < ActiveRecord::Base
 
   has_many :device_tokens, dependent: :destroy
 
+  # Jetons et secrets jamais exposés dans une réponse JSON (en plus de la liste de Devise).
+  SECRET_ATTRIBUTES = %w[encrypted_password reset_password_token invitation_token
+                         access_token authentication_token fcm_token].freeze
+
+  def serializable_hash(options = nil)
+    options = (options || {}).dup
+    options[:except] = Array(options[:except]).map(&:to_s) | SECRET_ATTRIBUTES
+    super(options)
+  end
+
+  # Attributs bruts (y compris les colonnes calculées d'un `select`) sans les secrets.
+  def public_attributes
+    attributes.except(*SECRET_ATTRIBUTES)
+  end
+
   before_validation :clean_name_attributes
 
   def clean_name_attributes
@@ -337,14 +352,10 @@ class User < ActiveRecord::Base
     true
   end
 
-  def self.accept_invitation!(attributes = {})
-    invitable = find_by(invitation_token: attributes[:invitation_token])
-    if invitable.errors.empty?
-      invitable.assign_attributes(attributes)
-      invitable.accept_invitation!
-    end
-    invitable
-  end
+  # User.accept_invitation! : on garde la version de devise_invitable, qui cherche
+  # l'empreinte du jeton et renvoie une erreur si le jeton est absent ou invalide.
+  # (L'ancienne surcharge cherchait `invitation_token: nil` sans jeton et laissait
+  # changer le mot de passe du premier compte venu.)
 
   def my_roles
     roles
