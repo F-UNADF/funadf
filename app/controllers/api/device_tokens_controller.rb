@@ -16,4 +16,14 @@ class Api::DeviceTokensController < ApiController
       render json: { status: 'error', errors: dt.errors.full_messages }, status: 422
     end
   end
+
+  # DELETE /api/device_tokens/:id?token=<jeton FCM>
+  # L'app mobile désactive les notifications de l'appareil ou se déconnecte.
+  # Le jeton FCM est passé en paramètre `token` (sinon dans `:id`, URL-encodé).
+  # Idempotent : 204 même si le jeton est déjà inconnu ; limité à l'utilisateur connecté.
+  def destroy
+    token = params[:token].presence || params[:id]
+    DeviceToken.where(token: token, user_id: current_user.id).destroy_all
+    head :no_content
+  end
 end
