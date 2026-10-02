@@ -6,7 +6,8 @@
       v-model="menu"
     >
       <template #activator="{ props }">
-        <v-btn icon v-bind="props" color="primary">
+        <v-btn icon v-bind="props" color="primary"
+          :aria-label="unreadCount > 0 ? `Notifications, ${unreadCount} non lue(s)` : 'Notifications'">
           <v-badge
             v-if="unreadCount > 0"
             :content="unreadCount"
@@ -19,9 +20,9 @@
         </v-btn>
       </template>
 
-      <v-list style="min-width: 400px; max-height: 500px; overflow-y: auto;">
+      <v-list style="width: min(400px, calc(100vw - 24px)); max-height: 500px; overflow-y: auto;">
         <v-list-item @click="markAllAsRead()" v-if="notifications.filter(n => !n.read).length > 0">
-          <v-list-item-title class="text--small text-caption text-grey">Marquer les {{ notifications.length }} notification(s) comment lue(s)</v-list-item-title>
+          <v-list-item-title class="text--small text-caption text-grey">Tout marquer comme lu ({{ unreadCount }})</v-list-item-title>
         </v-list-item>
 
         <NotificationContent 

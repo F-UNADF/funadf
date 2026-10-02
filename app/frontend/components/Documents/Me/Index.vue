@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <h1 class="mb-5">Documents</h1>
 
     <v-list>
       <template v-for="item in items">

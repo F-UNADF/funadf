@@ -1,23 +1,23 @@
 <template>
-  <v-progress-circular v-if="formLoading" indeterminate color="primary"></v-progress-circular>
-  <v-card v-else>
-    <v-card-title class="bg-blue text-white">
-      <v-btn @click="close()" icon size="small" color="white" variant="outlined" class="mr-5">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      {{ this.getTitle }}
-    </v-card-title>
+  <v-card v-if="formLoading">
+    <v-skeleton-loader type="heading, divider, list-item-avatar-three-line@3"></v-skeleton-loader>
+  </v-card>
+  <v-card v-else class="user-form">
+    <v-toolbar color="primary">
+      <v-toolbar-title :text="this.getTitle"></v-toolbar-title>
+      <v-btn icon="mdi-close" variant="text" aria-label="Fermer" @click="close()"></v-btn>
+    </v-toolbar>
     <v-card-text>
-      <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
+      <v-tabs color="primary" class="mb-4" show-arrows v-model="tab">
         <v-tab value="infos">Informations générales</v-tab>
         <v-tab value="reconnaissances" v-if="canEditProfil">Reconnaissances</v-tab>
         <v-tab value="parcours">Parcours</v-tab>
         <v-tab value="responsabilites" v-if="canEditProfil">Responsabilités nationales</v-tab>
         <v-tab value="cotisations" v-if="canEditProfil">Cotisations</v-tab>
-        <v-tab value="roles" v-if="canEditProfil">Roles globals</v-tab>
-        <v-tab value="security">Securité</v-tab>
-        <v-tab value="danger-zone" variant="flat" color="red" prepend-icon="mdi-alert" v-if="canEditProfil">
-          Danger zone
+        <v-tab value="roles" v-if="canEditProfil">Rôles globaux</v-tab>
+        <v-tab value="security">Sécurité</v-tab>
+        <v-tab value="danger-zone" prepend-icon="mdi-alert-outline" base-color="error" v-if="canEditProfil">
+          Actions sensibles
         </v-tab>
       </v-tabs>
 
@@ -58,10 +58,9 @@
             </v-col>
           </v-row>
           <v-spacer></v-spacer>
-          <v-btn color="info" @click="sendInvitation()" class="mr-3"
+          <v-btn color="primary" variant="outlined" prepend-icon="mdi-email-fast-outline" @click="sendInvitation()" class="mr-3"
                  v-if="this.canEditProfil && editedItem.user.invitation_accepted_at === null">
-            <v-icon class="mr-2">mdi-send</v-icon>
-            Envoyer l'invitation à nouveau
+            Renvoyer l'invitation par e-mail
           </v-btn>
         </v-window-item>
 
@@ -217,38 +216,42 @@
                         required></v-text-field>
         </v-window-item>
         <v-window-item key="danger-zone" value="danger-zone">
-          <v-alert type="error" icon="mdi-alert-circle-outline" class="mb-3">
-            Vous êtes dans la zone de danger, les actions ci-dessous doivent-etres effectuées avec précaution !
+          <v-alert type="warning" variant="tonal" class="mb-4">
+            Ces actions modifient l’accès de la personne à l’intranet. La suppression est définitive.
           </v-alert>
-          <v-btn color="red" @click="tryDeleteItem()" class="mr-3">Supprimer l'utilisateur</v-btn>
-
-          <v-btn color="yellow" @click="disableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-off"
+          <v-btn color="warning" variant="outlined" @click="disableItem(this.editedItem.user)" class="mr-3 mb-2" prepend-icon="mdi-account-off"
                  v-if="!editedItem.user.disabled">
             Désactiver l'utilisateur
           </v-btn>
-          <v-btn color="green" @click="enableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-check"
+          <v-btn color="success" variant="outlined" @click="enableItem(this.editedItem.user)" class="mr-3 mb-2" prepend-icon="mdi-account-check"
                  v-else>
-            Activer l'utilisateur
+            Réactiver l'utilisateur
+          </v-btn>
+          <v-btn color="error" variant="flat" @click="tryDeleteItem()" class="mr-3 mb-2" prepend-icon="mdi-delete-outline">
+            Supprimer l'utilisateur
           </v-btn>
         </v-window-item>
       </v-window>
     </v-card-text>
-    <v-card-actions class="bg-blue-lighten-5">
+    <v-divider></v-divider>
+    <v-card-actions class="user-form__actions">
       <v-spacer></v-spacer>
-      <v-btn color="red" @click="close()">Annuler</v-btn>
-      <v-btn color="blue" @click="save()">Enregistrer</v-btn>
+      <v-btn variant="text" @click="close()">Annuler</v-btn>
+      <v-btn color="primary" variant="flat" @click="save()">Enregistrer</v-btn>
     </v-card-actions>
 
 
-    <v-dialog v-model="dialogConfirmDelete">
-      <v-card color="red" variant="flat">
+    <v-dialog v-model="dialogConfirmDelete" max-width="460">
+      <v-card title="Supprimer l’utilisateur ?">
         <v-card-text>
-          Etes-vous sûr de vouloir supprimer cet utilisateur ?
+          <strong>{{ editedItem.user?.firstname }} {{ editedItem.user?.lastname }}</strong>
+          <p class="mt-2">Son compte et son historique seront supprimés. Cette action est irréversible.
+            Pour lui retirer l’accès sans perdre ses données, désactivez plutôt le compte.</p>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="white" variant="outlined" @click="dialogConfirmDelete = false">Annuler</v-btn>
-          <v-btn color="white" variant="outlined" @click="deleteItem(this.deletingItem)">Supprimer</v-btn>
+          <v-btn variant="text" @click="dialogConfirmDelete = false">Annuler</v-btn>
+          <v-btn color="error" variant="flat" @click="deleteItem(this.deletingItem)">Supprimer</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -273,7 +276,14 @@ export default {
       roles: 'roles',
     }),
     getTitle() {
-      return (this.editedItem && !this.editedItem.id) ? "Ajouter un utilisateur" : "Modifier un utilisateur";
+      const user = this.editedItem?.user;
+      if (!user || !user.id) {
+        return "Ajouter un utilisateur";
+      }
+      if (this.currentUser && user.id === this.currentUser.id) {
+        return "Modifier mon profil";
+      }
+      return `Modifier ${user.firstname || ''} ${user.lastname || ''}`.trim();
     },
     canEditProfil() {
       return this.roles.includes('admin') || (this.item && this.item.user && this.currentUser.id !== this.item.user.id);
@@ -461,4 +471,12 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.user-form__actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background: rgb(var(--v-theme-surface));
+  padding: 12px 16px;
+}
+</style>

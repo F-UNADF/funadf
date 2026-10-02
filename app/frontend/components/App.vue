@@ -1,56 +1,60 @@
 <template>
   <v-app theme="light">
-    <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar" :is-mobile="isMobile" />
-    <Header :user="currentUser" :ouser="ouser" @toggle-sidebar="toggleSidebar" />
-
-    <v-main class="main">
-      <v-container fluid class="page-wrapper">
+    <!-- Pages d'authentification : pas de coquille (menu, en-tête), juste la marque -->
+    <v-main v-if="isAuthPage" class="auth-main">
+      <div class="auth-wrapper">
+        <img src="../images/logo_plus.png" alt="ADD+" class="auth-logo" />
         <router-view />
-      </v-container>
-
-      <!-- Footer -->
-      <v-footer class="elevation-5 position-fixed" style="width: 100%; bottom: 0;">
-        <v-row justify="center">
-          <v-col>
-            &copy; {{ new Date().getFullYear() }} -
-            <strong>Assemblées de Dieu de France</strong> - Tous droits réservés -
-            <v-btn size="small" color="secondary" variant="text" class="link" :to="{ path: '/privacy' }">
-              Mentions légales
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-footer>
-
-      <v-btn v-if="this.showBell" class="notification-button" size="x-large" icon color="info"
-        @click="askNotification()">
-        <v-icon class="white--text">mdi-bell</v-icon>
-      </v-btn>
+      </div>
+      <footer class="app-footer app-footer--auth">
+        &copy; {{ new Date().getFullYear() }} Assemblées de Dieu de France
+        <router-link to="/privacy" class="app-footer__link">Mentions légales</router-link>
+      </footer>
     </v-main>
 
+    <template v-else>
+      <Sidebar :menu="getMenu" v-model:showSidebar="showSidebar" :is-mobile="isMobile" />
+      <Header :user="currentUser" :ouser="ouser" :title="pageTitle" @toggle-sidebar="toggleSidebar" />
+
+      <v-main class="main">
+        <v-container fluid class="page-wrapper">
+          <router-view />
+        </v-container>
+
+        <footer class="app-footer">
+          &copy; {{ new Date().getFullYear() }} Assemblées de Dieu de France – Tous droits réservés
+          <router-link to="/privacy" class="app-footer__link">Mentions légales</router-link>
+        </footer>
+
+        <v-tooltip v-if="showBell" text="Activer les notifications sur ce navigateur" location="start">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" class="notification-button" size="large" icon="mdi-bell-ring-outline"
+              color="secondary" aria-label="Activer les notifications sur ce navigateur"
+              @click="askNotification()"></v-btn>
+          </template>
+        </v-tooltip>
+      </v-main>
+    </template>
+
     <!-- Dialog User Form -->
-    <v-container>
-      <v-dialog v-model="dialogForm" fullscreen>
-        <UserForm />
-      </v-dialog>
-    </v-container>
+    <v-dialog v-model="dialogForm" fullscreen>
+      <UserForm />
+    </v-dialog>
 
     <!-- Snackbar -->
-    <v-container>
-      <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
-        <v-row align="center" justify="start" no-gutters class="snackbar-content">
-          <v-img v-if="snackbar.photo" cover :src="snackbar.photo" :width="80" aspect-ratio="1/1" class="mr-5"></v-img>
-          <div>
-            <div class="text-subtitle-1 pb-2" v-if="snackbar.title">{{ snackbar.title }}</div>
-            <div v-html="snackbar.message"></div>
-          </div>
-        </v-row>
-        <template v-slot:actions>
-          <v-btn color="white" variant="text" @click="snackbar.show = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </v-container>
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout" :color="snackbar.color">
+      <v-row align="center" justify="start" no-gutters class="snackbar-content flex-nowrap">
+        <v-img v-if="snackbar.photo" cover :src="snackbar.photo" :width="80" aspect-ratio="1/1" class="mr-5"></v-img>
+        <div>
+          <div class="text-subtitle-1 pb-2" v-if="snackbar.title">{{ snackbar.title }}</div>
+          <div v-html="snackbar.message"></div>
+        </div>
+      </v-row>
+      <template v-slot:actions>
+        <v-btn color="white" variant="text" icon="mdi-close" aria-label="Fermer le message"
+          @click="snackbar.show = false"></v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -62,8 +66,6 @@ import UserForm from "../components/Users/Form.vue";
 
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
-
-const MOBILE_BREAKPOINT = 768;
 
 const firebaseConfig = {
   apiKey: "AIzaSyCxbYAg-_eIci32Qf1ZRoKZLwkOD-vTuHo",
@@ -107,6 +109,12 @@ export default {
       ouser: "getOriginalUser",
     }),
     ...mapGetters("menuStore", ["getMenu"]),
+    isAuthPage() {
+      return this.$route.meta?.auth === true;
+    },
+    pageTitle() {
+      return this.$route.meta?.title || "";
+    },
     dialogForm: {
       get() {
         return this.$store.state.usersStore.dialogForm;
@@ -166,18 +174,6 @@ export default {
         this.showSnackbar("Erreur lors de l'enregistrement du token", "error");
       }
     },
-    isMobile() {
-      return window.innerWidth < MOBILE_BREAKPOINT;
-    },
-
-    updateSidebarState() {
-      this.showSidebar = !this.isMobile();
-    },
-
-    handleResize() {
-      this.updateSidebarState();
-    },
-
     toggleSidebar() {
       this.showSidebar = !this.showSidebar;
     },
@@ -249,41 +245,75 @@ export default {
 
 <style scoped>
 .main {
-  padding-bottom: 55px;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-wrapper {
+  flex: 1 0 auto;
+}
+
+/* Pied de page dans le flux : il ne masque plus le bas des tableaux et formulaires */
+.app-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+  padding: 12px 32px;
+  font-size: 0.8125rem;
+  color: rgba(var(--v-theme-on-background), 0.7);
+  border-top: 1px solid rgb(var(--v-theme-border));
+}
+
+.app-footer__link {
+  color: rgb(var(--v-theme-primary));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.app-footer--auth {
+  justify-content: center;
+  border-top: 0;
+}
+
+.v-main.auth-main {
+  display: flex;
+  flex-direction: column;
+  background: rgb(var(--v-theme-grayLighter));
+}
+
+.auth-wrapper {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 48px 16px 24px;
+}
+
+.auth-logo {
+  display: block;
+  width: 140px;
+  margin: 0 auto 32px;
 }
 
 .notification-button {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 24px;
+  right: 24px;
   z-index: 1000;
-
-  /* Petit shake animation toutes les 10 sec */
-  animation: shake 10s infinite;
-  animation-name: shake;
-  animation-duration: 0.5s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-  animation-delay: 0s;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
-  animation-delay: 0s;
+  /* Attire l'oeil trois fois puis se calme */
+  animation: nudge 0.6s ease-in-out 1s 3;
 }
 
-@keyframes shake {
-  0% {
-    transform: translate(0, 0);
+@keyframes nudge {
+  0%, 100% {
+    transform: rotate(0);
   }
-
-  50% {
-    transform: translate(-10px, 0px);
+  25% {
+    transform: rotate(-12deg);
   }
-
-  100% {
-    transform: translate(0, 0);
+  75% {
+    transform: rotate(12deg);
   }
 }
 </style>

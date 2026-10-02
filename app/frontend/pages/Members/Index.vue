@@ -1,14 +1,16 @@
 <template>
     <v-card>
-        <v-card-title>
-            {{ $t('members.title') }}
-        </v-card-title>
+        <v-skeleton-loader v-if="isLoading" type="list-item-avatar@4"></v-skeleton-loader>
 
-        <v-overlay :model-value="isLoading" class="d-flex align-center justify-center">
-            <v-progress-circular indeterminate color="primary" size="64" />
-        </v-overlay>
+        <div v-else-if="!region || !region.id" class="list-empty">
+            <v-icon size="40" color="grayLight">mdi-map-marker-off-outline</v-icon>
+            <p class="text-subtitle-1 font-weight-medium mt-2 mb-1">Aucune région n’est rattachée à votre compte</p>
+            <p class="text-body-2 text-medium-emphasis">
+                Pour gérer les membres d’une région, vous devez en être responsable. Contactez l’administration nationale si c’est une erreur.
+            </p>
+        </div>
 
-        <fu-membership-input v-if="!isLoading" model="regions" />
+        <fu-membership-input v-else model="regions" />
     </v-card>
 </template>
 
@@ -23,7 +25,6 @@ export default {
     data() {
         return {
             isLoading: true,
-            fetchUserIntervalId: null,
         };
     },
     computed: {
@@ -32,22 +33,17 @@ export default {
         },
     },
     methods: {
-        tryFetchUserUntilRegionExists() {
-            this.$store.dispatch("sessionStore/fetchUser");
-
-            this.fetchUserIntervalId = setInterval(() => {
-                if (!this.region || !this.region.id) {
-                    this.$store.dispatch("sessionStore/fetchUser");
-                }
-            }, 1000);
+        loadRegion() {
+            this.isLoading = true;
+            this.$store.dispatch("sessionStore/fetchUser").catch(() => {}).finally(() => {
+                this.isLoading = false;
+            });
         },
     },
     watch: {
         region: {
             handler(newVal) {
                 if (newVal && newVal.id) {
-                    clearInterval(this.fetchUserIntervalId);
-                    this.isLoading = false;
                     this.$store.dispatch("regions/fetchItem", newVal.id);
                     this.$store.dispatch("regions/referentiels");
                 }
@@ -56,10 +52,7 @@ export default {
         },
     },
     mounted() {
-        this.tryFetchUserUntilRegionExists();
-    },
-    beforeUnmount() {
-        clearInterval(this.fetchUserIntervalId);
+        this.loadRegion();
     },
 };
 </script>

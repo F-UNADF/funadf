@@ -1,21 +1,30 @@
 <template>
-  <v-row class="mt-4">
-    <v-col cols="12">
-      <h3 class="text-h6 text-grey">
-        <v-icon>mdi-calendar</v-icon>
-        Prochains événements
-      </h3>
-    </v-col>
-    <v-col cols="12" v-for="event in items" :key="event.id">
-      <EventItem :event="event"  />
-    </v-col>
-    <v-col cols="12">
-      <v-btn append-icon="mdi-plus-circle" block size="large" color="primary" @click="load()"
-             :loading="this.loading">
-        VOIR PLUS
-      </v-btn>
-    </v-col>
-  </v-row>
+  <section>
+    <h2 id="feed-events-title" class="feed-section-title">
+      <v-icon size="small" class="me-2">mdi-calendar-month-outline</v-icon>
+      Prochains événements
+    </h2>
+
+    <template v-if="loading && items.length === 0">
+      <v-skeleton-loader v-for="n in 2" :key="n" type="list-item-avatar-two-line" class="mb-3"></v-skeleton-loader>
+    </template>
+
+    <p v-else-if="error && items.length === 0" class="text-body-2 text-error">
+      Les événements n’ont pas pu être chargés.
+    </p>
+
+    <p v-else-if="items.length === 0" class="text-body-2 text-medium-emphasis">
+      Aucun événement à venir pour le moment.
+    </p>
+
+    <template v-else>
+      <EventItem v-for="event in items" :key="event.id" :event="event" class="mb-3" />
+    </template>
+
+    <v-btn v-if="hasMore" block variant="text" color="primary" @click="load()" :loading="loading">
+      Voir plus d’événements
+    </v-btn>
+  </section>
 </template>
 
 <script>
@@ -28,6 +37,8 @@ export default {
     ...mapGetters('feedEventStore', {
       items  : 'getItems',
       loading: 'getLoading',
+      hasMore: 'getHasMore',
+      error  : 'getError',
     }),
   },
   methods    : {
@@ -46,7 +57,7 @@ export default {
     search: '',
   }),
   beforeMount: function () {
-    this.$store.dispatch('feedEventStore/items');
+    this.$store.dispatch('feedEventStore/items').catch(() => {});
   },
 }
 </script>

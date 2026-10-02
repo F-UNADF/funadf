@@ -66,14 +66,11 @@
                 :name="downloadName"
             />
 
-            <v-btn color="white" @click="refresh()" icon>
-              <v-icon color="primary">mdi-reload</v-icon>
-            </v-btn>
+            <v-btn icon="mdi-refresh" variant="text" color="primary" aria-label="Actualiser la liste" @click="refresh()"></v-btn>
 
             <v-spacer />
 
-            <v-btn color="primary" variant="flat" @click="newItem()" class="w-sm-auto">
-              <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
+            <v-btn color="primary" variant="flat" prepend-icon="mdi-account-plus" @click="newItem()">
               Ajouter un utilisateur
             </v-btn>
           </div>
@@ -86,9 +83,11 @@
     <template v-slot:no-data>
       <tr>
         <td colspan="5">
-          <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
-          <v-alert v-else color="danger" icon="danger" title="Aucun utilisateur trouvé"
-            text="Aucun utilisateur ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
+          <v-skeleton-loader v-if="loading" type="table-row@3"></v-skeleton-loader>
+          <div v-else class="list-empty">
+            <p class="text-subtitle-1 font-weight-medium mb-1">Aucun utilisateur ne correspond à ces critères</p>
+            <p class="text-body-2 text-medium-emphasis">Modifiez la recherche ou les filtres ci-dessus.</p>
+          </div>
         </td>
       </tr>
     </template>
@@ -98,37 +97,37 @@
         <td>
           <div class="d-flex align-center py-4">
             <div>
-              <v-img :src="'/avatars/' + item.id + '.png'" width="45px" class="rounded-circle img-fluid"></v-img>
+              <v-avatar size="44" color="grayLighter">
+                <v-img :src="'/avatars/' + item.id + '.png'" alt="" cover></v-img>
+              </v-avatar>
             </div>
 
             <div class="ml-5">
-              <h4 class="d-block">{{ item.lastname }} {{ item.firstname }}</h4>
-              <span class="subtitle-2 font-weight-regular">{{ item.email }}</span>
-              <span class="ml-2 text-grey" v-if="item.invitation_accepted_at === null">(Invitation non validée)
-              </span>
+              <div class="font-weight-bold">{{ item.lastname }} {{ item.firstname }}</div>
+              <span class="text-body-2">{{ item.email }}</span>
+              <v-chip v-if="item.invitation_accepted_at === null" size="x-small" variant="outlined" class="ml-2">
+                Invitation en attente
+              </v-chip>
             </div>
           </div>
         </td>
         <td>{{ item.zipcode }} {{ item.town }}</td>
         <td>
-          <v-chip color="info" label>{{ item.current_level }}</v-chip>
+          <v-chip v-if="item.current_level" size="small" variant="tonal" color="primary" label>{{ item.current_level }}</v-chip>
+          <span v-else class="text-medium-emphasis">Non renseigné</span>
         </td>
-        <td>
+        <td class="text-right text-no-wrap">
           <v-tooltip location="top" text="Modifier l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" color="primary" class="rounded-e-0" variant="flat" @click="editItem(item)"
-                title="Edit">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
+              <v-btn v-bind="props" color="primary" variant="text" size="small" icon="mdi-pencil" @click="editItem(item)"
+                :aria-label="`Modifier ${item.firstname} ${item.lastname}`"></v-btn>
             </template>
           </v-tooltip>
 
           <v-tooltip location="top" text="Se connecter en tant que l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" color="secondary" class="rounded-s-0" variant="flat" @click="connectAs(item)"
-                title="Activer">
-                <v-icon>mdi-drama-masks</v-icon>
-              </v-btn>
+              <v-btn v-bind="props" color="primary" variant="text" size="small" icon="mdi-account-switch-outline"
+                @click="connectAs(item)" :aria-label="`Se connecter en tant que ${item.firstname} ${item.lastname}`"></v-btn>
             </template>
           </v-tooltip>
         </td>
@@ -280,7 +279,8 @@ export default {
         {
           title: 'Actions',
           key: 'actions',
-          sortable: false
+          sortable: false,
+          align: 'end',
         },
       ],
       downloadHeaders: [

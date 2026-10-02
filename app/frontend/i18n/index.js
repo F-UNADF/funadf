@@ -7,7 +7,12 @@ const i18n = createI18n({
         fr: {
             itemsPerPage: 'Éléments par page',
             search: 'Rechercher',
+            refresh: 'Actualiser la liste',
+            clearSearch: 'Effacer la recherche',
+            noSearchResult: 'Aucun résultat pour « {search} »',
+            rowActions: 'Actions pour {name}',
             cancel: 'Annuler',
+            close: 'Fermer',
             save: 'Enregistrer',
             errors: {
                 unauthorized: 'Vous n\'êtes pas autorisé à effectuer cette action.',
@@ -31,11 +36,15 @@ const i18n = createI18n({
             },
             form: {
                 error: 'Erreur lors de l\'enregistrement',
+                invalid: 'Certains champs sont à corriger avant d\'enregistrer.',
+                requiredHint: 'Les champs marqués d\'un astérisque (*) sont obligatoires.',
                 errors: {
                     required: "Ce champ est requis",
                     min: "La valeur doit être supérieure à {min}",
                     max: "La valeur doit être inférieure à {max}",
                     email: "Veuillez entrer une adresse e-mail valide",
+                    minLength: "Saisissez au moins {0} caractères",
+                    maxLength: "Saisissez au plus {0} caractères",
                     unknownInputType: "Type de champ inconnu : {type}"
                 }
             },
@@ -69,7 +78,7 @@ const i18n = createI18n({
                 edit: 'Modifier la région',
                 delete: 'Supprimer la région',
 
-                deleteMessage: 'Êtes-vous sûr de vouloir supprimer cette region ? Cette action est irréversible.',
+                deleteMessage: 'Êtes-vous sûr de vouloir supprimer cette région ? Cette action est irréversible.',
                 deleteSuccess: 'Région supprimée',
 
                 name: 'Nom de la région',
@@ -147,7 +156,7 @@ const i18n = createI18n({
             posts: {
                 title: 'Actus',
                 noData: 'Aucune actu trouvée',
-                noDataExplain: 'Aucuns actu disponible. Si vous pensez qu\'il devrait y en avoir, veuillez contacter' +
+                noDataExplain: 'Aucune actu disponible. Si vous pensez qu\'il devrait y en avoir, veuillez contacter' +
                     ' l\'administrateur.',
                 saved: 'Actu enregistrée',
 

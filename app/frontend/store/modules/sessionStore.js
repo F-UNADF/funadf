@@ -29,7 +29,7 @@ const getters = {
 // actions
 const actions = {
     fetchUser({ commit }) {
-        axios.get('/api/current_user').then((response) => {
+        return axios.get('/api/current_user').then((response) => {
             commit('setCurrentUser', response.data.user);
             commit('setRegion', response.data.region);
             commit('setRoles', response.data.roles);
@@ -39,13 +39,16 @@ const actions = {
     async logout({ commit }) {
         try {
             await axios.delete('/users/sign_out');
-            commit('setCurrentUser', null);
-            commit('setOriginalUser', null);
         } catch (error) {
-            commit('setCurrentUser', null);
-            commit('setOriginalUser', null);
+            // On déconnecte quand même côté navigateur
         }
-        window.location.href = '/';
+        // Sans cela, le jeton reste en mémoire et l'utilisateur est toujours « connecté »
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        delete axios.defaults.headers.common['Authorization'];
+        commit('setCurrentUser', null);
+        commit('setOriginalUser', null);
+        window.location.href = '/connexion';
     },
     login({ commit }, user) {
         // Return a Promise
