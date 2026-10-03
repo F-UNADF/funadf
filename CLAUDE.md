@@ -34,7 +34,7 @@ docker compose exec app bin/vite build        # vérifier le build front
 `REDIS_PASSWORD` est obligatoire dans `.env`.
 
 ## CI/CD (GitHub Actions)
-- `.github/workflows/ci.yml` : tests Rails (MySQL 5.7 + Redis en services), `bin/vite build`, Brakeman (bloquant, alertes acceptées dans `config/brakeman.ignore`) et bundler-audit (non bloquant). Lancée sur chaque PR et sur `develop`.
+- `.github/workflows/ci.yml` : tests Rails (MySQL 5.7 + Redis en services), `bin/vite build`, Brakeman (bloquant, alertes acceptées dans `config/brakeman.ignore`, fins de vie Ruby/Rails exclues) et bundler-audit (non bloquant). Lancée sur chaque PR et sur `develop`.
 - `.github/workflows/deploy.yml` : un push sur `master` rejoue la CI puis lance `deploy.sh` après approbation de l'environnement GitHub `production`. Le lancement manuel permet de jouer les migrations ou de revenir à un commit (`rollback_sha`). Secrets de l'environnement : `DEPLOY_HOST`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS`.
 - `deploy.sh` reste utilisable depuis un poste de dev (`MIGRATE=1` pour jouer les migrations).
 

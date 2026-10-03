@@ -5,12 +5,6 @@
       "check_name": "ForgerySetting",
       "file": "app/controllers/api_controller.rb",
       "note": "API authentifiée par jeton Bearer, sans cookie de session : protect_from_forgery y viderait l'utilisateur (voir le commentaire du contrôleur)."
-    },
-    {
-      "fingerprint": "d84924377155b41e094acae7404ec2e521629d86f97b0ff628e3d1b263f8101c",
-      "check_name": "EOLRails",
-      "file": "Gemfile.lock",
-      "note": "Rails 6.1 en fin de vie : montée de version à planifier, suivie par bundler-audit."
     }
   ],
   "brakeman_version": "8.1.0"
