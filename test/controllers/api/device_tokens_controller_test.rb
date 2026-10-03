@@ -61,4 +61,31 @@ class DeviceTokensControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @user.id, DeviceToken.find_by(token: "fcm:sans-user-id").user_id
   end
+
+  # En production la protection CSRF est active : la requête de l'app (sans jeton CSRF)
+  # passe en null_session et Devise remettait @current_user à nil → 500.
+  test "create et destroy fonctionnent avec la protection CSRF active" do
+    with_forgery_protection do
+      post api_device_tokens_url(subdomain: nil),
+        params: { token: "fcm:csrf", platform: 'mobile' },
+        headers: { 'Authorization' => @current_api_token }, as: :json
+      assert_response :success
+      assert_equal @user.id, DeviceToken.find_by(token: "fcm:csrf").user_id
+
+      delete api_device_token_url(subdomain: nil, id: 'current', token: "fcm:csrf"),
+        headers: { 'Authorization' => @current_api_token }
+      assert_response :no_content
+      assert_not DeviceToken.exists?(token: "fcm:csrf")
+    end
+  end
+
+  private
+
+  def with_forgery_protection
+    previous = ActionController::Base.allow_forgery_protection
+    ActionController::Base.allow_forgery_protection = true
+    yield
+  ensure
+    ActionController::Base.allow_forgery_protection = previous
+  end
 end
