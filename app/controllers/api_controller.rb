@@ -3,20 +3,24 @@ class ApiController < ActionController::Base
 
   before_action :authenticate, :set_subdomain
 
-  attr_reader :current_user
-
   # Rôles applicatifs : jamais attribuables à travers une structure.
   APPLICATION_ROLES = %w[admin moderator].freeze
 
   private
 
+  # Utilisateur authentifié par son jeton d'API (jamais l'identité usurpée).
+  # Volontairement pas @current_user : quand la vérification CSRF échoue
+  # (protect_from_forgery with: :null_session), Devise appelle sign_out_all_scopes,
+  # qui remet @current_user à nil.
+  attr_reader :api_user
+
   # Usurpation (« se connecter en tant que ») : uniquement si la session a été
   # ouverte par ce même utilisateur authentifié, et qu'il a toujours le droit d'usurper.
   def current_user
-    return @current_user if @current_user.nil? || session[:connect_as].nil?
-    return @current_user unless session[:original_user].to_s == @current_user.id.to_s && @current_user.can_switch?
+    return api_user if api_user.nil? || session[:connect_as].nil?
+    return api_user unless session[:original_user].to_s == api_user.id.to_s && api_user.can_switch?
 
-    @switched_user ||= User.find_by(id: session[:connect_as]) || @current_user
+    @switched_user ||= User.find_by(id: session[:connect_as]) || api_user
   end
 
   def set_subdomain
@@ -42,7 +46,7 @@ class ApiController < ActionController::Base
   def authenticate_user_with_token
     authenticate_with_http_token do |token, options|
       current_api_token = ApiToken.where(active: true).find_by_token(token)
-      @current_user = current_api_token&.user
+      @api_user = current_api_token&.user
     end
   end
 

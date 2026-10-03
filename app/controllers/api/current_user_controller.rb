@@ -2,7 +2,7 @@ class Api::CurrentUserController < ApiController
   def show
     @user          = current_user
     @original_user = nil
-    unless session[:original_user].nil? || @user == @current_user
+    unless session[:original_user].nil? || @user == api_user
       @original_user = User.find_by(id: session[:original_user])
     end
 
@@ -17,15 +17,15 @@ class Api::CurrentUserController < ApiController
   # « Se connecter en tant que » : réservé aux admins et modérateurs ;
   # un modérateur ne peut pas prendre l'identité d'un admin.
   def switch
-    # @current_user : l'utilisateur authentifié par son jeton, pas l'identité usurpée.
-    return forbidden! unless @current_user.can_switch?
+    # api_user : l'utilisateur authentifié par son jeton, pas l'identité usurpée.
+    return forbidden! unless api_user.can_switch?
 
     if session[:connect_as].nil? && session[:original_user].nil?
       user = User.find(params[:id])
-      return forbidden! if user.is_admin? && !@current_user.is_admin?
+      return forbidden! if user.is_admin? && !api_user.is_admin?
 
-      original_user           = @current_user
-      session[:original_user] = @current_user.id
+      original_user           = api_user
+      session[:original_user] = api_user.id
       session[:connect_as]    = user.id
 
       render json: { status: 200, current_user: user, original_user: original_user, redirect_to: me_root_path }
