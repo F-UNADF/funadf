@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '3.2.4'
-gem 'rails', '6.1.7'
+gem 'rails', '7.2.3'
 
 # AUTH
 gem 'devise'
