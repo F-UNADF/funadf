@@ -24,7 +24,7 @@
     "vue3-editor": "^0.1.1",
     "vue3-perfect-scrollbar": "^2.0.0",
     "vuefire": "^3.2.1",
-    "vuetify": "^3.7.6",
+    "vuetify": "^4.2.2",
     "vuex": "^4.0.2"
   }
 }
