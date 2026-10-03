@@ -1,0 +1,106 @@
+# Intégration continue : tests Rails, build du front et contrôles de sécurité.
+# Lancée sur chaque PR et sur develop ; master la rejoue avant chaque déploiement (deploy.yml).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: Tests Rails
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+    env:
+      RAILS_ENV: test
+      REDIS_URL: redis://127.0.0.1:6379/0
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Paquets système
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libmysqlclient-dev
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 18
+          cache: npm
+
+      - run: npm ci
+
+      # config/database.yml n'est pas versionné
+      - name: Configuration de la base
+        run: |
+          cat > config/database.yml <<'YAML'
+          test:
+            adapter: mysql2
+            encoding: utf8
+            database: funadf_test
+            username: root
+            password: root
+            host: 127.0.0.1
+            port: 3306
+          YAML
+
+      - run: bin/rails db:create db:schema:load
+      - run: bin/rails test
+
+  front:
+    name: Build du front
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      RAILS_ENV: production
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci
+      - run: bin/vite build --force
+
+  security:
+    name: Sécurité
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: false
+      - run: gem install --no-document brakeman bundler-audit
+      # Alertes connues et acceptées : config/brakeman.ignore
+      - name: Brakeman
+        run: brakeman --no-pager --no-progress -q -i config/brakeman.ignore
+      # Non bloquant tant que Rails n'est pas monté en 6.1.7.10 (nombreuses CVE connues)
+      - name: Bundler Audit
+        continue-on-error: true
+        run: bundle-audit check --update

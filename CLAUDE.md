@@ -3,7 +3,7 @@
 Intranet « ADD+ » de la Fédération / Union Nationale des Assemblées de Dieu de France (prod `app.addfrance.fr`, recette `recette.add-fnadf.fr`). Une app mobile externe « Pasteurs ADD » (autre dépôt) consomme la même API `/api`.
 
 ## Stack
-- **Rails 6.1.7 sur Ruby 3.2.4** : c'est la version du `Gemfile` et de `docker/rails/Dockerfile`. Le README et `.ruby-version` sont faux.
+- **Rails 6.1.7 sur Ruby 3.2.4** : c'est la version du `Gemfile` et de `docker/rails/Dockerfile`. Le README est faux.
 - MySQL 5.7, Sidekiq + sidekiq-scheduler (planification dans `config/sidekiq.yml`, pas en cron), Redis en persistance AOF.
 - Front : une seule SPA **Vue 3 + Vuetify 3 + Vuex 4** (pas Pinia) + vue-router + vue-i18n dans `app/frontend/`, servie par vite_rails. Le code est en Options API et en JavaScript.
 
@@ -32,6 +32,11 @@ docker compose exec app bin/vite build        # vérifier le build front
 ```
 
 `REDIS_PASSWORD` est obligatoire dans `.env`.
+
+## CI/CD (GitHub Actions)
+- `.github/workflows/ci.yml` : tests Rails (MySQL 5.7 + Redis en services), `bin/vite build`, Brakeman (bloquant, alertes acceptées dans `config/brakeman.ignore`) et bundler-audit (non bloquant). Lancée sur chaque PR et sur `develop`.
+- `.github/workflows/deploy.yml` : un push sur `master` rejoue la CI puis lance `deploy.sh` après approbation de l'environnement GitHub `production`. Le lancement manuel permet de jouer les migrations ou de revenir à un commit (`rollback_sha`). Secrets de l'environnement : `DEPLOY_HOST`, `DEPLOY_SSH_KEY`, `DEPLOY_KNOWN_HOSTS`.
+- `deploy.sh` reste utilisable depuis un poste de dev (`MIGRATE=1` pour jouer les migrations).
 
 ## Pièges
 - **Autoloader probablement `:classic`** (`config/application.rb` n'appelle pas `load_defaults`) : des noms de classes qui ne correspondent pas à leur fichier passent sans erreur. Respecte la correspondance entre chemin et nom de classe.
