@@ -1,0 +1,74 @@
+# Déploiement de la production (app.addfrance.fr) avec deploy.sh.
+# - push sur master : CI complète, puis déploiement après approbation de l'environnement « production ».
+# - lancement manuel : redéploiement (option migrations) ou retour arrière à un commit, sans repasser la CI.
+name: Déploiement production
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      rollback_sha:
+        description: "Retour arrière : commit à remettre en production (vide = déployer master)"
+        required: false
+        default: ""
+      migrate:
+        description: "Jouer les migrations en attente"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    if: inputs.rollback_sha == ''
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    name: Déploiement
+    needs: ci
+    if: >-
+      always() &&
+      (needs.ci.result == 'success' || (needs.ci.result == 'skipped' && inputs.rollback_sha != ''))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://app.addfrance.fr
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      ROLLBACK_SHA: ${{ inputs.rollback_sha }}
+      MIGRATE: ${{ inputs.migrate && '1' || '0' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Clé SSH de déploiement
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_ed25519 ~/.ssh/known_hosts
+
+      - name: Déploiement
+        if: env.ROLLBACK_SHA == ''
+        run: ./deploy.sh
+
+      - name: Retour arrière
+        if: env.ROLLBACK_SHA != ''
+        run: |
+          [[ "$ROLLBACK_SHA" =~ ^[0-9a-f]{7,40}$ ]] || { echo "Commit invalide : $ROLLBACK_SHA"; exit 1; }
+          ./deploy.sh --rollback "$ROLLBACK_SHA"
+
+      - name: Nettoyage de la clé
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519
