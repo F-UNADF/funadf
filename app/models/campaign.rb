@@ -289,6 +289,37 @@ class Campaign < ActiveRecord::Base
   # Qualité de vote d'une structure dans la table des votes.
   STRUCTURE_POSITIONS = { 'Church' => 'Eglises', 'Association' => 'Oeuvres' }.freeze
 
+  # Règle d'éligibilité, partagée par #ballots_for (bulletins d'un électeur) et
+  # CampaignElectorate (estimation pendant la préparation de la table des votes) :
+  # la première ligne de la table qui correspond à la qualité de l'électeur ET à sa
+  # situation vis-à-vis de la structure organisatrice (membre ou non) s'applique.
+  def self.voting_table_for(tables, position, as_member)
+    tables.find { |table| table.as_member == as_member && same_position?(table.position, position) }
+  end
+
+  # Comparaison à la manière de MySQL (casse et espaces finaux ignorés).
+  def self.same_position?(a, b)
+    a.present? && b.present? && a.to_s.rstrip.casecmp?(b.to_s.rstrip)
+  end
+
+  # Une adhésion bloquée (can_vote à false) donne un bulletin inutilisable.
+  def self.vote_blocked?(can_vote)
+    can_vote == false
+  end
+
+  def self.consultative?(table)
+    table.voting != 'count'
+  end
+
+  # Églises et œuvres qui votent par leur président, hors structure organisatrice.
+  def voting_structures
+    Structure.joins(memberships: :role)
+             .where(type: STRUCTURE_POSITIONS.keys, roles: { name: 'president' },
+                    memberships: { member_type: 'User' })
+             .where.not(id: structure_id)
+             .distinct
+  end
+
   # Bulletins dont dispose `user` pour cette campagne, d'après la table des votes :
   # - les églises et œuvres qu'il préside (qualités « Eglises » / « Oeuvres ») ;
   # - lui-même, selon son niveau de reconnaissance.
@@ -296,30 +327,26 @@ class Campaign < ActiveRecord::Base
   # structure organisatrice (adhésion directe). Une adhésion bloquée (can_vote)
   # donne un bulletin affiché mais inutilisable.
   def ballots_for(user)
-    voted = Voter.joins(:motion).where(motions: { campaign_id: id }).group(:resource_type, :resource_id).count
+    voted  = Voter.joins(:motion).where(motions: { campaign_id: id }).group(:resource_type, :resource_id).count
+    tables = voting_tables.order(:id).to_a
 
     ballots = presided_structures(user).filter_map do |presided|
-      ballot(presided, presided.name, presided.town, STRUCTURE_POSITIONS[presided.type], voted)
+      ballot(presided, presided.name, presided.town, STRUCTURE_POSITIONS[presided.type], voted, tables)
     end
-    ballots << ballot(user, "#{user.firstname} #{user.lastname}", user.town, user.level, voted)
+    ballots << ballot(user, "#{user.firstname} #{user.lastname}", user.town, user.level, voted, tables)
     ballots.compact
   end
 
   private
 
-  # Églises et œuvres présidées, hors structure organisatrice.
   def presided_structures(user)
-    Structure.joins(memberships: :role)
-             .where(type: STRUCTURE_POSITIONS.keys, roles: { name: 'president' },
-                    memberships: { member_type: 'User', member_id: user.id })
-             .where.not(id: structure_id)
-             .distinct
+    voting_structures.where(memberships: { member_id: user.id })
   end
 
-  def ballot(elector, name, town, position, voted)
+  def ballot(elector, name, town, position, voted, tables)
     resource_type = elector.class.base_class.name
-    membership    = structure.memberships.find_by(member_type: resource_type, member_id: elector.id)
-    table         = voting_tables.find_by(position: position, as_member: membership.present?)
+    membership    = structure.memberships.where(member_type: resource_type, member_id: elector.id).order(:id).first
+    table         = Campaign.voting_table_for(tables, position, membership.present?)
     return unless table
 
     Ballot.new(
@@ -327,8 +354,8 @@ class Campaign < ActiveRecord::Base
       town:            town,
       resource_id:     elector.id,
       resource_type:   resource_type,
-      can_vote:        membership&.can_vote == false ? 0 : 1,
-      is_consultative: table.voting == 'count' ? 0 : 1,
+      can_vote:        Campaign.vote_blocked?(membership&.can_vote) ? 0 : 1,
+      is_consultative: Campaign.consultative?(table) ? 1 : 0,
       has_voted:       voted[[resource_type, elector.id]]
     )
   end
