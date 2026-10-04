@@ -58,6 +58,8 @@ deps() {
   if remote "cd $APP_DIR && ! git diff --quiet $1 $2 -- package.json package-lock.json"; then
     step "Dépendances npm"
     remote "docker exec funadf_app npm install --no-audit --no-fund 2>&1 | tail -3"
+    # npm peut réécrire le lock (version de npm du conteneur) : on garde celui du dépôt
+    remote "cd $APP_DIR && git checkout -q -- package-lock.json"
   fi
 }
 
@@ -83,6 +85,8 @@ if [ "$PREVIOUS" = "$TARGET" ]; then
   echo "Déjà à jour, rien à déployer."
   exit 0
 fi
+# package-lock.json n'est jamais modifié à la main sur le serveur, seulement par npm
+remote "cd $APP_DIR && git checkout -q -- package-lock.json"
 # Modifications locales du serveur (ex. config/unicorn.rb) : on refuse si master les touche
 CONFLICTS="$(remote "cd $APP_DIR && git fetch -q origin master && comm -12 <(git diff --name-only | sort) <(git diff --name-only HEAD origin/master | sort)")"
 if [ -n "$CONFLICTS" ]; then
