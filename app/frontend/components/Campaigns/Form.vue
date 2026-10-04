@@ -8,141 +8,78 @@
       {{ this.getTitle }}
     </v-card-title>
     <v-card-text>
-      <v-alert v-if="errors.length > 0" class="mb-3" type="error" dismissible>
+      <v-alert v-if="errors.length > 0" class="mb-3" type="error" variant="tonal" closable @click:close="errors = []">
         <ul>
           <li v-for="error in errors" :key="error">{{ error }}</li>
         </ul>
       </v-alert>
       <v-row>
-        <v-col>
+        <v-col cols="12" md="6">
           <v-autocomplete v-model="editedItem.structure_id" :items="referentiels.structures" item-value="id"
-            item-title="name" label="Structure" :rules="[this.rules.required]">
+            item-title="name" label="Structure organisatrice" :rules="[this.rules.required]">
           </v-autocomplete>
         </v-col>
-        <v-col>
-          <v-text-field v-model="editedItem.name" label="Nom" :rules="[rules.required]">
+        <v-col cols="12" md="6">
+          <v-text-field v-model="editedItem.name" label="Nom de la campagne" :rules="[rules.required]">
           </v-text-field>
         </v-col>
       </v-row>
 
       <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
-        <v-tab value="motions">Motions</v-tab>
+        <v-tab value="motions">Résolutions ({{ (editedItem.motions || []).length }})</v-tab>
         <v-tab value="voting-tables">Table des votes</v-tab>
-        <v-tab value="results" v-if="editedItem.state !== 'coming'">Resultats</v-tab>
+        <v-tab value="results" v-if="editedItem.state !== 'coming'">Résultats</v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
         <v-window-item key="motions" value="motions" class="py-3">
-          <v-row>
-            <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="motion in this.editedItem.motions" :key="motion.id">
-                <v-col cols="12" sm="6">
-                  <v-text-field v-model="motion.name" label="Motion" :rules="[rules.required, rules.max255]"
-                    :disabled="editedItem.state !== 'coming'">
-                  </v-text-field>
+          <p class="text-body-2 text-medium-emphasis mb-4">
+            Les résolutions sont présentées aux votants dans cet ordre.
+          </p>
+          <div v-for="(motion, index) in editedItem.motions" :key="index" class="motion" data-test="motion">
+            <div class="motion__number" aria-hidden="true">{{ index + 1 }}</div>
+            <div class="motion__body">
+              <v-text-field v-model="motion.name" :label="`Intitulé de la résolution ${index + 1}`"
+                :rules="[rules.required, rules.max255]" :disabled="!editable" density="comfortable"></v-text-field>
+              <v-btn-toggle v-model="motion.kind" mandatory divided variant="outlined" color="primary"
+                density="comfortable" class="motion__kind" :disabled="!editable">
+                <v-btn value="binary">Oui / Non</v-btn>
+                <v-btn value="neutral">Oui / Non / Neutre</v-btn>
+                <v-btn value="free">Texte libre</v-btn>
+                <v-btn value="choices">Choix multiple</v-btn>
+              </v-btn-toggle>
+              <v-row v-if="motion.kind === 'choices'" class="mt-2">
+                <v-col cols="12" sm="8">
+                  <v-text-field :disabled="!editable" v-model="motion.choices" label="Choix proposés"
+                    persistent-hint density="comfortable"
+                    hint="Séparez les choix par des virgules, par exemple : Choix 1,Choix 2,Choix 3"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4">
-                  <v-btn-toggle class="mb-3" size="small" v-model="motion.kind" rounded
-                    :disabled="editedItem.state !== 'coming'">
-                    <v-btn value="binary" color="success" class="py-1">
-                      Oui/Non
-                    </v-btn>
-                    <v-btn value="neutral" color="primary" class="py-1">
-                      Oui/Non/Neutre
-                    </v-btn>
-                    <v-btn value="free" color="secondary" class="py-1">
-                      Text libre
-                    </v-btn>
-                    <v-btn value="choices" color="yellow" class="py-1">
-                      Choix Multiple
-                    </v-btn>
-                  </v-btn-toggle>
-                  <v-row v-if="motion.kind === 'choices'">
-                    <v-col cols="12" sm="8">
-                      <v-text-field :disabled="editedItem.state !== 'coming'" v-model="motion.choices" label="Choix"
-                        persistent-hint variant="solo-filled"
-                        hint="Séparer les choix par des virgules (Ex: 'Choix 1,Choix 2,Choix 3')"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="4">
-                      <v-text-field :disabled="editedItem.state !== 'coming'" v-model="motion.max_choice"
-                        label="Nombre de réponses max" persistent-hint variant="solo-filled"
-                        hint="Combien de choix le votant peut-il faire (Par défaut : 1)"></v-text-field>
-
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <v-col cols="12" sm="1">
-                  <v-btn icon size="x-small" @click="moveMotionUp(motion)" v-if="motion.order > 0"
-                    :disabled="editedItem.state !== 'coming'">
-                    <v-icon>mdi-chevron-up</v-icon>
-                  </v-btn>
-                  <v-btn icon size="x-small" @click="moveMotionDown(motion)"
-                    v-if="motion.order < this.editedItem.motions.length - 1" :disabled="editedItem.state !== 'coming'">
-                    <v-icon>mdi-chevron-down</v-icon>
-                  </v-btn>
-                </v-col>
-                <v-col cols="12" sm="1">
-                  <v-btn icon color="red" size="x-small" @click="removeMotion(motion)"
-                    :disabled="editedItem.state !== 'coming'">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
+                  <v-text-field :disabled="!editable" v-model="motion.max_choice" type="number" min="1"
+                    label="Nombre de réponses maximum" persistent-hint density="comfortable"
+                    hint="Par défaut : 1"></v-text-field>
                 </v-col>
               </v-row>
-            </v-col>
-            <v-col cols="12" sm="1">
-              <v-btn color="success" icon @click="addMotion()" :disabled="editedItem.state !== 'coming'">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
+            </div>
+            <div class="motion__actions">
+              <v-btn icon="mdi-chevron-up" variant="text" size="small" :disabled="!editable || index === 0"
+                :aria-label="`Monter la résolution ${index + 1}`" @click="moveMotionUp(motion)"></v-btn>
+              <v-btn icon="mdi-chevron-down" variant="text" size="small"
+                :disabled="!editable || index === editedItem.motions.length - 1"
+                :aria-label="`Descendre la résolution ${index + 1}`" @click="moveMotionDown(motion)"></v-btn>
+              <v-btn icon="mdi-delete-outline" variant="text" size="small" color="error" :disabled="!editable"
+                :aria-label="`Supprimer la résolution ${index + 1}`" @click="removeMotion(motion)"></v-btn>
+            </div>
+          </div>
+          <v-btn variant="tonal" color="primary" prepend-icon="mdi-plus" class="mt-4" @click="addMotion()"
+            :disabled="!editable">
+            Ajouter une résolution
+          </v-btn>
         </v-window-item>
 
         <v-window-item key="voting-tables" value="voting-tables" class="py-3">
-          <v-row>
-            <v-col cols="12" sm="11">
-              <v-row class="bg-grey-lighten-4 px-1 rounded" v-for="voting_table in this.editedItem.voting_tables"
-                :key="voting_table.id">
-                <v-col cols="12" sm="3">
-                  <v-select v-model="voting_table.position" :items="referentiels.positions" label="Qualité"
-                    :disabled="editedItem.state !== 'coming'">
-                  </v-select>
-                </v-col>
-                <v-col cols="12" sm="3">
-                  <v-btn-toggle size="small" v-model="voting_table.as_member" rounded
-                    :disabled="editedItem.state !== 'coming'">
-                    <v-btn :value="true" color="success" class="py-1">
-                      Membre
-                    </v-btn>
-                    <v-btn :value="false" color="primary" class="py-1">
-                      Non Membre
-                    </v-btn>
-                  </v-btn-toggle>
-                </v-col>
-                <v-col cols="12" sm="5">
-                  <v-btn-toggle size="small" v-model="voting_table.voting" rounded
-                    :disabled="editedItem.state !== 'coming'">
-                    <v-btn value="count" color="success" class="py-1">
-                      Comptabilisé
-                    </v-btn>
-                    <v-btn value="consultative" color="primary" class="py-1">
-                      Consultatif
-                    </v-btn>
-                  </v-btn-toggle>
-                </v-col>
-                <v-col cols="12" sm="1">
-                  <v-btn icon color="red" size="x-small" @click="removeVotingTable(voting_table)"
-                    :disabled="editedItem.state !== 'coming'">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-col cols="12" sm="1">
-              <v-btn color="success" icon @click="addVotingTable()" :disabled="editedItem.state !== 'coming'">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
+          <voting-tables-panel :voting-tables="editedItem.voting_tables" :structure-id="editedItem.structure_id"
+            :positions="referentiels.positions || []" :disabled="!editable"></voting-tables-panel>
         </v-window-item>
 
         <v-window-item key="results" value="results" class="py-3">
@@ -493,17 +430,21 @@
     </v-card-text>
     <v-card-actions class="bg-blue-lighten-5">
       <v-spacer></v-spacer>
-      <v-btn color="red" @click="close()">Annuler</v-btn>
-      <v-btn color="blue" @click="save()">Enregistrer</v-btn>
+      <v-btn variant="text" @click="close()">Annuler</v-btn>
+      <v-btn color="primary" variant="flat" :loading="saving" @click="save()">Enregistrer la campagne</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import VotingTablesPanel, { duplicateIndexes } from "./VotingTablesPanel.vue";
+
+const POSITION_LABELS = { Eglises: 'Églises', Oeuvres: 'Œuvres' };
 
 export default {
   name: "CampaignForm",
+  components: { VotingTablesPanel },
   computed: {
     ...mapGetters('campaignsStore', {
       items: 'getItems',
@@ -513,6 +454,10 @@ export default {
       referentiels: 'getReferentiels',
       voterCount: 'getVotersCount',
     }),
+    // Résolutions et table des votes ne se modifient plus une fois le vote ouvert
+    editable() {
+      return this.editedItem.state === 'coming' || !this.editedItem.state;
+    },
     getTitle() {
       return (this.editedItem.id === null) ? "Ajouter une campagne" : "Modifier une campagne";
     },
@@ -523,37 +468,50 @@ export default {
       this.$store.commit('campaignsStore/setItem', {});
       this.$emit('refresh');
     },
+    // Ce qui empêche d'enregistrer, formulé pour l'admin
+    validationErrors() {
+      const errors = [];
+      const item = this.editedItem;
+      if (!item.structure_id) errors.push('Choisissez la structure organisatrice.');
+      if (!item.name || !item.name.trim()) errors.push('Donnez un nom à la campagne.');
+      if (item.motions.length === 0) {
+        errors.push('Ajoutez au moins une résolution.');
+      } else if (item.motions.some(m => !m.name || !m.name.trim())) {
+        errors.push('Chaque résolution doit avoir un intitulé.');
+      }
+      if (item.motions.some(m => m.kind === 'choices' && (!m.choices || !m.choices.trim()))) {
+        errors.push('Indiquez les choix proposés pour chaque résolution à choix multiple.');
+      }
+      if (item.voting_tables.length === 0) {
+        errors.push('Ajoutez au moins une ligne à la table des votes.');
+      } else if (item.voting_tables.some(t => !t.position)) {
+        errors.push('Choisissez une qualité pour chaque ligne de la table des votes.');
+      }
+      duplicateIndexes(item.voting_tables).forEach(index => {
+        const t = item.voting_tables[index];
+        errors.push(`La table des votes contient deux lignes « ${POSITION_LABELS[t.position] || t.position} » pour les ${t.as_member ? 'membres' : 'non-membres'} : supprimez celle en trop.`);
+      });
+      return errors;
+    },
     save() {
-
-      // Avant d'enregistrer, il faut que la structrue_id, le name soit renseigné
-      // Ainsi que motions et voting_tables ne doivent pas être vide
-
-      if (this.editedItem.structure_id === null || this.editedItem.name === '' || this.editedItem.motions.length === 0 || this.editedItem.voting_tables.length === 0) {
-        this.$root.showSnackbar('Veuillez renseigner les champs obligatoires', 'error');
-        this.errors = [];
-        if (this.editedItem.structure_id === null) {
-          this.errors.push('Merci de renseigner la structure');
-        }
-        if (this.editedItem.name === '') {
-          this.errors.push('Merci de renseigner le nom de la campagne');
-        }
-        if (this.editedItem.motions.length === 0) {
-          this.errors.push('Merci de renseigner au moins une motion');
-        }
-        if (this.editedItem.voting_tables.length === 0) {
-          this.errors.push('Merci de renseigner au moins une table de vote');
-        }
+      if (this.saving) return;
+      this.errors = this.validationErrors();
+      if (this.errors.length > 0) {
+        this.$root.showSnackbar('La campagne n’est pas complète', 'error');
         return;
       }
 
-
-      this.$store.dispatch('campaignsStore/save', this.editedItem).then(response => {
-        this.$root.showSnackbar('Campagne enregistrée avec succès', 'success');
+      this.saving = true;
+      this.$store.dispatch('campaignsStore/save', this.editedItem).then(() => {
+        this.$root.showSnackbar('Campagne enregistrée', 'success');
         this.close();
       }, error => {
-        this.$root.showSnackbar('Un probleme est survenu lors de l\'enregistrement de la campagne', 'error');
-        let errors = error.response.data.errors;
-        this.$root.showSnackbar(errors.join('<br/>'), 'error');
+        const errors = (error.response && error.response.data && error.response.data.errors) || {};
+        this.errors = Array.isArray(errors) ? errors : Object.values(errors).flat();
+        if (this.errors.length === 0) this.errors = ['La campagne n’a pas pu être enregistrée. Réessayez dans un instant.'];
+        this.$root.showSnackbar('La campagne n’a pas été enregistrée', 'error');
+      }).finally(() => {
+        this.saving = false;
       });
     },
     moveMotionUp(motion) {
@@ -590,30 +548,11 @@ export default {
 
       this.editedItem.motions.push(newMotion);
     },
-    addVotingTable() {
-      const newVotingTable = {
-        position: '',
-        as_member: true,
-        voting: 'count',
-      };
-      // Check if voting tables array is empty else init the voting_table
-      if (!this.editedItem.voting_tables) {
-        this.editedItem.voting_tables = [];
-      }
-
-      this.editedItem.voting_tables.push(newVotingTable);
-    },
     removeMotion(motion) {
       const index = this.editedItem.motions.findIndex((m) => m.order === motion.order);
       if (index !== -1) {
         this.editedItem.motions.splice(index, 1);
         this.updateMotionOrder();
-      }
-    },
-    removeVotingTable(voting_table) {
-      const index = this.editedItem.voting_tables.indexOf(voting_table);
-      if (index !== -1) {
-        this.editedItem.voting_tables.splice(index, 1);
       }
     },
     updateMotionOrder() {
@@ -647,9 +586,20 @@ export default {
       deep: true,
       immediate: true,
       handler: function () {
-        this.editedItem = JSON.parse(JSON.stringify(this.item));
+        const item = JSON.parse(JSON.stringify(this.item || {}));
+        item.motions = item.motions || [];
+        item.voting_tables = item.voting_tables || [];
+        if (item.id === undefined) item.id = null;
+        // Nouvelle campagne : une première résolution prête à remplir
+        if (item.id === null && item.motions.length === 0) {
+          item.motions.push({ name: '', kind: 'binary', max_choice: 1, order: 0 });
+        }
+        this.editedItem = item;
+        this.errors = [];
         this.updateMotionOrder();
-        this.$store.dispatch('campaignsStore/votersCount', this.editedItem.id);
+        if (item.id) {
+          this.$store.dispatch('campaignsStore/votersCount', item.id).catch(() => {});
+        }
       },
     },
   },
@@ -660,9 +610,10 @@ export default {
       tab: 'motions',
       countdown: 15,
       errors: [],
+      saving: false,
       rules: {
         required: value => !!value || 'Champ obligatoire',
-        max255: value => (value && value.length <= 255) || 'Maximum 255 caractères',
+        max255: value => !value || value.length <= 255 || 'Maximum 255 caractères',
       },
     };
   },
@@ -670,6 +621,53 @@ export default {
 </script>
 
 <style scoped>
+.motion {
+  display: flex;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+}
+
+.motion__number {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin-top: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  background: rgb(var(--v-theme-primary));
+  color: rgb(var(--v-theme-on-primary));
+}
+
+.motion__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.motion__kind {
+  flex-wrap: wrap;
+  height: auto !important;
+}
+
+.motion__kind :deep(.v-btn) {
+  min-height: 40px;
+}
+
+.motion__actions {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 599px) {
+  .motion__number {
+    display: none;
+  }
+}
+
 .v-table th,
 .v-table td {
   text-align: center;

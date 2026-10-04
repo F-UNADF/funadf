@@ -29,6 +29,7 @@ docker compose exec app bin/rails db:migrate
 docker compose exec -e RAILS_ENV=test app bin/rails db:create db:schema:load   # première fois
 docker compose exec -e RAILS_ENV=test app bin/rails test <fichier>
 docker compose exec app bin/vite build        # vérifier le build front
+docker compose exec app npm test              # tests du front (Vitest, test/javascript/)
 ```
 
 `REDIS_PASSWORD` est obligatoire dans `.env`.

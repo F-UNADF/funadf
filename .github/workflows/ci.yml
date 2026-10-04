@@ -71,7 +71,7 @@ jobs:
       - run: bin/rails test
 
   front:
-    name: Build du front
+    name: Tests et build du front
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -86,6 +86,7 @@ jobs:
           node-version: 18
           cache: npm
       - run: npm ci
+      - run: npm test
       - run: bin/vite build --force
 
   security:
