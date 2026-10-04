@@ -80,6 +80,16 @@ class Api::CampaignsController < ApiController
     end
   end
 
+  # Aide à la préparation de la table des votes, avant ou après l'enregistrement :
+  # membres directs de la structure organisatrice et estimation des bulletins pour
+  # la table envoyée (même règle que Campaign#ballots_for). Ne modifie rien.
+  def electorate
+    return forbidden! unless can_manage_structure?(params[:structure_id])
+
+    structure = Structure.find(params[:structure_id])
+    render json: CampaignElectorate.new(structure, electorate_tables)
+  end
+
   def voters_count
 
     voters_count = @campaign.voters.count
@@ -87,6 +97,15 @@ class Api::CampaignsController < ApiController
   end
 
   private
+
+  MAX_VOTING_TABLES = 100
+
+  def electorate_tables
+    Array(params[:voting_tables]).first(MAX_VOTING_TABLES).map do |table|
+      table = table.respond_to?(:permit) ? table.permit(:position, :as_member, :voting) : {}
+      VotingTable.new(position: table[:position], as_member: table[:as_member], voting: table[:voting])
+    end
+  end
 
   def require_manager!
     forbidden! unless can_manage_structure?(@campaign.structure_id)

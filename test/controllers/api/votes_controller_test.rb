@@ -54,7 +54,7 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
 
 
   test "as a president of association, I should have one voter" do
-    association = structures(:association)
+    association = Association.create!(name: 'Œuvre membre')
     @user.add_role :president, association
 
     association.add_role :member, @structure
@@ -74,7 +74,7 @@ class VotesControllerTest < ActionDispatch::IntegrationTest
     church = structures(:church)
     @user.add_role :president, church
 
-    association = structures(:association)
+    association = Association.create!(name: 'Œuvre membre')
     @user.add_role :president, association
 
     church.add_role :member, @structure

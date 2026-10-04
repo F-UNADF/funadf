@@ -347,6 +347,7 @@ GEM
       actionmailer (>= 3.2.6, < 8)
       actionpack (>= 3.2.6, < 8)
       devise (>= 3.2, < 6)
+    simplecov (1.2.0)
     slack-notifier (2.4.0)
     spring (4.1.1)
     sprockets (4.2.0)
@@ -430,6 +431,7 @@ DEPENDENCIES
   sidekiq
   sidekiq-scheduler
   simple_token_authentication
+  simplecov
   slack-notifier
   spring
   state_machines-activerecord

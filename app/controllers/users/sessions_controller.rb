@@ -4,10 +4,10 @@ class Users::SessionsController < Devise::SessionsController
 
   layout :set_layout
 
-  # GET /resource/sign_in
-  # def new
-  #   super
-  # end
+  # GET /resource/sign_in : la page de connexion est celle de la SPA
+  def new
+    redirect_to connexion_path
+  end
 
   # POST /resource/sign_in
   def create
