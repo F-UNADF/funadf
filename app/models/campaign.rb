@@ -277,92 +277,59 @@ class Campaign < ActiveRecord::Base
                       GROUP_CONCAT(CASE WHEN votes.is_consultative = TRUE THEN votes.result ELSE NULL END SEPARATOR ', ') AS consultative_free")
   end
 
-  # Bulletins dont dispose `user` pour cette campagne : lui-même (selon son niveau)
-  # et les églises / œuvres qu'il préside, membres de la structure organisatrice.
-  # Colonnes : name, town, resource_id, resource_type, can_vote, is_consultative, has_voted.
-  def ballots_for(user)
-      sql = "
-        SELECT
-            s2.name as name,
-            s2.town,
-            m.member_id AS resource_id,
-            m.member_type AS resource_type,
-            m.can_vote,
-            (vt.voting <> 'count') AS is_consultative,
-            (SELECT COALESCE(COUNT(v.resource_id), 0)
-              FROM voters v
-              JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
-              WHERE v.resource_id = s2.id AND v.resource_type = 'Structure'
-              GROUP BY v.resource_id, v.resource_type) AS has_voted
-        FROM campaigns c
-        JOIN structures s ON s.id = c.structure_id
-        JOIN memberships m ON m.structure_id = s.id
-        JOIN structures s2 ON s2.id = m.member_id
-        JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Eglises' AND vt.as_member = 1
-        WHERE c.id = :campaign_id
-        AND m.member_type = 'Structure'
-        AND m.member_id IN(
-            SELECT s.id
-            FROM users u
-            JOIN memberships m ON m.member_type = 'User' AND m.member_id = u.id
-            JOIN structures s ON s.id = m.structure_id
-            JOIN roles r ON r.id = m.role_id
-            WHERE u.id = :user_id
-            AND r.name = 'president'
-            AND s.`type` = 'Church'
-        )
-        UNION
-        SELECT
-            s2.name as name,
-            s2.town,
-            m.member_id AS resource_id,
-            m.member_type AS resource_type,
-            m.can_vote,
-            (vt.voting <> 'count') AS is_consultative,
-            (SELECT COALESCE(COUNT(v.resource_id), 0)
-              FROM voters v
-              JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
-              WHERE v.resource_id = s2.id AND v.resource_type = 'Structure'
-              GROUP BY v.resource_id, v.resource_type) AS has_voted
-        FROM campaigns c
-        JOIN structures s ON s.id = c.structure_id
-        JOIN memberships m ON m.structure_id = s.id
-        JOIN structures s2 ON s2.id = m.member_id
-        JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Oeuvres' AND vt.as_member = 1
-        WHERE c.id = :campaign_id
-        AND m.member_type = 'Structure'
-        AND m.member_id IN(
-            SELECT s.id
-            FROM users u
-            JOIN memberships m ON m.member_type = 'User' AND m.member_id = u.id
-            JOIN structures s ON s.id = m.structure_id
-            JOIN roles r ON r.id = m.role_id
-            WHERE u.id = :user_id
-            AND r.name = 'president'
-            AND s.`type` = 'Association'
-        )
-        UNION
-        SELECT
-            CONCAT(u.firstname, ' ', u.lastname) as name,
-            u.town,
-            m.member_id AS resource_id,
-            m.member_type AS resource_type,
-            m.can_vote,
-            (vt.voting <> 'count') AS is_consultative,
-            (SELECT COALESCE(COUNT(v.resource_id), 0)
-              FROM voters v
-              JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
-              WHERE v.resource_id = u.id AND v.resource_type = 'User'
-              GROUP BY v.resource_id, v.resource_type) AS has_voted
-        FROM campaigns c
-        JOIN structures s ON s.id = c.structure_id
-        JOIN memberships m ON m.structure_id = s.id
-        JOIN users u ON u.id = m.member_id AND m.member_type = 'User'
-        JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = :user_level
-        WHERE c.id = :campaign_id
-        AND u.id = :user_id"
-
-    Campaign.find_by_sql([sql, campaign_id: id, user_id: user.id, user_level: user.level])
+  # Bulletin d'un électeur. Le JSON (lu par la webapp et l'app mobile) garde la forme
+  # de l'ancienne requête SQL : can_vote et is_consultative valent 0 / 1, has_voted
+  # vaut null tant que l'électeur n'a pas voté.
+  Ballot = Struct.new(:name, :town, :resource_id, :resource_type, :can_vote, :is_consultative, :has_voted, keyword_init: true) do
+    def as_json(*)
+      to_h.merge(id: nil).stringify_keys
+    end
   end
 
+  # Qualité de vote d'une structure dans la table des votes.
+  STRUCTURE_POSITIONS = { 'Church' => 'Eglises', 'Association' => 'Oeuvres' }.freeze
+
+  # Bulletins dont dispose `user` pour cette campagne, d'après la table des votes :
+  # - les églises et œuvres qu'il préside (qualités « Eglises » / « Oeuvres ») ;
+  # - lui-même, selon son niveau de reconnaissance.
+  # Chaque ligne de la table vaut pour les membres OU pour les non-membres de la
+  # structure organisatrice (adhésion directe). Une adhésion bloquée (can_vote)
+  # donne un bulletin affiché mais inutilisable.
+  def ballots_for(user)
+    voted = Voter.joins(:motion).where(motions: { campaign_id: id }).group(:resource_type, :resource_id).count
+
+    ballots = presided_structures(user).filter_map do |presided|
+      ballot(presided, presided.name, presided.town, STRUCTURE_POSITIONS[presided.type], voted)
+    end
+    ballots << ballot(user, "#{user.firstname} #{user.lastname}", user.town, user.level, voted)
+    ballots.compact
+  end
+
+  private
+
+  # Églises et œuvres présidées, hors structure organisatrice.
+  def presided_structures(user)
+    Structure.joins(memberships: :role)
+             .where(type: STRUCTURE_POSITIONS.keys, roles: { name: 'president' },
+                    memberships: { member_type: 'User', member_id: user.id })
+             .where.not(id: structure_id)
+             .distinct
+  end
+
+  def ballot(elector, name, town, position, voted)
+    resource_type = elector.class.base_class.name
+    membership    = structure.memberships.find_by(member_type: resource_type, member_id: elector.id)
+    table         = voting_tables.find_by(position: position, as_member: membership.present?)
+    return unless table
+
+    Ballot.new(
+      name:            name,
+      town:            town,
+      resource_id:     elector.id,
+      resource_type:   resource_type,
+      can_vote:        membership&.can_vote == false ? 0 : 1,
+      is_consultative: table.voting == 'count' ? 0 : 1,
+      has_voted:       voted[[resource_type, elector.id]]
+    )
+  end
 end
