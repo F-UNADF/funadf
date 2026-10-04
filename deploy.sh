@@ -47,10 +47,26 @@ restart() {
   done
 }
 
+# Gems et paquets npm : le code est monté dans les conteneurs, les dépendances non.
+# Sidekiq a ses propres gems ; node_modules n'est réinstallé que si le lock a changé.
+# $1 / $2 : commits avant / après la mise à jour du code.
+deps() {
+  step "Dépendances Ruby"
+  for c in funadf_app funadf_sidekiq; do
+    remote "docker exec $c bundle check >/dev/null 2>&1 || docker exec $c bundle install --quiet"
+  done
+  if remote "cd $APP_DIR && ! git diff --quiet $1 $2 -- package.json package-lock.json"; then
+    step "Dépendances npm"
+    remote "docker exec funadf_app npm install --no-audit --no-fund 2>&1 | tail -3"
+  fi
+}
+
 if [ "${1:-}" = "--rollback" ]; then
   SHA="${2:?Usage : ./deploy.sh --rollback <sha>}"
   step "Retour au commit $SHA"
+  CURRENT="$(remote "cd $APP_DIR && git rev-parse --short HEAD")"
   remote "set -e; cd $APP_DIR; git reset -q --hard $SHA; git log --oneline -1"
+  deps "$CURRENT" "$SHA"
   step "Reconstruction du front"
   remote "docker exec funadf_app bin/vite build --force 2>&1 | tail -3"
   restart
@@ -84,8 +100,7 @@ echo "$STAMP $PREVIOUS -> $TARGET" | remote "cat >> ~/deploy.log"
 step "Mise à jour du code"
 remote "set -e; cd $APP_DIR; git pull -q --ff-only origin master; git log --oneline -1"
 
-step "Dépendances Ruby"
-remote "docker exec funadf_app bundle check >/dev/null 2>&1 || docker exec funadf_app bundle install --quiet"
+deps "$PREVIOUS" "$TARGET"
 
 step "Build du front"
 remote "docker exec funadf_app bin/vite build --force 2>&1 | tail -3"
