@@ -1,5 +1,4 @@
 class Me::FeedController < MeController
-
   def show
   end
   def index
@@ -13,6 +12,4 @@ class Me::FeedController < MeController
       }
     end
   end
-
-
 end

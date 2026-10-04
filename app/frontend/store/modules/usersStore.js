@@ -22,11 +22,12 @@ const getters = {
 
 // actions
 const actions = {
-  fetchItems: function ({ commit }) {
+  fetchItems: function ({ commit }, payload) {
     commit("setLoading", true);
+    console.log(payload);
     return new Promise((resolve, reject) => {
       axios
-        .get("/api/users", {})
+        .get("/api/users", { params: payload })
         .then((res) => {
           commit("setLoading", false);
           commit("setItems", res.data.users);

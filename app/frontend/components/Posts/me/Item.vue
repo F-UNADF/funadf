@@ -1,29 +1,40 @@
 <template>
   <v-card variant="elevated" class="bg-surface">
+
+    <div class="cover" v-if="hasCover">
+      <div
+          class="cover-bg"
+          :style="{ backgroundImage: `url(${coverImage})` }"
+      ></div>
+
+      <img :src="coverImage" alt="Cover" class="cover-img" />
+    </div>
+
     <v-card-item>
+      <!-- Header -->
       <div class="d-flex flex-wrap ga-3 align-center">
         <v-avatar size="40">
-          <img :src="'/logos/'+post.structure.id+'.png'" width="40" alt="avatar"/>
+          <img :src="structureLogo" width="40" :alt="structureName" @error="onLogoError" />
         </v-avatar>
+
         <div class="d-block d-sm-flex flex-wrap align-center ga-3 ml-3">
-          <h6 class="text-h6">{{ post.structure.name }}</h6>
+          <h6 class="text-h6">{{ structureName }}</h6>
           <v-icon size="x-small" color="grey lighten-5 mx-3">mdi-circle</v-icon>
-          <span class="text-subtitle-2 opacity-50">
-            {{ dateFormat(post.post.created_at) }}
-          </span>
-          <em v-if="post.post.pinned" class="small text-grey ml-3">
-            Actualité épinglée
-          </em>
+          <span class="text-subtitle-2 opacity-50">{{ formattedDate }}</span>
+          <em v-if="postPinned" class="small text-grey ml-3">Actualité épinglée</em>
         </div>
       </div>
+
+      <!-- Body -->
       <div class="py-4 text-body-1 gap-3">
-        <h3>{{ post.post.title }}</h3>
-        <div v-html="post.post.content"></div>
+        <h3>{{ postTitle }}</h3>
+        <div v-html="safeContent"></div>
       </div>
-      <!---If Images -->
-      <v-row v-if="post?.images">
+
+      <!-- Gallery -->
+      <v-row v-if="hasImages">
         <v-col
-            v-for="(photo, index) in post?.images.slice(0, 2)"
+            v-for="(photo, index) in gridImages"
             :key="index"
             class="d-flex child-flex"
             cols="4"
@@ -34,170 +45,61 @@
               aspect-ratio="1"
               cover
               class="bg-grey-lighten-2"
-              @click="carouselDialog = true"
+              :alt="imageAlt(index)"
+              @click="openCarousel(index)"
           >
             <template v-slot:placeholder>
-              <v-row
-                  class="fill-height ma-0"
-                  align="center"
-                  justify="center"
-              >
-                <v-progress-circular
-                    indeterminate
-                    color="grey-lighten-5"
-                ></v-progress-circular>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular indeterminate color="grey-lighten-5" />
               </v-row>
             </template>
-            <div class="d-flex align-center justify-center fill-height bg-grey-lighten-3 opacity-50 cursor-pointer">
+
+            <!-- Overlay -->
+            <div
+                class="d-flex align-center justify-center fill-height bg-grey-lighten-3 opacity-50 cursor-pointer"
+            >
               <span class="text-h6 font-weight-bold">
-                <v-icon>image-search</v-icon>
+                <v-icon v-if="index < 2 && extraCount === 0">mdi-image-search</v-icon>
+                <span v-else-if="index === 2 && extraCount > 0">{{ extraCount }}+</span>
+                <v-icon v-else>mdi-image-search</v-icon>
               </span>
             </div>
           </v-img>
         </v-col>
+      </v-row>
+
+      <!-- Attachments -->
+      <v-row v-if="hasAttachments" class="pb-3">
         <v-col
-            v-if="post?.images.length > 2"
+            v-for="(attachment, index) in attachments"
+            :key="index"
             class="d-flex child-flex"
             cols="4"
         >
-          <v-img
-              :src="post?.images[2]"
-              :lazy-src="post?.images[2]"
-              aspect-ratio="1"
-              cover
-              class="bg-grey-lighten-2"
-              @click="carouselDialog = true"
-          >
-            <template v-slot:placeholder>
-              <v-row
-                  class="fill-height ma-0"
-                  align="center"
-                  justify="center"
-              >
-                <v-progress-circular
-                    indeterminate
-                    color="grey-lighten-5"
-                ></v-progress-circular>
-              </v-row>
-            </template>
-            <div class="d-flex align-center justify-center fill-height bg-grey-lighten-3 opacity-50 cursor-pointer">
-              <span class="text-h6 font-weight-bold">{{ post?.images.length - 3 }}+</span>
-            </div>
-          </v-img>
-        </v-col>
-      </v-row>
-
-      <!---If Attachments -->
-      <v-row v-if="post?.attachments" class="pb-3">
-        <v-col
-            v-for="(attachment, index) in post?.attachments"
-            :key="index"
-            class="d-flex child-flex"
-            cols="6"
-        >
-          <v-btn
-              :href="attachment"
-              target="_blank"
-              elevation="1"
-              block>
+          <v-btn :href="attachment" target="_blank" elevation="1" block>
             <v-icon>mdi-download</v-icon>
             Pièce jointe {{ index + 1 }}
           </v-btn>
-
         </v-col>
       </v-row>
-
-      <!-- Like and comment count
-      <div class="my-4 mt-5 d-flex align-center gap-3">
-        <v-tooltip text="Like">
-          <template v-slot:activator="{ props }">
-            <v-btn
-                @click="handlePostLikes(`${post?.id}`)"
-                v-bind="props"
-                icon
-                :color="post?.data && post?.data.likes && post?.data.likes.like ? 'primary' : 'grey100'"
-                variant="flat"
-                size="x-small"
-            >
-              <ThumbUpIcon size="16" />
-            </v-btn>
-          </template>
-        </v-tooltip>
-        <span class="text-subtitle-1 font-weight-semibold">{{ post?.data && post?.data.likes && post?.data.likes.value }}</span>
-        <v-tooltip text="Comment">
-          <template v-slot:activator="{ props }">
-            <v-btn icon v-bind="props" color="secondary" variant="flat" size="x-small" @click="toggleCommentbox">
-              <Message2Icon size="16" />
-            </v-btn>
-          </template>
-        </v-tooltip>
-        <span class="text-subtitle-1 font-weight-semibold">{{ post?.data.comments ? post?.data.comments.length : 0 }}</span>
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <v-btn icon class="ml-auto" variant="text" size="small" v-bind="props"><ShareIcon size="16" /></v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item v-for="(item, index) in shareitems" :key="index" :value="index">
-              <template v-slot:prepend>
-                <component :is="item.icon" stroke-width="1.5" size="20" />
-              </template>
-              <v-list-item-title class="ml-3">{{ item.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>-->
     </v-card-item>
-    <!--If Comment
-    <div v-if="post?.data.comments" class="pa-5 pt-0">
-      <div v-for="comments in post?.data.comments">
-        <Comments :comments="comments" :postId="post?.id" />
-      </div>
-    </div>
-    Comment Form
-    <div v-if="showCommentBox">
-      <v-divider />
-      <div class="d-block d-sm-flex gap-3 align-center mb-4 px-4 pt-4">
-        <v-avatar class="flex-shrink-0 d-none d-sm-block" size="33">
-          <img :src="post?.profile.avatar" width="33" alt="avatar" />
-        </v-avatar>
-        <v-text-field variant="outlined" color="primary" v-model="searchValue" placeholder="Comment" hide-details></v-text-field>
-        <v-btn
-            color="primary"
-            variant="flat"
-            :disabled="searchValue === ''"
-            class="mt-3 mt-sm-0"
-            @click="onSubmit(post?.id, searchValue)"
-        >
-          Comment
-        </v-btn>
-      </div>
-    </div>-->
+
+    <!-- Dialog + Carousel (lazy mount) -->
     <v-dialog v-model="carouselDialog" max-width="50%">
-      <v-card>
+      <v-card v-if="carouselDialog">
         <v-card-title>
           <v-btn icon size="small" color="red" @click="carouselDialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
+
         <v-card-text>
-          <v-carousel show-arrows="hover" hide-delimiters>
-            <v-carousel-item v-for="(photo, index) in post?.images" :key="index">
-              <v-img
-                  :src="photo"
-                  :lazy-src="photo"
-                  class="bg-grey-lighten-2"
-              >
+          <v-carousel v-model="carouselIndex" show-arrows="hover" hide-delimiters>
+            <v-carousel-item v-for="(photo, index) in images" :key="index">
+              <v-img :src="photo" :lazy-src="photo" class="bg-grey-lighten-2" :alt="imageAlt(index)">
                 <template v-slot:placeholder>
-                  <v-row
-                      class="fill-height ma-0"
-                      align="center"
-                      justify="center"
-                  >
-                    <v-progress-circular
-                        indeterminate
-                        color="grey-lighten-5"
-                    ></v-progress-circular>
+                  <v-row class="fill-height ma-0" align="center" justify="center">
+                    <v-progress-circular indeterminate color="grey-lighten-5" />
                   </v-row>
                 </template>
               </v-img>
@@ -210,24 +112,113 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
 import moment from "moment/moment";
+// Si tu veux vraiment sécuriser v-html:
+// import DOMPurify from "dompurify";
 
 export default {
-  name   : "PostItem",
-  props  : {
-    post: {
-      type    : Object,
-      required: true,
+  name: "PostItem",
+  props: {
+    post: { type: Object, required: true },
+  },
+  data() {
+    return {
+      carouselDialog: false,
+      carouselIndex: 0,
+      logoFallbackUsed: false,
+    };
+  },
+  computed: {
+    images() {
+      const imgs = this.post && Array.isArray(this.post.images) ? this.post.images : [];
+      return imgs.filter(Boolean);
+    },
+    attachments() {
+      const atts = this.post && Array.isArray(this.post.attachments) ? this.post.attachments : [];
+      return atts.filter(Boolean);
+    },
+    hasImages() {
+      return this.images.length > 0;
+    },
+    hasCover() {
+      return this.images.length > 0;
+    },
+    coverImage() {
+      return this.images[0] || null;
+    },
+    gridImages() {
+      // 2 premières + une 3e case (soit 3e image, soit rien)
+      return this.images.slice(0, Math.min(3, this.images.length));
+    },
+    extraCount() {
+      return Math.max(0, this.images.length - 3);
+    },
+    hasAttachments() {
+      return this.attachments.length > 0;
+    },
+    structureName() {
+      return (this.post && this.post.structure && this.post.structure.name) || "Structure";
+    },
+    structureLogo() {
+      if (this.logoFallbackUsed) return "/logos/default.png";
+      const id = this.post && this.post.structure && this.post.structure.id;
+      return id ? `/logos/${id}.png` : "/logos/default.png";
+    },
+    formattedDate() {
+      const v = this.post && this.post.created_at;
+      return v ? moment(v).format("DD/MM/YYYY HH:mm") : "";
+    },
+    postTitle() {
+      return (this.post && this.post.title) || "";
+    },
+    postPinned() {
+      return !!(this.post && this.post.pinned);
+    },
+    safeContent() {
+      const html = (this.post && this.post.content) || "";
+      // Si tu branches DOMPurify:
+      // return DOMPurify.sanitize(html);
+      return html;
     },
   },
   methods: {
-    dateFormat: function (value) {
-      return moment(value).format('DD/MM/YYYY HH:mm');
+    openCarousel(index) {
+      this.carouselIndex = index;
+      this.carouselDialog = true;
+    },
+    imageAlt(index) {
+      return `${this.postTitle || "Image"} (${index + 1})`;
+    },
+    onLogoError() {
+      this.logoFallbackUsed = true;
     },
   },
-  data   : () => ({
-    carouselDialog: false,
-  }),
-}
+};
 </script>
+
+<style scoped>
+.cover {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+  background-color: #251A7A;
+}
+
+.cover-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  filter: blur(20px);
+  opacity: 0.9;
+  transform: scale(1.1); /* évite les bords dégueu du blur */
+}
+
+.cover-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin: 0 auto;
+  height: 100%;
+}
+</style>

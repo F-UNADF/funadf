@@ -7,6 +7,16 @@ class Structure < ActiveRecord::Base
 
   has_many :memberships, dependent: :destroy
 
+  has_one :president_membership,
+          -> { joins(:role).where(roles: { name: 'president' }) },
+          class_name: 'Membership',
+          foreign_key: 'structure_id'
+
+  has_one :president,
+          through: :president_membership,
+          source: :member,
+          source_type: 'User'
+
   has_one_attached :logo
 
   validates :name, :type, presence: true
@@ -41,6 +51,7 @@ class Structure < ActiveRecord::Base
               s.town AS town,
               m.role_id AS role_id,
               r.name AS role_name,
+              r.friendly_name AS role_friendly_name,
               m.can_vote AS can_vote
         FROM memberships m
         LEFT JOIN structures s ON m.member_id = s.id
@@ -56,6 +67,7 @@ class Structure < ActiveRecord::Base
               u.town AS town,
               m.role_id AS role_id,
               r.name AS role_name,
+              r.friendly_name AS role_friendly_name,
               m.can_vote AS can_vote
         FROM memberships m
         LEFT JOIN users u ON m.member_id = u.id

@@ -11,6 +11,7 @@ if (token) {
 const state = () => ({
     currentUser: null,
     roles: [],
+    region: null,
     originalUser: null,
     editProfilDialog: false,
     subdomain: null
@@ -22,13 +23,15 @@ const getters = {
     roles: (state) => state.roles,
     getOriginalUser: (state) => state.originalUser,
     subdomain: (state) => state.subdomain,
+    region: (state) => state.region,
 };
 
 // actions
 const actions = {
     fetchUser({ commit }) {
-        axios.get('/api/current_user').then((response) => {
+        return axios.get('/api/current_user').then((response) => {
             commit('setCurrentUser', response.data.user);
+            commit('setRegion', response.data.region);
             commit('setRoles', response.data.roles);
             commit('setOriginalUser', response.data.original_user);
         });
@@ -36,13 +39,16 @@ const actions = {
     async logout({ commit }) {
         try {
             await axios.delete('/users/sign_out');
-            commit('setCurrentUser', null);
-            commit('setOriginalUser', null);
         } catch (error) {
-            commit('setCurrentUser', null);
-            commit('setOriginalUser', null);
+            // On déconnecte quand même côté navigateur
         }
-        window.location.href = '/';
+        // Sans cela, le jeton reste en mémoire et l'utilisateur est toujours « connecté »
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        delete axios.defaults.headers.common['Authorization'];
+        commit('setCurrentUser', null);
+        commit('setOriginalUser', null);
+        window.location.href = '/connexion';
     },
     login({ commit }, user) {
         // Return a Promise
@@ -62,13 +68,11 @@ const actions = {
                 });
         });
     },
-    connect_google({ commit }, payload) {
+    storeDeviceToken({ commit }, payload) {
         // Return a Promise
         return new Promise((resolve, reject) => {
-            axios.post('/api/connect_with_google', payload)
+            axios.post('/api/device_tokens', payload)
                 .then((response) => {
-                    commit('setCurrentUser', response.data.user);
-                    commit('setOriginalUser', null);
                     resolve(response);
                 })
                 .catch((error) => {
@@ -129,6 +133,9 @@ const mutations = {
     },
     setRoles: (state, roles) => {
         state.roles = roles;
+    },
+    setRegion: (state, region) => {
+        state.region = region;
     },
 };
 

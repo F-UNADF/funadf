@@ -1,47 +1,93 @@
 <template>
-  <v-row class="mb-0">
-    <v-col cols="12" lg="2" md="2">
-      <v-text-field density="compact" v-model="search" label="Chercher un utilisateur (Nom, Ville...)" hide-details
-        variant="outlined" clearable></v-text-field>
-    </v-col>
-    <v-col cols="12" lg="2" md="2">
-      <v-select density="compact" v-model="filter.levels" :items="referentiels.levels" label="Reconnaissance" hide-details
-        multiple clearable chips variant="outlined"></v-select>
-    </v-col>
-    <v-col cols="12" lg="2" md="2">
-      <v-select density="compact" v-model="filter.roles" :items="referentiels.roles" label="Rôle global" hide-details
-        multiple clearable chips variant="outlined"></v-select>
-    </v-col>
-    <v-col cols="12" lg="2" md="3">
-      <v-btn-toggle v-model="filter.disabled" rounded style="height: 40px">
-        <v-btn :value="false" color="success" class="py-1">
-          Actif
-        </v-btn>
+  <v-card flat class="mb-3">
+    <v-card-text class="pa-0">
+      <v-row class="ma-0" dense>
+        <v-col cols="12" md="4">
+          <v-text-field
+              v-model="search"
+              density="compact"
+              label="Chercher un utilisateur (Nom, Ville...)"
+              hide-details
+              variant="outlined"
+              clearable
+          />
+        </v-col>
 
-        <v-btn :value="true" color="warning" class="py-1">
-          Inactif
-        </v-btn>
-      </v-btn-toggle>
-    </v-col>
-    <v-col cols="12" lg="4" md="3" class="text-right">
-      <download :headers="downloadHeaders" :data="this.filteredItems" :name="downloadName"></download>
-      <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
-        <v-icon color="primary">mdi-reload</v-icon>
-      </v-btn>
-      <v-btn color="primary" class="ml-auto" @click="newItem()">
-        <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
-        Ajouter un utilisateur
-      </v-btn>
-    </v-col>
-  </v-row>
+        <v-col cols="12" sm="6" md="3">
+          <v-select
+              v-model="filter.levels"
+              :items="referentiels.levels"
+              density="compact"
+              label="Reconnaissance"
+              hide-details
+              multiple
+              clearable
+              chips
+              variant="outlined"
+          />
+        </v-col>
+
+        <v-col cols="12" sm="6" md="3">
+          <v-select
+              v-model="filter.roles"
+              :items="referentiels.roles"
+              density="compact"
+              label="Rôle global"
+              hide-details
+              multiple
+              clearable
+              chips
+              variant="outlined"
+          />
+        </v-col>
+
+        <v-col cols="12" sm="6" md="2">
+          <v-btn-toggle
+              v-model="filter.disabled"
+              rounded
+              divided
+              class="w-100"
+              style="height: 40px"
+          >
+            <v-btn :value="false" color="success" class="flex-grow-1">
+              Actif
+            </v-btn>
+            <v-btn :value="true" color="red" class="flex-grow-1">
+              Inactif
+            </v-btn>
+          </v-btn-toggle>
+        </v-col>
+
+        <v-col cols="12">
+          <div class="d-flex flex-wrap ga-2 align-center">
+            <download
+                :headers="downloadHeaders"
+                :data="filteredItems"
+                :name="downloadName"
+            />
+
+            <v-btn icon="mdi-refresh" variant="text" color="primary" aria-label="Actualiser la liste" @click="refresh()"></v-btn>
+
+            <v-spacer />
+
+            <v-btn color="primary" variant="flat" prepend-icon="mdi-account-plus" @click="newItem()">
+              Ajouter un utilisateur
+            </v-btn>
+          </div>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 
   <v-data-table :headers="headers" :items="filteredItems" item-value="name" class="elevation-1" :loading="loading">
     <template v-slot:no-data>
       <tr>
         <td colspan="5">
-          <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
-          <v-alert v-else color="danger" icon="danger" title="Aucun utilisateur trouvé"
-            text="Aucun utilisateur ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
+          <v-skeleton-loader v-if="loading" type="table-row@3"></v-skeleton-loader>
+          <div v-else class="list-empty">
+            <p class="text-subtitle-1 font-weight-medium mb-1">Aucun utilisateur ne correspond à ces critères</p>
+            <p class="text-body-2 text-medium-emphasis">Modifiez la recherche ou les filtres ci-dessus.</p>
+          </div>
         </td>
       </tr>
     </template>
@@ -51,38 +97,37 @@
         <td>
           <div class="d-flex align-center py-4">
             <div>
-              <v-img :src="'/avatars/' + item.id + '.png'" width="45px" class="rounded-circle img-fluid"></v-img>
+              <v-avatar size="44" color="grayLighter">
+                <v-img :src="'/avatars/' + item.id + '.png'" alt="" cover></v-img>
+              </v-avatar>
             </div>
 
             <div class="ml-5">
-              <h4 class="d-block">{{ item.lastname }} {{ item.firstname }}</h4>
-              <span class="subtitle-2 font-weight-regular">{{ item.email }}</span>
-              <span class="ml-2 text-grey" 
-                  v-if="item.invitation_accepted_at === null">(Invitation non validée)
-              </span>
+              <div class="font-weight-bold">{{ item.lastname }} {{ item.firstname }}</div>
+              <span class="text-body-2">{{ item.email }}</span>
+              <v-chip v-if="item.invitation_accepted_at === null" size="x-small" variant="outlined" class="ml-2">
+                Invitation en attente
+              </v-chip>
             </div>
           </div>
         </td>
         <td>{{ item.zipcode }} {{ item.town }}</td>
         <td>
-          <v-chip color="info" label>{{ item.current_level }}</v-chip>
+          <v-chip v-if="item.current_level" size="small" variant="tonal" color="primary" label>{{ item.current_level }}</v-chip>
+          <span v-else class="text-medium-emphasis">Non renseigné</span>
         </td>
-        <td>
+        <td class="text-right text-no-wrap">
           <v-tooltip location="top" text="Modifier l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" color="primary" class="rounded-e-0" variant="flat" @click="editItem(item)"
-                title="Edit">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
+              <v-btn v-bind="props" color="primary" variant="text" size="small" icon="mdi-pencil" @click="editItem(item)"
+                :aria-label="`Modifier ${item.firstname} ${item.lastname}`"></v-btn>
             </template>
           </v-tooltip>
 
           <v-tooltip location="top" text="Se connecter en tant que l'utilisateur">
             <template v-slot:activator="{ props }">
-              <v-btn v-bind="props" color="secondary" class="rounded-s-0" variant="flat" @click="connectAs(item)"
-                title="Activer">
-                <v-icon>mdi-drama-masks</v-icon>
-              </v-btn>
+              <v-btn v-bind="props" color="primary" variant="text" size="small" icon="mdi-account-switch-outline"
+                @click="connectAs(item)" :aria-label="`Se connecter en tant que ${item.firstname} ${item.lastname}`"></v-btn>
             </template>
           </v-tooltip>
         </td>
@@ -91,7 +136,7 @@
   </v-data-table>
 
   <v-dialog v-model="dialogForm" fullscreen>
-    <user-form></user-form>
+    <user-form @refresh="refresh()"></user-form>
   </v-dialog>
 </template>
 
@@ -103,6 +148,12 @@ import Download from "@/components/Tools/Download.vue";
 
 export default {
   name: "UsersIndex",
+  props: {
+    domain: {
+      type: String,
+      default: 'me',
+    },
+  },
   components: {
     Download,
     UserForm,
@@ -179,7 +230,7 @@ export default {
       this.$store.commit('usersStore/setDialogForm', true);
     },
     refresh: function () {
-      this.$store.dispatch('usersStore/fetchItems');
+      this.$store.dispatch('usersStore/fetchItems', { domain: this.domain });
     },
     connectAs: function (user) {
       this.$store.dispatch('sessionStore/switch_to', user.id).then(response => {
@@ -228,7 +279,8 @@ export default {
         {
           title: 'Actions',
           key: 'actions',
-          sortable: false
+          sortable: false,
+          align: 'end',
         },
       ],
       downloadHeaders: [
@@ -266,7 +318,7 @@ export default {
     }
   },
   beforeMount: function () {
-    this.$store.dispatch('usersStore/fetchItems');
+    this.refresh();
     this.$store.dispatch('usersStore/referentiels');
   },
 }

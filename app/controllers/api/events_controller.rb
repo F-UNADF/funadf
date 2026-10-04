@@ -1,29 +1,38 @@
 class Api::EventsController < ApiController
   before_action :set_event, only: [:show, :update, :destroy]
+  before_action :require_domain_access!, only: [:index]
+  before_action :require_manager!, only: [:update, :destroy]
 
   def index
+    domain = params[:domain] || 'me'
     events = []
-    if @subdomain == 'admin'
+    case domain
+    when 'admin'
       events = Event.joins(:structure).where("end_at > ?", Time.current).order(start_at: :asc)
-    elsif @subdomain == 'association'
-      # get campaigns of the association of the current user
-      # Vérifier si l'utilisateur actuel a des responsabilités d'association
+    when 'association'
       responsibilities_ids = current_user.associations_responsabilities.pluck(:id)
-
-      # Si l'utilisateur a des responsabilités d'association, récupérer les événements à venir associés à ces responsabilités
       if responsibilities_ids.present?
         events = Event.joins(:structure).where("end_at > ?", Time.current)
                               .where(structure_id: responsibilities_ids)
                               .order(id: :desc)
       end
-    elsif @subdomain.present? && !@structure.nil?
-      events = @structure.events.joins(:structure).where("end_at > ?", Time.current).order(start_at: :asc)
+    when 'region'
+      responsibilities_ids = current_user.regions_responsabilities.pluck(:id)
+      if responsibilities_ids.present?
+        events = Event.joins(:structure).where("end_at > ?", Time.current)
+                              .where(structure_id: responsibilities_ids)
+                              .order(id: :desc)
+      end
+      
     end
 
     render json: { events: events }, include: ['category', 'structure']
   end
 
+  # Lecture : admin, gestionnaire de la structure, ou membre à qui le contenu est destiné.
   def show
+    return forbidden! unless can_manage_structure?(@event.structure_id) || @event.visible_to?(current_user)
+
     files_data = @event.files.map do |file|
       {
         id:   file.id,
@@ -31,11 +40,19 @@ class Api::EventsController < ApiController
         url:  url_for(file)
       }
     end
-    render json: { event: @event, files: files_data, accesses: @event.accesses.pluck(:level) }
+
+    event = @event.as_json.merge(
+        images:      @event.images.map { |image| url_for image },
+        attachments: @event.attachments.map { |file| url_for file },
+        structure:   @event.structure,
+    )
+    render json: { event: event, files: files_data, accesses: @event.accesses.pluck(:level) }
   end
 
   def create
     event = Event.new(event_params)
+    return forbidden! unless can_manage_structure?(event.structure_id)
+
     category = Category.find_or_create_by(name: params[:event][:category], kind: 'event')
     event.category_id = category.id 
     if event.save
@@ -53,6 +70,8 @@ class Api::EventsController < ApiController
   end
 
   def update
+    return forbidden! if event_params.key?(:structure_id) && !can_manage_structure?(event_params[:structure_id])
+
     category           = Category.find_or_create_by(name: params[:event][:category], kind: 'event')
     @event.category_id = category.id
 
@@ -82,6 +101,10 @@ class Api::EventsController < ApiController
   end
 
   private
+
+  def require_manager!
+    forbidden! unless can_manage_structure?(@event.structure_id)
+  end
 
   def set_event
     @event = Event.find(params[:id])

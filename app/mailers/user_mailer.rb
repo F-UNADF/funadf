@@ -1,20 +1,14 @@
 class UserMailer < ApplicationMailer
 
-
-  def send_direct_access user
+  def notification_digest(user, notification_ids)
     @user = user
+    @notifications = Notification.where(id: notification_ids)
 
-    @to = "p.gruson@gmail.com" if Rails.env == "development"
-    @to = user.email if Rails.env == "production"
-
-    @from = "sec.fnadf@addfrance.fr"
-
-    mail(to: @to, from: @from, subject: "[FNADF / UNADF] ACTION REQUISE - Accès aux votes electroniques") do |format|
-      format.html
-    end
-
+    mail(
+      to: user.email,
+      from: "noreply@addfrance.fr",
+      subject: "[ADD+] Le récap de la semaine !"
+    )
   end
-
-
 
 end

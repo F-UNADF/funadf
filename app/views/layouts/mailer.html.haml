@@ -1,0 +1,83 @@
+!!!
+%html
+  %head
+    %meta{ charset: "UTF-8" }
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    %title= "ADD+ Mailer"
+    %style
+      :plain
+        /* Reset de base */
+        body {
+          margin: 0;
+          padding: 0;
+          background-color: #f5f7fa;
+          font-family: Arial, sans-serif;
+        }
+
+        .main {
+          max-width: 600px;
+          margin: 40px auto;
+          background-color: #ffffff;
+          border-radius: 8px;
+          padding: 30px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .header {
+          font-size: 24px;
+          font-weight: bold;
+          color: #1e88e5;
+          margin-bottom: 25px;
+          text-align: center;
+        }
+
+        .content {
+          font-size: 16px;
+          color: #333333;
+          line-height: 1.5;
+        }
+
+        .footer {
+          font-size: 12px;
+          color: #999999;
+          text-align: center;
+          margin-top: 30px;
+          border-top: 1px solid #eee;
+          padding-top: 15px;
+        }
+
+        .notification-link {
+          color: #015486;
+          text-decoration: none;
+          font-weight: bold;
+        }
+
+        .notification-link:hover {
+          text-decoration: underline;
+        }
+
+        .primary-button {
+          display: inline-block;
+          padding: 10px 20px;
+          background-color: #015486;
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 5px;
+          font-weight: bold;
+          margin-top: 10px;
+        }
+
+        .primary-button:hover {
+          background-color: #003e6b;
+        }
+
+  %body
+    .main
+      .header
+        %img{ src: "https://app.addfrance.fr/logo_plus.png", alt: "ADD+ Logo", width: "150" }
+
+      .content
+        = yield
+
+      .footer
+        &copy; #{Time.now.year} ADD+ – Tous droits réservés

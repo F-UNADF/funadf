@@ -1,4 +1,6 @@
 class Event < ActiveRecord::Base
+  include Publishable
+  rich_text_attribute :description
 
   belongs_to :structure
   belongs_to :category

@@ -1,18 +1,26 @@
 class Api::CampaignsController < ApiController
   before_action :set_campaign, only: [:show, :update, :destroy, :change_state, :voters_count]
+  before_action :require_domain_access!, only: [:index]
+  # Résultats et gestion : admin, ou responsable de la structure organisatrice.
+  before_action :require_manager!, only: [:show, :update, :destroy, :change_state, :voters_count]
 
   def index
+    domain = params[:domain] || 'me'
     campaigns = []
-    if @subdomain == 'admin'
-      campaigns = Campaign.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
-    elsif @subdomain == 'association'
-      # get campaigns of the association of the current user
-      campaigns = current_user.associations_responsabilities.pluck(:id).present? ? Campaign.where(structure_id: current_user.associations_responsabilities.pluck(:id)).order(id: :desc) : []
-    elsif @subdomain.present? && !@structure.nil?
-      campaigns = @structure.campaigns.joins(:structure).select('campaigns.*, structures.name AS structure_name').order id: :desc
+
+    case domain
+    when 'admin'
+      campaigns = Campaign
+                    .joins(:structure)
+                    .select('campaigns.*, structures.name AS structure_name')
+                    .order(id: :desc)
+    when 'association'
+      campaigns = campaigns_for(current_user.associations_responsabilities)
+    when 'region'
+      campaigns = campaigns_for(current_user.regions_responsabilities)
     end
 
-    render json: { campaigns: campaigns, subdomain: @subdomain }
+    render json: { campaigns: campaigns }
   end
 
   def show
@@ -35,6 +43,8 @@ class Api::CampaignsController < ApiController
 
   def create
     campaign = Campaign.new(campaign_params)
+    return forbidden! unless can_manage_structure?(campaign.structure_id)
+
     if campaign.save
       save_motions(campaign, params[:campaign][:motions])
       save_voting_tables(campaign, params[:campaign][:voting_tables])
@@ -45,6 +55,9 @@ class Api::CampaignsController < ApiController
   end
 
   def update
+    # Pas de déplacement vers une structure hors périmètre.
+    return forbidden! if campaign_params.key?(:structure_id) && !can_manage_structure?(campaign_params[:structure_id])
+
     if @campaign.update(campaign_params)
       save_motions(@campaign, params[:campaign][:motions])
       save_voting_tables(@campaign, params[:campaign][:voting_tables])
@@ -74,6 +87,10 @@ class Api::CampaignsController < ApiController
   end
 
   private
+
+  def require_manager!
+    forbidden! unless can_manage_structure?(@campaign.structure_id)
+  end
 
   def save_motions(campaign, motions_params)
     motion_ids = motions_params.map { |motion| motion[:id] }
@@ -132,7 +149,16 @@ class Api::CampaignsController < ApiController
   end
 
   def campaign_params
-    params[:campaign].permit(:name, :structure_id, :meeting_id)
+    params[:campaign].permit(:name, :structure_id)
+  end
+
+  def campaigns_for(responsabilities)
+    structure_ids = responsabilities.pluck(:id)
+    return [] if structure_ids.empty?
+
+    Campaign.joins(:structure)
+            .select('campaigns.*, structures.name AS structure_name')
+            .where(structure_id: structure_ids).order(id: :desc)
   end
 
 end

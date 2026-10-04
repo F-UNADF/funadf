@@ -20,8 +20,6 @@ module Funadf
     config.i18n.default_locale = :fr
 
     config.quiet_assets = true
-
-    # config.active_record.raise_in_transactional_callbacks = true
-    config.assets.precompile += %w( Intranet.js me/application.css )
+    config.active_job.queue_adapter = :sidekiq
   end
 end

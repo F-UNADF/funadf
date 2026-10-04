@@ -1,0 +1,26 @@
+:concurrency: 5
+
+:queues:
+  - default
+  - mailers
+
+:scheduler:
+  enabled: true
+  dynamic: false
+  :schedule:
+    notification_digest_job:
+      cron: "0 8,12,18,22 * * *"
+      class: NotificationDigestJob
+      queue: default
+    notification_post_broadcast_job:
+      cron: "50 7,11,17,21 * * *"
+      class: NotificationPostBroadcastJob
+      queue: default
+    notification_event_broadcast_job:
+      cron: "55 7,11,17,21 * * *"
+      class: NotificationEventBroadcastJob
+      queue: default
+    weekly_notification_recap_job:
+      cron: "0 18 * * 5"
+      class: WeeklyNotificationRecapJob
+      queue: default

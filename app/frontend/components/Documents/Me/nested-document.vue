@@ -27,7 +27,7 @@
         v-if="item.documents.length>0"
         v-for="child in item.documents"
         :key="child.id"
-        @click="$emit('downloadDocument', child)"
+        @click="getDownloadURL(child)"
     >
       <template v-slot:prepend>
         <v-icon>
@@ -52,12 +52,19 @@ export default {
   props: {
     item: Object,
   },
+  methods: {
+    getDownloadURL(item) {
+      if (item?.href) {
+        window.open(item.href, "_blank"); // Ouvrir le fichier
+      }
+    },
+  },
   computed: {
     extrait() {
       return (description) => {
         return description.length > 50 ? description.substring(0, 50) + '...' : description;
       }
-    }
+    },
   },
   name: 'NestedDraggable',
 }

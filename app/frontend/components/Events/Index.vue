@@ -1,29 +1,26 @@
 <template>
-  <v-row justify="space-between">
-    <v-col cols="12" lg="4" md="4" class="mb-3">
-      <v-text-field density="compact" v-model="search" label="Chercher un événement..." hide-details variant="outlined"
-        clearable></v-text-field>
-    </v-col>
-    <v-col cols="12" lg="3" md="3" class="text-right">
-      <v-spacer></v-spacer>
-      <v-btn color="white" class="me-3" @click="refresh()" icon size="small">
-        <v-icon color="primary">mdi-reload</v-icon>
-      </v-btn>
-      <v-btn color="primary" class="ml-auto" @click="newItem()">
-        <v-icon class="mr-2">mdi-account-multiple-plus</v-icon>
-        Ajouter un événement
-      </v-btn>
-    </v-col>
-  </v-row>
-  <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading">
+  <div class="list-toolbar">
+    <v-text-field density="compact" v-model="search" label="Rechercher un événement" prepend-inner-icon="mdi-magnify"
+      hide-details variant="outlined" clearable class="list-toolbar__search"></v-text-field>
+    <v-btn icon="mdi-refresh" variant="text" color="primary" aria-label="Actualiser la liste" @click="refresh()"></v-btn>
+    <v-spacer></v-spacer>
+    <v-btn color="primary" variant="flat" prepend-icon="mdi-plus" @click="newItem()">
+      Ajouter un événement
+    </v-btn>
+  </div>
+
+  <v-data-table :headers="headers" :items="filteredItems" :search="search" class="elevation-1" :loading="loading" hover>
     <template v-slot:no-data>
-      <tr>
-        <td colspan="5">
-          <v-progress-linear indeterminate color="cyan" v-if="loading"></v-progress-linear>
-          <v-alert v-else color="danger" icon="danger" title="Aucun événement trouvé"
-            text="Aucun événement ne correspond à votre recherche. Si vous pensez à une erreur, contactez le support."></v-alert>
-        </td>
-      </tr>
+      <div class="list-empty">
+        <p class="text-subtitle-1 font-weight-medium mb-1">
+          {{ search ? `Aucun événement ne correspond à « ${search} »` : 'Aucun événement pour le moment' }}
+        </p>
+        <v-btn v-if="search" variant="text" color="primary" @click="search = ''">Effacer la recherche</v-btn>
+        <v-btn v-else variant="tonal" color="primary" prepend-icon="mdi-plus" @click="newItem()">Ajouter un événement</v-btn>
+      </div>
+    </template>
+    <template v-slot:loading>
+      <v-skeleton-loader type="table-row@3"></v-skeleton-loader>
     </template>
     <template v-slot:item="{ item }">
       <tr>
@@ -35,43 +32,29 @@
           {{ item.structure.name }}
         </td>
         <td>
-          <v-chip color="primary" text-color="white" small>
+          <v-chip size="small" variant="tonal" color="primary">
             {{ item.category.name }}
           </v-chip>
         </td>
-        <td>
-          <v-tooltip location="top" text="Modifier l'événement">
-            <template v-slot:activator="{ props }">
-              <v-icon small v-bind="props" color="primary" @click="editItem(item.id)" title="Edit">
-                mdi-pencil
-              </v-icon>
-            </template>
-          </v-tooltip>
+        <td class="text-right text-no-wrap">
+          <row-action icon="mdi-pencil" color="primary" label="Modifier l'événement" @click="editItem(item.id)"></row-action>
 
-          <v-tooltip location="top" text="Supprimer l'événement">
-            <template v-slot:activator="{ props }">
-              <v-icon v-bind="props" small class="text-error" title="Delete" @click="tryDeleteItem(item)">
-                mdi-delete
-              </v-icon>
-            </template>
-          </v-tooltip>
+          <row-action icon="mdi-delete-outline" color="error" label="Supprimer l'événement" @click="tryDeleteItem(item)"></row-action>
         </td>
       </tr>
     </template>
   </v-data-table>
 
-  <v-dialog v-model="dialogForm" max-width="75%">
-    <event-form></event-form>
+  <v-dialog v-model="dialogForm" max-width="960">
+    <event-form @refresh="refresh()"></event-form>
   </v-dialog>
-  <v-dialog max-width="25%" v-model="dialogConfirmDelete">
-    <v-card>
-      <v-card-text>
-        Etes-vous sûr de vouloir supprimer cet événement ?
-      </v-card-text>
+  <v-dialog max-width="440" v-model="dialogConfirmDelete">
+    <v-card title="Supprimer l’événement ?">
+      <v-card-text><strong>{{ deletingItem.title }}</strong><p class="mt-2">Cette action est irréversible.</p></v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="dialogConfirmDelete = false">Annuler</v-btn>
-        <v-btn color="error" @click="deleteItem(deletingItem)">Supprimer</v-btn>
+        <v-btn variant="text" @click="dialogConfirmDelete = false">Annuler</v-btn>
+        <v-btn color="error" variant="flat" @click="deleteItem(deletingItem)">Supprimer</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -81,13 +64,22 @@
 import { mapGetters } from "vuex";
 import EventForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
+import RowAction from "../Tools/RowAction.vue";
 import moment from "moment";
+import { formToJSON } from "axios";
 
 export default {
   name: "EventsIndex",
   components: {
+    RowAction,
     EventForm,
     DialogConfirm,
+  },
+  props: {
+    domain: {
+      type: String,
+      default: 'me',
+    },
   },
   computed: {
     ...mapGetters('eventsStore', {
@@ -104,9 +96,7 @@ export default {
       },
     },
     filteredItems() {
-      return this.items.filter(item => {
-        return true;
-      });
+      return this.items;
     },
   },
   methods: {
@@ -127,16 +117,17 @@ export default {
       this.$store.commit('eventsStore/setDialogForm', true);
     },
     refresh: function () {
-      this.$store.dispatch('eventsStore/items');
+      this.$store.dispatch('eventsStore/items', { domain: this.domain });
     },
     tryDeleteItem: function (item) {
-      Object.assign(this.deletingItem, item);
+      this.deletingItem = { ...item };
       this.dialogConfirmDelete = true;
     },
     deleteItem: function (item) {
       this.$store.dispatch('eventsStore/delete', item.value).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
+        this.refresh();
         this.$root.showSnackbar('Événement supprimé avec succès', 'success');
       });
     },
@@ -181,14 +172,15 @@ export default {
         {
           title: 'Actions',
           key: 'actions',
-          sortable: false
+          sortable: false,
+          align: 'end'
         },
       ],
     }
   },
   beforeMount: function () {
-    this.$store.dispatch('eventsStore/items');
-    this.$store.dispatch('eventsStore/referentiels');
+    this.refresh();
+    this.$store.dispatch('eventsStore/referentiels', { domain: this.domain });
   },
 }
 </script>

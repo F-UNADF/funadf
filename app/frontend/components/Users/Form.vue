@@ -1,24 +1,23 @@
 <template>
-  <v-progress-circular v-if="formLoading" indeterminate color="primary"></v-progress-circular>
-  <v-card v-else>
-    <v-card-title class="bg-blue text-white">
-      <v-btn @click="close()" icon size="small" color="white" variant="outlined" class="mr-5">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      {{ this.getTitle }}
-    </v-card-title>
+  <v-card v-if="formLoading">
+    <v-skeleton-loader type="heading, divider, list-item-avatar-three-line@3"></v-skeleton-loader>
+  </v-card>
+  <v-card v-else class="user-form">
+    <v-toolbar color="primary">
+      <v-toolbar-title :text="this.getTitle"></v-toolbar-title>
+      <v-btn icon="mdi-close" variant="text" aria-label="Fermer" @click="close()"></v-btn>
+    </v-toolbar>
     <v-card-text>
-      <v-tabs color="primary" class="mb-3" align-tabs="center" v-model="tab">
+      <v-tabs color="primary" class="mb-4" show-arrows v-model="tab">
         <v-tab value="infos">Informations générales</v-tab>
-        <v-tab value="notifications">Notifications</v-tab>
         <v-tab value="reconnaissances" v-if="canEditProfil">Reconnaissances</v-tab>
         <v-tab value="parcours">Parcours</v-tab>
         <v-tab value="responsabilites" v-if="canEditProfil">Responsabilités nationales</v-tab>
         <v-tab value="cotisations" v-if="canEditProfil">Cotisations</v-tab>
-        <v-tab value="roles" v-if="canEditProfil">Roles globals</v-tab>
-        <v-tab value="security">Securité</v-tab>
-        <v-tab value="danger-zone" variant="flat" color="red" prepend-icon="mdi-alert" v-if="canEditProfil">
-          Danger zone
+        <v-tab value="roles" v-if="canEditProfil">Rôles globaux</v-tab>
+        <v-tab value="security">Sécurité</v-tab>
+        <v-tab value="danger-zone" prepend-icon="mdi-alert-outline" base-color="error" v-if="canEditProfil">
+          Actions sensibles
         </v-tab>
       </v-tabs>
 
@@ -59,24 +58,10 @@
             </v-col>
           </v-row>
           <v-spacer></v-spacer>
-          <v-btn color="info" @click="sendInvitation()" class="mr-3"
+          <v-btn color="primary" variant="outlined" prepend-icon="mdi-email-fast-outline" @click="sendInvitation()" class="mr-3"
                  v-if="this.canEditProfil && editedItem.user.invitation_accepted_at === null">
-            <v-icon class="mr-2">mdi-send</v-icon>
-            Envoyer l'invitation à nouveau
+            Renvoyer l'invitation par e-mail
           </v-btn>
-        </v-window-item>
-
-        <v-window-item key="notifications" value="notifications">
-          <v-row>
-            <v-col cols="12" sm="6">
-              <v-btn v-if="!pushEnabled" color="primary" @click="enablePushNotifications"
-                     class="mr-3">Activer les notifications push
-              </v-btn>
-              <v-btn v-if="pushEnabled" color="warning" @click="disablePushNotifications"
-                     class="mr-3">Désactiver les notifications push
-              </v-btn>
-            </v-col>
-          </v-row>
         </v-window-item>
 
         <v-window-item key="reconnaissances" value="reconnaissances">
@@ -231,38 +216,42 @@
                         required></v-text-field>
         </v-window-item>
         <v-window-item key="danger-zone" value="danger-zone">
-          <v-alert type="error" icon="mdi-alert-circle-outline" class="mb-3">
-            Vous êtes dans la zone de danger, les actions ci-dessous doivent-etres effectuées avec précaution !
+          <v-alert type="warning" variant="tonal" class="mb-4">
+            Ces actions modifient l’accès de la personne à l’intranet. La suppression est définitive.
           </v-alert>
-          <v-btn color="red" @click="tryDeleteItem()" class="mr-3">Supprimer l'utilisateur</v-btn>
-
-          <v-btn color="yellow" @click="disableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-off"
+          <v-btn color="warning" variant="outlined" @click="disableItem(this.editedItem.user)" class="mr-3 mb-2" prepend-icon="mdi-account-off"
                  v-if="!editedItem.user.disabled">
             Désactiver l'utilisateur
           </v-btn>
-          <v-btn color="green" @click="enableItem(this.editedItem.user)" class="mr-3" prepend-icon="mdi-account-check"
+          <v-btn color="success" variant="outlined" @click="enableItem(this.editedItem.user)" class="mr-3 mb-2" prepend-icon="mdi-account-check"
                  v-else>
-            Activer l'utilisateur
+            Réactiver l'utilisateur
+          </v-btn>
+          <v-btn color="error" variant="flat" @click="tryDeleteItem()" class="mr-3 mb-2" prepend-icon="mdi-delete-outline">
+            Supprimer l'utilisateur
           </v-btn>
         </v-window-item>
       </v-window>
     </v-card-text>
-    <v-card-actions class="bg-blue-lighten-5">
+    <v-divider></v-divider>
+    <v-card-actions class="user-form__actions">
       <v-spacer></v-spacer>
-      <v-btn color="red" @click="close()">Annuler</v-btn>
-      <v-btn color="blue" @click="save()">Enregistrer</v-btn>
+      <v-btn variant="text" @click="close()">Annuler</v-btn>
+      <v-btn color="primary" variant="flat" @click="save()">Enregistrer</v-btn>
     </v-card-actions>
 
 
-    <v-dialog v-model="dialogConfirmDelete">
-      <v-card color="red" variant="flat">
+    <v-dialog v-model="dialogConfirmDelete" max-width="460">
+      <v-card title="Supprimer l’utilisateur ?">
         <v-card-text>
-          Etes-vous sûr de vouloir supprimer cet utilisateur ?
+          <strong>{{ editedItem.user?.firstname }} {{ editedItem.user?.lastname }}</strong>
+          <p class="mt-2">Son compte et son historique seront supprimés. Cette action est irréversible.
+            Pour lui retirer l’accès sans perdre ses données, désactivez plutôt le compte.</p>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="white" variant="outlined" @click="dialogConfirmDelete = false">Annuler</v-btn>
-          <v-btn color="white" variant="outlined" @click="deleteItem(this.deletingItem)">Supprimer</v-btn>
+          <v-btn variant="text" @click="dialogConfirmDelete = false">Annuler</v-btn>
+          <v-btn color="error" variant="flat" @click="deleteItem(this.deletingItem)">Supprimer</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -271,7 +260,6 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {getMessaging, getToken} from "firebase/messaging";
 
 export default {
   name: "UserForm",
@@ -288,12 +276,16 @@ export default {
       roles: 'roles',
     }),
     getTitle() {
-      return (this.editedItem && !this.editedItem.id) ? "Ajouter un utilisateur" : "Modifier un utilisateur";
+      const user = this.editedItem?.user;
+      if (!user || !user.id) {
+        return "Ajouter un utilisateur";
+      }
+      if (this.currentUser && user.id === this.currentUser.id) {
+        return "Modifier mon profil";
+      }
+      return `Modifier ${user.firstname || ''} ${user.lastname || ''}`.trim();
     },
     canEditProfil() {
-      // current_user can edit all profil if he is admin OR if he is not the user he want to edit
-      // check if this.item has user property
-
       return this.roles.includes('admin') || (this.item && this.item.user && this.currentUser.id !== this.item.user.id);
     },
     pushEnabled() {
@@ -305,6 +297,7 @@ export default {
       this.$store.commit('usersStore/setFormLoading', true);
       this.$store.commit('usersStore/setDialogForm', false);
       this.$store.commit('usersStore/setItem', null);
+      this.$emit('refresh');
     },
     enableItem: function (item) {
       this.$store.dispatch('usersStore/enable', item.id).then(response => {
@@ -444,64 +437,6 @@ export default {
         this.editedItem.responsabilities.splice(this.editedItem.responsabilities.findIndex(phase => phase.id === id), 1);
       }
     },
-    enablePushNotifications() {
-      const messaging = getMessaging();
-
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          console.log("Permission de notification accordée.");
-
-          getToken(messaging, { vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg" })
-              .then((token) => {
-                if (token) {
-                  console.log("Token FCM récupéré:", token);
-                  this.pushToken = token;
-                  this.pushEnabled = true;
-                  this.updatePushStatus(true, token);  // Mettre à jour en back
-                }
-              })
-              .catch((err) => {
-                console.error("Erreur lors de la récupération du token:", err);
-              });
-        } else {
-          console.log("Permission de notification refusée.");
-          this.$root.showSnackbar('Votre navigateur refuse les notifications.', 'error');
-        }
-      });
-    },
-    disablePushNotifications() {
-      const messaging = getMessaging();
-
-      // Supprimer le token FCM
-      getToken(messaging, { vapidKey: "BEyOqkLkTZNA4TwFhvV-qZATkpgAfPX1adfgtoFgji1UwhCfaKb8nP7473f4NzXmMj6dnGEnwt5FuAf-7TwUbxg" })
-          .then((token) => {
-            if (token) {
-              return token;
-            }
-          })
-          .then(() => {
-            console.log("Token FCM supprimé.");
-            this.pushToken = null;
-            this.pushEnabled = false;
-            this.updatePushStatus(false, null);  // Mettre à jour en back
-          })
-          .catch((err) => {
-            console.error("Erreur lors de la suppression du token:", err);
-          });
-    },
-    updatePushStatus(enabled, token) {
-      this.editedItem.user.push_enabled = enabled;
-      this.editedItem.user.fcm_token = token;
-
-      this.$store.dispatch('usersStore/save', this.editedItem).then(response => {
-        console.log('Statut de notification mis à jour avec succès');
-      }, error => {
-        this.$root.showSnackbar('Un probleme est survenu lors de la mise à jour du statut de notification', 'error');
-        let errors = error.response.data.errors;
-
-        this.$root.showSnackbar(errors.join('<br/>'), 'error');
-      });
-    }
   },
   watch: {
     item: {
@@ -533,29 +468,15 @@ export default {
   beforeMount: function () {
     this.$store.dispatch('usersStore/referentiels');
   },
-  mounted() {
-    const messaging = getMessaging();
-
-    getToken(messaging, { vapidKey: 'TA_CLE_VAPID' })
-        .then((token) => {
-          if (token) {
-            console.log('Token FCM récupéré:', token);
-            this.pushToken = token;
-            this.pushEnabled = true;
-            this.updatePushStatus(true, token);  // Mettre à jour en back
-          } else {
-            console.log('Aucun token FCM disponible.');
-            this.pushEnabled = false;
-            this.updatePushStatus(false, null);
-          }
-        })
-        .catch((err) => {
-          console.error('Erreur lors de la récupération du token:', err);
-          this.pushEnabled = false;
-          this.updatePushStatus(false, null);
-        });
-  }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.user-form__actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  background: rgb(var(--v-theme-surface));
+  padding: 12px 16px;
+}
+</style>

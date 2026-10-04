@@ -1,61 +1,49 @@
 <template>
-  <v-container>
-    <v-layout v-if="loading" style="justify-content: center; align-items: center; height: 70vh;">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
-    </v-layout>
-    <v-row v-else>
-      <v-col v-if="filteredItems.length > 0" v-for="campaign in filteredItems" cols="12" md="4" sm="12" lg="3">
-        <v-card rounded="rounded" @click="goCampaign(campaign)">
-          <template v-slot:title>
-            {{ campaign.structure.name }}
-          </template>
-
-          <template v-slot:subtitle>
-            {{ campaign.name }}
-          </template>
-
-          <template v-slot:actions>
-            <v-btn color="primary" variant="tonal" block rounded-xl v-if="campaign.state === 'opened'"
-                   @click="this.$router.push('/campaigns/'+campaign.id)">
-              <template v-slot:prepend>
-                <v-icon>mdi-vote</v-icon>
-              </template>
-              <template v-slot:default>
-                Accéder au vote
-              </template>
-              <template v-slot:append>
-                <v-icon>mdi-arrow-right</v-icon>
-              </template>
-            </v-btn>
-          </template>
-
-        </v-card>
+  <div>
+    <v-row v-if="loading">
+      <v-col v-for="n in 3" :key="n" cols="12" sm="6" lg="4">
+        <v-skeleton-loader type="card"></v-skeleton-loader>
       </v-col>
+    </v-row>
 
-      <v-col v-else>
-        <v-card>
-          <v-card-title>
-            Aucun vote en cours
-          </v-card-title>
-          <v-card-text>
-            <p>
-              Aucun vote n'est en cours pour le moment.
-            </p>
-            <p>
-              Revenez plus tard !
-            </p>
-          </v-card-text>
+    <div v-else-if="filteredItems.length === 0" class="list-empty">
+      <v-icon size="40" color="grayLight">mdi-vote-outline</v-icon>
+      <p class="text-subtitle-1 font-weight-medium mt-2 mb-1">Aucun vote en cours</p>
+      <p class="text-body-2 text-medium-emphasis">
+        Quand une de vos structures ouvrira un vote, il apparaîtra ici.
+      </p>
+    </div>
+
+    <v-row v-else>
+      <v-col v-for="campaign in filteredItems" :key="campaign.id" cols="12" sm="6" lg="4">
+        <v-card class="h-100 d-flex flex-column" variant="outlined">
+          <v-card-item>
+            <v-card-subtitle class="mb-1">{{ campaign.structure.name }}</v-card-subtitle>
+            <v-card-title class="text-subtitle-1 font-weight-bold text-wrap">{{ campaign.name }}</v-card-title>
+            <template v-slot:append>
+              <campaign-state-chip :state="campaign.state"></campaign-state-chip>
+            </template>
+          </v-card-item>
+          <v-spacer></v-spacer>
+          <v-card-actions v-if="campaign.state === 'opened'">
+            <v-btn color="primary" variant="flat" block append-icon="mdi-arrow-right"
+              :to="{ name: 'votes.show', params: { id: campaign.id } }">
+              Accéder au vote
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
+import CampaignStateChip from "../Campaigns/StateChip.vue";
 
 export default {
   name    : "VotesIndex",
+  components: {CampaignStateChip},
   computed: {
     ...mapGetters('votesStore', {
       items  : 'getItems',

@@ -1,13 +1,13 @@
 <template>
     <v-container style="max-width: 1200px;">
         <v-card class="mb-5" rounded>
-            <v-img variant="elevated" src="" class="cover bg-primary" cover style="overflow: visible;">
-                <v-avatar size="150" color="grey" class="avatar" variant="elevated">
-                    <v-img :src="getAvatar" alt="John"></v-img>
+            <div class="cover">
+                <v-avatar size="150" color="grayLighter" class="avatar elevation-5">
+                    <v-img v-if="profile.id" :src="getAvatar" :alt="`${profile.firstname} ${profile.lastname}`" cover></v-img>
                 </v-avatar>
-            </v-img>
+            </div>
             <v-card-text class="userInfos">
-                <h2 class="display-1">
+                <h2 class="display-1 mb-3">
                     {{ this.profile.lastname }} {{ this.profile.firstname }}
                 </h2>
 
@@ -15,7 +15,7 @@
                     prepend-icon="mdi-pencil">Modifier mon profil</v-btn>
                 <v-chip class="mr-2" prepend-icon="mdi-tag">{{ getLevel }}</v-chip>
                 <v-chip class="mr-2" prepend-icon="mdi-id-card">{{ getId }}</v-chip>
-                <v-chip class="mr-2" color="green" variant="flat" v-for="role in this.roles">{{ role }}</v-chip>
+                <v-chip class="mr-2" color="primary" variant="tonal" v-for="role in this.roles" :key="role">{{ roleLabel(role) }}</v-chip>
             </v-card-text>
         </v-card>
 
@@ -26,55 +26,30 @@
                         Cotisations
                     </v-card-title>
                     <v-card-text>
-                        <v-chip class="mr-2" :color="hasPaidFeeForYear(year) ? 'green' : 'red'" variant="flat"
-                            v-for="year in this.years">
+                        <v-chip class="mr-2 mb-2" :color="hasPaidFeeForYear(year) ? 'success' : 'error'" variant="tonal"
+                            v-for="year in this.years" :key="year"
+                            :prepend-icon="hasPaidFeeForYear(year) ? 'mdi-check-circle' : 'mdi-close-circle'"
+                            :aria-label="`${year} : ${hasPaidFeeForYear(year) ? 'payée' : 'non payée'}`">
                             {{ year }}
                         </v-chip>
+                        <p class="text-caption text-medium-emphasis mt-1">
+                            <v-icon size="small">mdi-check-circle</v-icon> payée
+                            <v-icon size="small" class="ms-3">mdi-close-circle</v-icon> non payée
+                        </p>
                     </v-card-text>
                 </v-card>
 
-                <v-card class="mb-5" variant="elevated">
-                    <v-list lines="one">
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Prénom</v-list-item-title>
-                                <v-list-item-subtitle>{{ this.profile.firstname }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Nom</v-list-item-title>
-                                <v-list-item-subtitle>{{ this.profile.lastname }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Email</v-list-item-title>
-                                <v-list-item-subtitle>{{ this.profile.email }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Date de naissance</v-list-item-title>
-                                <v-list-item-subtitle>{{ this.profile.birthdate }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Téléphone</v-list-item-title>
-                                <v-list-item-subtitle>{{ this.profile.phone_1 }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>Adresse</v-list-item-title>
-                                <v-list-item-subtitle>{{ this.profile.address_1 }}, {{ this.profile.zipcode }}, {{
-                        this.profile.town }}</v-list-item-subtitle>
-                            </v-list-item-content>
+                <v-card class="mb-5">
+                    <v-card-title>Coordonnées</v-card-title>
+                    <v-list lines="two" density="compact">
+                        <v-list-item v-for="row in identityRows" :key="row.label">
+                            <v-list-item-subtitle>{{ row.label }}</v-list-item-subtitle>
+                            <v-list-item-title class="text-wrap" :class="{ 'text-medium-emphasis': !row.value }">
+                                {{ row.value || 'Non renseigné' }}
+                            </v-list-item-title>
                         </v-list-item>
                     </v-list>
                 </v-card>
-
 
                 <v-card>
                     <v-card-title>
@@ -84,6 +59,9 @@
                     <v-list lines="one">
                         <v-list-item v-for="gratitude in this.gratitudes" :key="gratitude.id" :title="gratitude.level"
                             :subtitle="formatDate(gratitude.start_at)">
+                        </v-list-item>
+                        <v-list-item v-if="!gratitudes || gratitudes.length === 0" class="text-medium-emphasis">
+                            Aucune reconnaissance enregistrée.
                         </v-list-item>
                     </v-list>
                 </v-card>
@@ -101,9 +79,9 @@
                                     Fonction
                                 </th>
                                 <th class="text-left">
-                                    Eglise
+                                    Église
                                 </th>
-                                <th>Dates</th>
+                                <th class="text-left">Dates</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -111,6 +89,9 @@
                                 <td>{{ phase.function }}</td>
                                 <td>{{ phase.church_name }}</td>
                                 <td>{{ formatRange(phase.start_at, phase.end_at) }}</td>
+                            </tr>
+                            <tr v-if="!phases || phases.length === 0">
+                                <td colspan="3" class="text-medium-emphasis">Aucun parcours enregistré.</td>
                             </tr>
                         </tbody>
                     </v-table>
@@ -123,25 +104,28 @@
                     <v-table>
                         <thead>
                             <tr>
-                                <th>Type</th>
+                                <th class="text-left">Type</th>
                                 <th class="text-left" colspan="2">
-                                    Eglise / Association
+                                    Église / Association
                                 </th>
-                                <th>Ville</th>
+                                <th class="text-left">Ville</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="structure in this.presidencies" :key="structure.id">
                                 <td width="50">
-                                    <v-icon>{{ getIcon(structure.mtype) }}</v-icon>
+                                    <v-icon :aria-label="structure.mtype === 'Church' ? 'Église' : 'Association'">{{ getIcon(structure.mtype) }}</v-icon>
                                 </td>
                                 <td width="40">
                                     <v-avatar size="40" color="grey">
-                                        <v-img :src="getLogo(structure.id)" alt="Logo"></v-img>
+                                        <v-img :src="getLogo(structure.id)" alt=""></v-img>
                                     </v-avatar>
                                 </td>
                                 <td>{{ structure.name }}</td>
                                 <td>{{ structure.zipcode }} {{ structure.town }}</td>
+                            </tr>
+                            <tr v-if="!presidencies || presidencies.length === 0">
+                                <td colspan="4" class="text-medium-emphasis">Aucune présidence en cours.</td>
                             </tr>
                         </tbody>
                     </v-table>
@@ -168,6 +152,18 @@ export default {
             presidencies: 'getPresidences',
             fees: 'getFees',
         }),
+        identityRows: function () {
+            const p = this.profile || {};
+            const address = [p.address_1, [p.zipcode, p.town].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+            return [
+                { label: 'Prénom', value: p.firstname },
+                { label: 'Nom', value: p.lastname },
+                { label: 'E-mail', value: p.email },
+                { label: 'Date de naissance', value: p.birthdate ? this.formatDate(p.birthdate) : null },
+                { label: 'Téléphone', value: p.phone_1 },
+                { label: 'Adresse', value: address },
+            ];
+        },
         getAvatar: function () {
             return "/avatars/" + this.profile.id + ".png";
         },
@@ -183,7 +179,7 @@ export default {
                 let mostRecentGratitude = my_gratitudes.sort((a, b) => new Date(b.start_at) - new Date(a.start_at))[0];
                 return mostRecentGratitude.level;
             }
-            return "Info indisponible";
+            return "Reconnaissance non renseignée";
         },
     },
     methods: {
@@ -217,6 +213,10 @@ export default {
                 return 'mdi-office-building';
             }
         },
+        roleLabel(role) {
+            const labels = { admin: 'Administrateur', moderator: 'Modérateur' };
+            return labels[role] || role;
+        },
         hasPaidFeeForYear(year) {
             return this.fees.filter(fee => fee.what === year.toString()).length > 0;
         },
@@ -241,9 +241,18 @@ export default {
 <style scoped>
 /** MOBILE FIRST */
 .cover {
-    height: 200px;
-    position: relative;
-    margin-bottom: 50px;
+  height: 200px;
+  position: relative;
+  margin-bottom: 80px;
+
+  border-radius: 10px 10px 0 0;
+
+  background: linear-gradient(
+      135deg,
+      #6E7BD8 0%,
+      #A866A4 50%,
+      #F44C47 100%
+  );
 }
 
 .avatar {

@@ -1,41 +1,28 @@
-version: '2'
 services:
   app:
+    env_file: .env
     container_name: funadf_app
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
     entrypoint: ./docker-rails.sh
     depends_on:
       - db
-      - vite
-    environment:
-      RAILS_ENV: development
-      VITE_RUBY_HOST: vite
     ports:
       - '3000:3000'
+      - '3036:3036'
     volumes:
       - .:/app
     extends:
       file: ./docker/mysql/password.yml
       service: password
-
-  vite:
-    container_name: funadf_vite
-    build:
-      context: .
-      dockerfile: ./docker/rails/Dockerfile
-    entrypoint: ./docker-vite.sh
-    environment:
-      DEBUG: '*vite*'
-      RAILS_ENV: development
-      VITE_RUBY_HOST: 0.0.0.0
-    ports:
-      - "3036:3036"
-    volumes:
-      - .:/app
+    profiles:
+      - production
+      - local
   db:
     container_name: funadf_db
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
@@ -46,6 +33,56 @@ services:
     extends:
       file: ./docker/mysql/password.yml
       service: password
+    profiles:
+      - production
+      - local
+  redis:
+    image: redis:7-alpine
+    container_name: funadf_redis
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - funadf_redis_data:/data
+    # --save "" : snapshots RDB desactives, la persistance est assuree par l'AOF.
+    # Le fork de BGSAVE segfaultait (THP=always sur l'hote), ce qui bloquait
+    # toutes les ecritures via stop-writes-on-bgsave-error et gelait Sidekiq.
+    command: [ "redis-server", "--appendonly", "yes", "--appendfilename", "appendonly.aof", "--dir", "/data", "--save", "", "--requirepass", "${REDIS_PASSWORD:?REDIS_PASSWORD manquant dans .env}" ]
+    profiles:
+      - local
+      - production
+
+  sidekiq:
+    container_name: funadf_sidekiq
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/rails/Dockerfile
+    entrypoint: ./docker-sidekiq.sh
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+    env_file: .env
+    profiles:
+      - local
+      - production
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: funadf_portainer
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    restart: always
+    profiles:
+      - production
 
 volumes:
   funadf_db:
+  funadf_redis_data:
+  portainer_data:

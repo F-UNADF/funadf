@@ -1,4 +1,4 @@
-FROM ruby:2.7.8-bullseye
+FROM ruby:3.2.4-bullseye
 
 ENV BUNDLER_VERSION=2.3.13
 ENV PYTHONPATH=/usr/bin/python3
@@ -13,7 +13,8 @@ RUN apt-get update -qq && \
                        libfontconfig1 \
                        xfonts-base \
                        xfonts-75dpi \
-                       wkhtmltopdf
+                       wkhtmltopdf \
+                       git
 
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs build-essential
@@ -26,17 +27,11 @@ ADD Gemfile.lock /app/Gemfile.lock
 RUN gem install bundler -v "$BUNDLER_VERSION" && bundle install -j4
 
 ADD package.json /app/package.json
-RUN npm install --force
-RUN npm install --global yarn
+RUN npm install
 
 ADD . /app
-
-RUN groupadd -g 1000 funadf && useradd -m -u 1000 -g funadf funadf
-RUN chown -R funadf:funadf /app
-
 # Assure-toi que wkhtmltopdf est accessible à l'utilisateur funadf
 RUN chmod +x /usr/bin/wkhtmltopdf
 
-USER funadf
 
 EXPOSE 3000

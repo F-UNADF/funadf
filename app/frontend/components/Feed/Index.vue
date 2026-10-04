@@ -1,16 +1,16 @@
 <template>
-  <v-container>
-    <v-row justify="start">
-      <v-col cols="12" lg="8" md="6" sm="12">
+  <v-row class="feed">
+    <v-col cols="12" md="7" lg="8">
+      <div class="feed__posts">
         <PostList></PostList>
-      </v-col>
-      <v-col cols="12" md="6" sm="12">
-        <div class="events bg-white ps-5">
-          <EventList></EventList>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+      </div>
+    </v-col>
+    <v-col cols="12" md="5" lg="4">
+      <aside class="feed__events" aria-labelledby="feed-events-title">
+        <EventList></EventList>
+      </aside>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -27,30 +27,15 @@ export default {
 </script>
 
 <style scoped>
-.events {
-  padding-right: 15px;
-  overflow-y: scroll;
+.feed__posts {
+  max-width: 760px;
 }
 
-/* For large and medium screens */
-@media (min-width: 960px) { /* Adjust this value according to your breakpoints */
-  .events {
-    position: fixed;
-    width: 350px;
-    padding-top: 80px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    border-left: solid 1px #ccc;
+/* La colonne des événements reste visible pendant qu'on fait défiler le fil */
+@media (min-width: 960px) {
+  .feed__events {
+    position: sticky;
+    top: 88px;
   }
 }
-
-/* For small screens */
-@media (max-width: 960px) { /* Adjust this value according to your breakpoints */
-  .events {
-    position: static;
-  }
-}
-
-
 </style>

@@ -2,30 +2,30 @@ import axios from "axios";
 
 // initial state
 const state = () => ({
-    items       : [],
-    item        : {},
-    loading     : false,
-    formLoading : false,
+    items: [],
+    item: {},
+    loading: false,
+    formLoading: false,
     referentiels: [],
-    dialogForm  : false,
+    dialogForm: false,
 });
 
 // getters
 const getters = {
-    getItems       : (state) => state.items,
-    getItem        : (state) => state.item,
-    getLoading     : (state) => state.loading,
-    getFormLoading : (state) => state.formLoading,
+    getItems: (state) => state.items,
+    getItem: (state) => state.item,
+    getLoading: (state) => state.loading,
+    getFormLoading: (state) => state.formLoading,
     getReferentiels: (state) => state.referentiels,
-    getDialogForm  : (state) => state.dialogForm,
+    getDialogForm: (state) => state.dialogForm,
 };
 
 // actions
 const actions = {
-    items       : function ({commit}) {
+    items: function ({ commit }, payload) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
-            axios.get('/api/events', {}).then((res) => {
+            axios.get('/api/events', { params: payload }).then((res) => {
                 commit('setItems', res.data.events);
                 commit('setLoading', false);
                 resolve(res);
@@ -34,7 +34,7 @@ const actions = {
             });
         });
     },
-    item        : function ({commit}, id) {
+    item: function ({ commit }, id) {
         return new Promise((resolve, reject) => {
             axios.get('/api/events/' + id, {}).then((res) => {
                 let event = res.data.event;
@@ -48,11 +48,11 @@ const actions = {
             });
         });
     },
-    save        : function ({
-                                dispatch,
-                                commit,
-                                state
-                            }, item) {
+    save: function ({
+        dispatch,
+        commit,
+        state
+    }, item) {
         return new Promise((resolve, reject) => {
             if (item.event.id) {
                 axios.patch('/api/events/' + item.event.id, item, {
@@ -81,10 +81,10 @@ const actions = {
             }
         });
     },
-    delete      : function ({ dispatch,
-                                commit,
-                                state
-                            }, id) {
+    delete: function ({ dispatch,
+        commit,
+        state
+    }, id) {
         return new Promise((resolve, reject) => {
             axios.delete('/api/events/' + id, {}).then((res) => {
                 commit('removeItemInItemsById', id);
@@ -94,11 +94,11 @@ const actions = {
             });
         });
     },
-    deleteFile  : function ({
-                                dispatch,
-                                commit,
-                                state
-                            }, id) {
+    deleteFile: function ({
+        dispatch,
+        commit,
+        state
+    }, id) {
         return new Promise((resolve, reject) => {
             axios.delete('/api/files/' + id, {}).then((res) => {
                 resolve(res);
@@ -107,9 +107,9 @@ const actions = {
             });
         });
     },
-    referentiels: function ({commit}) {
+    referentiels: function ({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            axios.get('/api/referentiels/events', {}).then((res) => {
+            axios.get('/api/referentiels/events', { params: payload }).then((res) => {
                 commit('setReferentiels', res.data);
                 resolve(res);
             }).catch((error) => {
@@ -121,13 +121,13 @@ const actions = {
 
 // mutations
 const mutations = {
-    setItems             : (state, payload) => state.items = payload,
-    setItem              : (state, payload) => state.item = payload,
-    setLoading           : (state, payload) => state.loading = payload,
-    setReferentiels      : (state, payload) => state.referentiels = payload,
-    setDialogForm        : (state, payload) => state.dialogForm = payload,
-    setFormLoading       : (state, payload) => state.formLoading = payload,
-    setItemInItemsById   : function (state, item) {
+    setItems: (state, payload) => state.items = payload,
+    setItem: (state, payload) => state.item = payload,
+    setLoading: (state, payload) => state.loading = payload,
+    setReferentiels: (state, payload) => state.referentiels = payload,
+    setDialogForm: (state, payload) => state.dialogForm = payload,
+    setFormLoading: (state, payload) => state.formLoading = payload,
+    setItemInItemsById: function (state, item) {
         if (typeof item !== 'object') {
             item = JSON.parse(item);
         }

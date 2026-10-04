@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_11_080222) do
+ActiveRecord::Schema.define(version: 2026_07_06_000000) do
 
   create_table "accesses", charset: "utf8", force: :cascade do |t|
     t.string "resource_type"
@@ -85,15 +85,6 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.index ["post_id"], name: "index_attachments_on_post_id"
   end
 
-  create_table "attendees", charset: "latin1", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "meeting_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["meeting_id"], name: "index_attendees_on_meeting_id"
-    t.index ["user_id"], name: "index_attendees_on_user_id"
-  end
-
   create_table "backups", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -146,6 +137,15 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.index ["structure_id"], name: "index_categories_on_structure_id"
   end
 
+  create_table "device_tokens", charset: "latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "token"
+    t.string "platform"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_device_tokens_on_user_id"
+  end
+
   create_table "documents", charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -182,36 +182,17 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.index ["member_type", "member_id"], name: "index_fees_on_member_type_and_member_id"
   end
 
-  create_table "intranets", id: :integer, charset: "utf8", force: :cascade do |t|
-    t.string "subdomain"
-    t.integer "structure_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["structure_id"], name: "index_intranets_on_structure_id"
+  create_table "job_runs", charset: "latin1", force: :cascade do |t|
+    t.string "job_name"
+    t.datetime "ran_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "jwt_denylist", charset: "utf8", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
-  end
-
-  create_table "marriages", charset: "utf8", force: :cascade do |t|
-    t.integer "husband_id"
-    t.integer "wife_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["husband_id"], name: "index_marriages_on_husband_id"
-    t.index ["wife_id"], name: "index_marriages_on_wife_id"
-  end
-
-  create_table "meetings", id: :integer, charset: "utf8", force: :cascade do |t|
-    t.string "name"
-    t.date "begin_at"
-    t.date "end_at"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "memberships", charset: "utf8", force: :cascade do |t|
@@ -240,11 +221,21 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.index ["campaign_id"], name: "index_motions_on_campaign_id"
   end
 
-  create_table "notifications", id: :integer, charset: "utf8", force: :cascade do |t|
-    t.string "title"
-    t.string "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "notifications", charset: "latin1", force: :cascade do |t|
+    t.string "recipient_type"
+    t.bigint "recipient_id"
+    t.string "sender_type"
+    t.bigint "sender_id"
+    t.string "notifiable_type"
+    t.bigint "notifiable_id"
+    t.string "action"
+    t.boolean "read"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "notified_at"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
+    t.index ["sender_type", "sender_id"], name: "index_notifications_on_sender"
   end
 
   create_table "posts", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -253,8 +244,20 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.integer "structure_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "pinned"
+    t.boolean "pinned", default: false
+    t.datetime "published_at"
+    t.datetime "expired_at"
+    t.index ["pinned"], name: "index_posts_on_pinned"
     t.index ["structure_id"], name: "index_posts_on_structure_id"
+  end
+
+  create_table "push_notifications", charset: "latin1", force: :cascade do |t|
+    t.string "title"
+    t.string "body"
+    t.string "url"
+    t.datetime "sent_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "roles", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -263,6 +266,17 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.string "short_descriptions"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "sso_tokens", charset: "latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "token", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "used_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["token"], name: "index_sso_tokens_on_token", unique: true
+    t.index ["user_id"], name: "index_sso_tokens_on_user_id"
   end
 
   create_table "structures", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -279,6 +293,7 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
     t.string "email"
     t.float "longitude"
     t.float "latitude"
+    t.string "website"
   end
 
   create_table "uploads", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -368,11 +383,12 @@ ActiveRecord::Schema.define(version: 2025_03_11_080222) do
   add_foreign_key "api_tokens", "users"
   add_foreign_key "attachments", "posts"
   add_foreign_key "categories", "categories"
+  add_foreign_key "device_tokens", "users"
   add_foreign_key "documents", "categories"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "structures"
-  add_foreign_key "intranets", "structures"
   add_foreign_key "memberships", "roles"
   add_foreign_key "posts", "structures"
+  add_foreign_key "sso_tokens", "users"
   add_foreign_key "voting_tables", "campaigns"
 end

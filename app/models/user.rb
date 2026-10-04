@@ -6,12 +6,13 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
-         :omniauthable, :recoverable, :rememberable, :trackable, :validatable,
-         :validate_on_invite => true, omniauth_providers: [:google_oauth2]
+         :recoverable, :rememberable, :trackable, :validatable,
+         :validate_on_invite => true
 
   has_many :memberships, as: :member
   has_many :associations, through: :memberships, source: :structure
   has_many :churches, through: :memberships, source: :structure
+  has_many :regions, through: :memberships, source: :structure
   has_many :roles, through: :memberships
 
   has_one_attached :avatar
@@ -25,6 +26,10 @@ class User < ActiveRecord::Base
 
   has_many :fees, as: :member, dependent: :destroy
 
+  has_many :notifications, as: :recipient, dependent: :destroy
+  has_many :api_tokens, dependent: :destroy
+  has_many :sso_tokens, dependent: :destroy
+
   accepts_nested_attributes_for :careers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :gratitudes, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :phases, reject_if: :all_blank, allow_destroy: true
@@ -33,16 +38,42 @@ class User < ActiveRecord::Base
 
   validates :firstname, :lastname, presence: true
 
-  scope :enabled, -> { where.not(disabled: true) }
-  scope :disabled, -> { where(disabled: true) }
+  scope :enabled, -> { where(disabled: 0) }
+  scope :disabled, -> { where(disabled: 1) }
 
-  has_one :wife_marriage, class_name: 'Marriage', foreign_key: :wife_id
-  has_one :husband, class_name: 'User', through: :wife_marriage
-  accepts_nested_attributes_for :wife_marriage, reject_if: :all_blank, allow_destroy: true
+  scope :with_current_level_in, ->(levels) {
+    joins(<<~SQL)
+      INNER JOIN (
+        SELECT c1.*
+        FROM careers c1
+        INNER JOIN (
+          SELECT user_id, MAX(start_at) AS max_start_at
+          FROM careers
+          WHERE level IS NOT NULL
+          GROUP BY user_id
+        ) c2 ON c1.user_id = c2.user_id AND c1.start_at = c2.max_start_at
+        WHERE c1.level IS NOT NULL
+      ) AS recent_careers ON recent_careers.user_id = users.id
+    SQL
+    .where("recent_careers.level IN (?)", levels)
+  }
 
-  has_one :husband_marriage, class_name: 'Marriage', foreign_key: :husband_id
-  has_one :wife, class_name: 'User', through: :husband_marriage
-  accepts_nested_attributes_for :husband_marriage, reject_if: :all_blank, allow_destroy: true
+  has_many :device_tokens, dependent: :destroy
+
+  # Jetons et secrets jamais exposés dans une réponse JSON (en plus de la liste de Devise).
+  SECRET_ATTRIBUTES = %w[encrypted_password reset_password_token invitation_token
+                         access_token authentication_token fcm_token].freeze
+
+  def serializable_hash(options = nil)
+    options = (options || {}).dup
+    options[:except] = Array(options[:except]).map(&:to_s) | SECRET_ATTRIBUTES
+    super(options)
+  end
+
+  # Attributs bruts (y compris les colonnes calculées d'un `select`) sans les secrets.
+  def public_attributes
+    attributes.except(*SECRET_ATTRIBUTES)
+  end
 
   before_validation :clean_name_attributes
 
@@ -140,7 +171,7 @@ class User < ActiveRecord::Base
   end
 
   def structures
-    Structure.where(id: (associations + churches))
+    Structure.where(id: (associations + churches + regions))
   end
 
   def get_presidences
@@ -156,6 +187,13 @@ class User < ActiveRecord::Base
   def associations_responsabilities
     Structure.joins(memberships: :role)
              .where(type: 'Association')
+             .where(roles: { name: %w[president secretary treasurer director] })
+             .where(memberships: { member_type: 'User', member_id: self.id })
+  end
+
+  def regions_responsabilities
+    Structure.joins(memberships: :role)
+             .where(type: 'Region')
              .where(roles: { name: %w[president secretary treasurer director] })
              .where(memberships: { member_type: 'User', member_id: self.id })
   end
@@ -314,14 +352,10 @@ class User < ActiveRecord::Base
     true
   end
 
-  def self.accept_invitation!(attributes = {})
-    invitable = find_by(invitation_token: attributes[:invitation_token])
-    if invitable.errors.empty?
-      invitable.assign_attributes(attributes)
-      invitable.accept_invitation!
-    end
-    invitable
-  end
+  # User.accept_invitation! : on garde la version de devise_invitable, qui cherche
+  # l'empreinte du jeton et renvoie une erreur si le jeton est absent ou invalide.
+  # (L'ancienne surcharge cherchait `invitation_token: nil` sans jeton et laissait
+  # changer le mot de passe du premier compte venu.)
 
   def my_roles
     roles
@@ -335,22 +369,6 @@ class User < ActiveRecord::Base
     hash = Digest::MD5.hexdigest(self.email)
 
     return "https://www.gravatar.com/avatar/#{hash}"
-  end
-
-  def wife_fullname
-    f = nil
-    if wife
-      f = wife.fullname
-    end
-    f
-  end
-
-  def husband_fullname
-    f = nil
-    if husband
-      f = husband.fullname
-    end
-    f
   end
 
   def get_avatar_url size = [150, 150]
@@ -373,21 +391,12 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.from_omniauth(access_token)
-    data = access_token.info
-    user = User.where(email: data['email']).first
-
-    user
-  end
-
   def self.allowed_params params
     if params[:user][:password].blank?
       params[:user].except(:id, :encrypted_password, :sign_in_count, :created_at, :updated_at, :invitations_count, :disabled, :authentication_token)
                    .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2,
                            :email, :birthdate, :avatar, :biography, :fcm_token, :push_enabled,
-                           husband_marriage_attributes: [:husband_id, :wife_id],
-                           wife_marriage_attributes: [:husband_id, :wife_id],
                            fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
                            gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                            phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],
@@ -397,8 +406,6 @@ class User < ActiveRecord::Base
                    .permit(:firstname, :lastname, :avatar, :address_1,
                            :address_2, :zipcode, :town, :phone_1, :phone_2, :biography,
                            :email, :birthdate, :password, :password_confirmation, :avatar, :fcm_token, :push_enabled,
-                           husband_marriage_attributes: [:husband_id, :wife_id],
-                           wife_marriage_attributes: [:husband_id, :wife_id],
                            fees_attributes: [:id, :what, :paid_at, :amount, :_destroy],
                            gratitudes_attributes: [:id, :level, :referent_id, :start_at, :_destroy],
                            phases_attributes: [:id, :church_id, :function, :start_at, :end_at, :_destroy],

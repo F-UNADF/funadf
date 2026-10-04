@@ -109,7 +109,6 @@ const mutations = {
   setReferentiels: (state, payload) => (state.referentiels = payload),
   setDialogForm: (state, payload) => (state.dialogForm = payload),
   setFormLoading: (state, payload) => (state.formLoading = payload),
-  setReferentiels: (state, paypload) => (state.referentiel = paypload),
   setItemInItemsById: function (state, item) {
     if (typeof item !== "object") {
       item = JSON.parse(item);

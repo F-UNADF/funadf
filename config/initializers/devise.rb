@@ -84,9 +84,4 @@ Devise.setup do |config|
   # Devise::Mailer.layout "mailer"
 
   config.mailer = 'DeviseMailer'
-
-  config.omniauth :google_oauth2, Rails.application.secrets.google_client_id,
-                  Rails.application.secrets.google_client_secret, {}
-
-  config.omniauth_path_prefix = "/users/auth"
 end

@@ -16,124 +16,72 @@ class Api::VotesController < ApiController
     @structure = Structure.find(@campaign.structure_id)
     @user = current_user
 
-    sql = "
-      SELECT
-          s2.name as name,
-          s2.town,
-          m.member_id AS resource_id,
-          m.member_type AS resource_type,
-          m.can_vote,
-          (vt.voting <> 'count') AS is_consultative,
-          (SELECT COALESCE(COUNT(v.resource_id), 0)
-            FROM voters v
-            JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
-            WHERE v.resource_id = s2.id AND v.resource_type = 'Structure'
-            GROUP BY v.resource_id, v.resource_type) AS has_voted
-      FROM campaigns c
-      JOIN structures s ON s.id = c.structure_id
-      JOIN memberships m ON m.structure_id = s.id
-      JOIN structures s2 ON s2.id = m.member_id
-      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Eglises' AND vt.as_member = 1
-      WHERE c.id = :campaign_id
-      AND m.member_type = 'Structure'
-      AND m.member_id IN(
-          SELECT s.id
-          FROM users u
-          JOIN memberships m ON m.member_type = 'User' AND m.member_id = u.id
-          JOIN structures s ON s.id = m.structure_id
-          JOIN roles r ON r.id = m.role_id
-          WHERE u.id = :user_id
-          AND r.name = 'president'
-          AND s.`type` = 'Church'
-      )
-      UNION
-      SELECT
-          s2.name as name,
-          s2.town,
-          m.member_id AS resource_id,
-          m.member_type AS resource_type,
-          m.can_vote,
-          (vt.voting <> 'count') AS is_consultative,
-          (SELECT COALESCE(COUNT(v.resource_id), 0)
-            FROM voters v
-            JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
-            WHERE v.resource_id = s2.id AND v.resource_type = 'Structure'
-            GROUP BY v.resource_id, v.resource_type) AS has_voted
-      FROM campaigns c
-      JOIN structures s ON s.id = c.structure_id
-      JOIN memberships m ON m.structure_id = s.id
-      JOIN structures s2 ON s2.id = m.member_id
-      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = 'Oeuvres' AND vt.as_member = 1
-      WHERE c.id = :campaign_id
-      AND m.member_type = 'Structure'
-      AND m.member_id IN(
-          SELECT s.id
-          FROM users u
-          JOIN memberships m ON m.member_type = 'User' AND m.member_id = u.id
-          JOIN structures s ON s.id = m.structure_id
-          JOIN roles r ON r.id = m.role_id
-          WHERE u.id = :user_id
-          AND r.name = 'president'
-          AND s.`type` = 'Association'
-      )
-      UNION
-      SELECT
-          CONCAT(u.firstname, ' ', u.lastname) as name,
-          u.town,
-          m.member_id AS resource_id,
-          m.member_type AS resource_type,
-          m.can_vote,
-          (vt.voting <> 'count') AS is_consultative,
-          (SELECT COALESCE(COUNT(v.resource_id), 0)
-            FROM voters v
-            JOIN motions m ON m.id = v.motion_id AND m.campaign_id = :campaign_id
-            WHERE v.resource_id = u.id AND v.resource_type = 'User'
-            GROUP BY v.resource_id, v.resource_type) AS has_voted
-      FROM campaigns c
-      JOIN structures s ON s.id = c.structure_id
-      JOIN memberships m ON m.structure_id = s.id
-      JOIN users u ON u.id = m.member_id AND m.member_type = 'User'
-      JOIN voting_tables vt ON vt.campaign_id = c.id AND vt.`position` = :user_level
-      WHERE c.id = :campaign_id
-      AND u.id = :user_id"
-
-    results = Campaign.find_by_sql([sql, campaign_id: @campaign.id, user_id: @user.id, user_level: @user.level])
+    results = @campaign.ballots_for(@user)
 
 
     render json: { 
       campaign: @campaign.as_json, 
       structure: @campaign.structure, 
       motions: @campaign.motions.as_json, 
-      voters: results.as_json, 
-      meeting: @campaign.meeting,
-      present: (!@campaign.meeting.present? || @campaign.meeting.user_is_present?(@user))
+      voters: results.as_json,
+      present: true,
     }
   end
 
+  # POST /api/votes { campaign_id, voters: [{resource_id, resource_type, selected}], results: [{motion_id, vote}] }
+  # Seuls les bulletins calculés par le serveur pour l'utilisateur (ballots_for) sont acceptés :
+  # électeur, droit de vote et caractère consultatif ne viennent jamais du client.
   def create
-    params[:voters].each do |voter|
-      if voter[:selected] === true
-        params[:results].each do |vote|
-          exist_voter = Voter.where(motion_id: vote[:motion_id], resource_id: voter[:resource_id], resource_type: voter[:resource_type])
-          if exist_voter.blank?
-            Voter.create(motion_id: vote[:motion_id],
-                         voted_at: Time.now,
-                         ip: request.remote_ip,
-                         resource_id: voter[:resource_id],
-                         resource_type: voter[:resource_type])
+    motion_ids = Array(params[:results]).map { |vote| vote[:motion_id].to_i }
+    campaign   = params[:campaign_id].present? ? Campaign.find(params[:campaign_id]) : Motion.find_by(id: motion_ids.first)&.campaign
+    return render json: { status: 'error', error: 'Campaign not found' }, status: :not_found unless campaign
+    return render json: { status: 'error', error: 'Campaign is not opened' }, status: :unprocessable_entity unless campaign.opened?
 
-            if vote[:vote].kind_of?(Array)
-              vote[:vote].each do |v|
-                Vote.create(motion_id: vote[:motion_id], result: v, is_consultative: voter[:is_consultative])
-              end
-            else
-              Vote.create(motion_id: vote[:motion_id], result: vote[:vote], is_consultative: voter[:is_consultative])
-            end
-          end
+    motions = campaign.motions.index_by(&:id)
+    ballots = campaign.ballots_for(current_user)
+                      .select { |ballot| !sql_false?(ballot.can_vote) && ballot.has_voted.to_i.zero? }
+                      .index_by { |ballot| [ballot.resource_id.to_i, ballot.resource_type.to_s] }
+
+    Array(params[:voters]).each do |voter|
+      next unless voter[:selected] == true || voter[:selected].to_s == 'true'
+
+      ballot = ballots[[voter[:resource_id].to_i, voter[:resource_type].to_s]]
+      next unless ballot
+
+      Array(params[:results]).each do |vote|
+        motion = motions[vote[:motion_id].to_i]
+        next unless motion
+
+        exist_voter = Voter.where(motion_id: motion.id, resource_id: ballot.resource_id, resource_type: ballot.resource_type)
+        next if exist_voter.exists?
+
+        Voter.create(motion_id: motion.id,
+                     voted_at: Time.now,
+                     ip: request.remote_ip,
+                     resource_id: ballot.resource_id,
+                     resource_type: ballot.resource_type)
+
+        ballot_choices(motion, vote[:vote]).each do |choice|
+          Vote.create(motion_id: motion.id, result: choice, is_consultative: !sql_false?(ballot.is_consultative))
         end
       end
     end
     render json: { status: 'ok' }
   end
-end
 
+  private
+
+  # Booléen MySQL renvoyé par find_by_sql : 0 / 1, false / true ou NULL.
+  def sql_false?(value)
+    value == false || value.to_s == '0'
+  end
+
+  # Une seule voix par résolution, sauf choix multiple (au plus max_choice choix distincts).
+  def ballot_choices(motion, value)
+    if motion.kind == 'choices' && value.is_a?(Array)
+      value.map(&:to_s).uniq.first([motion.max_choice.to_i, 1].max)
+    else
+      [value.is_a?(Array) ? value.first : value]
+    end
+  end
+end

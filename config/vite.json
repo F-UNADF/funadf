@@ -1,14 +1,14 @@
 {
   "all": {
-    "sourceCodeDir": "app/frontend",
+    "sourceCodeDir": "/app/frontend",
     "publicOutputDir": "vite",
-    "watchAdditionalPaths": [],
-    "manifest": "/manifest.json"
+    "watchAdditionalPaths": []
   },
   "development": {
-    "autoBuild": true,
+    "autoBuild": false,
     "publicOutputDir": "vite-dev",
-    "host": "127.0.0.1",
+    "manifest": ".vite/manifest.json",
+    "host": "0.0.0.0",
     "port": 3036
   },
   "test": {
@@ -16,6 +16,7 @@
     "publicOutputDir": "vite-test"
   },
   "production": {
-    "publicOutputDir": "vite"
+    "publicOutputDir": "vite",
+    "manifest": ".vite/manifest.json"
   }
 }

@@ -1,17 +1,26 @@
 <template>
-  <v-navigation-drawer left elevation="10" mobile-breakpoint="960" app class="leftSidebar" :rail="false"
-    v-model="sidebarValue" rail-width="75">
-      <div class="pa-4">
+  <v-navigation-drawer
+      v-model="sidebarValue"
+      elevation="10"
+      class="leftSidebar"
+      :rail="false"
+      rail-width="75"
+      :temporary="isMobile"
+      :permanent="!isMobile"
+      :app="!isMobile"
+      :mobile-breakpoint="960"
+  >
+      <div class="px-0 my-5 w-100">
         <div class="logo">
-          <RouterLink to="/" justify-content-center>
-            <img src="../../images/logo.png" alt="Logo ADD" style="max-width: 100%; margin: 0 auto;" />
+          <RouterLink to="/" >
+            <img src="../../images/logo_plus.png" alt="Logo ADD+" style="max-width: 70%; display: block; margin: 0 auto;" />
           </RouterLink>
         </div>
       </div>
       <perfect-scrollbar class="scrollnavbar">
-        <v-list class="pa-4" color="transparent">
+        <v-list class="pa-4" color="transparent" aria-label="Menu principal">
           <template v-for="(item, i) in menu" :key="i">
-            <v-list-subheader v-if="item.header" style="border-bottom: solid 1px #e5e5e5" :key="'header-' + i">
+            <v-list-subheader v-if="item.header" class="sidebar-header" :key="'header-' + i">
               {{ item.header }}
             </v-list-subheader>
 
@@ -30,7 +39,7 @@
               <v-list-item v-for="(subitem, j) in item.children" :value="subitem.to" :key="'main'+i+'-sub-' + j" :to="subitem.to" rounded="lg"
                 class="first-level-item mb-1">
                 <template v-slot:prepend>
-                  <v-icon>disc</v-icon>
+                  <v-icon>mdi-circle-small</v-icon>
                 </template>
                 <v-list-item-title v-text="subitem.title"></v-list-item-title>
               </v-list-item>
@@ -99,6 +108,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isMobile: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     isCurrentUrl: function (url) {
@@ -123,4 +136,17 @@ export default {
 .scrollnavbar .v-list--one-line .v-list-item .v-list-item__prepend>.v-icon {
   margin-inline-end: 0;
 }
+
+.sidebar-header {
+  border-bottom: 1px solid rgb(var(--v-theme-border));
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 </style>

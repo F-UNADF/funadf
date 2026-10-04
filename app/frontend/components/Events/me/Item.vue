@@ -1,101 +1,31 @@
 <template>
-  <v-card variant="tonal" :color="event.event?.category?.color" @click="seeDetail()">
+  <v-card @click="seeDetail()" :aria-label="`${event.title}, voir le détail`">
     <v-card-item>
       <div class="d-flex gap-3 align-center">
-        <v-avatar size="40">
+        <v-avatar size="40" class="me-3">
           <img :src="'/logos/'+event.structure.id+'.png'" width="40" alt="avatar"/>
         </v-avatar>
         <div class="d-block d-sm-flex align-center gap-3">
-          <h6 class="text-h6">{{ event.structure.name }}</h6>
-          <v-icon size="x-small" :color="event.event?.category?.color">mdi-circle</v-icon>
-          <span class="text-subtitle-2 opacity-50">
-            {{ event.event?.category?.name }}
-          </span>
+          <div class="text-subtitle-2 font-weight-medium">
+            {{ event.structure.name }}
+            <span v-if="event.category?.name" class="text-caption text-medium-emphasis ms-1">
+              {{ event.category?.name }}
+            </span>
+          </div>
         </div>
       </div>
-      <div class="py-4 text-body-1 gap-3">
-        <h3>
-          {{ event.event.title }}
+      <div class="pt-3">
+        <h3 class="text-subtitle-1 font-weight-bold">
+          {{ event.title }}
         </h3>
-        <span class="text-subtitle-2 opacity-50">
-          Du {{ dateFormat(event.event.start_at) }} au {{ dateFormat(event.event.end_at) }}
+        <span class="text-body-2 text-medium-emphasis">
+          Du {{ dateFormat(event.start_at) }} au {{ dateFormat(event.end_at) }}
         </span>
       </div>
     </v-card-item>
 
-    <v-dialog v-model="detail" max-width="40%" min-height="30vh">
-      <v-card variant="outlined" class="bg-white" :color="event.event?.category?.color">
-        <v-card-title>
-          <v-avatar size="50" class="me-3">
-            <img :src="'/logos/'+event.structure.id+'.png'" width="50" alt="avatar"/>
-          </v-avatar>
-          {{ event.event?.title }}
-        </v-card-title>
-        <v-card-subtitle>
-          {{ event.event?.category?.name }}
-          <v-icon size="x-small" :color="event.event?.category?.color">mdi-circle</v-icon>
-          {{ event.structure.name }}
-        </v-card-subtitle>
-        <v-card-text>
-          <div v-html="event.event?.description"></div>
-
-          <v-row v-if="event?.images">
-            <v-col
-                v-for="(photo, index) in event?.images"
-                :key="index"
-                class="d-flex child-flex"
-                cols="4"
-            >
-              <v-img
-                  :src="photo"
-                  :lazy-src="photo"
-                  class="bg-grey-lighten-2"
-                  @click="window.open(photo, '_blank', 'noreferrer');"
-              >
-                <template v-slot:placeholder>
-                  <v-row
-                      class="fill-height ma-0"
-                      align="center"
-                      justify="center"
-                  >
-                    <v-progress-circular
-                        indeterminate
-                        color="grey-lighten-5"
-                    ></v-progress-circular>
-                  </v-row>
-                </template>
-              </v-img>
-            </v-col>
-          </v-row>
-
-          <v-row v-if="event?.attachments" class="pb-3">
-            <v-col
-                v-for="(attachment, index) in event?.attachments"
-                :key="index"
-                class="d-flex child-flex"
-                cols="4"
-            >
-              <v-btn
-                  :href="attachment"
-                  target="_blank"
-                  color="primary"
-                  variant="tonal"
-                  elevation="1"
-                  block>
-                <v-icon>mdi-download</v-icon>
-                <span style="white-space: normal;">
-                  {{ attachment.split('/').pop().substring(0,15)+"..." }}
-                </span>
-              </v-btn>
-
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="detail = false">Fermer</v-btn>
-        </v-card-actions>
-      </v-card>
+    <v-dialog v-model="detail" max-width="640">
+      <EventDetail :event="event" @close="detail = false" :isDialog="true" />
     </v-dialog>
   </v-card>
 </template>
@@ -103,6 +33,7 @@
 <script>
 
 import moment from "moment";
+import EventDetail from "@/components/Events/me/Detail.vue";
 
 export default {
   name   : "EventItem",
@@ -111,6 +42,9 @@ export default {
       type    : Object,
       required: true,
     },
+  },
+  components: {
+    EventDetail,
   },
   methods: {
     dateFormat: function (value) {

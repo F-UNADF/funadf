@@ -16,12 +16,11 @@ class Api::Me::EventsController < ApiController
     end
 
     event_with_urls = events.map do |event|
-      {
-        event:       event,
+      event.as_json.merge(
         images:      event.images.map { |image| url_for image },
         attachments: event.attachments.map { |file| url_for file },
         structure:   event.structure,
-      }
+      )
     end
 
     render json: { events: event_with_urls }

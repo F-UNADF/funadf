@@ -2,32 +2,32 @@ import axios from "axios";
 
 // initial state
 const state = () => ({
-    items       : [],
-    item        : {},
-    loading     : false,
-    formLoading : false,
+    items: [],
+    item: {},
+    loading: false,
+    formLoading: false,
     referentiels: [],
-    dialogForm  : false,
-    votersCount : 0,
+    dialogForm: false,
+    votersCount: 0,
 });
 
 // getters
 const getters = {
-    getItems       : (state) => state.items,
-    getItem        : (state) => state.item,
-    getLoading     : (state) => state.loading,
-    getFormLoading : (state) => state.formLoading,
+    getItems: (state) => state.items,
+    getItem: (state) => state.item,
+    getLoading: (state) => state.loading,
+    getFormLoading: (state) => state.formLoading,
     getReferentiels: (state) => state.referentiels,
-    getDialogForm  : (state) => state.dialogForm,
-    getVotersCount : (state) => state.votersCount,
+    getDialogForm: (state) => state.dialogForm,
+    getVotersCount: (state) => state.votersCount,
 };
 
 // actions
 const actions = {
-    items       : function ({commit}) {
+    items: function ({ commit }, payload) {
         commit('setLoading', true);
         return new Promise((resolve, reject) => {
-            axios.get('/api/campaigns', null).then((res) => {
+            axios.get('/api/campaigns', { params: payload }).then((res) => {
                 commit('setItems', res.data.campaigns);
                 commit('setLoading', false);
                 resolve(res);
@@ -36,7 +36,7 @@ const actions = {
             });
         });
     },
-    item        : function ({commit}, id) {
+    item: function ({ commit }, id) {
         return new Promise((resolve, reject) => {
             axios.get('/api/campaigns/' + id, {}).then((res) => {
                 let item = res.data.campaign;
@@ -53,38 +53,34 @@ const actions = {
             });
         });
     },
-    changeState : function ({dispatch}, {
+    changeState: function ({ dispatch }, {
         id,
         state
     }) {
-        console.log(state);
         return new Promise((resolve, reject) => {
-            axios.patch('/api/campaigns/' + id + '/change_state', {state_event: state}).then((res) => {
-                dispatch('items');
+            axios.patch('/api/campaigns/' + id + '/change_state', { state_event: state }).then((res) => {
                 resolve(res);
             }).catch((error) => {
                 reject(error, 2000);
             });
         });
     },
-    save        : function ({
-                                dispatch,
-                                commit,
-                                state
-                            }, item) {
+    save: function ({
+        dispatch,
+        commit,
+        state
+    }, item) {
         return new Promise((resolve, reject) => {
             if (item.id) {
-                axios.patch('/api/campaigns/' + item.id, {campaign: item}, {}).then((res) => {
-                    dispatch('items');
+                axios.patch('/api/campaigns/' + item.id, { campaign: item }, {}).then((res) => {
                     commit('setItem', res.data.campaign);
                     resolve(res.data.campaign);
                 }).catch((error) => {
                     reject(error, 2000);
                 });
             } else {
-                axios.post('/api/campaigns', {campaign: item}, {}).then((res) => {
+                axios.post('/api/campaigns', { campaign: item }, {}).then((res) => {
                     commit('setItem', res.data.campaign);
-                    dispatch('items');
                     resolve(res.data.campaign);
                 }).catch((error) => {
                     reject(error, 2000);
@@ -92,11 +88,11 @@ const actions = {
             }
         });
     },
-    delete      : function ({
-                                dispatch,
-                                commit,
-                                state
-                            }, id) {
+    delete: function ({
+        dispatch,
+        commit,
+        state
+    }, id) {
         return new Promise((resolve, reject) => {
             axios.delete('/api/campaigns/' + id, {}).then((res) => {
                 commit('removeItemInItemsById', id);
@@ -107,9 +103,9 @@ const actions = {
             });
         });
     },
-    referentiels: function ({commit}) {
+    referentiels: function ({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            axios.get('/api/referentiels/campaigns', {}).then((res) => {
+            axios.get('/api/referentiels/campaigns', { params: payload }).then((res) => {
                 commit('setReferentiels', res.data);
                 resolve(res);
             }).catch((error) => {
@@ -117,7 +113,7 @@ const actions = {
             });
         });
     },
-    votersCount : function ({commit}, id) {
+    votersCount: function ({ commit }, id) {
         return new Promise((resolve, reject) => {
             axios.get('/api/campaigns/' + id + '/voters_count', {}).then((res) => {
                 commit('setVotersCount', res.data.voters_count);
@@ -131,14 +127,14 @@ const actions = {
 
 // mutations
 const mutations = {
-    setItems             : (state, payload) => state.items = payload,
-    setItem              : (state, payload) => state.item = payload,
-    setLoading           : (state, payload) => state.loading = payload,
-    setReferentiels      : (state, payload) => state.referentiels = payload,
-    setDialogForm        : (state, payload) => state.dialogForm = payload,
-    setFormLoading       : (state, payload) => state.formLoading = payload,
-    setVotersCount       : (state, payload) => state.votersCount = payload,
-    setItemInItemsById   : function (state, item) {
+    setItems: (state, payload) => state.items = payload,
+    setItem: (state, payload) => state.item = payload,
+    setLoading: (state, payload) => state.loading = payload,
+    setReferentiels: (state, payload) => state.referentiels = payload,
+    setDialogForm: (state, payload) => state.dialogForm = payload,
+    setFormLoading: (state, payload) => state.formLoading = payload,
+    setVotersCount: (state, payload) => state.votersCount = payload,
+    setItemInItemsById: function (state, item) {
         if (typeof item !== 'object') {
             item = JSON.parse(item);
         }
