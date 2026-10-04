@@ -121,9 +121,11 @@ export default {
   methods: {
     newItem: function () {
       let newItem = {
+        id: null,
         name: '',
         structure_id: null,
         motions: [],
+        voting_tables: [],
         state: 'coming',
       };
       this.$store.commit('campaignsStore/setItem', newItem);

@@ -309,14 +309,27 @@ class User < ActiveRecord::Base
      'Enseignant']
   end
 
+  NO_LEVEL = 'Non renseigné'.freeze
+
+  # Reconnaissance la plus récente (à date égale, la dernière saisie).
   def level
-    g = gratitudes.order(start_at: :desc).first
+    g = gratitudes.order(start_at: :desc, id: :desc).first
 
     if g
       g.level
     else
-      'Non renseigné'
+      NO_LEVEL
     end
+  end
+
+  # Même règle que #level pour tous les utilisateurs en une requête : { user_id => niveau }.
+  # Les utilisateurs sans reconnaissance sont absents (niveau NO_LEVEL).
+  def self.current_levels(user_ids = nil)
+    careers = Career.where.not(level: nil)
+    careers = careers.where(user_id: user_ids) unless user_ids.nil?
+    careers.pluck(:user_id, :level, :start_at, :id)
+           .group_by(&:first)
+           .transform_values { |rows| rows.max_by { |_, _, start_at, id| [start_at ? 1 : 0, start_at || Date.new(1), id] }[1] }
   end
 
   def can_vote
