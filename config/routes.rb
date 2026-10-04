@@ -70,6 +70,7 @@ Rails.application.routes.draw do
     resources :memberships, only: [:update, :destroy]
     post '/memberships/:id/toggleCanVote', to: 'memberships#toggle_can_vote'
 
+    post '/campaigns/electorate', to: 'campaigns#electorate'
     resources :campaigns
     patch '/campaigns/:id/change_state', to: 'campaigns#change_state'
     get '/campaigns/:id/voters_count', to: 'campaigns#voters_count'

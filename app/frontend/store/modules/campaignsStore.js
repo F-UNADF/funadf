@@ -71,21 +71,20 @@ const actions = {
         state
     }, item) {
         return new Promise((resolve, reject) => {
-            if (item.id) {
-                axios.patch('/api/campaigns/' + item.id, { campaign: item }, {}).then((res) => {
-                    commit('setItem', res.data.campaign);
-                    resolve(res.data.campaign);
-                }).catch((error) => {
-                    reject(error, 2000);
-                });
-            } else {
-                axios.post('/api/campaigns', { campaign: item }, {}).then((res) => {
-                    commit('setItem', res.data.campaign);
-                    resolve(res.data.campaign);
-                }).catch((error) => {
-                    reject(error, 2000);
-                });
-            }
+            const request = item.id
+                ? axios.patch('/api/campaigns/' + item.id, { campaign: item }, {})
+                : axios.post('/api/campaigns', { campaign: item }, {});
+            request.then((res) => {
+                // L'API renvoie les erreurs de validation avec un HTTP 200 et status: 422
+                if (res.data.status && res.data.status !== 200) {
+                    reject({ response: { data: res.data } });
+                    return;
+                }
+                commit('setItem', res.data.campaign);
+                resolve(res.data.campaign);
+            }).catch((error) => {
+                reject(error, 2000);
+            });
         });
     },
     delete: function ({
@@ -112,6 +111,14 @@ const actions = {
                 reject(error, 2000);
             });
         });
+    },
+    // Membres de la structure organisatrice et estimation des votants pour la table
+    // des votes en cours de saisie (enregistrée ou non).
+    electorate: function (context, { structure_id, voting_tables }) {
+        return axios.post('/api/campaigns/electorate', {
+            structure_id,
+            voting_tables: (voting_tables || []).map(({ position, as_member, voting }) => ({ position, as_member, voting })),
+        }).then((res) => res.data);
     },
     votersCount: function ({ commit }, id) {
         return new Promise((resolve, reject) => {

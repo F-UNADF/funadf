@@ -6,12 +6,12 @@ require 'json'
 class FcmNotificationService
   SCOPE = 'https://www.googleapis.com/auth/firebase.messaging'
 
-  def initialize
+  def initialize(credentials_path = Rails.root.join('config', 'credential.json'))
     @credentials = Google::Auth::ServiceAccountCredentials.make_creds(
-      json_key_io: File.open(Rails.root.join('config', 'credential.json')),
+      json_key_io: File.open(credentials_path),
       scope: SCOPE
     )
-    @project_id = JSON.parse(File.read(Rails.root.join('config', 'credential.json')))['project_id']
+    @project_id = JSON.parse(File.read(credentials_path))['project_id']
   end
 
   def send_notification(token:, title:, body:, url:, badge: nil)

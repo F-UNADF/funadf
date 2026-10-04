@@ -62,11 +62,9 @@ class Api::PostsController < ApiController
     attachments = params[:post][:new_attachments]
     attachments = attachments.values if attachments.is_a?(ActionController::Parameters)
 
-    if attachments.present?
-      attachments.each do |file|
-        @post.files.attach(file)
-      end
-    end
+    # En une seule fois : sur une actu pas encore enregistrée, des attach successifs
+    # dupliquent les fichiers déjà attachés (Rails 6.1, replace_on_assign_to_many désactivé).
+    @post.files.attach(attachments) if attachments.present?
 
     # 2. Normaliser les accesses
     accesses = params[:post][:accesses]

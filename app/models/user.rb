@@ -239,39 +239,10 @@ class User < ActiveRecord::Base
     keys
   end
 
+  # Campagnes en cours où l'utilisateur a encore un bulletin à utiliser
+  # (y compris bloqué, pour qu'il voie pourquoi il ne peut pas voter).
   def eligible_campaign_ids
-    campaigns = Campaign.currents
-    presidences = get_presidences
-    campaign_ids = []
-
-    campaigns.each do |campaign|
-      presidences.each_with_index do |s, index|
-        if campaign.structure.is_member?(s)
-          if campaign.structure.member_can_vote?(s) && !campaign.has_already_vote?(s)
-            campaign_ids << campaign.id
-            break
-          elsif !campaign.structure.member_can_vote?(s)
-            campaign_ids << campaign.id
-            break
-          end
-        elsif campaign.structure_can_vote?(s, false) && !campaign.has_already_vote?(s)
-          campaign_ids << campaign.id
-          break
-        end
-      end
-
-      if campaign.structure.is_member?(self)
-        if campaign.structure.member_can_vote?(self) && campaign.user_can_vote?(self) && !campaign.has_already_vote?(self)
-          campaign_ids << campaign.id
-        elsif !campaign.structure.member_can_vote?(self)
-          campaign_ids << campaign.id
-        end
-      elsif campaign.user_can_vote?(self, false) && !campaign.has_already_vote?(self)
-        campaign_ids << campaign.id
-      end
-    end
-
-    campaign_ids
+    Campaign.currents.select { |campaign| campaign.ballots_for(self).any? { |ballot| ballot.has_voted.nil? } }.map(&:id)
   end
 
   def self.get_import_fields
@@ -338,14 +309,27 @@ class User < ActiveRecord::Base
      'Enseignant']
   end
 
+  NO_LEVEL = 'Non renseigné'.freeze
+
+  # Reconnaissance la plus récente (à date égale, la dernière saisie).
   def level
-    g = gratitudes.order(start_at: :desc).first
+    g = gratitudes.order(start_at: :desc, id: :desc).first
 
     if g
       g.level
     else
-      'Non renseigné'
+      NO_LEVEL
     end
+  end
+
+  # Même règle que #level pour tous les utilisateurs en une requête : { user_id => niveau }.
+  # Les utilisateurs sans reconnaissance sont absents (niveau NO_LEVEL).
+  def self.current_levels(user_ids = nil)
+    careers = Career.where.not(level: nil)
+    careers = careers.where(user_id: user_ids) unless user_ids.nil?
+    careers.pluck(:user_id, :level, :start_at, :id)
+           .group_by(&:first)
+           .transform_values { |rows| rows.max_by { |_, _, start_at, id| [start_at ? 1 : 0, start_at || Date.new(1), id] }[1] }
   end
 
   def can_vote

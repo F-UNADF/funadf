@@ -29,6 +29,7 @@ docker compose exec app bin/rails db:migrate
 docker compose exec -e RAILS_ENV=test app bin/rails db:create db:schema:load   # première fois
 docker compose exec -e RAILS_ENV=test app bin/rails test <fichier>
 docker compose exec app bin/vite build        # vérifier le build front
+docker compose exec app npm test              # tests du front (Vitest, test/javascript/)
 ```
 
 `REDIS_PASSWORD` est obligatoire dans `.env`.
@@ -44,7 +45,7 @@ docker compose exec app bin/vite build        # vérifier le build front
 - Fuseau horaire : `default_timezone = :local` et `time_zone_aware_attributes = false`. Les dates sont stockées en heure de Paris.
 - Le schéma mélange les charsets `utf8` et `latin1` (les tables récentes sont en `latin1`). Pour les nouvelles tables, préfère `utf8mb4`.
 - Beaucoup de SQL brut. N'interpole jamais d'entrée utilisateur : utilise des paramètres liés.
-- Tests Minitest quasi inexistants : le seul vrai fichier est `test/controllers/api/votes_controller_test.rb`. Il n'y a aucun linter (ni rubocop, ni eslint) : imite le code voisin.
+- Tests Minitest (`bin/rails test`) avec couverture SimpleCov (`coverage/index.html`, `COVERAGE=0` pour la couper). `test/controllers/api/mobile_contract_test.rb` fige le contrat avec l'app mobile : ne change pas une clé JSON qu'il vérifie sans vérifier `funadf-app`. Le géocodage est simulé et les jobs restent en mémoire (adaptateur `:test`). Il n'y a aucun linter (ni rubocop, ni eslint) : imite le code voisin.
 - En production, les logs Rails partent vers Logtail, pas dans `log/`.
 - Le fichier `core` à la racine est un fichier vide, pas un dossier.
 

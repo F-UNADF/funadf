@@ -33,4 +33,17 @@ class InvitationsControllerTest < ActionDispatch::IntegrationTest
     assert invited.valid_password?(NEW_PASSWORD)
     assert invited.invitation_accepted_at.present?
   end
+
+  test "le lien de l'e-mail d'invitation ouvre la page de choix du mot de passe" do
+    invited = User.invite!(email: 'lien@yopmail.com', firstname: 'Invité', lastname: 'Lien') { |u| u.skip_invitation = true }
+
+    get accept_user_invitation_url(subdomain: nil, invitation_token: invited.raw_invitation_token)
+    assert_response :success
+    assert_match invited.raw_invitation_token, @response.body, "le formulaire renvoie le jeton avec le mot de passe"
+  end
+
+  test "un lien d'invitation invalide redirige" do
+    get accept_user_invitation_url(subdomain: nil, invitation_token: 'jeton-invente')
+    assert_response :redirect
+  end
 end
