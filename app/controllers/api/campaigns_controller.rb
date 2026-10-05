@@ -1,8 +1,8 @@
 class Api::CampaignsController < ApiController
-  before_action :set_campaign, only: [:show, :update, :destroy, :change_state, :voters_count]
+  before_action :set_campaign, only: [:show, :update, :destroy, :change_state, :voters_count, :results]
   before_action :require_domain_access!, only: [:index]
   # Résultats et gestion : admin, ou responsable de la structure organisatrice.
-  before_action :require_manager!, only: [:show, :update, :destroy, :change_state, :voters_count]
+  before_action :require_manager!, only: [:show, :update, :destroy, :change_state, :voters_count, :results]
 
   def index
     domain = params[:domain] || 'me'
@@ -88,6 +88,13 @@ class Api::CampaignsController < ApiController
 
     structure = Structure.find(params[:structure_id])
     render json: CampaignElectorate.new(structure, electorate_tables)
+  end
+
+  # PDF des résultats : mêmes droits que l'écran des résultats (admin ou responsable).
+  # Le front le télécharge avec le jeton d'API puis l'ouvre dans un nouvel onglet.
+  def results
+    render pdf: "#{@campaign.name} - resultats", template: 'campaigns/show', formats: [:pdf],
+           layout: 'layouts/pdf', disposition: 'inline'
   end
 
   def voters_count

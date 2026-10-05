@@ -560,10 +560,23 @@ export default {
         this.editedItem.motions[i].order = parseInt(i);
       }
     },
-    downloadResults() {
-      // open a URL to Download the results
-      window.open('/campaigns/' + this.editedItem.id + '.pdf',
-        '_blank');
+    // PDF protégé par l'API : téléchargé avec le jeton, puis ouvert dans un nouvel onglet.
+    // L'onglet est ouvert tout de suite (clic de l'utilisateur) pour ne pas être bloqué.
+    async downloadResults() {
+      const tab = window.open('', '_blank');
+      try {
+        const blob = await this.$store.dispatch('campaignsStore/resultsPdf', this.editedItem.id);
+        const url = URL.createObjectURL(blob);
+        if (tab) {
+          tab.location.href = url;
+        } else {
+          window.location.href = url;
+        }
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      } catch (error) {
+        if (tab) tab.close();
+        this.$root.showSnackbar('Le PDF des résultats n’a pas pu être généré.', 'error');
+      }
     },
     async updateVotersCount() {
       try {
