@@ -46,7 +46,8 @@ class ApiController < ActionController::Base
   def authenticate_user_with_token
     authenticate_with_http_token do |token, options|
       current_api_token = ApiToken.where(active: true).find_by_token(token)
-      @api_user = current_api_token&.user
+      # Jeton d'un compte désactivé : refusé comme un jeton inconnu
+      @api_user = current_api_token&.user&.then { |user| user.active_for_authentication? ? user : nil }
     end
   end
 

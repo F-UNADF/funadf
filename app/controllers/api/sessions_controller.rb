@@ -4,7 +4,7 @@ class Api::SessionsController < ApiController
   def login
     user = User.find_by(email: params[:email])
 
-    if user && user.valid_password?(params[:password])
+    if user && user.valid_password?(params[:password]) && user.active_for_authentication?
       current_api_token = ApiToken.where(active: true).find_by_user_id(user.id)
       # Si on en trouve pas, on en crée un
       if current_api_token.nil?
