@@ -12,7 +12,7 @@ class Users::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   def create
     user = User.find_by_email(params[:email])
-    if user && user.valid_password?(params[:password])
+    if user && user.valid_password?(params[:password]) && user.active_for_authentication?
       # Fin du l'air Devise en Session, on passe en Tokenization
       # On cherche le dernier token actif 
       current_api_token = ApiToken.where(active: true).find_by_user_id(user.id)

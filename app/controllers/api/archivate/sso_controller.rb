@@ -15,7 +15,7 @@ class Api::Archivate::SsoController < ApiController
   def validate
     sso_token = SsoToken.usable.find_by(token: params[:token])
 
-    if sso_token && sso_token.consume!
+    if sso_token && sso_token.user.active_for_authentication? && sso_token.consume!
       render json: { user: { id: sso_token.user_id, email: sso_token.user.email } }, status: :ok
     else
       render json: { error: 'Invalid or expired SSO token' }, status: :unauthorized

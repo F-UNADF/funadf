@@ -41,6 +41,12 @@ class User < ActiveRecord::Base
   scope :enabled, -> { where(disabled: 0) }
   scope :disabled, -> { where(disabled: 1) }
 
+  # Un compte désactivé ne peut plus rien faire : ni se connecter (web, mobile,
+  # Devise), ni utiliser un jeton d'API déjà émis, ni ouvrir une session Archivate.
+  def active_for_authentication?
+    super && !disabled?
+  end
+
   scope :with_current_level_in, ->(levels) {
     joins(<<~SQL)
       INNER JOIN (

@@ -63,12 +63,13 @@ class SpaPagesTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test "PDF des résultats d'une campagne" do
-    campaign = structures(:association).campaigns.create!(name: 'AG')
-    campaign.motions.create!(name: 'Rapport', kind: 'binary', order: 1)
-
-    get "/campaigns/#{campaign.id}.pdf"
+  test "/campaigns/:id (page de vote) sert la SPA au rechargement" do
+    get "/campaigns/#{campaigns(:one).id}"
     assert_response :success
-    assert_equal 'application/pdf', @response.media_type
+    assert_match 'id="app"', @response.body
+  end
+
+  test "l'ancienne URL publique du PDF des résultats ne le sert plus" do
+    assert_raises(ActionController::RoutingError) { get "/campaigns/#{campaigns(:one).id}.pdf" }
   end
 end
