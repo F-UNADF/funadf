@@ -96,13 +96,48 @@ if [ -n "$CONFLICTS" ]; then
 fi
 remote "cd $APP_DIR && git log --oneline HEAD..origin/master" | cut -c1-100
 
+step "Droits d'écriture"
+# git pull échoue au milieu (code à moitié à jour) si un dossier n'est pas inscriptible
+# par l'utilisateur du déploiement (ex. créé en root depuis un conteneur) : on vérifie avant.
+UNWRITABLE="$(remote "APP_DIR=$APP_DIR bash -s" <<'SH'
+cd "$APP_DIR"
+{
+  find .git -type d ! -writable
+  git ls-tree -r --name-only origin/master | while IFS= read -r f; do
+    d="$(dirname "$f")"
+    while [ ! -e "$d" ]; do d="$(dirname "$d")"; done   # dossier à créer : son parent existant
+    [ -w "$d" ] || echo "$d"
+    [ ! -e "$f" ] || [ -w "$f" ] || echo "$f"
+  done
+} | sort -u | head -20
+SH
+)"
+if [ -n "$UNWRITABLE" ]; then
+  echo "Non modifiables par $(remote whoami) (à corriger avec chown avant de relancer) :"
+  echo "$UNWRITABLE"
+  exit 1
+fi
+echo "OK"
+
 step "Sauvegarde du front actuel"
 # public/vite appartient à root (build dans le conteneur) : copie faite par le conteneur
 remote "docker exec funadf_app cp -a /app/public/vite /app/tmp/vite-backup-$STAMP && echo $APP_DIR/tmp/vite-backup-$STAMP"
 echo "$STAMP $PREVIOUS -> $TARGET" | remote "cat >> ~/deploy.log"
 
 step "Mise à jour du code"
-remote "set -e; cd $APP_DIR; git pull -q --ff-only origin master; git log --oneline -1"
+if ! remote "set -e; cd $APP_DIR; git pull -q --ff-only origin master; git log --oneline -1"; then
+  # Pull interrompu : les fichiers déjà écrits sont remis à l'état de HEAD (le code
+  # en production), sinon le déploiement suivant les prend pour des modifications locales.
+  echo "Échec de la mise à jour du code : remise en état ($PREVIOUS)"
+  remote "APP_DIR=$APP_DIR bash -s" <<'SH'
+cd "$APP_DIR"
+git diff --name-only HEAD origin/master | while IFS= read -r f; do
+  if git cat-file -e "HEAD:$f" 2>/dev/null; then git checkout -q HEAD -- "$f"; else rm -f -- "$f"; fi
+done
+git status --short
+SH
+  exit 1
+fi
 
 deps "$PREVIOUS" "$TARGET"
 
