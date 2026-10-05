@@ -74,6 +74,7 @@ Rails.application.routes.draw do
     resources :campaigns
     patch '/campaigns/:id/change_state', to: 'campaigns#change_state'
     get '/campaigns/:id/voters_count', to: 'campaigns#voters_count'
+    get '/campaigns/:id/results', to: 'campaigns#results', defaults: { format: 'pdf' }
     resources :events
     resources :posts
     resources :votes, only: [:index, :show, :create]
@@ -143,7 +144,8 @@ Rails.application.routes.draw do
     root to: redirect('/feed'), as: :root
   end
 
-  get '/campaigns/:id', to: 'campaigns#show'
+  # Page de vote de la SPA (rechargement de /campaigns/:id)
+  get '/campaigns/:id', to: 'me/campaigns#index', constraints: { format: :html }
 
   root to: redirect('/connexion')
 end

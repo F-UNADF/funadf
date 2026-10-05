@@ -120,6 +120,11 @@ const actions = {
             voting_tables: (voting_tables || []).map(({ position, as_member, voting }) => ({ position, as_member, voting })),
         }).then((res) => res.data);
     },
+    // PDF des résultats (route protégée : le jeton part avec la requête axios)
+    resultsPdf: function (context, id) {
+        return axios.get('/api/campaigns/' + id + '/results', { responseType: 'blob' })
+            .then((res) => res.data);
+    },
     votersCount: function ({ commit }, id) {
         return new Promise((resolve, reject) => {
             axios.get('/api/campaigns/' + id + '/voters_count', {}).then((res) => {

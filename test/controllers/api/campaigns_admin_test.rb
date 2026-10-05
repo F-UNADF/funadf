@@ -126,4 +126,28 @@ class Api::CampaignsAdminTest < ActionDispatch::IntegrationTest
     assert_not Campaign.exists?(campaign.id)
     assert_not Motion.exists?(motion.id)
   end
+
+  # ---------- PDF des résultats ----------
+
+  test "PDF des résultats : admin et responsable de la structure seulement" do
+    campaign = @association.campaigns.create!(name: 'AG')
+    campaign.motions.create!(name: 'Rapport', kind: 'binary', order: 1)
+
+    get "/api/campaigns/#{campaign.id}/results", headers: @headers
+    assert_response :success
+    assert_equal 'application/pdf', @response.media_type
+    assert @response.body.start_with?('%PDF')
+
+    president = users(:other)
+    president.add_role :president, @association
+    get "/api/campaigns/#{campaign.id}/results", headers: auth_headers(president)
+    assert_response :success
+
+    get "/api/campaigns/#{campaign.id}/results", headers: auth_headers(users(:simple))
+    assert_response :forbidden
+
+    get "/api/campaigns/#{campaign.id}/results"
+    assert_response :unauthorized
+  end
 end
+
