@@ -116,3 +116,4 @@ config/credential.json
 /log/cron.log
 
 .vscode/
+/coverage-js
