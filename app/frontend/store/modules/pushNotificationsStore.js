@@ -37,9 +37,11 @@ const actions = {
   },
   save: function ({ commit }, item) {
     return new Promise((resolve, reject) => {
-      if (item.id) {
+      // item = { push_notification: { id, title, body, url } }
+      const id = item.push_notification ? item.push_notification.id : item.id;
+      if (id) {
         axios
-          .patch("/api/push_notifications/" + item.id, item)
+          .patch("/api/push_notifications/" + id, item)
           .then((res) => {
             commit("setItem", res.data);
             resolve(res.data);
@@ -93,6 +95,12 @@ const mutations = {
   setItem: (state, payload) => (state.item = payload),
   setLoading: (state, payload) => (state.loading = payload),
   setDialogForm: (state, payload) => (state.dialogForm = payload),
+  removeItemInItemsById: function (state, id) {
+    let index = state.items.findIndex((el) => el.id === id);
+    if (-1 !== index) {
+      state.items.splice(index, 1);
+    }
+  },
   setItemInItemsById: function (state, item) {
     if (typeof item !== "object") {
       item = JSON.parse(item);

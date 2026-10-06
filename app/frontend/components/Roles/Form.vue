@@ -63,7 +63,7 @@ export default {
   methods:  {
     close: function () {
       this.$store.commit('rolesStore/setDialogForm', false);
-      this.$store.commit('postsStore/setItem', {});
+      this.$store.commit('rolesStore/setItem', {});
     },
     save:  function () {
       this.$store.dispatch('rolesStore/save', {role: this.editedItem}).then(response => {

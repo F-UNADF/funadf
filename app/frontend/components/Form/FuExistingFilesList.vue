@@ -27,7 +27,8 @@ export default {
     },
     methods: {
         removeFile(index) {
-            this.localModelValue.splice(index, 1);
+            // Nouveau tableau (et non splice) : le watcher, non profond, doit voir le changement et le remonter
+            this.localModelValue = this.localModelValue.filter((file, i) => i !== index);
         }
     },
     watch: {

@@ -220,7 +220,8 @@ export default {
         gratitudes: [],
         fees: [],
         phases: [],
-        responsabilites: [],
+        responsabilities: [],
+        roles: [],
       };
       this.$store.commit('usersStore/setItem', newItem);
       this.$store.commit('usersStore/setDialogForm', true);

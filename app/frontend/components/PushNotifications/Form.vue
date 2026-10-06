@@ -41,7 +41,7 @@ export default {
       dialogForm : 'getDialogForm',
     }),
     getTitle() {
-      return (this.editedItem.id === null) ? "Ajouter une notification" : "Modifier une notification";
+      return (!this.editedItem.id) ? "Ajouter une notification" : "Modifier une notification";
     },
   },
   methods : {

@@ -71,11 +71,11 @@ class Api::PostsController < ApiController
     accesses = accesses.values if accesses.is_a?(ActionController::Parameters)
     accesses ||= []
 
-    accesses.each do |level|
-      next if level['value'].blank?
+    accesses.map { |entry| access_level(entry) }.each do |level|
+      next if level.blank?
 
       @post.accesses.build(
-        level: level['value'],
+        level: level,
         can_access: true
       )
     end
@@ -118,11 +118,12 @@ class Api::PostsController < ApiController
     if accesses.blank?
       accesses = []
     end
-    accesses.each do |level|
-      @post.accesses.find_or_create_by(level: level['value'], can_access: true) unless level['value'].blank?
+    levels = accesses.map { |entry| access_level(entry) }
+    levels.each do |level|
+      @post.accesses.find_or_create_by(level: level, can_access: true) unless level.blank?
     end
 
-    @post.accesses.where.not(level: accesses.map { |l| l['value'] }).destroy_all
+    @post.accesses.where.not(level: levels).destroy_all
 
     if @post.update(post_params)
       render json: { status: 200, post: @post }
@@ -137,6 +138,12 @@ class Api::PostsController < ApiController
   end
 
   private
+
+  # Niveau d'accès envoyé par la webapp : { title, value } (actu existante) ou
+  # la valeur seule (niveau choisi dans la liste, ex. « Pasteur AEM »).
+  def access_level(entry)
+    entry.respond_to?(:key?) ? entry['value'] : entry.to_s
+  end
 
   def require_manager!
     forbidden! unless can_manage_structure?(@post.structure_id)

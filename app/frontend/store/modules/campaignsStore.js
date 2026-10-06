@@ -94,8 +94,8 @@ const actions = {
     }, id) {
         return new Promise((resolve, reject) => {
             axios.delete('/api/campaigns/' + id, {}).then((res) => {
+                // Pas de rechargement de la campagne supprimée : l'API répondrait 404
                 commit('removeItemInItemsById', id);
-                dispatch('item', id);
                 resolve(res);
             }).catch((error) => {
                 reject(error, 2000);

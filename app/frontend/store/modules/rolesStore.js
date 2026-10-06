@@ -56,7 +56,7 @@ const actions = {
                 axios.post('/api/roles', item).then((res) => {
                     commit('setItem', res.data.role);
                     commit('setItemInItemsById', res.data.role);
-                    resolve(res.data.post);
+                    resolve(res.data.role);
                 }).catch((error) => {
                     reject(error, 2000);
                 });

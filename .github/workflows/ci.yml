@@ -89,6 +89,69 @@ jobs:
       - run: npm test
       - run: bin/vite build --force
 
+  e2e:
+    name: Tests de bout en bout
+    # 22.04 : wkhtmltopdf-binary (PDF des résultats de vote) ne fournit pas de binaire pour 24.04
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      RAILS_ENV: e2e
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Paquets système
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libmysqlclient-dev
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 18
+          cache: npm
+
+      - run: npm ci
+
+      # config/database.yml n'est pas versionné
+      - name: Configuration de la base
+        run: |
+          cat > config/database.yml <<'YAML'
+          e2e:
+            adapter: mysql2
+            encoding: utf8
+            database: funadf_e2e
+            username: root
+            password: root
+            host: 127.0.0.1
+            port: 3306
+          YAML
+
+      # Base funadf_e2e + seed, build Vite (public/vite-e2e), Chromium, puis Playwright
+      # (qui démarre et arrête le serveur Rails e2e sur le port 3100)
+      - name: Tests de bout en bout
+        run: bin/e2e
+
+      - name: Rapport Playwright et traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-e2e
+          path: |
+            tmp/e2e/report
+            tmp/e2e/test-results
+            log/e2e.log
+          retention-days: 14
+
   security:
     name: Sécurité
     runs-on: ubuntu-24.04
