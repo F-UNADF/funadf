@@ -61,7 +61,8 @@ export default {
         email: this.email,
         password: this.password,
       }).then(response => {
-        this.$router.push(response.data.redirect);
+        // L'API renvoie une URL absolue (root_url) : le routeur n'accepte qu'un chemin
+        this.$router.push(new URL(response.data.redirect || '/', window.location.origin).pathname);
       }).catch(() => {
         this.errorMessage = "Adresse e-mail ou mot de passe incorrect. Vérifiez votre saisie ou réinitialisez votre mot de passe.";
       }).finally(() => {

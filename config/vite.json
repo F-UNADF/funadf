@@ -18,5 +18,9 @@
   "production": {
     "publicOutputDir": "vite",
     "manifest": ".vite/manifest.json"
+  },
+  "e2e": {
+    "autoBuild": false,
+    "publicOutputDir": "vite-e2e"
   }
 }

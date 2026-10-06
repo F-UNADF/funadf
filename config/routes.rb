@@ -115,6 +115,7 @@ Rails.application.routes.draw do
   namespace :association do
     resources :associations, only: :index
     resources :campaigns, only: :index
+    resources :members, only: :index
 
     root to: redirect('/association/associations'), as: :root
   end

@@ -171,7 +171,8 @@ class User < ActiveRecord::Base
     role = Role.find_or_create_by(name: role_name)
     membership = self.memberships.where(role: role, structure: structure).first
 
-    membership.destroy
+    # Rôle déjà absent : rien à retirer
+    membership&.destroy
 
     role
   end
@@ -182,6 +183,8 @@ class User < ActiveRecord::Base
 
   def get_presidences
     role = Role.where(name: :president).first
+    return Structure.none unless role
+
     Structure.select('*', 'type AS type').where(id: self.memberships.where(role_id: role.id).pluck(:structure_id))
   end
 

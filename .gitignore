@@ -117,3 +117,10 @@ config/credential.json
 
 .vscode/
 /coverage-js
+
+# Tests de bout en bout (Playwright) : rapports, traces, e-mails capturés
+/tmp/e2e/
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/

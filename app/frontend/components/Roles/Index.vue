@@ -110,7 +110,7 @@ export default {
       this.dialogConfirmDelete = true;
     },
     deleteItem:    function (item) {
-      this.$store.dispatch('rolesStore/delete', item.value).then(response => {
+      this.$store.dispatch('rolesStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
         this.$root.showSnackbar('Rôle supprimé avec succès', 'success');

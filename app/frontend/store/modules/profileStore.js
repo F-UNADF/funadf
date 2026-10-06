@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const state = {
+// Fonction : chaque store a son propre état (sinon il est partagé entre instances)
+const state = () => ({
   profile: {},
   gratitudes: [],
   fees: [],
@@ -8,7 +9,7 @@ const state = {
   phases: [],
   responsabilities: [],
   roles: [],
-};
+});
 
 const getters = {
   getProfile: (state) => state.profile,

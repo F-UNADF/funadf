@@ -14,7 +14,7 @@
 <script>
 import NestedDocument from "./nested-document.vue";
 import axios from "axios";
-import NestedDraggable from "~/components/Documents/nested-draggable.vue";
+import NestedDraggable from "@/components/Documents/nested-draggable.vue";
 
 export default {
   name: 'MeDocumentsIndex',

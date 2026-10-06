@@ -43,6 +43,11 @@
           :key="child.id"
           :item="child"
           v-on:change="$emit('change')"
+          @downloadDocument="$emit('downloadDocument', $event)"
+          @updateDocument="$emit('updateDocument', $event)"
+          @deleteDocument="$emit('deleteDocument', $event)"
+          @updateCategory="$emit('updateCategory', $event)"
+          @deleteCategory="$emit('deleteCategory', $event)"
       />
 
       <v-list-item v-if="!item.categories.length && item.id !== -1" class="border-sm border-dashed bg-grey-lighten-3">

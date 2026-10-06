@@ -107,9 +107,13 @@ export default {
   },
   mounted() {
     this.fetchNotifications();
-    setInterval(() => {
+    this.refreshTimer = setInterval(() => {
       this.fetchNotifications()
     }, 60000) // Refresh every minute
+  },
+  beforeUnmount() {
+    // Sans cela, l'intervalle continue d'interroger l'API après le démontage de la cloche
+    clearInterval(this.refreshTimer);
   },
 }
 </script>
