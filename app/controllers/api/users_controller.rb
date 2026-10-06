@@ -30,6 +30,8 @@ class Api::UsersController < ApiController
       users = User.left_joins(:roles)
                   .select("users.*, GROUP_CONCAT(roles.name) as roles")
                   .group('users.id')
+    else
+      users = []
     end
     render json: {users: users.map { |user| user.public_attributes.merge('current_level' => user.level)  }}
   end
@@ -57,9 +59,10 @@ class Api::UsersController < ApiController
   end
 
   def create
-    if User.invite! user_params
-      user = User.find_by(email: user_params[:email])
-
+    # invite! renvoie l'utilisateur, avec ses erreurs si l'adresse est invalide ou déjà
+    # prise : on ne rattache alors rien (parcours, cotisations) au compte existant.
+    user = User.invite!(user_params)
+    if user.errors.empty?
       update_gratitudes(user)
       update_phases(user)
       update_responsabilities(user)

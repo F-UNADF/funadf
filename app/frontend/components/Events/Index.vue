@@ -124,7 +124,7 @@ export default {
       this.dialogConfirmDelete = true;
     },
     deleteItem: function (item) {
-      this.$store.dispatch('eventsStore/delete', item.value).then(response => {
+      this.$store.dispatch('eventsStore/delete', item.id).then(response => {
         this.dialogConfirmDelete = false;
         this.deletingItem = {};
         this.refresh();

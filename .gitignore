@@ -116,3 +116,11 @@ config/credential.json
 /log/cron.log
 
 .vscode/
+/coverage-js
+
+# Tests de bout en bout (Playwright) : rapports, traces, e-mails capturés
+/tmp/e2e/
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/

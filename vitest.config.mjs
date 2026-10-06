@@ -14,5 +14,13 @@ export default defineConfig({
     setupFiles: ['test/javascript/setup.js'],
     css: false,
     server: { deps: { inline: ['vuetify'] } },
+    // npm test -- --coverage : rapport dans coverage-js/ (tout le code front, testé ou non)
+    coverage: {
+      provider: 'v8',
+      include: ['app/frontend/**/*.{js,vue}'],
+      exclude: ['app/frontend/entrypoints/**', 'app/frontend/i18n/**'],
+      reportsDirectory: 'coverage-js',
+      reporter: ['text-summary', 'json-summary', 'html'],
+    },
   },
 })

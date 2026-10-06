@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# Tests de bout en bout (Playwright + Chromium) : navigateur → SPA → API Rails → MySQL.
+#
+#   bin/e2e                       # tout : base funadf_e2e, build du front, serveur, Playwright
+#   bin/e2e test/e2e/connexion.e2e.js -g "mauvais mot de passe"   # arguments passés à Playwright
+#   E2E_SKIP_BUILD=1 bin/e2e      # réutilise le build public/vite-e2e (front inchangé)
+#
+# Depuis le poste de dev, le script se relance dans le conteneur `app` (gems, Node et
+# MySQL y sont) ; en CI (CI=true) il tourne directement sur la machine.
+# Prérequis : une entrée `e2e:` (base funadf_e2e) dans config/database.yml.
+# Rapport HTML et traces des échecs : tmp/e2e/report (npx playwright show-report tmp/e2e/report).
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+# Poste de dev : on passe par le conteneur app
+if [ -z "${CI:-}" ] && [ ! -f /.dockerenv ]; then
+  exec docker compose exec -T \
+    -e E2E_SKIP_BUILD="${E2E_SKIP_BUILD:-}" \
+    app bin/e2e "$@"
+fi
+
+export RAILS_ENV=e2e
+export E2E_HOST="127.0.0.1:${E2E_PORT:-3100}"
+
+etape() { printf '\n\033[1m==> %s\033[0m\n' "$*"; }
+
+if ! grep -qE '^e2e:' config/database.yml 2>/dev/null; then
+  cat >&2 <<'MSG'
+config/database.yml n'a pas d'entrée e2e. Ajoutez par exemple :
+
+e2e:
+  <<: *development
+  database: funadf_e2e
+MSG
+  exit 1
+fi
+
+# Un serveur e2e resté allumé servirait un code périmé
+if [ -f tmp/pids/e2e-server.pid ]; then
+  kill "$(cat tmp/pids/e2e-server.pid)" 2>/dev/null || true
+  rm -f tmp/pids/e2e-server.pid
+fi
+
+etape "Navigateur Chromium"
+if [ -n "${CI:-}" ]; then
+  npx playwright install --with-deps chromium
+else
+  npx playwright install chromium >/dev/null
+  # Conteneur Debian 11 : les bibliothèques de Chromium ne sont pas dans l'image.
+  # Le dépôt bullseye-security n'est plus servi : on les prend dans bullseye (main).
+  if ! node -e "require('playwright').chromium.launch().then(b => b.close()).catch(() => process.exit(1))" 2>/dev/null; then
+    etape "Bibliothèques système de Chromium (une fois par conteneur)"
+    echo "deb http://deb.debian.org/debian bullseye main" > /tmp/e2e-sources.list
+    mkdir -p /tmp/e2e-apt-lists/partial
+    APT_OPTS="-o Dir::Etc::SourceList=/tmp/e2e-sources.list -o Dir::Etc::SourceParts=/nonexistent -o Dir::State::Lists=/tmp/e2e-apt-lists"
+    apt-get $APT_OPTS update -qq
+    paquets=$(npx playwright install-deps --dry-run chromium 2>&1 | grep '^  ' | grep -vE 'xvfb|xserver-common|xfonts|unifont|ipafont|tlwg|wqy|emoji|freefont' || true)
+    DEBIAN_FRONTEND=noninteractive apt-get $APT_OPTS install -y -qq --no-install-recommends $paquets
+  fi
+fi
+
+etape "Base funadf_e2e : schéma et données de départ"
+bin/rails db:drop db:create db:schema:load
+bin/rails runner test/e2e/seed.rb
+rm -rf tmp/e2e/mails tmp/e2e/storage tmp/e2e/test-results
+mkdir -p tmp/e2e tmp/pids
+: > log/e2e.log
+
+if [ -z "${E2E_SKIP_BUILD:-}" ]; then
+  etape "Build du front (public/vite-e2e)"
+  # Un 2e essai : la VM Docker locale manque parfois de mémoire pendant le build
+  bin/vite build --force || bin/vite build --force
+fi
+
+etape "Playwright (le serveur Rails e2e est démarré puis arrêté par Playwright)"
+debut=$(date +%s)
+statut=0
+npx playwright test "$@" || statut=$?
+echo "Durée des tests : $(( $(date +%s) - debut )) s — rapport : tmp/e2e/report"
+exit $statut

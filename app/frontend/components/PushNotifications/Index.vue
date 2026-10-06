@@ -31,7 +31,7 @@
 
           <row-action icon="mdi-send" color="success" label="Envoyer la notification" @click="askSend(item)"></row-action>
 
-          <row-action icon="mdi-pencil" color="primary" label="Modifier la notification" @click="editItem(item.id)"></row-action>
+          <row-action icon="mdi-pencil" color="primary" label="Modifier la notification" @click="editItem(item)"></row-action>
 
           <row-action icon="mdi-delete-outline" color="error" label="Supprimer la notification" @click="tryDeleteItem(item)"></row-action>
         </td>
@@ -110,7 +110,8 @@ export default {
       this.$store.commit('pushNotificationsStore/setDialogForm', true);
     },
     editItem: function (item) {
-      this.$store.dispatch('pushNotificationsStore/item', item);
+      // Pas de route GET /api/push_notifications/:id : on édite la ligne de la liste
+      this.$store.commit('pushNotificationsStore/setItem', { ...item });
       this.$store.commit('pushNotificationsStore/setDialogForm', true);
     },
     askSend: function (item) {

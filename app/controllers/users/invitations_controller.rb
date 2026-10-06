@@ -2,6 +2,11 @@ class Users::InvitationsController < Devise::InvitationsController
   skip_before_action :verify_authenticity_token
   prepend_before_action :resource_from_invitation_token, :only => [:edit, :destroy]
 
+  # Le formulaire d'invitation Devise n'est pas utilisé (les admins invitent par
+  # POST /api/users) : une simple session Devise, ouverte à l'acceptation d'une
+  # invitation, ne doit pas permettre d'inviter quelqu'un.
+  before_action :require_admin_or_moderator!, only: [:new, :create]
+
   layout :set_layout, only: [:new, :create]
 
   def create
@@ -52,6 +57,10 @@ class Users::InvitationsController < Devise::InvitationsController
   end
 
   private
+    def require_admin_or_moderator!
+      head :forbidden unless current_user&.can_switch?
+    end
+
     def invite_params
       params.require(:user).permit(:email,:firstname, :lastname, :level)
     end

@@ -155,12 +155,11 @@ export default {
       this.localCategory = category;
     },
     handleFileUpload(files) {
-      for (let i = 0; i < files.length; i++) {
-        this.filesToUpload.push(files[i]);
-      }
+      // VFileUpload émet la liste complète des fichiers choisis à chaque modification
+      this.filesToUpload = [...(files || [])];
     },
     submitFiles() {
-      if (null === this.filesToUpload) {
+      if (!this.filesToUpload.length) {
         this.$root.showSnackbar("Vous devez sélectionner au moins un fichier !", 'warning');
         return;
       }
@@ -171,12 +170,12 @@ export default {
       }
 
       this.$store.dispatch('documentsStore/upload', formData).then(() => {
-        this.filesToUpload = null;
+        this.filesToUpload = [];
         this.refreshItems();
       });
     },
     saveCategory() {
-      if (this.localCategory.name === '') {
+      if (!this.localCategory.name) {
         this.$root.showSnackbar("Vous devez saisir un nom de catégorie !", 'warning');
         return;
       }

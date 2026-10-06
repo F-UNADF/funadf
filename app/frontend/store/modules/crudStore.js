@@ -27,7 +27,10 @@ function appendFormData(fd, key, value) {
         fd.append(`${key}[]`, v);
       }
     });
-  } else if (value !== null && typeof value === 'object') {
+  } else if (value === null || value === undefined) {
+    // Champ vide : sans cela FormData envoie la chaîne « null », enregistrée telle quelle par Rails
+    fd.append(key, '');
+  } else if (typeof value === 'object') {
     Object.keys(value).forEach(subKey => {
       appendFormData(fd, `${key}[${subKey}]`, value[subKey]);
     });
@@ -61,7 +64,11 @@ export default function createCrudStore({ resource }) {
         },
         actions: {
             async fetchItems({ commit }, params = {}) {
-                const queryString = new URLSearchParams(params).toString();
+                // Sans les filtres vides : la recherche effacée (null) partirait sinon en « search=null »
+                const filters = Object.fromEntries(
+                    Object.entries(params).filter(([, value]) => value !== null && value !== undefined && value !== '')
+                );
+                const queryString = new URLSearchParams(filters).toString();
                 const uri = queryString ? `${baseUri}?${queryString}` : baseUri;
                 commit('setLoading', true);
                 try {
@@ -73,7 +80,8 @@ export default function createCrudStore({ resource }) {
                 }
             },
             fetchItem({ commit }, id) {
-                axios.get(`${baseUri}/${id}`).then((res) => {
+                // Renvoie la promesse : FuDatabase n'ouvre le formulaire qu'une fois la fiche chargée
+                return axios.get(`${baseUri}/${id}`).then((res) => {
                     commit('setItem', res.data[singularize(resource)]);
 
                     if (res.data.members) {
@@ -101,6 +109,11 @@ export default function createCrudStore({ resource }) {
                         'Content-Type': 'multipart/form-data',
                     }
                 });
+
+                // L'API renvoie les erreurs de validation avec un HTTP 200 et status: 422
+                if (res.data.status && res.data.status !== 200) {
+                    throw { response: { data: res.data } };
+                }
 
                 commit('setItem', res.data[singularize(resource)]);
                 commit('setDialog', false);
