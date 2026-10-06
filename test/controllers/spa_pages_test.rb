@@ -9,7 +9,7 @@ class SpaPagesTest < ActionDispatch::IntegrationTest
 
   PAGES = %w[
     /connexion /mot-de-passe-oublie /support /app /privacy
-    /feed /annuaire /mon-profil /documents /archivate /campaigns /mon-eglise /actus/1 /evenements/1
+    /feed /annuaire /mon-profil /documents /archivate /campaigns /actus/1 /evenements/1
     /admin/users /admin/churches /admin/associations /admin/campaigns /admin/events /admin/posts
     /admin/roles /admin/fees /admin/documents /admin/push_notifications /admin/regions
     /association/associations /association/campaigns /association/members

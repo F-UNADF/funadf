@@ -5,7 +5,6 @@ import PostsPage from '@/pages/Posts/Index.vue'
 import MembersPage from '@/pages/Members/Index.vue'
 import EventsShow from '@/pages/Events/Show.vue'
 import PostsShow from '@/pages/Posts/Show.vue'
-import ChurchShow from '@/pages/Churches/Show.vue'
 import IntranetUsers from '@/pages/Intranet/Users/Index.vue'
 import { mountAdmin, flush, click, apiError, text, dialog, routeGet } from './support.js'
 
@@ -200,79 +199,6 @@ describe('Pages de détail : événement et actualité', () => {
     expect(text(wrapper)).toContain('Cette actualité n’a pas pu être affichée')
     await click('Retour au fil d’actualité')
     expect(router.push).toHaveBeenCalledWith({ name: 'feed.index' })
-  })
-})
-
-describe('Mon église', () => {
-  beforeEach(() => vi.resetAllMocks())
-
-  const lyon = { id: 30, type: 'Church', name: 'Église de Lyon', email: 'lyon@add.fr', phone_1: '0472000000', address_1: '1 rue de la Paix', address_2: null, zipcode: '69001', town: 'Lyon', website: 'eglise-lyon.fr', latitude: 45.76, longitude: 4.83, created_at: '2020-01-15T10:00:00', updated_at: '2026-03-02T10:00:00' }
-  const brest = { id: 7, type: 'Church', name: 'Église de Brest', email: null, phone_1: null, address_1: null, zipcode: null, town: null, website: 'https://brest.fr', latitude: null, longitude: null, created_at: null, updated_at: null }
-
-  async function mountChurch(presidences) {
-    axios.get.mockResolvedValue({ data: { profile: {}, gratitudes: [], fees: [], presidences, phases: [], responsabilities: [], roles: [] } })
-    const mounted = mountAdmin(ChurchShow)
-    await flush()
-    return mounted
-  }
-
-  it('affiche la fiche de l’église présidée', async () => {
-    const { wrapper } = await mountChurch([lyon, { id: 40, type: 'Association', name: 'ADD Jeunesse' }])
-    expect(axios.get).toHaveBeenCalledWith('/api/profile', {})
-    const t = text(wrapper)
-    expect(t).toContain('Église de Lyon')
-    expect(t).toContain('00030')
-    expect(t).toContain('lyon@add.fr')
-    expect(t).toContain('1 rue de la Paix, 69001, Lyon')
-    expect(t).toContain('Latitude : 45.76')
-    expect(t).toContain('15/01/2020')
-    expect(t).not.toContain('Choisir une église') // une seule église
-    expect(t).not.toContain('ADD Jeunesse')
-    expect(wrapper.find('a[href="https://eglise-lyon.fr"]').exists()).toBe(true)
-    expect(wrapper.find('a[href="tel:0472000000"]').exists()).toBe(true)
-    expect(wrapper.find('a[href^="https://www.google.com/maps/search/?api=1&query=1%20rue"]').exists()).toBe(true)
-  })
-
-  it('président de plusieurs églises : choisit celle à afficher ; fiche incomplète', async () => {
-    const { wrapper } = await mountChurch([lyon, brest])
-    expect(text(wrapper)).toContain('Choisir une église')
-    wrapper.vm.selectedChurchId = 7
-    await flush()
-    const t = text(wrapper)
-    expect(t).toContain('Église de Brest')
-    expect(t).toContain('Ville : Non renseignée')
-    expect(t).toContain('AdresseNon renseignée')
-    expect(t).toContain('Latitude : Non renseignée')
-    expect(t).not.toContain('Ouvrir dans Google Maps')
-    expect(wrapper.find('a[href="https://brest.fr"]').exists()).toBe(true)
-    expect(wrapper.vm.churchOptions).toEqual([
-      { title: 'Église de Lyon - Lyon', value: 30 },
-      { title: 'Église de Brest ', value: 7 },
-    ])
-  })
-
-  it('sans présidence d’église : message dédié', async () => {
-    const { wrapper } = await mountChurch([])
-    expect(text(wrapper)).toContain('Aucune église trouvée')
-    expect(wrapper.vm.selectedChurch).toEqual({})
-    expect(wrapper.vm.getChurchLogo).toBe('')
-  })
-
-  it('libellés utilitaires', async () => {
-    const { wrapper } = await mountChurch([])
-    expect(wrapper.vm.getStructureTypeLabel('Association')).toBe('Association')
-    expect(wrapper.vm.getStructureTypeLabel('Region')).toBe('Region')
-    expect(wrapper.vm.getStructureTypeLabel(null)).toBe('Non renseigné')
-    expect(wrapper.vm.normalizedWebsite('')).toBe('')
-    expect(wrapper.vm.normalizedWebsite('http://a.fr')).toBe('http://a.fr')
-    expect(wrapper.vm.getFriendlyId(null)).toBe('')
-  })
-
-  it('« Modifier la fiche » navigue vers l’édition de l’église affichée', async () => {
-    const { wrapper, router } = await mountChurch([lyon])
-    await click('Modifier la fiche')
-    expect(router.push).toHaveBeenCalledWith(expect.objectContaining({ params: { id: 30 } }))
-    expect(wrapper.exists()).toBe(true)
   })
 })
 

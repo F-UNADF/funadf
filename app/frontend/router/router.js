@@ -20,7 +20,6 @@ import MembersIndex from "../pages/Members/Index.vue";
 import PostsShow from "../pages/Posts/Show.vue";
 import ArchivateRedirect from "../components/Archivate/Redirect.vue";
 import EventsShow from "../pages/Events/Show.vue";
-import ChurchShow from "../pages/Churches/Show.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -82,12 +81,6 @@ const router = createRouter({
             component: EventsShow,
             name: "event.show",
             meta: { title: "Événement" },
-        },
-        {
-            path: '/mon-eglise',
-            component: ChurchShow,
-            name: "church.show",
-            meta: { title: "Mon église" },
         },
 
         // ASSOCIATION
