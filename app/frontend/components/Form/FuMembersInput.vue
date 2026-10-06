@@ -104,14 +104,6 @@ export default {
         }
     },
     methods: {
-        getRoleName(role) {
-            let roles = this.referentiels.roles;
-            console.log(roles);
-            if (roles && roles.hasOwnProperty(role)) {
-                return roles[role];
-            }
-            return role;
-        },
         updateMatchingMembers() {
             let search = this.search.toLowerCase();
             if (search.length < 3) {
@@ -180,10 +172,8 @@ export default {
     data() {
         return {
             search: '',
-            searchingMember: '',
             addingMembers: [],
             matchMembers: [],
-            editedMembers: [],
             headers: [
                 { title: 'Nom', key: 'name', sortable: true },
                 { title: 'Ville', key: 'town', sortable: true },

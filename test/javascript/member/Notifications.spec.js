@@ -120,13 +120,6 @@ describe('Cloche des notifications', () => {
     await vi.advanceTimersByTimeAsync(120000)
     expect(axios.get).toHaveBeenCalledTimes(2)
   })
-
-  it('libellés utilitaires : date et texte de repli', async () => {
-    const { wrapper } = await openBell([])
-    expect(wrapper.vm.renderNotification({ action: 'created', notifiable_type: 'Event' })).toBe('Nouveau event créé')
-    expect(wrapper.vm.renderNotification({ action: 'updated' })).toBe('Nouvelle notification')
-    expect(wrapper.vm.formatDate('2026-10-06T10:00:00')).toBe(new Date('2026-10-06T10:00:00').toLocaleString())
-  })
 })
 
 describe('Contenu d’une notification', () => {
@@ -149,6 +142,5 @@ describe('Contenu d’une notification', () => {
     expect(render({ created_at: minutesAgo(180) }).text()).toContain('3 hr')
     const wrapper = render({ created_at: minutesAgo(3 * 24 * 60) })
     expect(wrapper.text()).toContain('3 j')
-    expect(wrapper.vm.formattedDate).toBe(new Date(wrapper.vm.notification.created_at).toLocaleString())
   })
 })

@@ -621,7 +621,6 @@ export default {
     return {
       editedItem: {},
       tab: 'motions',
-      countdown: 15,
       errors: [],
       saving: false,
       rules: {

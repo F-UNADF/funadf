@@ -2,9 +2,6 @@
 import { vi, afterEach } from 'vitest'
 import { mount, enableAutoUnmount } from '@vue/test-utils'
 import i18n from '@/i18n/index.js'
-import churchesStore from '@/store/modules/churchesStore'
-import associationsStore from '@/store/modules/associationsStore'
-import feesStore from '@/store/modules/feesStore'
 import { vuetify, store, flush } from '../helpers.js'
 
 export { flush }
@@ -23,13 +20,9 @@ afterEach(() => {
   document.body.innerHTML = ''
 })
 
-// Store réel + les anciens modules « *Store » encore utilisés par certains écrans
+// Store réel de l'application
 export function adminStore() {
-  const s = store()
-  s.registerModule('churchesStore', churchesStore)
-  s.registerModule('associationsStore', associationsStore)
-  s.registerModule('feesStore', feesStore)
-  return s
+  return store()
 }
 
 // Monte un écran avec Vuetify, le store, i18n et des mocks de $route / $router.

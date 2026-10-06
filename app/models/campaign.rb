@@ -14,35 +14,6 @@ class Campaign < ActiveRecord::Base
     event :close_definitly do
       transition [:coming, :opened] => :closed
     end
-
-    state :coming do
-      def state_class
-        "primary"
-      end
-    end
-
-    state :opened do
-      def state_class
-        "success"
-      end
-    end
-
-    state :closed do
-      def state_class
-        "warning"
-      end
-    end
-
-    state :coming, :closed do
-      def can_vote?
-        false
-      end
-    end
-    state :opened do
-      def can_vote?
-        true
-      end
-    end
   end
 
   accepts_nested_attributes_for :motions, reject_if: :all_blank, allow_destroy: true
@@ -52,158 +23,8 @@ class Campaign < ActiveRecord::Base
 
   validates :structure_id, presence: true
 
-  def period
-    if self.start_at && self.end_at
-      "Du #{I18n.l self.start_at} au #{I18n.l self.end_at}"
-    else
-      ""
-    end
-  end
-
-  def motions_count
-    motions.count
-  end
-
-  def has_already_vote? elector
-    b = false
-    motions.each do |motion|
-      if motion.has_voted? elector
-        b = true
-      end
-    end
-    b
-  end
-
-  # def elector_can_vote? elector
-  #   (elector && self.is_public && self.can_vote? && !has_already_vote?(elector)) || (elector && elector.can_vote && self.can_vote? && !has_already_vote?(elector))
-  # end
-
-  def get_elector_note elector
-    unless elector.blank?
-      if !elector.can_vote
-        elector.note
-      elsif self.closed?
-        "Les votes de cette campagne sont cloturés"
-      elsif self.coming?
-        "Les votes de cette campagne ne sont pas encore ouverts"
-      elsif has_already_vote?(elector)
-        "Vous avez déjà voté pour cette campagne."
-      end
-    end
-  end
-
-  def self.get_campaigns_for_member user
-    electors = user.electors
-    Campaign.joins(:structure).where('structure_id IN (?)', electors.pluck(:structure_id)).order('structures.name')
-  end
-
-  def self.get_campaigns_for_structure structure
-    electors = structure.self_electors
-    Campaign.joins(:structure).where('structure_id IN (?)', electors.pluck(:structure_id)).order('structures.name')
-  end
-
-  def self.get_campaigns_for_president user
-    president_roles = Role.where(name: :president, rolizations: { resource_id: user.id, resource_type: user.get_class }).joins(:rolizations)
-    campaigns       = []
-    president_roles.each do |role|
-      structure = role.resource
-      campaigns = campaigns + structure.campaigns
-    end
-    campaigns
-  end
-
-  def self.get_public_campaigns user
-    Campaign.where(is_public: true).where('ID NOT IN (?)', self.get_campaigns_for_member(user).pluck(:id))
-  end
-
   def self.currents
     Campaign.with_states([:coming, :opened]).order(name: :asc)
-  end
-
-  def get_voters opts = nil
-    motion_ids = Motion.where(campaign_id: self.id).pluck(:id)
-    if opts[:only_electors] && opts[:only_electors] == true
-      Voter.where('motion_id IN (?) AND elector_id IS NOT NULL', motion_ids).group(:elector_id).count.count
-    else
-      Voter.where('motion_id IN (?) AND elector_id IS NULL', motion_ids).group([:resource_id, :resource_type]).count.count
-    end
-  end
-
-  def user_can_vote?(user, as_member = true)
-    user_level = user.level
-    structure  = self.structure
-
-    vt = self.voting_tables.where(position: user_level, as_member: as_member).first
-
-    if as_member
-      can_vote = structure.member_can_vote?(user)
-
-      can_vote && (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
-    else
-      (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
-    end
-  end
-
-  def user_vote_kind(user, as_member = true)
-    user_level = user.level
-    structure  = self.structure
-
-    vt = self.voting_tables.where(position: user_level, as_member: as_member).first
-
-    if vt
-      vt.voting
-    else
-      nil
-    end
-  end
-
-  def users_churches_can_vote(user)
-    structure          = self.structure
-    church_presidences = user.church_presidences
-    can_vote           = false
-
-    church_presidences.each do |church|
-      is_member = structure.member_can_vote?(church)
-
-      vt = self.voting_tables.where(position: ((is_member) ? 'eglises membres' : 'eglises non membres'), as_member: is_member)
-
-      can_vote = (vt == 'count' || vt == 'consultative')
-      exit if can_vote
-    end
-    can_vote
-  end
-
-  def structure_can_vote?(voting_structure, as_member = true)
-    structure = self.structure
-
-    if voting_structure.type == "Church"
-      vt = self.voting_tables.where(position: (as_member) ? 'eglises membres' : 'eglises non membres', as_member: as_member).first
-    else
-      vt = self.voting_tables.where(position: (as_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: as_member).first
-    end
-
-    if as_member
-      can_vote = structure.member_can_vote?(voting_structure)
-      can_vote && (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
-    else
-      (vt && (vt.voting == 'count' || vt.voting == 'consultative'))
-    end
-  end
-
-  def structure_vote_kind(voting_structure, as_member = true)
-    structure = self.structure
-
-    if voting_structure.type == "Church"
-      vt = self.voting_tables.where(position: (as_member) ? 'eglises membres' : 'eglises non membres', as_member: as_member).first
-    else
-      vt = self.voting_tables.where(position: (as_member) ? 'oeuvres membres' : 'oeuvres non membres', as_member: as_member).first
-    end
-
-    if vt
-      vt.voting
-    else
-      nil
-    end
   end
 
   def has_consultative_votes?
@@ -230,7 +51,6 @@ class Campaign < ActiveRecord::Base
 
     Campaign.find_by_sql([sql, campaign_id: self.id])
   end
-
 
   def results
     Campaign.joins(motions: :votes)

@@ -93,17 +93,6 @@ export default {
         console.warn('Notification notifiable is missing', notif)
       }
     },
-    formatDate(isoDate) {
-      return new Date(isoDate).toLocaleString()
-    },
-    renderNotification(notif) {
-      switch (notif.action) {
-        case 'created':
-          return `Nouveau ${notif.notifiable_type.toLowerCase()} créé`
-        default:
-          return 'Nouvelle notification'
-      }
-    },
   },
   mounted() {
     this.fetchNotifications();

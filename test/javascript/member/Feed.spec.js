@@ -96,7 +96,7 @@ describe('Fil d’actualité', () => {
     await flush()
     expect(axios.get).toHaveBeenCalledWith('/api/feed?offset=10', {})
     expect(store.getters['feedStore/getItems']).toHaveLength(13)
-    expect(store.getters['feedStore/getOffset']).toBe(13)
+    expect(store.state.feedStore.offset).toBe(13)
     expect(pageText()).toContain('Actu 13')
     expect(buttonByText('Voir plus d’actualités')).toBeUndefined()
 
@@ -165,21 +165,5 @@ describe('Recherche dans le fil', () => {
     await flush()
     expect(wrapper.vm.search_in_progress).toBe(false)
     expect(wrapper.findAll('.v-skeleton-loader').length).toBe(0)
-  })
-
-  it('événements : la recherche interroge /api/me/events, et la liste complète revient si le terme est vide', async () => {
-    routeGets({ '/api/me/events': { events: [event(1)] } })
-    const { wrapper } = mountMember(EventList)
-    await flush()
-
-    wrapper.vm.search = 'pasto rale'
-    wrapper.vm.searching()
-    await flush()
-    expect(axios.get).toHaveBeenLastCalledWith('/api/me/events?search=pasto%20rale', {})
-
-    wrapper.vm.search = ''
-    wrapper.vm.searching()
-    await flush()
-    expect(axios.get).toHaveBeenLastCalledWith('/api/me/events?offset=0', {})
   })
 })

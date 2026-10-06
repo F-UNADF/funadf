@@ -55,14 +55,6 @@ export default {
       });
     },
   },
-  methods : {
-    goCampaign(campaign) {
-      if (campaign.state === 'opened'){
-        this.$router.push('/campaigns/' + campaign.id);
-      }
-      return false;
-    },
-  },
   data() {
     return {}
   },

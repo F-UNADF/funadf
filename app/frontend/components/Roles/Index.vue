@@ -121,11 +121,8 @@ export default {
     return {
       deletingItem:        {},
       dialogConfirmDelete: false,
-      loadingDelete:       false,
       search:              '',
       dialog:              false,
-      editedItem:          {},
-      valid:               true,
       filter:              {
         levels:   [],
         disabled: false,

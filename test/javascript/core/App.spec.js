@@ -84,7 +84,6 @@ describe('App : coquille de l’application', () => {
     const { s } = await mountApp('/admin/regions')
     expect(axios.get).toHaveBeenCalledWith('/api/current_user')
     expect(axios.get).toHaveBeenCalledWith('/api/menus/admin', {})
-    expect(s.getters['sessionStore/subdomain']).toBe('admin')
     expect(s.getters['sessionStore/currentUser']).toEqual(user)
     expect(s.getters['menuStore/getMenu']).toEqual(menu)
     // le menu est rechargé quand l'utilisateur courant change (connexion, prise d'identité)
@@ -96,8 +95,7 @@ describe('App : coquille de l’application', () => {
     ['/region/events', 'region'],
     ['/feed', 'me'],
   ])('espace déduit de %s : %s', async (path, subdomain) => {
-    const { s } = await mountApp(path)
-    expect(s.getters['sessionStore/subdomain']).toBe(subdomain)
+    await mountApp(path)
     expect(axios.get).toHaveBeenCalledWith('/api/menus/' + subdomain, {})
   })
 

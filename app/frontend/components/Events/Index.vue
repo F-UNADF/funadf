@@ -66,7 +66,6 @@ import EventForm from "./Form.vue";
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import RowAction from "../Tools/RowAction.vue";
 import moment from "moment";
-import { formToJSON } from "axios";
 
 export default {
   name: "EventsIndex",
@@ -139,15 +138,8 @@ export default {
     return {
       deletingItem: {},
       dialogConfirmDelete: false,
-      loadingDelete: false,
       search: '',
       dialog: false,
-      editedItem: {},
-      valid: true,
-      filter: {
-        levels: [],
-        disabled: false,
-      },
       headers: [
         {
           title: 'Titre',

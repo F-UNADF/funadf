@@ -245,10 +245,7 @@ export default {
   data() {
     return {
       search: '',
-      formTitle: 'Ajouter un utilisateur',
       dialog: false,
-      editedItem: {},
-      valid: true,
       filter: {
         levels: [],
         disabled: false,

@@ -13,7 +13,6 @@ const state = () => ({
 // getters
 const getters = {
     getItems  : (state) => state.items,
-    getOffset : (state) => state.offset,
     getLoading: (state) => state.loading,
     getLoaded : (state) => state.loaded,
     getHasMore: (state) => state.hasMore,

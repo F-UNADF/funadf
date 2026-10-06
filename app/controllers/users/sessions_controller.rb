@@ -2,8 +2,6 @@ class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
   skip_before_action :verify_authenticity_token
 
-  layout :set_layout
-
   # GET /resource/sign_in : la page de connexion est celle de la SPA
   def new
     redirect_to connexion_path
@@ -38,9 +36,4 @@ class Users::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
-
-  private
-    def set_layout
-      'layouts/devise'
-    end
 end

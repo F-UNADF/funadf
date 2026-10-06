@@ -152,12 +152,6 @@ describe('FuMembersInput : membres d’une structure', () => {
     }
   })
 
-  it('getRoleName : libellé du rôle s’il est connu, sinon le nom brut', () => {
-    const { wrapper } = mountMembers({ refs: { roles: { president: 'Président' }, members: [] } })
-    expect(wrapper.vm.getRoleName('president')).toBe('Président')
-    expect(wrapper.vm.getRoleName('member')).toBe('member')
-  })
-
   it('le champ d’ajout affiche les membres trouvés', async () => {
     const { wrapper } = mountMembers()
     await flush()

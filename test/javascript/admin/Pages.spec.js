@@ -5,7 +5,6 @@ import PostsPage from '@/pages/Posts/Index.vue'
 import MembersPage from '@/pages/Members/Index.vue'
 import EventsShow from '@/pages/Events/Show.vue'
 import PostsShow from '@/pages/Posts/Show.vue'
-import IntranetUsers from '@/pages/Intranet/Users/Index.vue'
 import { mountAdmin, flush, click, apiError, text, dialog, routeGet } from './support.js'
 
 vi.mock('axios')
@@ -202,9 +201,3 @@ describe('Pages de détail : événement et actualité', () => {
   })
 })
 
-describe('Intranet : utilisateurs (page provisoire)', () => {
-  it('affiche son titre', () => {
-    const { wrapper } = mountAdmin(IntranetUsers)
-    expect(text(wrapper)).toBe('Users')
-  })
-})

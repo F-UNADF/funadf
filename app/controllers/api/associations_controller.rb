@@ -1,7 +1,7 @@
 class Api::AssociationsController < ApiController
-  before_action :set_association, only: [:show, :update, :destroy, :add_members, :edit_roles, :remove_members]
+  before_action :set_association, only: [:show, :update, :destroy, :add_members, :edit_roles]
   before_action :require_admin!, only: [:create, :destroy]
-  before_action :require_manager!, only: [:update, :add_members, :edit_roles, :remove_members]
+  before_action :require_manager!, only: [:update, :add_members, :edit_roles]
 
   def index
     associations = Association.all
@@ -76,13 +76,6 @@ class Api::AssociationsController < ApiController
     member_data[:role_name] = role.name
 
     render json: { status: 200, membership: member_data, members: @association.members_with_details }
-  end
-
-  def remove_members
-    membership = @association.memberships.find(params[:membership_id])
-    membership.destroy
-
-    render json: { status: 200, members: @association.members_with_details }
   end
 
   private

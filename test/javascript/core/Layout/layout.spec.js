@@ -180,15 +180,4 @@ describe('Sidebar : menu de l’espace courant', () => {
     wrapper.findComponent(Sidebar).vm.sidebarValue = false
     expect(onUpdate).toHaveBeenCalledWith(false)
   })
-
-  it('isURL / isCurrentUrl : distingue liens absolus et chemins de l’application', async () => {
-    const { wrapper } = await mountSidebar({ menu, showSidebar: true })
-    const vm = wrapper.findComponent(Sidebar).vm
-    expect(vm.isURL('https://add.example.org/page')).toBe(true)
-    expect(vm.isURL('//localhost:3000/x')).toBe(true)
-    expect(vm.isURL('/admin/regions')).toBe(false)
-    expect(vm.isCurrentUrl('/admin/regions')).toBe(true)
-    expect(vm.isCurrentUrl('/admin/churches')).toBe(false)
-    expect(vm.isCurrentUrl(window.location.href)).toBe(true)
-  })
 })

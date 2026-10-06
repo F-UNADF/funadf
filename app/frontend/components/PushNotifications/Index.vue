@@ -75,7 +75,6 @@ import { mapGetters } from "vuex";
 import PushNotificationForm from './Form.vue';
 import DialogConfirm from "../Tools/DialogConfirm.vue";
 import RowAction from "../Tools/RowAction.vue";
-import moment from "moment";
 
 export default {
   name: "PushNotificationsIndex",
@@ -157,15 +156,8 @@ export default {
       sending: false,
       dialogConfirmSend: false,
       dialogConfirmDelete: false,
-      loadingDelete: false,
       search: '',
       dialog: false,
-      editedItem: {},
-      valid: true,
-      filter: {
-        what: moment().year().toString(),
-        name: null,
-      },
       headers: [
         {
           title: 'Titre',

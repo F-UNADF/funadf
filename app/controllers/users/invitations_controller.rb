@@ -3,34 +3,12 @@ class Users::InvitationsController < Devise::InvitationsController
   prepend_before_action :resource_from_invitation_token, :only => [:edit, :destroy]
 
   # Le formulaire d'invitation Devise n'est pas utilisé (les admins invitent par
-  # POST /api/users) : une simple session Devise, ouverte à l'acceptation d'une
-  # invitation, ne doit pas permettre d'inviter quelqu'un.
+  # POST /api/users), mais devise_for route toujours new et create : une simple
+  # session Devise, ouverte à l'acceptation d'une invitation, ne doit pas permettre
+  # d'inviter quelqu'un.
   before_action :require_admin_or_moderator!, only: [:new, :create]
 
-  layout :set_layout, only: [:new, :create]
-
-  def create
-    self.resource = invite_resource
-    resource_invited = resource.errors.empty?
-
-    yield resource if block_given?
-
-    if resource_invited
-      if is_flashing_format? && self.resource.invitation_sent_at
-        set_flash_message :notice, :send_instructions, email: self.resource.email
-      end
-
-      if @intranet_structure
-        resource.add_role :member, @intranet_structure
-      end
-
-      respond_with resource
-    else
-      respond_with_navigational(resource) { render :new }
-    end
-  end
-
-   def edit
+  def edit
     sign_out send("current_#{resource_name}") if send("#{resource_name}_signed_in?")
     set_minimum_password_length
     resource.invitation_token = params[:invitation_token]
@@ -61,6 +39,7 @@ class Users::InvitationsController < Devise::InvitationsController
       head :forbidden unless current_user&.can_switch?
     end
 
+    # Champs acceptés par Devise::InvitationsController#create (toujours routé)
     def invite_params
       params.require(:user).permit(:email,:firstname, :lastname, :level)
     end
@@ -72,15 +51,4 @@ class Users::InvitationsController < Devise::InvitationsController
         redirect_to after_sign_out_path_for(resource_name)
       end
     end
-
-    def set_layout
-      if request.subdomain && request.subdomain != '' && request.subdomain != 'admin'
-        "Intranet/layouts/application"
-      elsif request.subdomain && request.subdomain != '' && request.subdomain == 'admin'
-        "admin/layouts/application"
-      else
-        "votes/layouts/application"
-      end
-    end
-
 end

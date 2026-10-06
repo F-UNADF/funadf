@@ -152,7 +152,6 @@ export default {
   data() {
     return {
       localValue: this.value,
-      menu: false,
       localRules:
       {
         required: value => !!value || this.$t('form.errors.required'),

@@ -1,7 +1,7 @@
 class ApiController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
 
-  before_action :authenticate, :set_subdomain
+  before_action :authenticate
 
   # Rôles applicatifs : jamais attribuables à travers une structure.
   APPLICATION_ROLES = %w[admin moderator].freeze
@@ -22,22 +22,6 @@ class ApiController < ActionController::Base
 
     @switched_user ||= User.find_by(id: session[:connect_as]) || api_user
   end
-
-  def set_subdomain
-    @subdomain = ''
-
-    referer = request.referer
-    return unless referer
-
-    uri = URI.parse(referer)
-    path = uri.path                      # exemple : "/admin/campaigns"
-    first_segment = path.split('/')[1]  # => "admin"
-
-    if first_segment.in?(%w[admin association region])
-      @subdomain = first_segment
-    end
-  end
-
 
   def authenticate
     authenticate_user_with_token || handle_bad_authentication

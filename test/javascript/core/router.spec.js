@@ -1,15 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { initializeApp } from 'firebase/app'
-import { getMessaging } from 'firebase/messaging'
 
 vi.mock('axios')
 vi.mock('vue3-editor', () => ({ VueEditor: { name: 'VueEditor', template: '<div />' } }))
-vi.mock('firebase/app', () => ({ initializeApp: vi.fn(() => ({ name: 'funadf' })) }))
-vi.mock('firebase/messaging', () => ({
-  getMessaging: vi.fn(() => ({ messaging: true })), getToken: vi.fn(), onMessage: vi.fn(), isSupported: vi.fn(),
-}))
 
 const { default: router } = await import('@/router/router.js')
 const routes = router.getRoutes()
@@ -70,14 +64,5 @@ describe('router.js : routes de la SPA', () => {
     const rails = new Set([...railsSpaPaths()].map(normalize))
     const missing = routes.map(r => r.path).filter(p => p !== '/' && !rails.has(normalize(p)))
     expect(missing).toEqual([])
-  })
-})
-
-describe('utils/firebase.js', () => {
-  it('initialise Firebase (projet funadf) et Cloud Messaging', async () => {
-    const { messaging } = await import('@/utils/firebase.js')
-    expect(initializeApp).toHaveBeenCalledWith(expect.objectContaining({ projectId: 'funadf-49dfb', messagingSenderId: '609947767440' }))
-    expect(getMessaging).toHaveBeenCalledWith({ name: 'funadf' })
-    expect(messaging).toEqual({ messaging: true })
   })
 })

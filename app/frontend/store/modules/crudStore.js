@@ -212,12 +212,6 @@ export default function createCrudStore({ resource }) {
                     });
                 }
             },
-            removeMemberIdMembersById: (state, membership_id) => {
-                const index = state.members.findIndex(member => member.id === membership_id);
-                if (index !== -1) {
-                    state.members.splice(index, 1);
-                }
-            }
         },
     };
 }

@@ -10,7 +10,6 @@ class NotificationPostBroadcastJob < ApplicationJob
     posts = Post.where(published_at: last_run..now)
 
     posts.each do |post|
-      puts post.inspect
       structure = Structure.find post.structure_id
 
       # On part du principe que POUR L'INSTANT, on a pas besoin de commuiquer aux présidents des structures membres

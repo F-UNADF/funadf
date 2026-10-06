@@ -55,9 +55,6 @@ export default {
                 return `${days} j`;
             }
         },
-        formattedDate() {
-            return new Date(this.notification.created_at).toLocaleString();
-        },
         getNotificationTitle() {
             if (this.notification.notifiable_type === 'Event') {
                 return `Nouvel événement`;

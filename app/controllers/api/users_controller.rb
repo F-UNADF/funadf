@@ -68,10 +68,6 @@ class Api::UsersController < ApiController
       update_responsabilities(user)
       update_fees(user)
 
-      unless @structure.nil?
-        user.add_role :member, @structure
-      end
-
       render json: { user: user }, status: 200
     else
       render json: { user: user, errors: user.errors.full_messages }, status: 422
@@ -100,12 +96,6 @@ class Api::UsersController < ApiController
   end
 
   def destroy
-    # if @structure is set, remove user from memberships of this structure
-    if @structure.present?
-      @structure.memberships.where(member_id: params[:id], member_type: 'User').destroy_all
-      render json: { status: 'success' }
-      return
-    end
     user = User.find(params[:id])
     user.destroy
     render json: { status: 'success' }
