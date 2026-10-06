@@ -24,7 +24,7 @@
     "nuxt-vuefire": "^1.0.5",
     "vue": "^3.5.13",
     "vue-draggable-next": "^2.2.1",
-    "vue-i18n": "^11.4.2",
+    "vue-i18n": "^11.4.12",
     "vue-router": "^4.0.13",
     "vue3-editor": "^0.1.1",
     "vue3-perfect-scrollbar": "^2.0.0",
