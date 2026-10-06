@@ -13,8 +13,6 @@ const state = () => ({
     roles: [],
     region: null,
     originalUser: null,
-    editProfilDialog: false,
-    subdomain: null
 });
 
 // getters
@@ -22,7 +20,6 @@ const getters = {
     currentUser: (state) => state.currentUser,
     roles: (state) => state.roles,
     getOriginalUser: (state) => state.originalUser,
-    subdomain: (state) => state.subdomain,
     region: (state) => state.region,
 };
 
@@ -127,9 +124,6 @@ const mutations = {
     },
     setOriginalUser: (state, user) => {
         state.originalUser = user;
-    },
-    setSubdomain: (state, subdomain) => {
-        state.subdomain = subdomain;
     },
     setRoles: (state, roles) => {
         state.roles = roles;

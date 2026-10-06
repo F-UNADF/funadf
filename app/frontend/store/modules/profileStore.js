@@ -17,7 +17,6 @@ const getters = {
   getFees: (state) => state.fees,
   getPresidences: (state) => state.presidences,
   getPhases: (state) => state.phases,
-  getResponsabilities: (state) => state.responsabilities,
   getRoles: (state) => state.roles,
 };
 

@@ -215,7 +215,6 @@ export default {
   data() {
     return {
       filesToUpload: [],
-      newCategory: '',
       items: [],
       dialog: {
         update: false,

@@ -119,12 +119,6 @@ describe('sessionStore : session et changement d’utilisateur', () => {
     await expect(s.dispatch('sessionStore/password_recovery', {})).rejects.toBe(err)
     await expect(s.dispatch('sessionStore/password_reset', {})).rejects.toBe(err)
   })
-
-  it('setSubdomain : mémorise l’espace courant', () => {
-    const s = session()
-    s.commit('sessionStore/setSubdomain', 'admin')
-    expect(s.getters['sessionStore/subdomain']).toBe('admin')
-  })
 })
 
 describe('menuStore : menu de l’espace courant', () => {

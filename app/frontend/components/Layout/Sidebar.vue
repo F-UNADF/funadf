@@ -113,17 +113,6 @@ export default {
       default: false,
     },
   },
-  methods: {
-    isCurrentUrl: function (url) {
-      if (this.isURL(url)) return window.location.href === url;
-      else return this.$route.path === url;
-    },
-    isURL: function (string) {
-      // Regular expression pattern for URL validation
-      let urlPattern = /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/;
-      return urlPattern.test(string);
-    }
-  },
 }
 </script>
 

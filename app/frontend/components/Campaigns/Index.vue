@@ -188,12 +188,6 @@ export default {
       loadingDelete: false,
       search: '',
       dialog: false,
-      editedItem: {},
-      valid: true,
-      filter: {
-        levels: [],
-        disabled: false,
-      },
       headers: [
         {
           title: 'ID',

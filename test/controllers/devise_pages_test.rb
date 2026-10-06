@@ -96,4 +96,12 @@ class DevisePagesTest < ActionDispatch::IntegrationTest
     assert_raises(ActiveRecord::RecordNotFound) { get '/avatars/999999' }
     assert_raises(ActiveRecord::RecordNotFound) { get '/logos/999999' }
   end
+
+  test "pas d'inscription ni de suppression de compte en libre-service (Devise registerable retiré)" do
+    https!
+    sign_in users(:simple)
+    assert_raises(ActionController::RoutingError) { get '/users/sign_up' }
+    assert_raises(ActionController::RoutingError) { delete '/users' }
+    assert User.exists?(users(:simple).id)
+  end
 end

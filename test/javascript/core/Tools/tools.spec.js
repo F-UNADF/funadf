@@ -129,8 +129,5 @@ describe('SelectAll (outils) : gestion des accès', () => {
     await wrapper.setProps({ modelValue: ['Membre'] })
     expect(wrapper.vm.localModelValue).toEqual(['Membre'])
     expect(wrapper.vm.selectAll).toBe(false)
-    wrapper.vm.updateModelValue()
-    expect(wrapper.emitted('update:modelValue').at(-1)[0]).toEqual(options)
-    expect(wrapper.vm.selectAll).toBe(true)
   })
 })

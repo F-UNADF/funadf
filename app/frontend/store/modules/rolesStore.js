@@ -80,7 +80,6 @@ const mutations = {
     setItems:              (state, payload) => state.items = payload,
     setItem:               (state, payload) => state.item = payload,
     setLoading:            (state, payload) => state.loading = payload,
-    setReferentiels:       (state, payload) => state.referentiels = payload,
     setDialogForm:         (state, payload) => state.dialogForm = payload,
     setFormLoading:        (state, payload) => state.formLoading = payload,
     setItemInItemsById:    function (state, item) {

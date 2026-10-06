@@ -2,8 +2,6 @@ class Api::VotesController < ApiController
 
   # GET /votes
   def index
-    @campaigns = Campaign.currents
-
     @user = current_user
 
     campaing_ids = @user.eligible_campaign_ids

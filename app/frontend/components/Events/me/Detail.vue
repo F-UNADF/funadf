@@ -67,11 +67,6 @@ export default {
             default: false,
         },
     },
-    data() {
-        return {
-            detail: false,
-        };
-    },
     methods: {
         dateFormat(value) {
             return moment(value).format('DD/MM/YYYY [à] HH:mm');

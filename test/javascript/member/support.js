@@ -8,16 +8,13 @@ import eventsStore from '@/store/modules/eventsStore'
 import feedStore from '@/store/modules/feedStore'
 import feedEventStore from '@/store/modules/feedEventStore'
 import profileStore from '@/store/modules/profileStore'
-import postsStore from '@/store/modules/postsStore'
 import { vuetify, store, flush } from '../helpers.js'
 
 export { flush }
 
-// Le store réel ; postsStore n'y est pas enregistré (seuls components/Posts/{Index,Form}.vue l'utilisent) :
-// on l'ajoute pour pouvoir tester ces écrans.
-export function memberStore({ withPosts = false } = {}) {
+// Le store réel de l'application
+export function memberStore() {
   const s = store()
-  if (withPosts) s.registerModule('postsStore', postsStore)
   // profileStore déclare son état comme un objet (pas une fonction) : il est partagé entre stores, on le remet à zéro
   s.commit('profileStore/setProfile', {})
   ;['setGratitudes', 'setFees', 'setPresidences', 'setPhases', 'setResponsabilities', 'setRoles']

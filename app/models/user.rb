@@ -1,11 +1,10 @@
 class User < ActiveRecord::Base
-  require 'digest/md5'
   include PublicActivity::Model
   acts_as_token_authenticatable
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :invitable, :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable,
          :validate_on_invite => true
 
@@ -98,48 +97,6 @@ class User < ActiveRecord::Base
 
   alias name fullname
 
-  def full_address
-    result = ""
-    unless address_1.blank?
-      result = address_1 + "<br>"
-    end
-    unless address_2.blank?
-      result = result + address_2 + "<br>"
-    end
-    unless zipcode.blank?
-      result = result + zipcode
-    end
-    unless town.blank?
-      result = result + " " + town
-    end
-    result.html_safe
-  end
-
-  def inline_address
-    result = ""
-    unless address_1.blank?
-      result = address_1 + " "
-    end
-    unless address_2.blank?
-      result = result + address_2 + " "
-    end
-    unless zipcode.blank?
-      result = result + ' - ' + zipcode
-    end
-    unless town.blank?
-      result = result + " " + town
-    end
-    result.html_safe
-  end
-
-  def friendly_id
-    sprintf '%05d', id
-  end
-
-  def self.global_search q
-    where(['(firstname LIKE ? OR lastname LIKE ? OR email LIKE ? OR id LIKE ?)', "#{q}%", "#{q}%", "#{q}%", "#{q}%"])
-  end
-
   def has_role?(role_name, structure = nil)
     if structure.blank?
       return !self.roles.where(name: role_name).blank?
@@ -150,10 +107,6 @@ class User < ActiveRecord::Base
     end
 
     return false
-  end
-
-  def has_any_role?(*roles_name)
-    self.memberships.joins(:role).where('roles.name IN (?)', roles_name).count > 0
   end
 
   def add_role role_name, structure = nil, can_vote = true, reason = nil
@@ -177,20 +130,11 @@ class User < ActiveRecord::Base
     role
   end
 
-  def structures
-    Structure.where(id: (associations + churches + regions))
-  end
-
   def get_presidences
     role = Role.where(name: :president).first
     return Structure.none unless role
 
     Structure.select('*', 'type AS type').where(id: self.memberships.where(role_id: role.id).pluck(:structure_id))
-  end
-
-  def church_presidences
-    role = Role.where(name: :president).first
-    Structure.where(id: self.memberships.where(role_id: role.id, resource_type: 'Church').pluck(:resource_id))
   end
 
   def associations_responsabilities
@@ -207,15 +151,6 @@ class User < ActiveRecord::Base
              .where(memberships: { member_type: 'User', member_id: self.id })
   end
 
-  def get_class
-    User.to_s
-  end
-
-  def is_elector?(structure)
-    elector = electors.find_by(structure: structure)
-    elector && elector.can_vote
-  end
-
   def is_admin?
     has_role? :admin
   end
@@ -224,50 +159,10 @@ class User < ActiveRecord::Base
     has_role? [:admin, :moderator]
   end
 
-  def has_voted?(campaign)
-    structure = Structure.find(campaign.structure_id)
-
-    campaign.has_already_vote?(self)
-  end
-
-  def self.prepare_import(upload)
-    keys = []
-
-    CSV.foreach(File.open(upload.file.current_path), headers: false) do |row|
-      if upload.has_heading
-        row.each do |k|
-          keys << k
-        end
-      else
-        row.each_with_index do |k, index|
-          keys << "col-#{index}"
-        end
-      end
-      break
-    end
-    keys
-  end
-
   # Campagnes en cours où l'utilisateur a encore un bulletin à utiliser
   # (y compris bloqué, pour qu'il voie pourquoi il ne peut pas voter).
   def eligible_campaign_ids
     Campaign.currents.select { |campaign| campaign.ballots_for(self).any? { |ballot| ballot.has_voted.nil? } }.map(&:id)
-  end
-
-  def self.get_import_fields
-    [
-      ['ID', :id],
-      ['NOM', :firstname],
-      ['PRENOM', :lastname],
-      ['EMAIL', :email],
-      ['PORTABLE', :phone_1],
-      ['FIXE', :phone_2],
-      ['ADRESSE', :address_1],
-      ['CODE POSTAL', :zipcode],
-      ['VILLE', :town],
-      ['DATE DE NAISSANCE', :birthday],
-      ['RECONNAISSANCE', :level]
-    ]
   end
 
   def self.get_levels
@@ -341,48 +236,10 @@ class User < ActiveRecord::Base
            .transform_values { |rows| rows.max_by { |_, _, start_at, id| [start_at ? 1 : 0, start_at || Date.new(1), id] }[1] }
   end
 
-  def can_vote
-    true
-  end
-
   # User.accept_invitation! : on garde la version de devise_invitable, qui cherche
   # l'empreinte du jeton et renvoie une erreur si le jeton est absent ou invalide.
   # (L'ancienne surcharge cherchait `invitation_token: nil` sans jeton et laissait
   # changer le mot de passe du premier compte venu.)
-
-  def my_roles
-    roles
-  end
-
-  def send_invitation_email
-    UserMailer.send_direct_access(self).deliver
-  end
-
-  def gravatar_url
-    hash = Digest::MD5.hexdigest(self.email)
-
-    return "https://www.gravatar.com/avatar/#{hash}"
-  end
-
-  def get_avatar_url size = [150, 150]
-    "/avatars/#{self.id}.png"
-  end
-
-  def current_church
-    phase = self.phases.order(start_at: :desc).first
-    phase.present? ? phase.church : nil
-  end
-
-  def passphrase
-    year = Date.today.year - 1
-    fee = self.fees.where(what: year).first
-
-    if fee
-      return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' OK'
-    else
-      return self.friendly_id + ' ' + self.fullname + ' Cotisation ' + year.to_s + ' KO'
-    end
-  end
 
   def self.allowed_params params
     if params[:user][:password].blank?
@@ -405,5 +262,4 @@ class User < ActiveRecord::Base
                            responsabilities_attributes: [:id, :association_id, :function, :start_at, :end_at, :_destroy])
     end
   end
-
 end

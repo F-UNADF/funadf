@@ -45,17 +45,7 @@ export default {
     load     : function () {
       this.$store.dispatch('feedEventStore/loadMore');
     },
-    searching: function () {
-      if (this.search.length === 0) {
-        this.$store.dispatch('feedEventStore/items');
-        return;
-      }
-      this.$store.dispatch('feedEventStore/search', this.search);
-    },
   },
-  data       : () => ({
-    search: '',
-  }),
   beforeMount: function () {
     this.$store.dispatch('feedEventStore/items').catch(() => {});
   },

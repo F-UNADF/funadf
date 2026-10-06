@@ -200,7 +200,6 @@ export default {
       },
       showBell: true,
       showSidebar: false,
-      showSidebarOverlay: false,
       isMobile: false,
       mediaQuery: null,
       messaging: null,
@@ -215,7 +214,6 @@ export default {
   beforeMount() {
     this.$store.dispatch("sessionStore/fetchUser");
     let subdomain = getSubdomain();
-    this.$store.commit("sessionStore/setSubdomain", subdomain);
     this.$store.dispatch("menuStore/getMenu", subdomain);
   },
   mounted() {

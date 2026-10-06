@@ -146,17 +146,6 @@ const mutations = {
     setDialogForm: (state, payload) => state.dialogForm = payload,
     setFormLoading: (state, payload) => state.formLoading = payload,
     setVotersCount: (state, payload) => state.votersCount = payload,
-    setItemInItemsById: function (state, item) {
-        if (typeof item !== 'object') {
-            item = JSON.parse(item);
-        }
-        let index = state.items.findIndex(el => el.id === item.id);
-        if (-1 !== index) {
-            Object.assign(state.items[index], item);
-        } else {
-            state.items.push(item);
-        }
-    },
     removeItemInItemsById: function (state, id) {
         let index = state.items.findIndex(el => el.id === id);
         if (-1 !== index) {

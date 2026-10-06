@@ -45,11 +45,6 @@ export default {
     },
   },
   methods: {
-    updateModelValue() {
-      this.localModelValue = [...this.options];
-      this.selectAll = this.localModelValue.length === this.options.length;
-      this.$emit("update:modelValue", this.localModelValue);
-    },
     toggle() {
       if (!this.selectAll) {
         this.localModelValue = [...this.options]; // Tout sélectionner

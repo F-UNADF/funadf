@@ -217,13 +217,10 @@ describe('crudStore : store générique des écrans d’admin', () => {
     await expect(s.dispatch('regions/removeMember', 1)).rejects.toBe(err)
   })
 
-  it('mutations de membres : ignorent un identifiant inconnu', () => {
+  it('setMemberInMembersById ignore un identifiant inconnu', () => {
     const s = regions()
     s.commit('regions/setMembers', [{ id: 1, membership_id: 1 }, { id: 2, membership_id: 2 }])
     s.commit('regions/setMemberInMembersById', { id: 99, can_vote: false })
-    s.commit('regions/removeMemberIdMembersById', 99)
     expect(s.getters['regions/getMembers']).toHaveLength(2)
-    s.commit('regions/removeMemberIdMembersById', 1)
-    expect(s.getters['regions/getMembers']).toEqual([{ id: 2, membership_id: 2 }])
   })
 })

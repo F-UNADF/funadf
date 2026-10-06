@@ -121,7 +121,6 @@ describe('Notifications push : rédaction et modification', () => {
     store.commit('pushNotificationsStore/setItem', { id: null })
     await flush()
     expect(text(wrapper)).toContain('Ajouter une notification')
-    expect(wrapper.vm.getIsoDate('2026-10-06T10:00:00')).toBe('2026-10-06')
   })
 })
 

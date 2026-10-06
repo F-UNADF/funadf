@@ -50,10 +50,6 @@ export default {
       type   : String,
       default: "Non",
     },
-    loading    : {
-      type   : Boolean,
-      default: false,
-    }
   },
 
   methods: {

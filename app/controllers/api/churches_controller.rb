@@ -4,9 +4,7 @@ class Api::ChurchesController < ApiController
   before_action :require_manager!, only: [:update, :add_members, :edit_roles, :remove_members]
 
   def index
-    base_query = Church.all
-
-    churches = @structure.present? ? @structure.churches.merge(base_query) : base_query
+    churches = Church.all
 
     if params[:search].present?
       churches = churches.where(

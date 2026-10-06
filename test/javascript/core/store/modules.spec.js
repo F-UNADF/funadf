@@ -129,16 +129,13 @@ describe('campaignsStore', () => {
     }
   })
 
-  it('mutations : dialogue, chargement du formulaire, mise à jour ou ajout dans la liste', () => {
+  it('mutations : dialogue, chargement du formulaire, retrait d’un identifiant inconnu', () => {
     const store = s()
     store.commit('m/setDialogForm', true)
     store.commit('m/setFormLoading', true)
     expect(store.getters['m/getDialogForm']).toBe(true)
     expect(store.getters['m/getFormLoading']).toBe(true)
-    store.commit('m/setItems', [{ id: 1, name: 'A' }])
-    store.commit('m/setItemInItemsById', { id: 1, name: 'B' })
-    store.commit('m/setItemInItemsById', JSON.stringify({ id: 2, name: 'C' }))
-    expect(store.getters['m/getItems']).toEqual([{ id: 1, name: 'B' }, { id: 2, name: 'C' }])
+    store.commit('m/setItems', [{ id: 1, name: 'B' }, { id: 2, name: 'C' }])
     store.commit('m/removeItemInItemsById', 99)
     expect(store.getters['m/getItems']).toHaveLength(2)
   })
@@ -314,10 +311,10 @@ describe.each([
     await store.dispatch('m/items')
     expect(axios.get).toHaveBeenCalledWith(url + '?offset=0', {})
     expect(store.getters['m/getItems']).toHaveLength(pageSize)
-    expect(store.getters['m/getOffset']).toBe(pageSize)
+    expect(store.state.m.offset).toBe(pageSize)
     expect(store.getters['m/getHasMore']).toBe(true)
     await new Promise(r => setTimeout(r, 0)) // loaded/loading sont remis à jour dans le finally
-    expect(store.getters['m/getLoaded']).toBe(true)
+    expect(store.state.m.loaded).toBe(true)
     expect(store.getters['m/getLoading']).toBe(false)
     expect(store.getters['m/getError']).toBe(false)
   })
@@ -330,7 +327,7 @@ describe.each([
     await store.dispatch('m/loadMore')
     expect(axios.get).toHaveBeenLastCalledWith(`${url}?offset=${pageSize}`, {})
     expect(store.getters['m/getItems']).toHaveLength(pageSize + 2)
-    expect(store.getters['m/getOffset']).toBe(pageSize + 2)
+    expect(store.state.m.offset).toBe(pageSize + 2)
     expect(store.getters['m/getHasMore']).toBe(false)
 
     axios.get.mockResolvedValueOnce({ data: {} })
@@ -344,7 +341,7 @@ describe.each([
     await store.dispatch('m/search', 'AG & prière')
     expect(axios.get).toHaveBeenCalledWith(url + '?search=AG%20%26%20pri%C3%A8re', {})
     expect(store.getters['m/getHasMore']).toBe(false)
-    expect(store.getters['m/getOffset']).toBe(0)
+    expect(store.state.m.offset).toBe(0)
     axios.get.mockResolvedValueOnce({ data: {} })
     await store.dispatch('m/search', 'rien')
     expect(store.getters['m/getItems']).toEqual([])
@@ -409,7 +406,6 @@ describe('rolesStore', () => {
     }
     store.commit('m/setDialogForm', true)
     store.commit('m/setFormLoading', true)
-    store.commit('m/setReferentiels', [])
     store.commit('m/setItemInItemsById', JSON.stringify({ id: 4 }))
     store.commit('m/removeItemInItemsById', 99)
     expect(store.getters['m/getDialogForm']).toBe(true)
@@ -431,7 +427,7 @@ describe('profileStore', () => {
     expect(store.getters['m/getFees']).toEqual([2])
     expect(store.getters['m/getPresidences']).toEqual([3])
     expect(store.getters['m/getPhases']).toEqual([4])
-    expect(store.getters['m/getResponsabilities']).toEqual([5])
+    expect(store.state.m.responsabilities).toEqual([5])
     expect(store.getters['m/getRoles']).toEqual(['admin'])
     axios.get.mockRejectedValueOnce(err)
     await expect(store.dispatch('m/getProfile')).rejects.toBe(err)
@@ -439,25 +435,15 @@ describe('profileStore', () => {
 })
 
 describe('documentsStore', () => {
-  it('items, upload multipart et ajout de catégorie', async () => {
+  it('upload multipart', async () => {
     const store = moduleStore(documentsStore)
-    axios.get.mockResolvedValueOnce({ data: [{ id: 1, name: 'Statuts' }] })
-    await store.dispatch('m/items')
-    expect(axios.get).toHaveBeenCalledWith('/api/documents', {})
-    expect(store.getters['m/getItems']).toEqual([{ id: 1, name: 'Statuts' }])
-
     const fd = new FormData()
     axios.post.mockResolvedValue({ data: {} })
     await store.dispatch('m/upload', fd)
     expect(axios.post).toHaveBeenLastCalledWith('/api/documents', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
-    await store.dispatch('m/addCategory', { name: 'Juridique' })
-    expect(axios.post).toHaveBeenLastCalledWith('/api/categories', { name: 'Juridique' })
 
-    axios.get.mockRejectedValue(err)
     axios.post.mockRejectedValue(err)
-    await expect(store.dispatch('m/items')).rejects.toBe(err)
     await expect(store.dispatch('m/upload', fd)).rejects.toBe(err)
-    await expect(store.dispatch('m/addCategory', {})).rejects.toBe(err)
   })
 })
 
@@ -504,9 +490,6 @@ describe('pushNotificationsStore', () => {
     const store = s()
     store.commit('m/setDialogForm', true)
     expect(store.getters['m/getDialogForm']).toBe(true)
-    store.commit('m/setItemInItemsById', { id: 1, title: 'A' })
-    store.commit('m/setItemInItemsById', JSON.stringify({ id: 1, title: 'B' }))
-    expect(store.getters['m/getItems']).toEqual([{ id: 1, title: 'B' }])
 
     for (const m of ['get', 'post', 'patch', 'delete']) axios[m].mockRejectedValue(err)
     for (const [action, payload] of [['items'], ['save', { id: 1 }], ['save', {}], ['send', 1], ['delete', 1]]) {

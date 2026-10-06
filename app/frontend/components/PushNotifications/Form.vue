@@ -30,7 +30,6 @@
 
 <script>
 import {mapGetters} from "vuex";
-import moment from "moment";
 
 export default {
   name    : "PushNotificationForm",
@@ -49,9 +48,6 @@ export default {
       this.$store.dispatch('pushNotificationsStore/items');
       this.$store.commit('pushNotificationsStore/setDialogForm', false);
       this.$store.commit('pushNotificationsStore/setItem', {});
-    },
-    getIsoDate: function (value) {
-      return moment(value).format('YYYY-MM-DD');
     },
     save      : function () {
       this.$store.dispatch('pushNotificationsStore/save', {
@@ -79,11 +75,6 @@ export default {
   data() {
     return {
       editedItem   : {},
-      search       : '',
-      matchingUsers: [],
-      rules        : {
-        required: value => !!value || 'Champ obligatoire',
-      },
     };
   },
 

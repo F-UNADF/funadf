@@ -45,7 +45,6 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {VueEditor} from "vue3-editor";
 
 export default {
   name:     "RoleForm",
@@ -103,7 +102,6 @@ export default {
   data() {
     return {
       editedItem: {},
-      tab:        'infos',
       rules:      {
         required: value => !!value || 'Champ obligatoire',
       },

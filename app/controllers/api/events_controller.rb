@@ -75,10 +75,6 @@ class Api::EventsController < ApiController
     category           = Category.find_or_create_by(name: params[:event][:category], kind: 'event')
     @event.category_id = category.id
 
-    if @structure.present?
-      @event.structure_id = @structure.id
-    end
-
     params[:files]&.each do |file|
       @event.files.attach(file)
     end

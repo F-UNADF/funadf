@@ -43,12 +43,7 @@
 </template>
 
 <script>
-import {VueDraggableNext} from 'vue-draggable-next'
-
 export default {
-  components: {
-    draggable: VueDraggableNext,
-  },
   props: {
     item: Object,
   },

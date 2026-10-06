@@ -288,9 +288,6 @@ export default {
     canEditProfil() {
       return this.roles.includes('admin') || (this.item && this.item.user && this.currentUser.id !== this.item.user.id);
     },
-    pushEnabled() {
-      return this.editedItem.user.push_enabled;
-    },
   },
   methods: {
     close() {
@@ -456,10 +453,7 @@ export default {
       editedItem: {},
       deletingItem: {},
       dialogConfirmDelete: false,
-      loadingDelete: false,
       tab: 'infos',
-      pushEnabled: false,
-      pushToken: null,
       rules: {
         required: value => !!value || 'Champ obligatoire',
       },

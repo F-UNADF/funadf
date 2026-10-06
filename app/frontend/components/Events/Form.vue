@@ -152,7 +152,6 @@ export default {
   data() {
     return {
       editedItem: {},
-      search: '',
       tab: 'infos',
       files: [],
       rules: {

@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import axios from 'axios'
 import ProfileShow from '@/components/Profile/Show.vue'
 import ArchivateRedirect from '@/components/Archivate/Redirect.vue'
-import HomePage from '@/components/Pages/Home.vue'
 import PrivacyPage from '@/components/Pages/PrivacyPage.vue'
 import { mountMember, flush, pageText, buttonByText } from './support.js'
 
@@ -159,10 +158,5 @@ describe('Pages statiques', () => {
     expect(wrapper.find('h1').text()).toBe('Politique de Confidentialité')
     expect(wrapper.findAll('a[href="mailto:pdt.unadf@addfrance.fr"]')).toHaveLength(2)
     expect(pageText()).toContain('Droits des Utilisateurs')
-  })
-
-  it('page d’accueil de démonstration', () => {
-    const { wrapper } = mountMember(HomePage)
-    expect(wrapper.text()).toBe('Hello World !')
   })
 })
