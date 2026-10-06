@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@playwright/test": "^1.61.1",
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vitest/coverage-v8": "^2.1.9",
     "@vue/test-utils": "^2.5.1",
     "deepmerge": "^4.3.1",
