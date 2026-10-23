@@ -251,7 +251,8 @@ GEM
     multi_json (1.15.0)
     multi_test (1.1.0)
     mutex_m (0.3.0)
-    mysql2 (0.5.5)
+    mysql2 (0.5.7)
+      bigdecimal
     net-http (0.9.1)
       uri (>= 0.11.1)
     net-imap (0.5.15)
