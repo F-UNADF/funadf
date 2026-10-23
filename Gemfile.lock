@@ -349,7 +349,7 @@ GEM
       devise (>= 3.2, < 6)
     simplecov (1.2.0)
     slack-notifier (2.4.0)
-    spring (4.1.1)
+    spring (4.7.0)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
